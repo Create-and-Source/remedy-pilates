@@ -328,6 +328,13 @@ export default function BookOnline() {
       minHeight: '100vh', background: s.bg, fontFamily: s.FONT,
       position: 'relative', overflow: 'hidden',
     }}>
+      {/* Fixed home button */}
+      <button onClick={() => window.location.href = '/'} style={{
+        position: 'fixed', top: 16, left: 16, zIndex: 100,
+        padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(0,0,0,0.08)',
+        background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(12px)',
+        font: `400 12px ${s.FONT}`, color: '#888', cursor: 'pointer',
+      }}>← Home</button>
       {/* Background orbs */}
       <div style={{
         position: 'fixed', top: -100, right: -100, width: 350, height: 350,
@@ -389,11 +396,6 @@ export default function BookOnline() {
               {tagline}
             </p>
           )}
-          <button onClick={() => window.location.href = '/'} style={{
-            marginTop: 12, padding: '5px 14px', borderRadius: 100, border: '1px solid rgba(0,0,0,0.08)',
-            background: 'rgba(255,255,255,0.5)', font: `400 11px ${s.FONT}`, color: '#AAA',
-            cursor: 'pointer', backdropFilter: 'blur(8px)',
-          }}>← Home</button>
         </div>
 
         {/* Step indicator */}
