@@ -62,9 +62,31 @@ export default function Settings() {
     }
   };
 
+  // Payment connections state
+  const [payments, setPayments] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('ms_payment_connections')) || {}; } catch { return {}; }
+  });
+  const togglePayment = (provider) => {
+    const next = { ...payments, [provider]: !payments[provider] };
+    setPayments(next);
+    localStorage.setItem('ms_payment_connections', JSON.stringify(next));
+  };
+
+  // Social connections state
+  const [socials, setSocials] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('ms_social_connections')) || { instagram: true, facebook: true, tiktok: false, x: false, linkedin: false }; } catch { return {}; }
+  });
+  const toggleSocial = (platform) => {
+    const next = { ...socials, [platform]: !socials[platform] };
+    setSocials(next);
+    localStorage.setItem('ms_social_connections', JSON.stringify(next));
+  };
+
   const tabs = [
     { id: 'general', label: 'General' },
     { id: 'branding', label: 'Branding' },
+    { id: 'payments', label: 'Payments' },
+    { id: 'integrations', label: 'Integrations' },
     { id: 'services', label: 'Services' },
     { id: 'providers', label: 'Providers' },
     { id: 'locations', label: 'Locations' },
@@ -161,6 +183,177 @@ export default function Settings() {
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: s.accent }} />
                 <span style={{ font: `400 12px ${s.FONT}`, color: s.accent }}>Accent text</span>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payments */}
+      {tab === 'payments' && (
+        <div style={{ maxWidth: 600 }}>
+          <div style={{ ...s.cardStyle, padding: 24, marginBottom: 20 }}>
+            <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Payment Processing</div>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
+              Connect your existing payment processor. Your patients pay through your account — we never touch the money.
+            </p>
+            <div style={{ display: 'grid', gap: 12 }}>
+              {[
+                { id: 'square', name: 'Square', desc: 'POS terminals, card readers, invoicing', fee: '2.6% + $0.10 in-person', color: '#006AFF', badge: 'HIPAA Compliant' },
+                { id: 'stripe', name: 'Stripe', desc: 'Online payments, subscriptions, invoicing', fee: '2.7% + $0.05 in-person', color: '#635BFF', badge: null },
+                { id: 'clover', name: 'Clover', desc: 'POS system, card terminals, reporting', fee: '2.3% + $0.10 in-person', color: '#43B02A', badge: null },
+              ].map(p => (
+                <div key={p.id} style={{ ...s.cardStyle, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${p.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ font: `700 16px ${s.FONT}`, color: p.color }}>{p.name[0]}</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                      <span style={{ font: `600 14px ${s.FONT}`, color: s.text }}>{p.name}</span>
+                      {p.badge && <span style={{ padding: '2px 8px', borderRadius: 100, background: '#F0FDF4', color: s.success, font: `500 9px ${s.FONT}` }}>{p.badge}</span>}
+                    </div>
+                    <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{p.desc}</div>
+                    <div style={{ font: `400 11px ${s.MONO}`, color: s.text3, marginTop: 2 }}>{p.fee}</div>
+                  </div>
+                  {payments[p.id] ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: s.success }} />
+                      <span style={{ font: `500 12px ${s.FONT}`, color: s.success }}>Connected</span>
+                      <button onClick={() => togglePayment(p.id)} style={{ ...s.pillGhost, padding: '4px 10px', fontSize: 10 }}>Disconnect</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => togglePayment(p.id)} style={{ ...s.pillAccent, padding: '8px 16px', fontSize: 12 }}>Connect</button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ ...s.cardStyle, padding: 24 }}>
+            <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Patient Financing</div>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
+              Let patients pay over time. You get paid in full upfront.
+            </p>
+            <div style={{ display: 'grid', gap: 12 }}>
+              {[
+                { id: 'cherry', name: 'Cherry', desc: 'Patient financing up to $50K. 0% APR options. You get paid in 2-3 days.', color: '#FF385C' },
+                { id: 'carecredit', name: 'CareCredit', desc: 'Healthcare credit card. Special financing on $200+. Widely recognized.', color: '#00A0DF' },
+                { id: 'alphaeon', name: 'Alphaeon Credit', desc: 'Aesthetic-focused credit line. Revolving credit for repeat patients.', color: '#1A1A2E' },
+              ].map(p => (
+                <div key={p.id} style={{ ...s.cardStyle, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${p.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ font: `700 16px ${s.FONT}`, color: p.color }}>{p.name[0]}</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 2 }}>{p.name}</div>
+                    <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{p.desc}</div>
+                  </div>
+                  {payments[p.id] ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: s.success }} />
+                      <span style={{ font: `500 12px ${s.FONT}`, color: s.success }}>Active</span>
+                      <button onClick={() => togglePayment(p.id)} style={{ ...s.pillGhost, padding: '4px 10px', fontSize: 10 }}>Remove</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => togglePayment(p.id)} style={{ ...s.pillOutline, padding: '8px 16px', fontSize: 12 }}>Set Up</button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Integrations */}
+      {tab === 'integrations' && (
+        <div style={{ maxWidth: 600 }}>
+          <div style={{ ...s.cardStyle, padding: 24, marginBottom: 20 }}>
+            <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Social Media — DM Inbox</div>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
+              Connect social accounts to manage all DMs from one inbox. Each staff member gets their own assigned conversations.
+            </p>
+            <div style={{ display: 'grid', gap: 12 }}>
+              {[
+                { id: 'instagram', name: 'Instagram', desc: 'DMs, comments, story replies', color: '#E1306C', handle: '@yourmedspa' },
+                { id: 'facebook', name: 'Facebook', desc: 'Messenger, page messages', color: '#1877F2', handle: 'Your MedSpa' },
+                { id: 'tiktok', name: 'TikTok', desc: 'DMs, comment replies', color: '#FE2C55', handle: '@yourmedspa' },
+              ].map(p => (
+                <div key={p.id} style={{ ...s.cardStyle, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${p.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ font: `700 14px ${s.FONT}`, color: p.color }}>{p.name.slice(0, 2)}</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 2 }}>{p.name}</div>
+                    <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{p.desc}</div>
+                  </div>
+                  {socials[p.id] ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: s.success }} />
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ font: `500 12px ${s.FONT}`, color: s.success }}>Connected</div>
+                        <div style={{ font: `400 10px ${s.FONT}`, color: s.text3 }}>{p.handle}</div>
+                      </div>
+                      <button onClick={() => toggleSocial(p.id)} style={{ ...s.pillGhost, padding: '4px 10px', fontSize: 10 }}>Disconnect</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => toggleSocial(p.id)} style={{ ...s.pillAccent, padding: '8px 16px', fontSize: 12 }}>Connect</button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ ...s.cardStyle, padding: 24, marginBottom: 20 }}>
+            <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Reviews</div>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
+              Connect to automatically request and manage reviews.
+            </p>
+            <div style={{ display: 'grid', gap: 12 }}>
+              {[
+                { id: 'google', name: 'Google Business Profile', desc: 'Google reviews, Maps listing, business info', color: '#4285F4' },
+                { id: 'yelp', name: 'Yelp', desc: 'Yelp reviews and business page', color: '#D32323' },
+              ].map(p => (
+                <div key={p.id} style={{ ...s.cardStyle, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${p.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ font: `700 14px ${s.FONT}`, color: p.color }}>{p.name[0]}</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 2 }}>{p.name}</div>
+                    <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{p.desc}</div>
+                  </div>
+                  {payments[p.id] ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: s.success }} />
+                      <span style={{ font: `500 12px ${s.FONT}`, color: s.success }}>Connected</span>
+                      <button onClick={() => togglePayment(p.id)} style={{ ...s.pillGhost, padding: '4px 10px', fontSize: 10 }}>Disconnect</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => togglePayment(p.id)} style={{ ...s.pillAccent, padding: '8px 16px', fontSize: 12 }}>Connect</button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ ...s.cardStyle, padding: 24 }}>
+            <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Other Integrations</div>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
+              Coming soon — connect your other tools.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              {[
+                { name: 'QuickBooks', desc: 'Accounting sync', status: 'coming' },
+                { name: 'Google Calendar', desc: 'Two-way calendar sync', status: 'coming' },
+                { name: 'Zapier', desc: 'Connect 5000+ apps', status: 'coming' },
+                { name: 'Twilio', desc: 'SMS delivery', status: 'coming' },
+                { name: 'Mailgun', desc: 'Email delivery', status: 'coming' },
+                { name: 'AWS S3', desc: 'Photo storage', status: 'coming' },
+              ].map(p => (
+                <div key={p.name} style={{ padding: '14px 16px', background: 'rgba(0,0,0,0.02)', borderRadius: 12, border: '1px solid rgba(0,0,0,0.04)' }}>
+                  <div style={{ font: `500 13px ${s.FONT}`, color: s.text, marginBottom: 2 }}>{p.name}</div>
+                  <div style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>{p.desc}</div>
+                  <div style={{ font: `500 10px ${s.FONT}`, color: s.text3, marginTop: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Coming Soon</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
