@@ -120,7 +120,7 @@ export function initStore() {
     { id: 'SVC-8', name: 'Laser Hair Removal', category: 'Laser', duration: 30, price: 30000, unit: 'per area', description: 'Permanent hair reduction' },
     { id: 'SVC-9', name: 'HydraFacial', category: 'Skin', duration: 45, price: 22000, unit: 'per session', description: 'Multi-step facial cleansing and hydration' },
     { id: 'SVC-10', name: 'IV Therapy', category: 'Wellness', duration: 45, price: 20000, unit: 'per session', description: 'Vitamin and nutrient infusion' },
-    { id: 'SVC-11', name: 'Medical Weight Loss', category: 'Wellness', duration: 30, price: 50000, unit: 'per month', description: 'Semaglutide/tirzepatide program' },
+    { id: 'SVC-11', name: 'Medical Weight Loss', category: 'Body', duration: 30, price: 50000, unit: 'per month', description: 'Semaglutide/tirzepatide program' },
     { id: 'SVC-12', name: 'Body Contouring', category: 'Body', duration: 120, price: 350000, unit: 'per session', description: 'Non-surgical fat reduction' },
     { id: 'SVC-13', name: 'CoolSculpting', category: 'Body', duration: 60, price: 150000, unit: 'per cycle', description: 'Cryolipolysis fat freezing — FDA cleared' },
     { id: 'SVC-14', name: 'EmSculpt NEO', category: 'Body', duration: 30, price: 100000, unit: 'per session', description: 'Muscle building + fat reduction via HIFEM + RF' },

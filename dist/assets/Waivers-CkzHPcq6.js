@@ -1,4 +1,4 @@
-import{E as e,G as t,H as n,W as r,j as i,q as a,x as o}from"./store-DIP_2SF0.js";var s=a(t(),1),c=r(),l=`ms_waivers`;function u(){try{return JSON.parse(localStorage.getItem(l))||[]}catch{return[]}}function d(e){localStorage.setItem(l,JSON.stringify(e))}var f=[{id:`general`,name:`General Treatment Consent`,category:`Required`,content:`INFORMED CONSENT FOR AESTHETIC TREATMENT
+import{E as e,G as t,H as n,W as r,j as i,q as a,x as o}from"./store-DdB3yLOh.js";var s=a(t(),1),c=r(),l=`ms_waivers`;function u(){try{return JSON.parse(localStorage.getItem(l))||[]}catch{return[]}}function d(e){localStorage.setItem(l,JSON.stringify(e))}var f=[{id:`general`,name:`General Treatment Consent`,category:`Required`,content:`INFORMED CONSENT FOR AESTHETIC TREATMENT
 
 I, [Patient Name], voluntarily consent to the following aesthetic treatment(s) at [Business Name]: [Treatment Name].
 
