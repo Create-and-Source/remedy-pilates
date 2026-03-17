@@ -491,16 +491,8 @@ export default function Inbox() {
                   </>
                 )}
 
-                {/* Other Staff */}
-                {otherStaffDMs.length > 0 && (
-                  <>
-                    {renderSectionHeader('Other Staff', otherStaffDMs.length)}
-                    {otherStaffDMs.map(c => renderConversation(c, true))}
-                  </>
-                )}
-
-                {yourDMs.length === 0 && unassignedDMs.length === 0 && otherStaffDMs.length === 0 && (
-                  <div style={{ padding: 32, textAlign: 'center', font: `400 13px ${s.FONT}`, color: s.text3 }}>No conversations</div>
+                {yourDMs.length === 0 && unassignedDMs.length === 0 && (
+                  <div style={{ padding: 32, textAlign: 'center', font: `400 13px ${s.FONT}`, color: s.text3 }}>No conversations assigned to you</div>
                 )}
               </div>
             </div>
