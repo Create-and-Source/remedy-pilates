@@ -1129,7 +1129,7 @@ export default function Portal() {
       }}>
         <div className="portal-tabs" style={{
           maxWidth: 800, margin: '0 auto', padding: '14px 24px',
-          display: 'flex', gap: 8, overflowX: 'auto', scrollbarWidth: 'none',
+          display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center',
         }}>
           {navItems.map(item => {
             const active = section === item.id;
