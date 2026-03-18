@@ -3,46 +3,46 @@ import { useState, useEffect, useRef } from 'react';
 import { useStyles } from '../theme';
 import { getPatients, getServices, getSettings, subscribe } from '../data/store';
 
-const WAIVERS_KEY = 'ms_waivers';
+const WAIVERS_KEY = 'rp_waivers';
 function getWaivers() { try { return JSON.parse(localStorage.getItem(WAIVERS_KEY)) || []; } catch { return []; } }
 function saveWaivers(w) { localStorage.setItem(WAIVERS_KEY, JSON.stringify(w)); }
 
 const TEMPLATES = [
   // ═══ REQUIRED FOR EVERY PATIENT ═══
-  { id: 'general', name: 'General Treatment Consent', category: 'Required', content: `INFORMED CONSENT FOR AESTHETIC TREATMENT
+  { id: 'general', name: 'General Liability Waiver', category: 'Required', content: `INFORMED CONSENT FOR AESTHETIC TREATMENT
 
-I, [Patient Name], voluntarily consent to the following aesthetic treatment(s) at [Business Name]: [Treatment Name].
+I, [Patient Name], voluntarily consent to the following aesthetic session(s) at [Business Name]: [Treatment Name].
 
 I understand and acknowledge the following:
 
-1. NATURE OF TREATMENT: The procedure, its expected benefits, and alternative treatment options have been explained to me by my provider.
+1. NATURE OF TREATMENT: The procedure, its expected benefits, and alternative session options have been explained to me by my provider.
 
-2. NO GUARANTEE: Results vary from person to person. No guarantee has been made regarding the outcome of this treatment. Additional treatments may be necessary to achieve desired results.
+2. NO GUARANTEE: Results vary from person to person. No guarantee has been made regarding the outcome of this session. Additional sessions may be necessary to achieve desired results.
 
 3. RISKS AND COMPLICATIONS: I understand there are inherent risks with any aesthetic procedure, including but not limited to:
-   - Pain, discomfort, redness, swelling, or bruising at the treatment site
+   - Pain, discomfort, redness, swelling, or bruising at the session site
    - Infection
    - Scarring (rare)
    - Allergic reaction to products or materials used
    - Unsatisfactory results or asymmetry
    - Temporary or permanent changes in skin color or sensation
-   - Need for additional corrective treatment
+   - Need for additional corrective session
 
 4. MEDICAL DISCLOSURE: I have truthfully disclosed my complete medical history, current medications (including over-the-counter drugs and supplements), known allergies, previous cosmetic procedures, and any current health conditions.
 
-5. PRE/POST CARE: I agree to follow all pre-treatment and post-treatment instructions provided to me. I understand that failure to follow these instructions may affect my results and increase the risk of complications.
+5. PRE/POST CARE: I agree to follow all pre-session and post-session instructions provided to me. I understand that failure to follow these instructions may affect my results and increase the risk of complications.
 
 6. PHOTOGRAPHY: I authorize clinical photographs to be taken for my medical record.
 
-7. FINANCIAL RESPONSIBILITY: I understand that aesthetic treatments are elective and not covered by insurance. I am responsible for all fees associated with this treatment.
+7. FINANCIAL RESPONSIBILITY: I understand that aesthetic sessions are elective and not covered by insurance. I am responsible for all fees associated with this session.
 
-I have had the opportunity to ask questions, and all my questions have been answered to my satisfaction. I voluntarily consent to this treatment.
+I have had the opportunity to ask questions, and all my questions have been answered to my satisfaction. I voluntarily consent to this session.
 
 Patient Signature: _________________________
 Date: ____________
 Provider/Witness: _________________________` },
 
-  { id: 'hipaa', name: 'HIPAA Privacy Notice', category: 'Required', content: `ACKNOWLEDGMENT OF RECEIPT OF NOTICE OF PRIVACY PRACTICES
+  { id: 'hipaa', name: 'Privacy Policy', category: 'Required', content: `ACKNOWLEDGMENT OF RECEIPT OF NOTICE OF PRIVACY PRACTICES
 
 HIPAA PRIVACY NOTICE — [Business Name]
 
@@ -50,7 +50,7 @@ I acknowledge that I have been provided with a copy of [Business Name]'s Notice 
 
 I understand that:
 
-1. [Business Name] may use and disclose my PHI for treatment, payment, and healthcare operations purposes.
+1. [Business Name] may use and disclose my PHI for session, payment, and healthcare operations purposes.
 
 2. [Business Name] has the right to change its privacy practices and that I may obtain a revised notice by requesting one.
 
@@ -112,7 +112,7 @@ Are you taking birth control? [ ] Yes [ ] No
 SKIN HISTORY
 Do you have a history of cold sores / herpes simplex? [ ] Yes [ ] No
 Do you use retinoids (Retin-A, tretinoin, Accutane)? [ ] Yes [ ] No
-Have you had a chemical peel or laser treatment in the last 6 months? [ ] Yes [ ] No
+Have you had a chemical peel or laser session in the last 6 months? [ ] Yes [ ] No
 Do you tan or use tanning beds? [ ] Yes [ ] No
 Do you use blood thinners (aspirin, ibuprofen, fish oil, vitamin E)? [ ] Yes [ ] No
 
@@ -126,15 +126,15 @@ Patient Signature: _________________________
 Date: ____________` },
 
   // ═══ INJECTABLE CONSENTS ═══
-  { id: 'botox', name: 'Botox / Neurotoxin Consent', category: 'Injectable', content: `INFORMED CONSENT FOR BOTULINUM TOXIN TYPE A
-(Botox Cosmetic / Dysport / Xeomin / Jeuveau)
+  { id: 'botox', name: 'Reformer / Neurotoxin Consent', category: 'Equipment', content: `INFORMED CONSENT FOR BOTULINUM TOXIN TYPE A
+(Reformer Cosmetic / Dysport / Xeomin / Jeuveau)
 
-DESCRIPTION: Botulinum toxin is a purified protein that temporarily blocks nerve signals to targeted muscles, reducing the appearance of dynamic wrinkles. Common treatment areas include the forehead, glabella (frown lines), and crow's feet.
+DESCRIPTION: Reformer Pilates is a purified protein that temporarily blocks nerve signals to targeted muscles, reducing the appearance of dynamic wrinkles. Common session areas include the forehead, glabella (frown lines), and crow's feet.
 
 EXPECTED RESULTS:
 - Results typically appear within 3-7 days, with full effect at 10-14 days
 - Duration: 3-4 months on average (varies by individual)
-- Touch-up may be needed 2 weeks after initial treatment
+- Touch-up may be needed 2 weeks after initial session
 
 RISKS AND SIDE EFFECTS include but are not limited to:
 - Bruising, redness, swelling, or tenderness at injection sites
@@ -150,31 +150,31 @@ CONTRAINDICATIONS — Do NOT proceed if:
 - You are pregnant, nursing, or planning to become pregnant
 - You have a neuromuscular disorder (myasthenia gravis, Lambert-Eaton, ALS)
 - You are allergic to botulinum toxin, human albumin, or cow's milk protein (Dysport)
-- You have an active skin infection at the treatment area
+- You have an active skin infection at the session area
 - You are taking aminoglycoside antibiotics
 
 PRE-TREATMENT INSTRUCTIONS:
 - Avoid blood thinners (aspirin, ibuprofen, fish oil, vitamin E) for 7 days
-- Avoid alcohol for 24 hours before treatment
-- Arrive with a clean face, no makeup on treatment areas
+- Avoid alcohol for 24 hours before session
+- Arrive with a clean face, no makeup on session areas
 
 POST-TREATMENT INSTRUCTIONS:
-- Do NOT lay down for 4 hours after treatment
+- Do NOT lay down for 4 hours after session
 - Do NOT exercise vigorously for 24 hours
 - Do NOT massage or rub the treated areas
 - Gently contract treated muscles for 1-2 hours (e.g., practice frowning)
 - Avoid saunas, hot tubs, and excessive heat for 24 hours
-- Avoid facials or other facial treatments for 2 weeks
+- Avoid facials or other facial sessions for 2 weeks
 
 I confirm that I am NOT pregnant or breastfeeding.
 I have disclosed all medications, supplements, and medical conditions.
-I understand the risks and consent to treatment.
+I understand the risks and consent to session.
 
 Patient Signature: _________________________
 Date: ____________
 Provider: _________________________` },
 
-  { id: 'filler', name: 'Dermal Filler Consent', category: 'Injectable', content: `INFORMED CONSENT FOR DERMAL FILLER INJECTION
+  { id: 'filler', name: 'Dermal Barre Consent', category: 'Equipment', content: `INFORMED CONSENT FOR DERMAL FILLER INJECTION
 (Juvederm / Restylane / RHA / Sculptra / Radiesse / Versa)
 
 DESCRIPTION: Dermal fillers are injectable gels used to restore volume, smooth lines and wrinkles, enhance facial contours, and improve symmetry. Hyaluronic acid (HA) fillers are the most common and can be dissolved if needed.
@@ -198,9 +198,9 @@ RISKS AND SIDE EFFECTS include but are not limited to:
 - Biofilm formation (rare)
 
 SERIOUS RISKS (rare but important):
-- VASCULAR OCCLUSION: Filler inadvertently injected into or compressing a blood vessel can cause tissue death (necrosis) or VISION CHANGES/BLINDNESS. This is a medical emergency.
+- VASCULAR OCCLUSION: Barre inadvertently injected into or compressing a blood vessel can cause tissue death (necrosis) or VISION CHANGES/BLINDNESS. This is a medical emergency.
 
-EMERGENCY PROTOCOL: If you experience any of the following after treatment, contact us IMMEDIATELY or go to the nearest emergency room:
+EMERGENCY PROTOCOL: If you experience any of the following after session, contact us IMMEDIATELY or go to the nearest emergency room:
 - Sudden vision changes or loss of vision
 - Severe pain that does not resolve
 - Skin blanching (turning white) or dusky discoloration
@@ -208,7 +208,7 @@ EMERGENCY PROTOCOL: If you experience any of the following after treatment, cont
 
 CONTRAINDICATIONS:
 - Pregnancy or breastfeeding
-- Active skin infection, cold sore, or acne at treatment site
+- Active skin infection, cold sore, or acne at session site
 - Known allergy to filler components (hyaluronic acid, lidocaine)
 - Autoimmune conditions (discuss with provider)
 - History of anaphylaxis
@@ -229,13 +229,13 @@ POST-TREATMENT:
 
 I understand that hyaluronidase can be used to dissolve HA filler if needed.
 I confirm I am NOT pregnant or breastfeeding.
-I consent to dermal filler treatment.
+I consent to dermal filler session.
 
 Patient Signature: _________________________
 Date: ____________
 Provider: _________________________` },
 
-  { id: 'sculptra', name: 'Sculptra / Biostimulator Consent', category: 'Injectable', content: `INFORMED CONSENT FOR BIOSTIMULATOR INJECTION (SCULPTRA / RADIESSE)
+  { id: 'sculptra', name: 'Sculptra / Biostimulator Consent', category: 'Equipment', content: `INFORMED CONSENT FOR BIOSTIMULATOR INJECTION (SCULPTRA / RADIESSE)
 
 DESCRIPTION: Biostimulators work differently from traditional fillers. Rather than adding immediate volume, they stimulate your body's own collagen production over time. Sculptra (poly-L-lactic acid) and Radiesse (calcium hydroxylapatite) are the most common.
 
@@ -256,27 +256,27 @@ POST-TREATMENT (SCULPTRA SPECIFIC):
 - Massage treated areas 5 times daily for 5 minutes for 5 days ("Rule of 5s")
 - This is critical to prevent nodule formation
 
-I understand this is a multi-session treatment and results are not immediate.
+I understand this is a multi-session session and results are not immediate.
 
 Patient Signature: _________________________
 Date: ____________` },
 
   // ═══ SKIN TREATMENT CONSENTS ═══
-  { id: 'microneedling', name: 'Microneedling / RF Consent', category: 'Skin', content: `INFORMED CONSENT FOR MICRONEEDLING / RF MICRONEEDLING
+  { id: 'microneedling', name: 'Private Session / RF Consent', category: 'Skin', content: `INFORMED CONSENT FOR MICRONEEDLING / RF MICRONEEDLING
 (Morpheus8 / SkinPen / Potenza / Vivace)
 
-DESCRIPTION: Microneedling creates controlled micro-injuries to stimulate collagen production and skin renewal. RF (radiofrequency) microneedling adds heat energy for deeper remodeling. Treats fine lines, acne scars, pore size, texture, and skin laxity.
+DESCRIPTION: Private Session creates controlled micro-injuries to stimulate collagen production and skin renewal. RF (radiofrequency) microneedling adds heat energy for deeper remodeling. Treats fine lines, acne scars, pore size, texture, and skin laxity.
 
 EXPECTED RESULTS:
 - Mild improvement after 1 session; optimal results after 3-4 sessions
 - Sessions spaced 4-6 weeks apart
-- Continued improvement for 3-6 months after final treatment
+- Continued improvement for 3-6 months after final session
 - Annual maintenance recommended
 
 RISKS AND SIDE EFFECTS:
 - Redness (like a sunburn) lasting 24-72 hours
 - Swelling, particularly around eyes and forehead (24-48 hours)
-- Pinpoint bleeding during treatment
+- Pinpoint bleeding during session
 - Skin dryness, flaking, or peeling for 3-7 days
 - Temporary skin sensitivity
 - Bruising
@@ -287,14 +287,14 @@ RISKS AND SIDE EFFECTS:
 - Herpes simplex outbreak if history of cold sores
 
 CONTRAINDICATIONS:
-- Active acne, eczema, psoriasis, or rosacea flare at treatment site
+- Active acne, eczema, psoriasis, or rosacea flare at session site
 - Open wounds or active skin infection
 - Accutane use within the last 6 months
 - Pregnancy or breastfeeding
 - Active cold sore outbreak
 - Blood clotting disorders or anticoagulant therapy
-- Skin cancer at treatment site
-- Pacemaker or metal implants in treatment area (RF only)
+- Skin cancer at session site
+- Pacemaker or metal implants in session area (RF only)
 - Keloid tendency
 
 PRE-TREATMENT:
@@ -316,12 +316,12 @@ POST-TREATMENT:
 Patient Signature: _________________________
 Date: ____________` },
 
-  { id: 'laser', name: 'Laser / IPL Consent', category: 'Laser', content: `INFORMED CONSENT FOR LASER AND INTENSE PULSED LIGHT (IPL) TREATMENT
+  { id: 'laser', name: 'Laser / TRX Consent', category: 'Laser', content: `INFORMED CONSENT FOR LASER AND INTENSE PULSED LIGHT (TRX) TREATMENT
 
-DESCRIPTION: Laser and IPL treatments use focused light energy to target specific skin concerns including sun damage, pigmentation, redness, broken capillaries, hair removal, skin resurfacing, and tattoo removal.
+DESCRIPTION: Laser and TRX sessions use focused light energy to target specific skin concerns including sun damage, pigmentation, redness, broken capillaries, hair removal, skin resurfacing, and tattoo removal.
 
 TREATMENT TYPE (provider will check):
-[ ] IPL Photofacial          [ ] Laser Hair Removal
+[ ] TRX Photofacial          [ ] Laser Hair Removal
 [ ] Fractional Laser Resurfacing  [ ] Vascular Laser
 [ ] Tattoo Removal           [ ] Other: _______________
 
@@ -332,7 +332,7 @@ RISKS AND SIDE EFFECTS:
 - Permanent pigment changes (rare, higher risk in darker skin tones)
 - Burns
 - Scarring (rare)
-- Eye injury if protective eyewear is removed during treatment
+- Eye injury if protective eyewear is removed during session
 - Infection
 - Incomplete results — multiple sessions usually required
 - Reactivation of herpes simplex (cold sores)
@@ -340,7 +340,7 @@ RISKS AND SIDE EFFECTS:
 
 CONTRAINDICATIONS:
 - Pregnancy or breastfeeding
-- Active tan or sunburn (treatment must be postponed)
+- Active tan or sunburn (session must be postponed)
 - Use of photosensitizing medications (certain antibiotics, retinoids)
 - Accutane use within the last 6 months
 - Active skin infection or open wounds
@@ -349,11 +349,11 @@ CONTRAINDICATIONS:
 - Gold thread implants
 
 PRE-TREATMENT REQUIREMENTS:
-- NO sun exposure or tanning for 2 weeks before AND after treatment
+- NO sun exposure or tanning for 2 weeks before AND after session
 - Discontinue retinoids 5-7 days prior
-- No self-tanner on treatment area (must be fully faded)
-- Shave treatment area 24 hours prior (laser hair removal)
-- Remove all makeup, lotions, and deodorant from treatment area
+- No self-tanner on session area (must be fully faded)
+- Shave session area 24 hours prior (laser hair removal)
+- Remove all makeup, lotions, and deodorant from session area
 - Take antiviral medication if prescribed
 
 POST-TREATMENT:
@@ -398,7 +398,7 @@ CONTRAINDICATIONS:
 - Active cold sore outbreak
 - Open wounds, sunburn, or active skin condition at site
 - Accutane use within 6 months (superficial) or 12 months (medium/deep)
-- Recent waxing of treatment area (within 1 week)
+- Recent waxing of session area (within 1 week)
 - Allergy to peel ingredients
 
 POST-TREATMENT:
@@ -461,23 +461,23 @@ TREATMENT TYPE (provider will note):
 [ ] Laser Lipolysis                   [ ] Ultrasound Cavitation
 [ ] BodyTite / InMode                 [ ] Other: _______________
 
-DESCRIPTION: Non-surgical body contouring treatments reduce localized fat deposits and/or tighten skin using various energy-based technologies. These are NOT weight loss treatments — they are designed for patients at or near their goal weight with stubborn areas.
+DESCRIPTION: Non-surgical body contouring sessions reduce localized fat deposits and/or tighten skin using various energy-based technologies. These are NOT weight loss sessions — they are designed for clients at or near their goal weight with stubborn areas.
 
 RISKS AND SIDE EFFECTS:
-- Redness, swelling, bruising, tenderness at treatment site
+- Redness, swelling, bruising, tenderness at session site
 - Numbness or tingling (may last several weeks)
-- Temporary hardening, firmness, or ridging of treatment area
+- Temporary hardening, firmness, or ridging of session area
 - Skin sensitivity
 - Paradoxical adipose hyperplasia (PAH) — treated area gets larger instead of smaller (rare, CoolSculpting specific)
-- Burns (thermal treatments)
+- Burns (thermal sessions)
 - Uneven results or asymmetry
-- Multiple treatments typically required for optimal results
+- Multiple sessions typically required for optimal results
 
 IMPORTANT EXPECTATIONS:
 - Results are NOT immediate — fat cell elimination takes 8-12 weeks
 - You must maintain a stable weight and healthy lifestyle
 - This is NOT a substitute for diet, exercise, or liposuction
-- Typical fat reduction: 20-25% per treatment area per session
+- Typical fat reduction: 20-25% per session area per session
 
 Patient Signature: _________________________
 Date: ____________` },
@@ -549,7 +549,7 @@ RISKS AND SIDE EFFECTS:
 - Nausea
 - Metallic taste in mouth (common with certain vitamins)
 - Headache
-- Vein irritation or hardening with repeated treatments
+- Vein irritation or hardening with repeated sessions
 - Air embolism (extremely rare)
 - Anaphylaxis (extremely rare)
 
@@ -571,7 +571,7 @@ Date: ____________` },
 [Business Name] — Photo Release and Usage Authorization
 
 SECTION 1: CLINICAL PHOTOGRAPHY
-I authorize [Business Name] and its providers to take before, during, and after photographs and/or videos of my treatment for inclusion in my confidential medical record.
+I authorize [Business Name] and its providers to take before, during, and after photographs and/or videos of my session for inclusion in my confidential medical record.
 
 [ ] I CONSENT to clinical photography for my medical record
 
@@ -598,12 +598,12 @@ Witness: _________________________` },
 
 [Business Name] — Appointment Policy
 
-We value your time and ours. To ensure all patients receive timely care, we maintain the following policies:
+We value your time and ours. To ensure all clients receive timely care, we maintain the following policies:
 
 CANCELLATION POLICY:
 - Appointments must be cancelled or rescheduled at least 24 hours in advance
 - Cancellations with less than 24 hours notice will incur a late cancellation fee equal to 50% of the scheduled service cost
-- Some premium treatments (threads, body contouring, surgical procedures) require 48-72 hours notice
+- Some premium sessions (threads, body contouring, surgical procedures) require 48-72 hours notice
 
 NO-SHOW POLICY:
 - A "no-show" is defined as failure to arrive within 15 minutes of your scheduled appointment time without prior notice
@@ -613,7 +613,7 @@ NO-SHOW POLICY:
 
 LATE ARRIVAL:
 - If you arrive late, we will do our best to accommodate you
-- If your late arrival does not allow sufficient time for your treatment, we may need to reschedule and a late cancellation fee may apply
+- If your late arrival does not allow sufficient time for your session, we may need to reschedule and a late cancellation fee may apply
 
 PACKAGES AND MEMBERSHIPS:
 - Missed package appointments are considered "used" if not cancelled within the required timeframe
@@ -635,9 +635,9 @@ PAYMENT:
 - Consultations are complimentary unless otherwise stated
 
 AESTHETIC SERVICES AND INSURANCE:
-- Aesthetic and cosmetic treatments are elective procedures and are NOT covered by health insurance
+- Aesthetic and cosmetic sessions are elective procedures and are NOT covered by health insurance
 - [Business Name] does not bill insurance for aesthetic services
-- It is the patient's responsibility to determine if any treatment may be covered by their insurance
+- It is the client's responsibility to determine if any session may be covered by their insurance
 
 REFUND POLICY:
 - Treatments and services are non-refundable once performed
@@ -661,7 +661,7 @@ Date: ____________` },
 ];
 
 function initWaivers() {
-  if (localStorage.getItem('ms_waivers_init')) return;
+  if (localStorage.getItem('rp_waivers_init')) return;
   const now = new Date();
   const ago = (days) => new Date(now - days * 86400000).toISOString();
   saveWaivers([
@@ -673,7 +673,7 @@ function initWaivers() {
     { id: 'W-6', templateId: 'general', patientId: 'PAT-1005', patientName: 'Mia Garcia', signedAt: null, signatureData: null, witnessName: '', status: 'pending', expiresAt: null },
     { id: 'W-7', templateId: 'hipaa', patientId: 'PAT-1002', patientName: 'Sophia Brown', signedAt: ago(20), signatureData: 'Sophia Brown', witnessName: '', status: 'signed', expiresAt: ago(-345) },
   ]);
-  localStorage.setItem('ms_waivers_init', 'true');
+  localStorage.setItem('rp_waivers_init', 'true');
 }
 
 export default function Waivers() {
@@ -694,7 +694,7 @@ export default function Waivers() {
   const canvasRef = useRef(null);
   const [drawing, setDrawing] = useState(false);
 
-  const patients = getPatients();
+  const clients = getPatients();
   const settings = getSettings();
   const refresh = () => setWaivers(getWaivers());
 
@@ -709,7 +709,7 @@ export default function Waivers() {
 
   const handleSendWaivers = () => {
     if (!sendForm.patientId || sendForm.templateIds.length === 0) return;
-    const pat = patients.find(p => p.id === sendForm.patientId);
+    const pat = clients.find(p => p.id === sendForm.patientId);
     const all = getWaivers();
     sendForm.templateIds.forEach(tId => {
       all.push({
@@ -752,7 +752,7 @@ export default function Waivers() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Consent & Waivers</h1>
+          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Waivers</h1>
           <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Digital consent forms, e-signatures, and compliance tracking</p>
         </div>
         <button onClick={() => setShowSend(true)} style={s.pillAccent}>+ Send Waivers</button>
@@ -875,7 +875,7 @@ export default function Waivers() {
               <label style={s.label}>Patient</label>
               <select value={sendForm.patientId} onChange={e => setSendForm({ ...sendForm, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                 <option value="">Select patient...</option>
-                {patients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
+                {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
               </select>
             </div>
             <div>
@@ -906,7 +906,7 @@ export default function Waivers() {
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 640, width: '90%', boxShadow: s.shadowLg, maxHeight: '85vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 18px ${s.FONT}`, color: s.text, marginBottom: 16 }}>{showPreview.name}</h2>
             <div style={{ font: `400 13px ${s.FONT}`, color: s.text2, lineHeight: 1.8, whiteSpace: 'pre-wrap', background: '#FAFAFA', padding: 20, borderRadius: 10, border: '1px solid #F0F0F0' }}>
-              {showPreview.content.replace(/\[Business Name\]/g, settings.businessName || 'Your MedSpa')}
+              {showPreview.content.replace(/\[Business Name\]/g, settings.businessName || 'Remedy Pilates & Barre')}
             </div>
             <button onClick={() => setShowPreview(null)} style={{ ...s.pillGhost, marginTop: 16 }}>Close</button>
           </div>

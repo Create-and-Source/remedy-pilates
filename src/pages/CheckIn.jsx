@@ -4,7 +4,7 @@ import { useStyles } from '../theme';
 import { getAppointments, updateAppointment, getPatients, getServices, getProviders, getSettings, subscribe } from '../data/store';
 import CheckoutDrawer from '../components/CheckoutDrawer';
 
-const CHECKIN_KEY = 'ms_checkins';
+const CHECKIN_KEY = 'rp_checkins';
 function getCheckins() { try { return JSON.parse(localStorage.getItem(CHECKIN_KEY)) || []; } catch { return []; } }
 function saveCheckins(c) { localStorage.setItem(CHECKIN_KEY, JSON.stringify(c)); }
 
@@ -21,7 +21,7 @@ export default function CheckIn() {
 
   const today = new Date().toISOString().slice(0, 10);
   const appointments = getAppointments().filter(a => a.date === today && a.status !== 'cancelled');
-  const patients = getPatients();
+  const clients = getPatients();
   const services = getServices();
   const providers = getProviders();
   const settings = getSettings();
@@ -36,11 +36,11 @@ export default function CheckIn() {
     return a.patientName?.toLowerCase().includes(q);
   });
 
-  const checkedInCount = todayAppts.filter(a => getCheckin(a.id)?.status === 'checked-in' || getCheckin(a.id)?.status === 'with-provider').length;
+  const checkedInCount = todayAppts.filter(a => getCheckin(a.id)?.status === 'checked-in' || getCheckin(a.id)?.status === 'in-class').length;
   const waitingCount = todayAppts.filter(a => getCheckin(a.id)?.status === 'checked-in').length;
 
   const startCheckin = (appt) => {
-    const pat = patients.find(p => p.id === appt.patientId);
+    const pat = clients.find(p => p.id === appt.patientId);
     setVerifyForm({
       phone: pat?.phone || '',
       dob: pat?.dob || '',
@@ -72,7 +72,7 @@ export default function CheckIn() {
     const all = getCheckins().map(c => c.appointmentId === apptId ? { ...c, status } : c);
     saveCheckins(all);
     refresh();
-    if (status === 'with-provider') {
+    if (status === 'in-class') {
       updateAppointment(apptId, { status: 'confirmed' });
     } else if (status === 'complete') {
       updateAppointment(apptId, { status: 'completed' });
@@ -86,7 +86,7 @@ export default function CheckIn() {
     const ck = getCheckin(appt.id);
     if (!ck) return { label: 'Not Arrived', color: s.text3, bg: '#F5F5F5' };
     if (ck.status === 'checked-in') return { label: 'Waiting', color: s.warning, bg: '#FFF7ED' };
-    if (ck.status === 'with-provider') return { label: 'With Provider', color: s.accent, bg: s.accentLight };
+    if (ck.status === 'in-class') return { label: 'With Provider', color: s.accent, bg: s.accentLight };
     if (ck.status === 'complete') return { label: 'Complete', color: s.success, bg: '#F0FDF4' };
     return { label: ck.status, color: s.text3, bg: '#F5F5F5' };
   };
@@ -165,9 +165,9 @@ export default function CheckIn() {
                   <button onClick={() => startCheckin(appt)} style={s.pillAccent}>Check In</button>
                 )}
                 {ck?.status === 'checked-in' && (
-                  <button onClick={() => updateStatus(appt.id, 'with-provider')} style={{ ...s.pillOutline, fontSize: 12 }}>Send to Provider</button>
+                  <button onClick={() => updateStatus(appt.id, 'in-class')} style={{ ...s.pillOutline, fontSize: 12 }}>Send to Provider</button>
                 )}
-                {ck?.status === 'with-provider' && (
+                {ck?.status === 'in-class' && (
                   <button onClick={() => updateStatus(appt.id, 'complete')} style={{ ...s.pillAccent, background: s.success, fontSize: 12 }}>Complete</button>
                 )}
                 {ck?.status === 'complete' && (
@@ -222,7 +222,7 @@ export default function CheckIn() {
                   </label>
                   {verifyForm.pregnant && (
                     <div style={{ padding: '10px 14px', background: '#FEF2F2', borderRadius: 8, marginTop: 8, font: `500 12px ${s.FONT}`, color: s.danger }}>
-                      ALERT: {svc?.name} may be contraindicated during pregnancy. Confirm treatment safety with provider before proceeding.
+                      ALERT: {svc?.name} may be contraindicated during pregnancy. Confirm session safety with provider before proceeding.
                     </div>
                   )}
                 </>

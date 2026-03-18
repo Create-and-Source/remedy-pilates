@@ -28,16 +28,16 @@ export default function TextMessages() {
   const [sendMode, setSendMode] = useState('blast'); // 'blast' | 'individual'
 
   const texts = getTextMessages();
-  const patients = getPatients();
+  const clients = getPatients();
   const appointments = getAppointments();
   const settings = getSettings();
 
   const getAudienceCount = () => {
     if (sendMode === 'individual') return selectedPatients.length;
-    if (audience === 'all') return patients.length;
+    if (audience === 'all') return clients.length;
     if (audience === 'upcoming') return new Set(appointments.filter(a => a.date >= new Date().toISOString().slice(0, 10) && a.date <= new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10)).map(a => a.patientId)).size;
-    if (audience === 'members') return patients.filter(p => p.membershipTier !== 'None').length;
-    if (audience === 'lapsed') { const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 90); return patients.filter(p => p.lastVisit && new Date(p.lastVisit) < cutoff).length; }
+    if (audience === 'members') return clients.filter(p => p.membershipTier !== 'None').length;
+    if (audience === 'lapsed') { const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 90); return clients.filter(p => p.lastVisit && new Date(p.lastVisit) < cutoff).length; }
     return 0;
   };
 
@@ -67,7 +67,7 @@ export default function TextMessages() {
     setSelectedPatients(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]);
   };
 
-  const filteredPatients = patients.filter(p => {
+  const filteredPatients = clients.filter(p => {
     if (!search) return true;
     const q = search.toLowerCase();
     return `${p.firstName} ${p.lastName}`.toLowerCase().includes(q) || p.phone?.includes(q);
@@ -106,7 +106,7 @@ export default function TextMessages() {
               </button>
               <button onClick={() => setSendMode('individual')} style={{ ...s.cardStyle, padding: '14px 18px', flex: 1, cursor: 'pointer', textAlign: 'left', borderColor: sendMode === 'individual' ? s.accent : '#E5E5E5', borderWidth: sendMode === 'individual' ? 2 : 1 }}>
                 <div style={{ font: `600 13px ${s.FONT}`, color: sendMode === 'individual' ? s.accent : s.text }}>Individual</div>
-                <div style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>Pick specific patients</div>
+                <div style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>Pick specific clients</div>
               </button>
             </div>
 
@@ -115,7 +115,7 @@ export default function TextMessages() {
               <div style={{ marginBottom: 20 }}>
                 <label style={s.label}>Audience</label>
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                  {[['all', 'All Patients'], ['upcoming', 'Upcoming Appts'], ['members', 'Members'], ['lapsed', 'Lapsed (90+ days)']].map(([id, name]) => (
+                  {[['all', 'All Clients'], ['upcoming', 'Upcoming Appts'], ['members', 'Members'], ['lapsed', 'Lapsed (90+ days)']].map(([id, name]) => (
                     <button key={id} onClick={() => setAudience(id)} style={{
                       ...s.pill, padding: '7px 14px', fontSize: 12,
                       background: audience === id ? s.accent : 'transparent',
@@ -170,7 +170,7 @@ export default function TextMessages() {
             </div>
 
             <button onClick={handleSend} disabled={sending || !message.trim() || getAudienceCount() === 0} style={{ ...s.pillAccent, opacity: (sending || !message.trim() || getAudienceCount() === 0) ? 0.5 : 1 }}>
-              {sending ? 'Sending...' : `Send to ${getAudienceCount()} patients`}
+              {sending ? 'Sending...' : `Send to ${getAudienceCount()} clients`}
             </button>
           </div>
 
@@ -178,7 +178,7 @@ export default function TextMessages() {
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div style={{ width: 280, background: '#F8F8F8', borderRadius: 32, padding: '48px 16px 32px', border: '1px solid #E5E5E5' }}>
               <div style={{ textAlign: 'center', marginBottom: 16 }}>
-                <div style={{ font: `600 12px ${s.FONT}`, color: s.text }}>{settings.businessName || 'Your MedSpa'}</div>
+                <div style={{ font: `600 12px ${s.FONT}`, color: s.text }}>{settings.businessName || 'Remedy Pilates & Barre'}</div>
                 <div style={{ font: `400 10px ${s.FONT}`, color: s.text3 }}>SMS</div>
               </div>
               <div style={{ background: '#fff', borderRadius: 16, padding: 14, minHeight: 120, boxShadow: s.shadow }}>

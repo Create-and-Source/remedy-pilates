@@ -3,20 +3,20 @@ import { useStyles } from '../theme';
 import { getEmails, addEmail, getPatients, getAppointments, getSettings, subscribe } from '../data/store';
 
 const TEMPLATES = {
-  appointment: { name: 'Appointment Reminder', icon: '📅', desc: 'Remind patients of upcoming visits', subject: 'Your Appointment is Coming Up!', body: 'Hi [Patient],\n\nThis is a friendly reminder about your upcoming appointment:\n\nService: [Service]\nDate: [Date]\nTime: [Time]\nProvider: [Provider]\n\nPlease arrive 10 minutes early. If you need to reschedule, reply to this email or call us.\n\nSee you soon!' },
-  followup: { name: 'Post-Treatment Follow-Up', icon: '💝', desc: 'Check in after a treatment', subject: 'How Are You Feeling After Your Treatment?', body: 'Hi [Patient],\n\nWe hope you are feeling wonderful after your recent [Service] treatment!\n\nHere are your aftercare reminders:\n- [Aftercare tip 1]\n- [Aftercare tip 2]\n- [Aftercare tip 3]\n\nIf you have any questions or concerns, do not hesitate to reach out.\n\nTo maintain your results, we recommend scheduling your next session in [timeframe].\n\nWarmly,\n[Your MedSpa] Team' },
-  promo: { name: 'Special Offer', icon: '✨', desc: 'Promote a deal or package', subject: 'Exclusive Offer Just For You', body: 'Hi [Patient],\n\nWe have something special for you!\n\n[Offer details — e.g., 20% off your next Botox treatment]\n\nThis offer is valid through [end date]. Book online or reply to this email to reserve your spot.\n\nLimited availability — do not miss out!\n\nBest,\n[Your MedSpa] Team' },
-  newsletter: { name: 'Monthly Newsletter', icon: '📰', desc: 'Monthly updates and tips', subject: 'Monthly Update from [Your MedSpa]', body: 'Hi [Patient],\n\nHere is what is new this month:\n\nNEW SERVICES\n- [New service or treatment]\n\nSKIN TIPS\n[Seasonal skincare advice]\n\nSPECIAL OFFERS\n- [Current promotions]\n\nUPCOMING\n- [Events or availability updates]\n\nThank you for trusting us with your care.\n\nWarmly,\n[Your MedSpa] Team' },
-  reengagement: { name: 'We Miss You', icon: '💌', desc: 'Re-engage lapsed patients', subject: 'It Has Been a While — We Would Love to See You', body: 'Hi [Patient],\n\nWe noticed it has been a while since your last visit and wanted to check in!\n\nYour last treatment was [Service] on [Date]. To maintain your beautiful results, we recommend scheduling a follow-up.\n\nAs a welcome back, enjoy [offer] on your next visit.\n\nBook online or reply to schedule.\n\nWe miss you!\n[Your MedSpa] Team' },
+  appointment: { name: 'Appointment Reminder', icon: '📅', desc: 'Remind clients of upcoming visits', subject: 'Your Appointment is Coming Up!', body: 'Hi [Patient],\n\nThis is a friendly reminder about your upcoming appointment:\n\nService: [Service]\nDate: [Date]\nTime: [Time]\nProvider: [Provider]\n\nPlease arrive 10 minutes early. If you need to reschedule, reply to this email or call us.\n\nSee you soon!' },
+  followup: { name: 'Post-Treatment Follow-Up', icon: '💝', desc: 'Check in after a session', subject: 'How Are You Feeling After Your Treatment?', body: 'Hi [Patient],\n\nWe hope you are feeling wonderful after your recent [Service] session!\n\nHere are your recovery tips reminders:\n- [Recovery Tips tip 1]\n- [Recovery Tips tip 2]\n- [Recovery Tips tip 3]\n\nIf you have any questions or concerns, do not hesitate to reach out.\n\nTo maintain your results, we recommend scheduling your next session in [timeframe].\n\nWarmly,\n[Remedy Pilates & Barre] Team' },
+  promo: { name: 'Special Offer', icon: '✨', desc: 'Promote a deal or package', subject: 'Exclusive Offer Just For You', body: 'Hi [Patient],\n\nWe have something special for you!\n\n[Offer details — e.g., 20% off your next Reformer session]\n\nThis offer is valid through [end date]. Book online or reply to this email to reserve your spot.\n\nLimited availability — do not miss out!\n\nBest,\n[Remedy Pilates & Barre] Team' },
+  newsletter: { name: 'Monthly Newsletter', icon: '📰', desc: 'Monthly updates and tips', subject: 'Monthly Update from [Remedy Pilates & Barre]', body: 'Hi [Patient],\n\nHere is what is new this month:\n\nNEW SERVICES\n- [New service or session]\n\nSKIN TIPS\n[Seasonal skincare advice]\n\nSPECIAL OFFERS\n- [Current promotions]\n\nUPCOMING\n- [Events or availability updates]\n\nThank you for trusting us with your care.\n\nWarmly,\n[Remedy Pilates & Barre] Team' },
+  reengagement: { name: 'We Miss You', icon: '💌', desc: 'Re-engage lapsed clients', subject: 'It Has Been a While — We Would Love to See You', body: 'Hi [Patient],\n\nWe noticed it has been a while since your last visit and wanted to check in!\n\nYour last session was [Service] on [Date]. To maintain your beautiful results, we recommend scheduling a follow-up.\n\nAs a welcome back, enjoy [offer] on your next visit.\n\nBook online or reply to schedule.\n\nWe miss you!\n[Remedy Pilates & Barre] Team' },
   blank: { name: 'Start from Scratch', icon: '📝', desc: 'Empty canvas', subject: '', body: '' },
 };
 
 const AUDIENCES = [
-  { id: 'all', name: 'All Patients', desc: 'Everyone in your system' },
+  { id: 'all', name: 'All Clients', desc: 'Everyone in your system' },
   { id: 'members', name: 'Members', desc: 'Patients with membership' },
   { id: 'recent', name: 'Recent Visitors', desc: 'Visited in last 30 days' },
-  { id: 'lapsed', name: 'Lapsed Patients', desc: 'No visit in 90+ days' },
-  { id: 'vip', name: 'VIP / High Spend', desc: 'Top spending patients' },
+  { id: 'lapsed', name: 'Lapsed Clients', desc: 'No visit in 90+ days' },
+  { id: 'vip', name: 'VIP / High Spend', desc: 'Top spending clients' },
 ];
 
 export default function Email() {
@@ -35,16 +35,16 @@ export default function Email() {
   const bodyRef = useRef(null);
 
   const emails = getEmails();
-  const patients = getPatients();
+  const clients = getPatients();
   const settings = getSettings();
 
   const getAudienceCount = (aud) => {
     const a = aud || audience;
-    if (a === 'all') return patients.length;
-    if (a === 'members') return patients.filter(p => p.membershipTier !== 'None').length;
-    if (a === 'recent') { const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 30); return patients.filter(p => p.lastVisit && new Date(p.lastVisit) >= cutoff).length; }
-    if (a === 'lapsed') { const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 90); return patients.filter(p => p.lastVisit && new Date(p.lastVisit) < cutoff).length; }
-    if (a === 'vip') return patients.filter(p => p.totalSpent > 500000).length;
+    if (a === 'all') return clients.length;
+    if (a === 'members') return clients.filter(p => p.membershipTier !== 'None').length;
+    if (a === 'recent') { const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 30); return clients.filter(p => p.lastVisit && new Date(p.lastVisit) >= cutoff).length; }
+    if (a === 'lapsed') { const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 90); return clients.filter(p => p.lastVisit && new Date(p.lastVisit) < cutoff).length; }
+    if (a === 'vip') return clients.filter(p => p.totalSpent > 500000).length;
     return 0;
   };
 
@@ -53,8 +53,8 @@ export default function Email() {
   const selectTemplate = (key) => {
     setTemplate(key);
     const tpl = TEMPLATES[key];
-    setSubject(tpl.subject.replace('[Your MedSpa]', settings.businessName || 'Your MedSpa'));
-    setBody(tpl.body.replace(/\[Your MedSpa\]/g, settings.businessName || 'Your MedSpa'));
+    setSubject(tpl.subject.replace('[Remedy Pilates & Barre]', settings.businessName || 'Remedy Pilates & Barre'));
+    setBody(tpl.body.replace(/\[Remedy Pilates & Barre\]/g, settings.businessName || 'Remedy Pilates & Barre'));
   };
 
   const handleSend = () => {
@@ -99,7 +99,7 @@ export default function Email() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Email</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Compose and send branded emails to your patients</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Compose and send branded emails to your clients</p>
         </div>
       </div>
 
@@ -131,7 +131,7 @@ export default function Email() {
                   }}>
                     <div style={{ font: `600 14px ${s.FONT}`, color: audience === a.id ? s.accent : s.text, marginBottom: 4 }}>{a.name}</div>
                     <div style={{ font: `400 12px ${s.FONT}`, color: s.text3, marginBottom: 6 }}>{a.desc}</div>
-                    <div style={{ font: `600 12px ${s.MONO}`, color: s.accent }}>{getAudienceCount(a.id)} patients</div>
+                    <div style={{ font: `600 12px ${s.MONO}`, color: s.accent }}>{getAudienceCount(a.id)} clients</div>
                   </button>
                 ))}
               </div>
@@ -198,7 +198,7 @@ export default function Email() {
               <div style={{ background: '#F5F5F5', borderRadius: 12, padding: 24, marginBottom: 20 }}>
                 <div style={{ background: '#fff', borderRadius: 10, overflow: 'hidden', boxShadow: s.shadow, maxWidth: 520, margin: '0 auto' }}>
                   <div style={{ background: s.accent, padding: '20px 24px', textAlign: 'center' }}>
-                    <div style={{ font: `600 16px ${s.FONT}`, color: s.accentText }}>{settings.businessName || 'Your MedSpa'}</div>
+                    <div style={{ font: `600 16px ${s.FONT}`, color: s.accentText }}>{settings.businessName || 'Remedy Pilates & Barre'}</div>
                     <div style={{ font: `400 11px ${s.FONT}`, color: s.accentText, opacity: 0.7 }}>{settings.tagline || ''}</div>
                   </div>
                   <div style={{ padding: '24px' }}>
@@ -214,7 +214,7 @@ export default function Email() {
               <div style={{ ...s.cardStyle, padding: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                 <div>
                   <div style={{ font: `500 14px ${s.FONT}`, color: s.text }}>Recipients</div>
-                  <div style={{ font: `400 13px ${s.FONT}`, color: s.text2 }}>{audienceLabel} — {getAudienceCount()} patients</div>
+                  <div style={{ font: `400 13px ${s.FONT}`, color: s.text2 }}>{audienceLabel} — {getAudienceCount()} clients</div>
                 </div>
                 <button onClick={() => alert('Test email sent to your inbox!')} style={s.pillOutline}>Send Test</button>
               </div>
@@ -222,7 +222,7 @@ export default function Email() {
               <div style={{ display: 'flex', gap: 10 }}>
                 <button onClick={() => setStep(3)} style={s.pillGhost}>Back</button>
                 <button onClick={handleSend} disabled={sending} style={{ ...s.pillAccent, opacity: sending ? 0.6 : 1 }}>
-                  {sending ? 'Sending...' : `Send to ${getAudienceCount()} patients`}
+                  {sending ? 'Sending...' : `Send to ${getAudienceCount()} clients`}
                 </button>
               </div>
             </div>

@@ -15,7 +15,7 @@ export default function Settings() {
   // Service form
   const [showSvcForm, setShowSvcForm] = useState(false);
   const [editSvc, setEditSvc] = useState(null);
-  const [svcForm, setSvcForm] = useState({ name: '', category: 'Injectables', duration: 30, price: 0, unit: 'per session', description: '' });
+  const [svcForm, setSvcForm] = useState({ name: '', category: 'Equipment', duration: 30, price: 0, unit: 'per session', description: '' });
 
   // Provider form
   const [showProvForm, setShowProvForm] = useState(false);
@@ -55,31 +55,31 @@ export default function Settings() {
 
   const handleResetDemo = () => {
     if (confirm('This will clear ALL data and reset to demo defaults. Are you sure?')) {
-      const keys = Object.keys(localStorage).filter(k => k.startsWith('ms_'));
+      const keys = Object.keys(localStorage).filter(k => k.startsWith('rp_'));
       keys.forEach(k => localStorage.removeItem(k));
-      localStorage.removeItem('ms_initialized');
+      localStorage.removeItem('rp_initialized');
       window.location.reload();
     }
   };
 
   // Payment connections state
   const [payments, setPayments] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('ms_payment_connections')) || {}; } catch { return {}; }
+    try { return JSON.parse(localStorage.getItem('rp_payment_connections')) || {}; } catch { return {}; }
   });
   const togglePayment = (provider) => {
     const next = { ...payments, [provider]: !payments[provider] };
     setPayments(next);
-    localStorage.setItem('ms_payment_connections', JSON.stringify(next));
+    localStorage.setItem('rp_payment_connections', JSON.stringify(next));
   };
 
   // Social connections state
   const [socials, setSocials] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('ms_social_connections')) || { instagram: true, facebook: true, tiktok: false, x: false, linkedin: false }; } catch { return {}; }
+    try { return JSON.parse(localStorage.getItem('rp_social_connections')) || { instagram: true, facebook: true, tiktok: false, x: false, linkedin: false }; } catch { return {}; }
   });
   const toggleSocial = (platform) => {
     const next = { ...socials, [platform]: !socials[platform] };
     setSocials(next);
-    localStorage.setItem('ms_social_connections', JSON.stringify(next));
+    localStorage.setItem('rp_social_connections', JSON.stringify(next));
   };
 
   const tabs = [
@@ -96,7 +96,7 @@ export default function Settings() {
     <div>
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Settings</h1>
-        <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Configure your medspa platform — brand it for any client demo</p>
+        <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Configure your studio platform — brand it for any client demo</p>
       </div>
 
       {/* Tabs */}
@@ -115,11 +115,11 @@ export default function Settings() {
         <div style={{ maxWidth: 520 }}>
           <div style={{ ...s.cardStyle, padding: 24 }}>
             {[
-              { key: 'businessName', label: 'Business Name', placeholder: 'Your MedSpa' },
+              { key: 'businessName', label: 'Business Name', placeholder: 'Remedy Pilates & Barre' },
               { key: 'tagline', label: 'Tagline', placeholder: 'Where Science Meets Beauty' },
-              { key: 'email', label: 'Email', placeholder: 'info@yourmedspa.com' },
+              { key: 'email', label: 'Email', placeholder: 'info@remedypilates.com' },
               { key: 'phone', label: 'Phone', placeholder: '(480) 555-0100' },
-              { key: 'website', label: 'Website', placeholder: 'yourmedspa.com' },
+              { key: 'website', label: 'Website', placeholder: 'remedypilates.com' },
             ].map(f => (
               <div key={f.key} style={{ marginBottom: 16 }}>
                 <label style={s.label}>{f.label}</label>
@@ -148,7 +148,7 @@ export default function Settings() {
           <div style={{ ...s.cardStyle, padding: 24 }}>
             <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 16 }}>Brand Color</div>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>
-              Pick the medspa's brand color. This changes the entire platform accent instantly.
+              Pick the studio's brand color. This changes the entire platform accent instantly.
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20 }}>
@@ -194,7 +194,7 @@ export default function Settings() {
           <div style={{ ...s.cardStyle, padding: 24, marginBottom: 20 }}>
             <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Payment Processing</div>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
-              Connect your existing payment processor. Your patients pay through your account — we never touch the money.
+              Connect your existing payment processor. Your clients pay through your account — we never touch the money.
             </p>
             <div style={{ display: 'grid', gap: 12 }}>
               {[
@@ -231,13 +231,13 @@ export default function Settings() {
           <div style={{ ...s.cardStyle, padding: 24 }}>
             <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Patient Financing</div>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
-              Let patients pay over time. You get paid in full upfront.
+              Let clients pay over time. You get paid in full upfront.
             </p>
             <div style={{ display: 'grid', gap: 12 }}>
               {[
                 { id: 'cherry', name: 'Cherry', desc: 'Patient financing up to $50K. 0% APR options. You get paid in 2-3 days.', color: '#FF385C' },
                 { id: 'carecredit', name: 'CareCredit', desc: 'Healthcare credit card. Special financing on $200+. Widely recognized.', color: '#00A0DF' },
-                { id: 'alphaeon', name: 'Alphaeon Credit', desc: 'Aesthetic-focused credit line. Revolving credit for repeat patients.', color: '#1A1A2E' },
+                { id: 'alphaeon', name: 'Alphaeon Credit', desc: 'Aesthetic-focused credit line. Revolving credit for repeat clients.', color: '#1A1A2E' },
               ].map(p => (
                 <div key={p.id} style={{ ...s.cardStyle, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: `${p.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -273,9 +273,9 @@ export default function Settings() {
             </p>
             <div style={{ display: 'grid', gap: 12 }}>
               {[
-                { id: 'instagram', name: 'Instagram', desc: 'DMs, comments, story replies', color: '#E1306C', handle: '@yourmedspa' },
-                { id: 'facebook', name: 'Facebook', desc: 'Messenger, page messages', color: '#1877F2', handle: 'Your MedSpa' },
-                { id: 'tiktok', name: 'TikTok', desc: 'DMs, comment replies', color: '#FE2C55', handle: '@yourmedspa' },
+                { id: 'instagram', name: 'Instagram', desc: 'DMs, comments, story replies', color: '#E1306C', handle: '@yourstudio' },
+                { id: 'facebook', name: 'Facebook', desc: 'Messenger, page messages', color: '#1877F2', handle: 'Remedy Pilates & Barre' },
+                { id: 'tiktok', name: 'TikTok', desc: 'DMs, comment replies', color: '#FE2C55', handle: '@yourstudio' },
               ].map(p => (
                 <div key={p.id} style={{ ...s.cardStyle, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: `${p.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -364,7 +364,7 @@ export default function Settings() {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <span style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{services.length} services</span>
-            <button onClick={() => { setEditSvc(null); setSvcForm({ name: '', category: 'Injectables', duration: 30, price: 0, unit: 'per session', description: '' }); setShowSvcForm(true); }} style={s.pillAccent}>+ Add Service</button>
+            <button onClick={() => { setEditSvc(null); setSvcForm({ name: '', category: 'Equipment', duration: 30, price: 0, unit: 'per session', description: '' }); setShowSvcForm(true); }} style={s.pillAccent}>+ Add Service</button>
           </div>
           <div style={s.tableWrap}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -467,7 +467,7 @@ export default function Settings() {
               <div>
                 <label style={s.label}>Category</label>
                 <select value={svcForm.category} onChange={e => setSvcForm({ ...svcForm, category: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option>Injectables</option><option>Skin</option><option>Laser</option><option>Lifting</option><option>Wellness</option><option>Body</option>
+                  <option>Equipment</option><option>Skin</option><option>Laser</option><option>Lifting</option><option>Wellness</option><option>Body</option>
                 </select>
               </div>
               <div>
@@ -511,7 +511,7 @@ export default function Settings() {
               </div>
               <div>
                 <label style={s.label}>Specialties (comma separated)</label>
-                <input value={provForm.specialties} onChange={e => setProvForm({ ...provForm, specialties: e.target.value })} style={s.input} placeholder="Botox, Fillers, PDO Threads" />
+                <input value={provForm.specialties} onChange={e => setProvForm({ ...provForm, specialties: e.target.value })} style={s.input} placeholder="Reformer, Barres, PDO Threads" />
               </div>
             </div>
             <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>

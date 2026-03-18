@@ -7,7 +7,7 @@ import {
   getRetentionAlerts,
 } from '../data/store';
 
-const READ_KEY = 'ms_notif_read';
+const READ_KEY = 'rp_notif_read';
 
 function getReadIds() {
   try {
@@ -92,7 +92,7 @@ function generateNotifications() {
   const now = new Date().toISOString();
 
   // 1. DM notifications — check ms_inbox for unread conversations
-  const inbox = lsGet('ms_inbox', []);
+  const inbox = lsGet('rp_inbox', []);
   inbox.forEach(convo => {
     if (convo.unread > 0) {
       const handle = convo.handle || convo.name || 'Someone';
@@ -155,7 +155,7 @@ function generateNotifications() {
   }
 
   // 5. Pending waivers
-  const waivers = lsGet('ms_waivers', []);
+  const waivers = lsGet('rp_waivers', []);
   const pendingWaivers = waivers.filter(w => w.status === 'pending');
   if (pendingWaivers.length > 0) {
     // Show individual notifications for first 2, then a summary
@@ -164,7 +164,7 @@ function generateNotifications() {
         id: `notif-waiver-${w.id}`,
         type: 'waiver',
         icon: 'waiver',
-        text: `${w.patientName || 'A patient'} has unsigned waivers`,
+        text: `${w.patientName || 'A client'} has unsigned waivers`,
         link: '/admin/waivers',
         time: w.createdAt || now,
         color: '#D97706',
@@ -184,7 +184,7 @@ function generateNotifications() {
   }
 
   // 6. Waitlist
-  const waitlist = lsGet('ms_waitlist', []);
+  const waitlist = lsGet('rp_waitlist', []);
   const waiting = waitlist.filter(w => w.status === 'waiting');
   if (waiting.length > 0) {
     notifications.push({
@@ -199,7 +199,7 @@ function generateNotifications() {
   }
 
   // 7. Reviews
-  const reviews = lsGet('ms_reviews', []);
+  const reviews = lsGet('rp_reviews', []);
   const pendingReviews = reviews.filter(r => r.status === 'pending' || r.status === 'requested');
   if (pendingReviews.length > 0) {
     notifications.push({

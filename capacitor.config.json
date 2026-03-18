@@ -1,0 +1,9 @@
+{
+  "appId": "com.remedypilates.app",
+  "appName": "Remedy Pilates",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "https"
+  }
+}

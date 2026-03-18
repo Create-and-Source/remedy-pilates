@@ -23,14 +23,14 @@ function lsGet(key, fallback = []) {
 }
 
 const WAIVER_TEMPLATES = {
-  general: 'General Treatment Consent',
-  hipaa: 'HIPAA Privacy Notice',
-  botox: 'Botox / Neurotoxin Consent',
-  filler: 'Dermal Filler Consent',
-  laser: 'Laser / IPL Consent',
+  general: 'General Liability Waiver',
+  hipaa: 'Privacy Policy',
+  botox: 'Reformer / Neurotoxin Consent',
+  filler: 'Dermal Barre Consent',
+  laser: 'Laser / TRX Consent',
   photo: 'Photo / Marketing Consent',
   financial: 'Financial Responsibility',
-  micro: 'Microneedling Consent',
+  micro: 'Private Session Consent',
   cancel: 'Cancellation Policy',
 };
 
@@ -85,7 +85,7 @@ export default function Portal() {
   const [, setTick] = useState(0);
   useEffect(() => subscribe(() => setTick(t => t + 1)), []);
 
-  const patients = getPatients();
+  const clients = getPatients();
   const [selectedPatientId, setSelectedPatientId] = useState('PAT-1000');
   const [section, setSection] = useState('home');
   const [editInfo, setEditInfo] = useState(false);
@@ -94,7 +94,7 @@ export default function Portal() {
   const [signingWaiver, setSigningWaiver] = useState(null);
   const [signName, setSignName] = useState('');
 
-  const patient = patients.find(p => p.id === selectedPatientId);
+  const patient = clients.find(p => p.id === selectedPatientId);
   const patientName = patient ? patient.firstName : 'Guest';
   const today = new Date().toISOString().slice(0, 10);
 
@@ -102,13 +102,13 @@ export default function Portal() {
   const appointments = getAppointments().filter(a => a.patientId === selectedPatientId);
   const services = getServices();
   const providers = getProviders();
-  const treatmentPlans = getTreatmentPlans().filter(t => t.patientId === selectedPatientId);
+  const sessionPlans = getTreatmentPlans().filter(t => t.patientId === selectedPatientId);
   const photos = getPhotos().filter(p => p.patientId === selectedPatientId);
-  const memberships = lsGet('ms_memberships', []).filter(m => m.patientId === selectedPatientId);
-  const packages = lsGet('ms_packages', []).filter(p => p.patientId === selectedPatientId);
-  const walletEntries = lsGet('ms_wallet', []).filter(w => w.patientId === selectedPatientId);
-  const waivers = lsGet('ms_waivers', []).filter(w => w.patientId === selectedPatientId);
-  const referrals = lsGet('ms_referrals', []).filter(r => r.referrerId === selectedPatientId);
+  const memberships = lsGet('rp_memberships', []).filter(m => m.patientId === selectedPatientId);
+  const packages = lsGet('rp_packages', []).filter(p => p.patientId === selectedPatientId);
+  const walletEntries = lsGet('rp_wallet', []).filter(w => w.patientId === selectedPatientId);
+  const waivers = lsGet('rp_waivers', []).filter(w => w.patientId === selectedPatientId);
+  const referrals = lsGet('rp_referrals', []).filter(r => r.referrerId === selectedPatientId);
 
   const upcomingAppts = appointments.filter(a => a.date >= today && a.status !== 'completed')
     .sort((a, b) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`));
@@ -159,18 +159,18 @@ export default function Portal() {
   };
 
   const handleSignWaiver = (waiverId) => {
-    const allWaivers = lsGet('ms_waivers', []);
+    const allWaivers = lsGet('rp_waivers', []);
     const updated = allWaivers.map(w =>
       w.id === waiverId ? { ...w, status: 'signed', signedAt: new Date().toISOString(), signatureData: signName } : w
     );
-    localStorage.setItem('ms_waivers', JSON.stringify(updated));
+    localStorage.setItem('rp_waivers', JSON.stringify(updated));
     setSigningWaiver(null);
     setSignName('');
     setTick(t => t + 1);
   };
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(`https://yourmedspa.com/refer/${referralCode}`);
+    navigator.clipboard.writeText(`https://remedypilates.com/refer/${referralCode}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -179,7 +179,7 @@ export default function Portal() {
   const navItems = [
     { id: 'home', label: 'Home', icon: '\u2302' },
     { id: 'appointments', label: 'Appointments', icon: '\uD83D\uDCC5' },
-    { id: 'treatment', label: 'Treatments', icon: '\u2728' },
+    { id: 'session', label: 'Treatments', icon: '\u2728' },
     { id: 'membership', label: 'Membership', icon: '\u2606' },
     { id: 'wallet', label: 'Wallet', icon: '\uD83D\uDCB3' },
     { id: 'photos', label: 'Photos', icon: '\uD83D\uDCF7' },
@@ -267,7 +267,7 @@ export default function Portal() {
   // ------- SECTION RENDERERS -------
 
   const renderHome = () => {
-    const firstPlan = treatmentPlans[0];
+    const firstPlan = sessionPlans[0];
     const planCompleted = firstPlan ? firstPlan.sessions.filter(ss => ss.status === 'completed').length : 0;
     const planTotal = firstPlan ? firstPlan.sessions.length : 0;
     const walletTotal = giftCards.reduce((sum, g) => sum + g.balance, 0) + credits.reduce((sum, c) => sum + c.balance, 0);
@@ -377,7 +377,7 @@ export default function Portal() {
 
           {/* Treatment plan progress */}
           <Card hover className="portal-fadeInUp portal-stagger-3" style={{ padding: '24px 22px', cursor: 'pointer' }}
-            onClick={() => setSection('treatment')}>
+            onClick={() => setSection('session')}>
             <SectionLabel>Treatment Plan</SectionLabel>
             {firstPlan ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -527,15 +527,15 @@ export default function Portal() {
 
   const renderTreatmentPlan = () => (
     <div>
-      <SectionTitle sub="Your personalized treatment journey">My Treatment Plan</SectionTitle>
-      {treatmentPlans.length === 0 ? (
+      <SectionTitle sub="Your personalized session journey">My Treatment Plan</SectionTitle>
+      {sessionPlans.length === 0 ? (
         <Card className="portal-fadeInUp" style={{ padding: '48px 32px', textAlign: 'center' }}>
-          <div style={{ font: `300 20px ${s.FONT}`, color: s.text, marginBottom: 10 }}>No active treatment plan</div>
+          <div style={{ font: `300 20px ${s.FONT}`, color: s.text, marginBottom: 10 }}>No active class package</div>
           <div style={{ font: `400 14px ${s.FONT}`, color: s.text3, maxWidth: 340, margin: '0 auto' }}>
-            Ask your provider about a personalized treatment plan at your next visit.
+            Ask your provider about a personalized class package at your next visit.
           </div>
         </Card>
-      ) : treatmentPlans.map((plan, pi) => {
+      ) : sessionPlans.map((plan, pi) => {
         const completed = plan.sessions.filter(ss => ss.status === 'completed').length;
         const total = plan.sessions.length;
         const nextSession = plan.sessions.find(ss => ss.status === 'upcoming' || ss.status === 'in-progress');
@@ -817,12 +817,12 @@ export default function Portal() {
     const pairKeys = Object.keys(photoPairs);
     return (
       <div>
-        <SectionTitle sub="Track your transformation">Before & After</SectionTitle>
+        <SectionTitle sub="Track your transformation">Transformations</SectionTitle>
         {pairKeys.length === 0 ? (
           <Card className="portal-fadeInUp" style={{ padding: '48px 32px', textAlign: 'center' }}>
             <div style={{ font: `300 20px ${s.FONT}`, color: s.text, marginBottom: 10 }}>No photos yet</div>
             <div style={{ font: `400 14px ${s.FONT}`, color: s.text3, maxWidth: 340, margin: '0 auto' }}>
-              Your before and after photos will appear here after your treatments.
+              Your before and after photos will appear here after your sessions.
             </div>
           </Card>
         ) : pairKeys.map((key, ki) => {
@@ -975,7 +975,7 @@ export default function Portal() {
           </button>
         </div>
         <div style={{ font: `400 13px ${s.FONT}`, color: s.text3 }}>
-          Share link: https://yourmedspa.com/refer/{referralCode}
+          Share link: https://remedypilates.com/refer/{referralCode}
         </div>
       </Card>
 
@@ -1090,7 +1090,7 @@ export default function Portal() {
   const sections = {
     home: renderHome,
     appointments: renderAppointments,
-    treatment: renderTreatmentPlan,
+    session: renderTreatmentPlan,
     membership: renderMembership,
     wallet: renderWallet,
     photos: renderPhotos,
@@ -1100,7 +1100,7 @@ export default function Portal() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F5F3F0', fontFamily: s.FONT, position: 'relative', overflow: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#FAF6F1', fontFamily: s.FONT, position: 'relative', overflow: 'hidden' }}>
       {/* Background orbs */}
       <div className="bg-orbs" style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
         <div style={{
@@ -1190,7 +1190,7 @@ export default function Portal() {
             font: `400 11px ${s.MONO}`, outline: 'none', cursor: 'pointer',
           }}
         >
-          {patients.map(p => (
+          {clients.map(p => (
             <option key={p.id} value={p.id} style={{ background: '#222' }}>
               {p.firstName} {p.lastName}
             </option>

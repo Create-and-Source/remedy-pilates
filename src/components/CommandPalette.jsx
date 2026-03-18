@@ -7,15 +7,15 @@ import { getPatients, getServices } from '../data/store';
 const PAGES = [
   { path: '/admin', label: 'Dashboard', section: 'Overview' },
   { path: '/admin/checkin', label: 'Check-In', section: 'Overview' },
-  { path: '/admin/patients', label: 'Patients', section: 'Patients' },
+  { path: '/admin/clients', label: 'Patients', section: 'Patients' },
   { path: '/admin/schedule', label: 'Schedule', section: 'Patients' },
-  { path: '/admin/treatments', label: 'Treatment Plans', section: 'Patients' },
-  { path: '/admin/charts', label: 'Clinical Charts', section: 'Patients' },
-  { path: '/admin/photos', label: 'Before & After', section: 'Patients' },
-  { path: '/admin/waivers', label: 'Consent & Waivers', section: 'Patients' },
-  { path: '/admin/aftercare', label: 'Aftercare', section: 'Patients' },
+  { path: '/admin/sessions', label: 'Class Packages', section: 'Patients' },
+  { path: '/admin/charts', label: 'Progress Tracking', section: 'Patients' },
+  { path: '/admin/photos', label: 'Transformations', section: 'Patients' },
+  { path: '/admin/waivers', label: 'Waivers', section: 'Patients' },
+  { path: '/admin/recovery-tips', label: 'Recovery Tips', section: 'Clients' },
   { path: '/admin/memberships', label: 'Memberships', section: 'Billing' },
-  { path: '/admin/wallet', label: 'Patient Wallet', section: 'Billing' },
+  { path: '/admin/wallet', label: 'Client Wallet', section: 'Billing' },
   { path: '/admin/referrals', label: 'Referrals', section: 'Billing' },
   { path: '/admin/inventory', label: 'Inventory', section: 'Operations' },
   { path: '/admin/retention', label: 'Retention', section: 'Operations' },
@@ -30,10 +30,10 @@ const PAGES = [
 ];
 
 const QUICK_ACTIONS = [
-  { id: 'action-new-patient', label: 'New Patient', subtitle: 'Add a new patient record', path: '/admin/patients', icon: 'user-plus' },
+  { id: 'action-new-client', label: 'New Client', subtitle: 'Add a new patient record', path: '/admin/clients', icon: 'user-plus' },
   { id: 'action-book-apt', label: 'Book Appointment', subtitle: 'Schedule a new appointment', path: '/admin/schedule', icon: 'calendar-plus' },
   { id: 'action-send-email', label: 'Send Email', subtitle: 'Compose a marketing email', path: '/admin/email', icon: 'mail' },
-  { id: 'action-send-text', label: 'Send Text', subtitle: 'Send SMS to patients', path: '/admin/texts', icon: 'message' },
+  { id: 'action-send-text', label: 'Send Text', subtitle: 'Send SMS to clients', path: '/admin/texts', icon: 'message' },
   { id: 'action-new-chart', label: 'New Chart', subtitle: 'Start a clinical chart', path: '/admin/charts', icon: 'clipboard' },
 ];
 
@@ -128,19 +128,19 @@ export default function CommandPalette({ open, onClose }) {
 
     // Patients (only when searching)
     if (q.length >= 1) {
-      const patients = getPatients();
-      const patientMatches = patients
+      const clients = getPatients();
+      const patientMatches = clients
         .filter(p => `${p.firstName} ${p.lastName}`.toLowerCase().includes(q))
         .slice(0, 5);
       if (patientMatches.length) {
         items.push({ type: 'header', label: 'Patients' });
         patientMatches.forEach(p => items.push({
-          type: 'patient', id: p.id,
+          type: 'client', id: p.id,
           label: `${p.firstName} ${p.lastName}`,
           firstName: p.firstName, lastName: p.lastName,
           membership: p.membershipTier,
           subtitle: p.email,
-          path: '/admin/patients',
+          path: '/admin/clients',
         }));
       }
     }
@@ -266,7 +266,7 @@ export default function CommandPalette({ open, onClose }) {
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search pages, patients, services..."
+            placeholder="Search pages, clients, services..."
             style={{
               flex: 1, border: 'none', outline: 'none', background: 'transparent',
               font: "400 15px 'Inter', sans-serif", color: '#111',
@@ -324,7 +324,7 @@ export default function CommandPalette({ open, onClose }) {
                 }}
               >
                 {/* Left icon / avatar */}
-                {item.type === 'patient' ? (
+                {item.type === 'client' ? (
                   <div style={{
                     width: 32, height: 32, borderRadius: 8,
                     background: isActive ? s.accent : '#F0F0F0',
@@ -359,8 +359,8 @@ export default function CommandPalette({ open, onClose }) {
                     display: 'flex', alignItems: 'center', gap: 8,
                   }}>
                     {item.label}
-                    {/* Membership badge for patients */}
-                    {item.type === 'patient' && item.membership && item.membership !== 'None' && TIER_COLORS[item.membership] && (
+                    {/* Membership badge for clients */}
+                    {item.type === 'client' && item.membership && item.membership !== 'None' && TIER_COLORS[item.membership] && (
                       <span style={{
                         font: "600 9px 'Inter', sans-serif",
                         textTransform: 'uppercase', letterSpacing: 0.5,

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useStyles } from '../theme';
 import { subscribe, getSettings } from '../data/store';
 
-const STORE_KEY = 'ms_reviews';
+const STORE_KEY = 'rp_reviews';
 
 function getReviews() {
   try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; }
@@ -20,12 +20,12 @@ function seedReviews() {
     'Abigail Taylor', 'Ella Thomas', 'Scarlett Hernandez', 'Grace Moore', 'Chloe Martin',
     'Victoria Jackson', 'Riley Clark', 'Aria Lewis',
   ];
-  const services = ['Botox', 'Juvederm Filler', 'HydraFacial', 'IPL Photofacial', 'Chemical Peel', 'RF Microneedling', 'Laser Hair Removal', 'Sculptra'];
+  const services = ['Reformer', 'Juvederm Barre', 'Mat Pilates', 'TRX Photofacial', 'Chemical Peel', 'RF Private Session', 'Laser Hair Removal', 'Sculptra'];
   const platforms = ['Google', 'Google', 'Google', 'Yelp', 'Google', 'Yelp'];
   const statuses = ['completed', 'completed', 'completed', 'completed', 'pending', 'pending', 'completed', 'completed', 'completed', 'pending'];
   const comments = [
     'Amazing results! Dr. Mitchell is incredible.',
-    'Best medspa in Scottsdale. My skin has never looked better.',
+    'Best studio in Scottsdale. My skin has never looked better.',
     'Super professional team. Love the results.',
     'Great experience from start to finish. Highly recommend!',
     'The staff made me feel so comfortable. Will definitely be back.',
@@ -35,7 +35,7 @@ function seedReviews() {
     'Clean facility, friendly staff, amazing outcomes.',
     'I was nervous but the team put me at ease. Love my results!',
     'Been coming here for 2 years and always leave happy.',
-    'The HydraFacial was life-changing for my skin.',
+    'The Mat Pilates was life-changing for my skin.',
     'Professional, knowledgeable, and the results speak for themselves.',
     'My friends keep asking what I did differently. Thank you!',
     'Top-notch care and beautiful results.',
@@ -72,7 +72,7 @@ export default function Reviews() {
   const [toast, setToast] = useState(null);
 
   const settings = getSettings();
-  const businessName = settings.businessName || 'Your MedSpa';
+  const businessName = settings.businessName || 'Remedy Pilates & Barre';
 
   const reviews = getReviews();
 
@@ -118,7 +118,7 @@ export default function Reviews() {
       'Great experience! Highly recommend.',
       'Love my results. The staff is amazing!',
       'Professional and caring team. Will be back!',
-      'Best medspa I have ever been to.',
+      'Best studio I have ever been to.',
     ];
     const all = getReviews().map(r => r.id === id ? {
       ...r,
@@ -193,7 +193,7 @@ export default function Reviews() {
 
       {/* Filters */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patients or services..." style={{ ...s.input, maxWidth: 260 }} />
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search clients or services..." style={{ ...s.input, maxWidth: 260 }} />
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {[['all', 'All'], ['pending', 'Pending'], ['completed', 'Completed'], ['google', 'Google'], ['yelp', 'Yelp']].map(([id, label]) => (
             <button key={id} onClick={() => setFilter(id)} style={{

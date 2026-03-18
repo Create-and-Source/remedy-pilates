@@ -1,2 +1,8 @@
-node_modules\ndist\n.DS_Store
+node_modules
+dist
+.DS_Store
 .vercel
+.env
+ios/App/Pods
+android/.gradle
+android/app/build

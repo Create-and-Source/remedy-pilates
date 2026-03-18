@@ -7,12 +7,12 @@ import {
 
 const fmt = (cents) => cents === 0 ? 'Complimentary' : `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0 })}`;
 
-const CATEGORIES = ['All', 'Injectables', 'Injectable', 'Skin', 'Laser', 'Body', 'Surgical', 'Wellness', 'Packages', 'Consultation', 'Lifting'];
+const CATEGORIES = ['All', 'Equipment', 'Equipment', 'Skin', 'Laser', 'Body', 'Surgical', 'Wellness', 'Packages', 'Consultation', 'Lifting'];
 
 // Merge similar categories for display
 const DISPLAY_CATEGORIES = [
   { label: 'All', match: () => true },
-  { label: 'Injectables', match: (c) => c === 'Injectables' || c === 'Injectable' },
+  { label: 'Equipment', match: (c) => c === 'Equipment' || c === 'Equipment' },
   { label: 'Skin', match: (c) => c === 'Skin' },
   { label: 'Laser', match: (c) => c === 'Laser' },
   { label: 'Body', match: (c) => c === 'Body' },
@@ -116,7 +116,7 @@ export default function BookOnline() {
   const settings = getSettings();
   const appointments = getAppointments();
 
-  const businessName = settings.businessName || 'MedSpa';
+  const businessName = settings.businessName || 'Remedy';
   const tagline = settings.tagline || '';
 
   // Build 14 days from today
@@ -260,7 +260,7 @@ export default function BookOnline() {
     const ics = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//MedSpa//Booking//EN',
+      'PRODID:-//Remedy//Booking//EN',
       'BEGIN:VEVENT',
       `DTSTART:${startTime}`,
       `DTEND:${endTime}`,
@@ -458,7 +458,7 @@ export default function BookOnline() {
               <div style={{ position: 'relative' }}>
                 <input
                   type="text"
-                  placeholder="Search treatments..."
+                  placeholder="Search sessions..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   style={{

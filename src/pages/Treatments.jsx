@@ -18,7 +18,7 @@ export default function Treatments() {
   const [sessionForm, setSessionForm] = useState({ serviceId: '', name: '', date: '', notes: '' });
 
   const plans = getTreatmentPlans();
-  const patients = getPatients();
+  const clients = getPatients();
   const services = getServices();
   const providers = getProviders();
   const today = new Date().toISOString().slice(0, 10);
@@ -102,7 +102,7 @@ export default function Treatments() {
 
   const handleSave = () => {
     if (!form.patientId || !form.name) return;
-    const pat = patients.find(p => p.id === form.patientId);
+    const pat = clients.find(p => p.id === form.patientId);
     const data = { ...form, patientName: pat ? `${pat.firstName} ${pat.lastName}` : 'Unknown' };
     if (editPlan) updateTreatmentPlan(editPlan.id, data);
     else addTreatmentPlan(data);
@@ -124,7 +124,7 @@ export default function Treatments() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ font: `600 28px ${s.FONT}`, color: s.text, marginBottom: 6, letterSpacing: '-0.3px' }}>Treatment Plans</h1>
+          <h1 style={{ font: `600 28px ${s.FONT}`, color: s.text, marginBottom: 6, letterSpacing: '-0.3px' }}>Class Packages</h1>
           <p style={{ font: `400 14px ${s.FONT}`, color: s.text3 }}>Multi-session patient pathways — track every step of the journey</p>
         </div>
         <button onClick={openNew} style={s.pillAccent}>+ New Plan</button>
@@ -277,7 +277,7 @@ export default function Treatments() {
                     })}
                     <div style={{ padding: '14px 24px', display: 'flex', gap: 8 }}>
                       <button onClick={() => openEdit(plan)} style={{ ...s.pillOutline, padding: '6px 14px', fontSize: 11 }}>Edit Plan</button>
-                      <button onClick={() => { if (confirm('Delete this treatment plan?')) deleteTreatmentPlan(plan.id); }} style={{ ...s.pillGhost, padding: '6px 14px', fontSize: 11, color: s.danger }}>Delete</button>
+                      <button onClick={() => { if (confirm('Delete this class package?')) deleteTreatmentPlan(plan.id); }} style={{ ...s.pillGhost, padding: '6px 14px', fontSize: 11, color: s.danger }}>Delete</button>
                     </div>
                   </div>
                 )}
@@ -371,7 +371,7 @@ export default function Treatments() {
                 <label style={s.label}>Patient</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select patient...</option>
-                  {patients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
+                  {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>
               <div>

@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useStyles } from '../theme';
 import { getPatients, getProviders, getSettings, subscribe } from '../data/store';
 
-const INBOX_KEY = 'ms_inbox';
-const ASSIGN_KEY = 'ms_inbox_assignments';
+const INBOX_KEY = 'rp_inbox';
+const ASSIGN_KEY = 'rp_inbox_assignments';
 
 // ── Platform Revenue Metrics (demo data) ──
 const PLATFORM_METRICS = [
@@ -84,14 +84,14 @@ const CONVERSATION_ENRICHMENT = {
   'DM-5':  { lifetimeValue: 960, isHotLead: false },
   'DM-6':  { lifetimeValue: 780, isHotLead: false },
   'DM-7':  { lifetimeValue: null, isHotLead: false },
-  'DM-8':  { lifetimeValue: null, isHotLead: true },     // asks about getting treatment
+  'DM-8':  { lifetimeValue: null, isHotLead: true },     // asks about getting session
   'DM-9':  { lifetimeValue: null, isHotLead: true },     // asks "how much"
   'DM-10': { lifetimeValue: null, isHotLead: false },
   'DM-11': { lifetimeValue: 4100, isHotLead: false },
   'DM-12': { lifetimeValue: 650, isHotLead: false },
   'DM-13': { lifetimeValue: 1300, isHotLead: true },     // asks pricing
   'DM-14': { lifetimeValue: 1800, isHotLead: false },
-  'DM-15': { lifetimeValue: null, isHotLead: true },     // new, wants treatments
+  'DM-15': { lifetimeValue: null, isHotLead: true },     // new, wants sessions
   'DM-16': { lifetimeValue: 520, isHotLead: false },
 };
 
@@ -112,8 +112,8 @@ function initInbox() {
 
   saveConversations([
     { id: 'DM-1', handle: '@emma.glow', name: 'Emma Johnson', avatar: 'EJ', patientId: 'PAT-1000', platform: 'instagram', unread: 2, lastActivity: ago(5), avgResponseTime: 3, messages: [
-      { id: 'm1', from: 'them', text: 'Hi! I saw your Botox post. How much is it per unit?', time: ago(120), read: true },
-      { id: 'm2', from: 'us', text: 'Hi Emma! Botox is $14/unit. Most patients need 20-40 units depending on the area. Would you like to book a free consultation?', time: ago(90), read: true, sentBy: 'PRV-2' },
+      { id: 'm1', from: 'them', text: 'Hi! I saw your Reformer post. How much is it per unit?', time: ago(120), read: true },
+      { id: 'm2', from: 'us', text: 'Hi Emma! Reformer is $14/unit. Most clients need 20-40 units depending on the area. Would you like to book a free consultation?', time: ago(90), read: true, sentBy: 'PRV-2' },
       { id: 'm3', from: 'them', text: 'That sounds great! What areas do most people treat?', time: ago(85), read: true },
       { id: 'm4', from: 'us', text: 'Forehead lines, crow\'s feet, and the "11" lines between brows are the top 3! We can go over everything at your consult.', time: ago(82), read: true, sentBy: 'PRV-2' },
       { id: 'm5', from: 'them', text: 'Yes! Do you have anything this week?', time: ago(30), read: false },
@@ -137,7 +137,7 @@ function initInbox() {
     ]},
     { id: 'DM-5', handle: '@isabella_m', name: 'Isabella Martinez', avatar: 'IM', patientId: 'PAT-1004', platform: 'instagram', unread: 0, lastActivity: ago(1440), avgResponseTime: 4, messages: [
       { id: 'm17', from: 'them', text: 'When is my next appointment?', time: ago(2880), read: true },
-      { id: 'm18', from: 'us', text: 'Hi Isabella! Your next HydraFacial is scheduled for next Thursday at 2pm. See you then!', time: ago(1440), read: true, sentBy: 'PRV-2' },
+      { id: 'm18', from: 'us', text: 'Hi Isabella! Your next Mat Pilates is scheduled for next Thursday at 2pm. See you then!', time: ago(1440), read: true, sentBy: 'PRV-2' },
     ]},
     { id: 'DM-6', handle: '@mia.skinlove', name: 'Mia Garcia', avatar: 'MG', patientId: 'PAT-1005', platform: 'instagram', unread: 3, lastActivity: ago(2), avgResponseTime: null, messages: [
       { id: 'm19', from: 'them', text: 'I need to reschedule my appointment for tomorrow', time: ago(45), read: false },
@@ -145,10 +145,10 @@ function initInbox() {
       { id: 'm21', from: 'them', text: 'Hello?? Anyone there?', time: ago(2), read: false },
     ]},
     { id: 'DM-7', handle: '@scottsdale.harper', name: 'Harper Anderson', avatar: 'HA', patientId: null, platform: 'facebook', unread: 1, lastActivity: ago(20), avgResponseTime: null, messages: [
-      { id: 'm22', from: 'them', text: 'Hi, I saw your ad on Facebook. Do you accept insurance for any treatments?', time: ago(20), read: false },
+      { id: 'm22', from: 'them', text: 'Hi, I saw your ad on Facebook. Do you accept insurance for any sessions?', time: ago(20), read: false },
     ]},
     { id: 'DM-8', handle: '@grace.skinjourney', name: 'Grace Taylor', avatar: 'GT', patientId: null, platform: 'tiktok', unread: 2, lastActivity: ago(3), avgResponseTime: null, messages: [
-      { id: 'm23', from: 'them', text: 'OMG I just saw your Botox reel!! How old do you have to be to get it? Im 24', time: ago(10), read: false },
+      { id: 'm23', from: 'them', text: 'OMG I just saw your Reformer reel!! How old do you have to be to get it? Im 24', time: ago(10), read: false },
       { id: 'm24', from: 'them', text: 'also is baby botox a thing?? My friend said you guys do it', time: ago(3), read: false },
     ]},
     { id: 'DM-9', handle: '@chloe.wellness', name: 'Chloe Martinez', avatar: 'CM', patientId: 'PAT-1014', platform: 'tiktok', unread: 1, lastActivity: ago(12), avgResponseTime: 12, messages: [
@@ -160,7 +160,7 @@ function initInbox() {
       { id: 'm28', from: 'them', text: 'Hi! I want to get my mom a gift card for her birthday. Do you sell them online?', time: ago(35), read: false },
     ]},
     { id: 'DM-11', handle: '@scottsdale.aria', name: 'Aria Hernandez', avatar: 'AH', patientId: 'PAT-1017', platform: 'instagram', unread: 0, lastActivity: ago(180), avgResponseTime: 6, messages: [
-      { id: 'm29', from: 'them', text: 'Just wanted to say THANK YOU! My skin has never looked better after the IPL series. Everyone keeps asking what I did', time: ago(240), read: true },
+      { id: 'm29', from: 'them', text: 'Just wanted to say THANK YOU! My skin has never looked better after the TRX series. Everyone keeps asking what I did', time: ago(240), read: true },
       { id: 'm30', from: 'us', text: 'Aria that makes our day!! Your skin really does look amazing. Would you be open to us sharing your before/after on our page? We would tag you of course!', time: ago(180), read: true, sentBy: 'PRV-3' },
     ]},
     // New conversations for more volume
@@ -175,21 +175,21 @@ function initInbox() {
       { id: 'm36', from: 'them', text: 'Hey! I saw the lip filler video you posted. How much is 1 syringe?', time: ago(60), read: true },
       { id: 'm37', from: 'us', text: 'Hi Zoe! One syringe of Juvederm Ultra is $650, and Volbella is $700. Most first-timers start with 1 syringe. Want to come in for a consult?', time: ago(55), read: true, sentBy: 'PRV-2' },
       { id: 'm38', from: 'them', text: 'Yesss! Also do you have a loyalty program?', time: ago(50), read: true },
-      { id: 'm39', from: 'us', text: 'We do! We have Alle rewards (Allergan) and Aspire (Galderma) plus our in-house VIP program. You earn points on every treatment!', time: ago(47), read: true, sentBy: 'PRV-2' },
+      { id: 'm39', from: 'us', text: 'We do! We have Alle rewards (Allergan) and Aspire (Galderma) plus our in-house VIP program. You earn points on every session!', time: ago(47), read: true, sentBy: 'PRV-2' },
       { id: 'm40', from: 'them', text: 'Amazing!! Booking now. One more q — do you do dissolving if I dont like it?', time: ago(7), read: false },
     ]},
     { id: 'DM-14', handle: '@nadia.beauty.az', name: 'Nadia Patel', avatar: 'NP', patientId: 'PAT-1022', platform: 'facebook', unread: 0, lastActivity: ago(200), avgResponseTime: 10, messages: [
-      { id: 'm41', from: 'them', text: 'I had Botox with you guys 3 months ago and I think it\'s wearing off already. Is that normal?', time: ago(260), read: true },
-      { id: 'm42', from: 'us', text: 'Hi Nadia! For some patients, Botox can wear off a bit faster the first time. The good news is that with consistent treatments, it tends to last longer each time. Would you like to come in for a touch-up?', time: ago(250), read: true, sentBy: 'PRV-1' },
+      { id: 'm41', from: 'them', text: 'I had Reformer with you guys 3 months ago and I think it\'s wearing off already. Is that normal?', time: ago(260), read: true },
+      { id: 'm42', from: 'us', text: 'Hi Nadia! For some clients, Reformer can wear off a bit faster the first time. The good news is that with consistent sessions, it tends to last longer each time. Would you like to come in for a touch-up?', time: ago(250), read: true, sentBy: 'PRV-1' },
       { id: 'm43', from: 'them', text: 'Yes please! Also interested in trying Dysport this time', time: ago(245), read: true },
-      { id: 'm44', from: 'us', text: 'Great choice! Dysport can work really well for some patients who metabolize Botox quickly. I will have the front desk reach out to schedule you this week.', time: ago(200), read: true, sentBy: 'PRV-1' },
+      { id: 'm44', from: 'us', text: 'Great choice! Dysport can work really well for some clients who metabolize Reformer quickly. I will have the front desk reach out to schedule you this week.', time: ago(200), read: true, sentBy: 'PRV-1' },
     ]},
     { id: 'DM-15', handle: '@skincare.sam', name: 'Samantha Reed', avatar: 'SR', patientId: null, platform: 'instagram', unread: 2, lastActivity: ago(1), avgResponseTime: null, messages: [
       { id: 'm45', from: 'them', text: 'Hi!! Your clinic looks so beautiful. I have a big event in 3 weeks — what can I do to look my best?', time: ago(4), read: false },
-      { id: 'm46', from: 'them', text: 'I have never had any cosmetic treatments before btw!', time: ago(1), read: false },
+      { id: 'm46', from: 'them', text: 'I have never had any cosmetic sessions before btw!', time: ago(1), read: false },
     ]},
     { id: 'DM-16', handle: '@taylor.tempe', name: 'Taylor Brooks', avatar: 'TB', patientId: 'PAT-1025', platform: 'instagram', unread: 0, lastActivity: ago(500), avgResponseTime: 7, messages: [
-      { id: 'm47', from: 'them', text: 'Can I get a copy of my treatment records? I need them for my dermatologist', time: ago(550), read: true },
+      { id: 'm47', from: 'them', text: 'Can I get a copy of my session records? I need them for my dermatologist', time: ago(550), read: true },
       { id: 'm48', from: 'us', text: 'Of course, Taylor! I will have our records department email those over to you today. What email should we use?', time: ago(543), read: true, sentBy: 'PRV-3' },
       { id: 'm49', from: 'them', text: 'taylor.b@email.com please. Thank you!', time: ago(540), read: true },
       { id: 'm50', from: 'us', text: 'Done! You should receive them within the hour. Let us know if you need anything else!', time: ago(500), read: true, sentBy: 'PRV-3' },

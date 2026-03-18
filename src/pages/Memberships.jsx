@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useStyles } from '../theme';
 import { subscribe } from '../data/store';
 
-const MEM_KEY = 'ms_memberships';
-const PKG_KEY = 'ms_packages';
+const MEM_KEY = 'rp_memberships';
+const PKG_KEY = 'rp_packages';
 
 function getMemberships() {
   try { return JSON.parse(localStorage.getItem(MEM_KEY)) || []; } catch { return []; }
@@ -16,54 +16,54 @@ function getPackages() {
 function setPackages(data) { localStorage.setItem(PKG_KEY, JSON.stringify(data)); }
 
 function getPatients() {
-  try { return JSON.parse(localStorage.getItem('ms_patients')) || []; } catch { return []; }
+  try { return JSON.parse(localStorage.getItem('rp_clients')) || []; } catch { return []; }
 }
 
 const TIERS = {
-  Silver: { price: 99, color: '#94A3B8', bg: '#F8FAFC', allocations: [{ service: 'HydraFacial', units: 1, unit: 'session' }, { service: 'Chemical Peel', units: 1, unit: 'session' }] },
-  Gold: { price: 199, color: '#A68A4C', bg: '#FAF7F2', allocations: [{ service: 'Botox', units: 20, unit: 'units' }, { service: 'HydraFacial', units: 1, unit: 'session' }, { service: 'Chemical Peel', units: 1, unit: 'session' }] },
-  Platinum: { price: 349, color: '#7C3AED', bg: '#F5F3FF', allocations: [{ service: 'Botox', units: 40, unit: 'units' }, { service: 'Juvederm Filler', units: 1, unit: 'syringe' }, { service: 'HydraFacial', units: 2, unit: 'sessions' }, { service: 'RF Microneedling', units: 1, unit: 'session' }, { service: 'IV Therapy', units: 1, unit: 'session' }] },
+  Silver: { price: 99, color: '#94A3B8', bg: '#F8FAFC', allocations: [{ service: 'Mat Pilates', units: 1, unit: 'session' }, { service: 'Chemical Peel', units: 1, unit: 'session' }] },
+  Gold: { price: 199, color: '#A68A4C', bg: '#FAF7F2', allocations: [{ service: 'Reformer', units: 20, unit: 'units' }, { service: 'Mat Pilates', units: 1, unit: 'session' }, { service: 'Chemical Peel', units: 1, unit: 'session' }] },
+  Platinum: { price: 349, color: '#7C3AED', bg: '#F5F3FF', allocations: [{ service: 'Reformer', units: 40, unit: 'units' }, { service: 'Juvederm Barre', units: 1, unit: 'syringe' }, { service: 'Mat Pilates', units: 2, unit: 'sessions' }, { service: 'RF Private Session', units: 1, unit: 'session' }, { service: 'IV Therapy', units: 1, unit: 'session' }] },
 };
 
 const TIER_FEATURES = {
-  Silver: ['1 HydraFacial per month', '1 Chemical Peel per month', '10% off retail products', 'Priority booking access'],
-  Gold: ['20 Botox units per month', '1 HydraFacial per month', '1 Chemical Peel per month', '15% off retail products', 'Priority booking access', 'Free consultations'],
-  Platinum: ['40 Botox units per month', '1 Juvederm syringe per month', '2 HydraFacials per month', '1 RF Microneedling session', '1 IV Therapy session', '20% off retail products', 'VIP priority booking', 'Free consultations', 'Exclusive member events'],
+  Silver: ['1 Mat Pilates per month', '1 Chemical Peel per month', '10% off retail products', 'Priority booking access'],
+  Gold: ['20 Reformer units per month', '1 Mat Pilates per month', '1 Chemical Peel per month', '15% off retail products', 'Priority booking access', 'Free consultations'],
+  Platinum: ['40 Reformer units per month', '1 Juvederm syringe per month', '2 Mat Pilatess per month', '1 RF Private Session session', '1 IV Therapy session', '20% off retail products', 'VIP priority booking', 'Free consultations', 'Exclusive member events'],
 };
 
 function seedMemberships() {
-  if (localStorage.getItem('ms_memberships_seeded')) return;
-  const patients = getPatients();
-  if (patients.length < 16) return;
+  if (localStorage.getItem('rp_memberships_seeded')) return;
+  const clients = getPatients();
+  if (clients.length < 16) return;
 
   const now = new Date();
   const d = (offset) => { const dt = new Date(now); dt.setDate(dt.getDate() + offset); return dt.toISOString().slice(0, 10); };
 
   const memberships = [
-    { id: 'MEM-1', patientId: patients[0].id, patientName: `${patients[0].firstName} ${patients[0].lastName}`, tier: 'Gold', startDate: d(-60), nextBilling: d(0), credits: 25, status: 'active', wallet: [{ service: 'Botox', remaining: 5, total: 20 }, { service: 'HydraFacial', remaining: 0, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
-    { id: 'MEM-2', patientId: patients[1].id, patientName: `${patients[1].firstName} ${patients[1].lastName}`, tier: 'Platinum', startDate: d(-90), nextBilling: d(5), credits: 0, status: 'active', wallet: [{ service: 'Botox', remaining: 28, total: 40 }, { service: 'Juvederm Filler', remaining: 1, total: 1 }, { service: 'HydraFacial', remaining: 2, total: 2 }, { service: 'RF Microneedling', remaining: 1, total: 1 }, { service: 'IV Therapy', remaining: 0, total: 1 }] },
-    { id: 'MEM-3', patientId: patients[2].id, patientName: `${patients[2].firstName} ${patients[2].lastName}`, tier: 'Silver', startDate: d(-30), nextBilling: d(1), credits: 50, status: 'active', wallet: [{ service: 'HydraFacial', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 0, total: 1 }] },
-    { id: 'MEM-4', patientId: patients[3].id, patientName: `${patients[3].firstName} ${patients[3].lastName}`, tier: 'Gold', startDate: d(-120), nextBilling: d(10), credits: 0, status: 'active', wallet: [{ service: 'Botox', remaining: 20, total: 20 }, { service: 'HydraFacial', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
-    { id: 'MEM-5', patientId: patients[4].id, patientName: `${patients[4].firstName} ${patients[4].lastName}`, tier: 'Platinum', startDate: d(-45), nextBilling: d(15), credits: 100, status: 'active', wallet: [{ service: 'Botox', remaining: 12, total: 40 }, { service: 'Juvederm Filler', remaining: 0, total: 1 }, { service: 'HydraFacial', remaining: 1, total: 2 }, { service: 'RF Microneedling', remaining: 0, total: 1 }, { service: 'IV Therapy', remaining: 1, total: 1 }] },
-    { id: 'MEM-6', patientId: patients[5].id, patientName: `${patients[5].firstName} ${patients[5].lastName}`, tier: 'Silver', startDate: d(-15), nextBilling: d(15), credits: 0, status: 'active', wallet: [{ service: 'HydraFacial', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
-    { id: 'MEM-7', patientId: patients[6].id, patientName: `${patients[6].firstName} ${patients[6].lastName}`, tier: 'Gold', startDate: d(-75), nextBilling: d(14), credits: 75, status: 'active', wallet: [{ service: 'Botox', remaining: 8, total: 20 }, { service: 'HydraFacial', remaining: 0, total: 1 }, { service: 'Chemical Peel', remaining: 0, total: 1 }] },
-    { id: 'MEM-8', patientId: patients[7].id, patientName: `${patients[7].firstName} ${patients[7].lastName}`, tier: 'Platinum', startDate: d(-180), nextBilling: d(3), credits: 0, status: 'active', wallet: [{ service: 'Botox', remaining: 35, total: 40 }, { service: 'Juvederm Filler', remaining: 1, total: 1 }, { service: 'HydraFacial', remaining: 2, total: 2 }, { service: 'RF Microneedling', remaining: 1, total: 1 }, { service: 'IV Therapy', remaining: 1, total: 1 }] },
-    { id: 'MEM-9', patientId: patients[8].id, patientName: `${patients[8].firstName} ${patients[8].lastName}`, tier: 'Gold', startDate: d(-200), nextBilling: d(-5), credits: 0, status: 'paused', wallet: [{ service: 'Botox', remaining: 14, total: 20 }, { service: 'HydraFacial', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
-    { id: 'MEM-10', patientId: patients[9].id, patientName: `${patients[9].firstName} ${patients[9].lastName}`, tier: 'Silver', startDate: d(-10), nextBilling: d(20), credits: 0, status: 'active', wallet: [{ service: 'HydraFacial', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
+    { id: 'MEM-1', patientId: clients[0].id, patientName: `${clients[0].firstName} ${clients[0].lastName}`, tier: 'Gold', startDate: d(-60), nextBilling: d(0), credits: 25, status: 'active', wallet: [{ service: 'Reformer', remaining: 5, total: 20 }, { service: 'Mat Pilates', remaining: 0, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
+    { id: 'MEM-2', patientId: clients[1].id, patientName: `${clients[1].firstName} ${clients[1].lastName}`, tier: 'Platinum', startDate: d(-90), nextBilling: d(5), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 28, total: 40 }, { service: 'Juvederm Barre', remaining: 1, total: 1 }, { service: 'Mat Pilates', remaining: 2, total: 2 }, { service: 'RF Private Session', remaining: 1, total: 1 }, { service: 'IV Therapy', remaining: 0, total: 1 }] },
+    { id: 'MEM-3', patientId: clients[2].id, patientName: `${clients[2].firstName} ${clients[2].lastName}`, tier: 'Silver', startDate: d(-30), nextBilling: d(1), credits: 50, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 0, total: 1 }] },
+    { id: 'MEM-4', patientId: clients[3].id, patientName: `${clients[3].firstName} ${clients[3].lastName}`, tier: 'Gold', startDate: d(-120), nextBilling: d(10), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 20, total: 20 }, { service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
+    { id: 'MEM-5', patientId: clients[4].id, patientName: `${clients[4].firstName} ${clients[4].lastName}`, tier: 'Platinum', startDate: d(-45), nextBilling: d(15), credits: 100, status: 'active', wallet: [{ service: 'Reformer', remaining: 12, total: 40 }, { service: 'Juvederm Barre', remaining: 0, total: 1 }, { service: 'Mat Pilates', remaining: 1, total: 2 }, { service: 'RF Private Session', remaining: 0, total: 1 }, { service: 'IV Therapy', remaining: 1, total: 1 }] },
+    { id: 'MEM-6', patientId: clients[5].id, patientName: `${clients[5].firstName} ${clients[5].lastName}`, tier: 'Silver', startDate: d(-15), nextBilling: d(15), credits: 0, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
+    { id: 'MEM-7', patientId: clients[6].id, patientName: `${clients[6].firstName} ${clients[6].lastName}`, tier: 'Gold', startDate: d(-75), nextBilling: d(14), credits: 75, status: 'active', wallet: [{ service: 'Reformer', remaining: 8, total: 20 }, { service: 'Mat Pilates', remaining: 0, total: 1 }, { service: 'Chemical Peel', remaining: 0, total: 1 }] },
+    { id: 'MEM-8', patientId: clients[7].id, patientName: `${clients[7].firstName} ${clients[7].lastName}`, tier: 'Platinum', startDate: d(-180), nextBilling: d(3), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 35, total: 40 }, { service: 'Juvederm Barre', remaining: 1, total: 1 }, { service: 'Mat Pilates', remaining: 2, total: 2 }, { service: 'RF Private Session', remaining: 1, total: 1 }, { service: 'IV Therapy', remaining: 1, total: 1 }] },
+    { id: 'MEM-9', patientId: clients[8].id, patientName: `${clients[8].firstName} ${clients[8].lastName}`, tier: 'Gold', startDate: d(-200), nextBilling: d(-5), credits: 0, status: 'paused', wallet: [{ service: 'Reformer', remaining: 14, total: 20 }, { service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
+    { id: 'MEM-10', patientId: clients[9].id, patientName: `${clients[9].firstName} ${clients[9].lastName}`, tier: 'Silver', startDate: d(-10), nextBilling: d(20), credits: 0, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
   ];
 
   const packages = [
-    { id: 'PKG-1', patientId: patients[0].id, patientName: `${patients[0].firstName} ${patients[0].lastName}`, name: '3 IPL Sessions', service: 'IPL Photofacial', totalSessions: 3, usedSessions: 2, purchaseDate: d(-45), expiresDate: d(45), status: 'active' },
-    { id: 'PKG-2', patientId: patients[2].id, patientName: `${patients[2].firstName} ${patients[2].lastName}`, name: '6 Laser Hair Removal', service: 'Laser Hair Removal', totalSessions: 6, usedSessions: 3, purchaseDate: d(-90), expiresDate: d(90), status: 'active' },
-    { id: 'PKG-3', patientId: patients[4].id, patientName: `${patients[4].firstName} ${patients[4].lastName}`, name: '3 RF Microneedling', service: 'RF Microneedling', totalSessions: 3, usedSessions: 1, purchaseDate: d(-30), expiresDate: d(60), status: 'active' },
-    { id: 'PKG-4', patientId: patients[7].id, patientName: `${patients[7].firstName} ${patients[7].lastName}`, name: '4 Chemical Peels', service: 'Chemical Peel', totalSessions: 4, usedSessions: 4, purchaseDate: d(-120), expiresDate: d(-10), status: 'completed' },
-    { id: 'PKG-5', patientId: patients[10].id, patientName: `${patients[10].firstName} ${patients[10].lastName}`, name: '3 IPL Sessions', service: 'IPL Photofacial', totalSessions: 3, usedSessions: 0, purchaseDate: d(-5), expiresDate: d(85), status: 'active' },
-    { id: 'PKG-6', patientId: patients[3].id, patientName: `${patients[3].firstName} ${patients[3].lastName}`, name: '6 HydraFacial', service: 'HydraFacial', totalSessions: 6, usedSessions: 5, purchaseDate: d(-150), expiresDate: d(14), status: 'active' },
+    { id: 'PKG-1', patientId: clients[0].id, patientName: `${clients[0].firstName} ${clients[0].lastName}`, name: '3 TRX Sessions', service: 'TRX Photofacial', totalSessions: 3, usedSessions: 2, purchaseDate: d(-45), expiresDate: d(45), status: 'active' },
+    { id: 'PKG-2', patientId: clients[2].id, patientName: `${clients[2].firstName} ${clients[2].lastName}`, name: '6 Laser Hair Removal', service: 'Laser Hair Removal', totalSessions: 6, usedSessions: 3, purchaseDate: d(-90), expiresDate: d(90), status: 'active' },
+    { id: 'PKG-3', patientId: clients[4].id, patientName: `${clients[4].firstName} ${clients[4].lastName}`, name: '3 RF Private Session', service: 'RF Private Session', totalSessions: 3, usedSessions: 1, purchaseDate: d(-30), expiresDate: d(60), status: 'active' },
+    { id: 'PKG-4', patientId: clients[7].id, patientName: `${clients[7].firstName} ${clients[7].lastName}`, name: '4 Chemical Peels', service: 'Chemical Peel', totalSessions: 4, usedSessions: 4, purchaseDate: d(-120), expiresDate: d(-10), status: 'completed' },
+    { id: 'PKG-5', patientId: clients[10].id, patientName: `${clients[10].firstName} ${clients[10].lastName}`, name: '3 TRX Sessions', service: 'TRX Photofacial', totalSessions: 3, usedSessions: 0, purchaseDate: d(-5), expiresDate: d(85), status: 'active' },
+    { id: 'PKG-6', patientId: clients[3].id, patientName: `${clients[3].firstName} ${clients[3].lastName}`, name: '6 Mat Pilates', service: 'Mat Pilates', totalSessions: 6, usedSessions: 5, purchaseDate: d(-150), expiresDate: d(14), status: 'active' },
   ];
 
   setMemberships(memberships);
   setPackages(packages);
-  localStorage.setItem('ms_memberships_seeded', 'true');
+  localStorage.setItem('rp_memberships_seeded', 'true');
 }
 
 /* ---------- Inline keyframe injection (once) ---------- */
@@ -249,7 +249,7 @@ export default function Memberships() {
           Memberships & Packages
         </h1>
         <p style={{ font: `400 15px ${s.FONT}`, color: s.text2, lineHeight: 1.5 }}>
-          Manage membership wallets, service allocations, and treatment packages
+          Manage membership wallets, service allocations, and session packages
         </p>
       </div>
 

@@ -11,7 +11,7 @@ export default function Retention() {
   const [search, setSearch] = useState('');
 
   const alerts = getRetentionAlerts();
-  const patients = getPatients();
+  const clients = getPatients();
 
   const filtered = alerts.filter(a => {
     if (filter === 'pending' && a.status !== 'pending') return false;
@@ -41,7 +41,7 @@ export default function Retention() {
     <div>
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Retention</h1>
-        <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Smart alerts for patients who need re-engagement — stop the drift</p>
+        <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Smart alerts for clients who need re-engagement — stop the drift</p>
       </div>
 
       {/* KPIs */}
@@ -61,7 +61,7 @@ export default function Retention() {
 
       {/* Filters */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patients..." style={{ ...s.input, maxWidth: 260 }} />
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search clients..." style={{ ...s.input, maxWidth: 260 }} />
         <div style={{ display: 'flex', gap: 6 }}>
           {[['all', 'All'], ['pending', 'Pending'], ['high', 'High Priority'], ['contacted', 'Contacted']].map(([id, label]) => (
             <button key={id} onClick={() => setFilter(id)} style={{
@@ -77,7 +77,7 @@ export default function Retention() {
       {/* Alerts List */}
       <div style={{ display: 'grid', gap: 8 }}>
         {filtered.map(alert => {
-          const patient = patients.find(p => p.id === alert.patientId);
+          const patient = clients.find(p => p.id === alert.patientId);
           return (
             <div key={alert.id} style={{
               ...s.cardStyle, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16,
@@ -124,7 +124,7 @@ export default function Retention() {
         })}
         {filtered.length === 0 && (
           <div style={{ ...s.cardStyle, padding: 48, textAlign: 'center', font: `400 14px ${s.FONT}`, color: s.text3 }}>
-            {filter === 'all' ? 'No retention alerts — all patients are engaged!' : 'No alerts match this filter'}
+            {filter === 'all' ? 'No retention alerts — all clients are engaged!' : 'No alerts match this filter'}
           </div>
         )}
       </div>

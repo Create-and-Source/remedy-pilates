@@ -1,4 +1,4 @@
-// Home — the "cover" page. Shows the brand then lets you explore the platform
+// Home — warm editorial landing for Remedy Pilates & Barre
 import { useNavigate } from 'react-router-dom';
 import { useStyles, useTheme } from '../theme';
 import { getSettings, getPatients, getAppointments, getServices, getInventory, getRetentionAlerts } from '../data/store';
@@ -10,11 +10,11 @@ export default function Home() {
   const { theme } = useTheme();
   const nav = useNavigate();
   const settings = getSettings();
-  const name = settings.businessName || 'Your MedSpa';
-  const tagline = settings.tagline || 'Where Science Meets Beauty';
+  const name = settings.businessName || 'Remedy Pilates & Barre';
+  const tagline = settings.tagline || 'Form. Strength. Balance.';
 
   // Pull real data for the dashboard preview
-  const patients = getPatients();
+  const clients = getPatients();
   const appointments = getAppointments();
   const services = getServices();
   const inventory = getInventory();
@@ -31,21 +31,27 @@ export default function Home() {
   const pendingAlerts = alerts.filter(a => a.status === 'pending').length;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0A0A0A', color: '#fff', overflow: 'hidden' }}>
-      {/* Ambient glow */}
+    <div style={{ minHeight: '100vh', background: '#FAF6F1', color: '#2D2A26', overflow: 'hidden' }}>
+      {/* Warm ambient gradient */}
       <div style={{
-        position: 'fixed', top: '10%', left: '50%', transform: 'translateX(-50%)',
-        width: 800, height: 800, borderRadius: '50%',
-        background: `radial-gradient(circle, ${theme.accent}12 0%, transparent 60%)`,
+        position: 'fixed', top: '-20%', right: '-10%',
+        width: 900, height: 900, borderRadius: '50%',
+        background: `radial-gradient(circle, ${theme.accent}15 0%, transparent 55%)`,
+        filter: 'blur(100px)', pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'fixed', bottom: '-30%', left: '-15%',
+        width: 700, height: 700, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(196,112,75,0.08) 0%, transparent 55%)',
         filter: 'blur(80px)', pointerEvents: 'none',
       }} />
 
-      {/* Nav — fixed at top */}
+      {/* Nav — warm glass */}
       <nav style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         padding: '16px 32px', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: 'rgba(10,10,10,0.8)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        background: 'rgba(250,246,241,0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(0,0,0,0.06)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{
@@ -53,57 +59,76 @@ export default function Home() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             font: `700 14px ${s.FONT}`, color: theme.accentText,
           }}>
-            {name[0]}
+            R
           </div>
-          <span style={{ font: `600 16px ${s.FONT}`, color: '#fff' }}>{name}</span>
+          <span style={{ font: `600 16px ${s.FONT}`, color: '#2D2A26' }}>{name}</span>
         </div>
         <div className="home-nav-btns" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <button onClick={() => nav('/book')} style={{
-            padding: '8px 20px', borderRadius: 100, border: '1px solid rgba(255,255,255,0.12)',
-            background: 'transparent', color: 'rgba(255,255,255,0.7)', font: `400 13px ${s.FONT}`, cursor: 'pointer',
-          }}>Book</button>
+            padding: '8px 20px', borderRadius: 100, border: '1px solid rgba(0,0,0,0.1)',
+            background: 'transparent', color: '#6B6560', font: `400 13px ${s.FONT}`, cursor: 'pointer',
+          }}>Book a Class</button>
           <button onClick={() => nav('/portal')} style={{
-            padding: '8px 20px', borderRadius: 100, border: '1px solid rgba(255,255,255,0.12)',
-            background: 'transparent', color: 'rgba(255,255,255,0.7)', font: `400 13px ${s.FONT}`, cursor: 'pointer',
-          }}>Portal</button>
+            padding: '8px 20px', borderRadius: 100, border: '1px solid rgba(0,0,0,0.1)',
+            background: 'transparent', color: '#6B6560', font: `400 13px ${s.FONT}`, cursor: 'pointer',
+          }}>Client Portal</button>
           <button onClick={() => nav('/admin')} style={{
             padding: '8px 20px', borderRadius: 100, border: 'none',
             background: theme.accent, color: theme.accentText, font: `500 13px ${s.FONT}`, cursor: 'pointer',
-            boxShadow: `0 2px 16px ${theme.accent}40`,
-          }}>Open Dashboard</button>
+            boxShadow: `0 2px 16px ${theme.accent}30`,
+          }}>Open Studio</button>
         </div>
       </nav>
 
-      {/* Hero — compact, elegant */}
+      {/* Hero — warm, editorial */}
       <div className="home-hero-section" style={{
-        textAlign: 'center', padding: '100px 24px 40px', position: 'relative', zIndex: 10,
+        textAlign: 'center', padding: '120px 24px 48px', position: 'relative', zIndex: 10,
       }}>
         <div style={{
-          font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 3,
-          color: theme.accent, marginBottom: 16,
+          font: `500 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 4,
+          color: theme.accent, marginBottom: 20,
         }}>{tagline}</div>
         <h1 style={{
-          font: `300 48px ${s.FONT}`, color: '#fff', marginBottom: 12,
-          letterSpacing: '-1px', lineHeight: 1.1,
+          font: `400 52px ${s.DISPLAY}`, color: '#2D2A26', marginBottom: 16,
+          letterSpacing: '-0.5px', lineHeight: 1.15,
         }}>
-          The platform that runs your <span style={{ fontWeight: 600 }}>medspa</span>
+          Your studio,{' '}
+          <span style={{ fontStyle: 'italic', color: theme.accent }}>elevated</span>
         </h1>
         <p style={{
-          font: `300 16px ${s.FONT}`, color: 'rgba(255,255,255,0.4)',
-          maxWidth: 480, margin: '0 auto 32px', lineHeight: 1.6,
+          font: `300 17px ${s.FONT}`, color: '#8A847D',
+          maxWidth: 520, margin: '0 auto 36px', lineHeight: 1.7,
         }}>
-          Scheduling, clinical charts, DM inbox, patient portal, memberships, marketing — all in one beautiful platform.
+          Scheduling, class packages, client portal, memberships, and marketing — all in one beautiful platform built for movement studios.
         </p>
-        <button onClick={() => nav('/admin')} style={{
-          padding: '14px 40px', borderRadius: 100, border: 'none',
-          background: theme.accent, color: theme.accentText,
-          font: `600 15px ${s.FONT}`, cursor: 'pointer',
-          boxShadow: `0 4px 24px ${theme.accent}40`,
-          transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
-        }}
-        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
-        >Explore the Dashboard</button>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <button onClick={() => nav('/admin')} style={{
+            padding: '14px 40px', borderRadius: 100, border: 'none',
+            background: theme.accent, color: theme.accentText,
+            font: `600 15px ${s.FONT}`, cursor: 'pointer',
+            boxShadow: `0 4px 24px ${theme.accent}30`,
+            transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+          onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
+          >Explore the Dashboard</button>
+          <button onClick={() => nav('/book')} style={{
+            padding: '14px 40px', borderRadius: 100,
+            border: `1.5px solid ${theme.accent}40`,
+            background: 'transparent', color: theme.accent,
+            font: `500 15px ${s.FONT}`, cursor: 'pointer',
+            transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = `${theme.accent}08`; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+          >Book a Class</button>
+          <a href="/book/free-trial" style={{
+            display: 'inline-block', padding: '14px 32px', background: '#C4704B', color: '#fff',
+            borderRadius: 100, fontFamily: "'Outfit', sans-serif", fontSize: 15, fontWeight: 600,
+            textDecoration: 'none', boxShadow: '0 4px 16px rgba(196,112,75,0.25)',
+            transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+          }}>Try Your First Class Free &rarr;</a>
+        </div>
       </div>
 
       {/* Live Dashboard Preview — real data from localStorage */}
@@ -111,11 +136,12 @@ export default function Home() {
         maxWidth: 1000, margin: '0 auto', padding: '0 24px 60px',
         position: 'relative', zIndex: 10,
       }}>
-        {/* Fake browser chrome */}
+        {/* Browser chrome */}
         <div style={{
-          background: 'rgba(255,255,255,0.06)', borderRadius: '16px 16px 0 0',
+          background: 'rgba(255,255,255,0.8)', borderRadius: '16px 16px 0 0',
           padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 8,
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid rgba(0,0,0,0.06)',
+          border: '1px solid rgba(0,0,0,0.06)', borderBottomWidth: 0,
         }}>
           <div style={{ display: 'flex', gap: 6 }}>
             <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#FF5F57' }} />
@@ -123,24 +149,25 @@ export default function Home() {
             <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28C840' }} />
           </div>
           <div style={{
-            flex: 1, background: 'rgba(255,255,255,0.06)', borderRadius: 8, padding: '5px 14px',
-            font: `400 11px ${s.MONO}`, color: 'rgba(255,255,255,0.3)', textAlign: 'center',
-          }}>yourmedspa.com/admin</div>
+            flex: 1, background: 'rgba(0,0,0,0.03)', borderRadius: 8, padding: '5px 14px',
+            font: `400 11px ${s.MONO}`, color: '#AAA', textAlign: 'center',
+          }}>remedypilates.com/admin</div>
         </div>
 
         {/* Dashboard content */}
         <div onClick={() => nav('/admin')} style={{
-          background: '#F5F3F0', borderRadius: '0 0 16px 16px', padding: '24px 28px',
+          background: '#FFFFFF', borderRadius: '0 0 16px 16px', padding: '24px 28px',
           cursor: 'pointer', transition: 'all 0.3s',
-          boxShadow: '0 20px 80px rgba(0,0,0,0.4)',
+          border: '1px solid rgba(0,0,0,0.06)', borderTopWidth: 0,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.08)',
         }}
-        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 30px 100px rgba(0,0,0,0.5)'; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 20px 80px rgba(0,0,0,0.4)'; }}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 30px 80px rgba(0,0,0,0.12)'; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.08)'; }}
         >
           {/* Mini dashboard header */}
           <div style={{ marginBottom: 16 }}>
-            <div style={{ font: `600 18px ${s.FONT}`, color: '#111', marginBottom: 2 }}>Dashboard</div>
-            <div style={{ font: `400 12px ${s.FONT}`, color: '#999' }}>
+            <div style={{ font: `500 18px ${s.DISPLAY}`, color: '#2D2A26', marginBottom: 2 }}>Studio Dashboard</div>
+            <div style={{ font: `400 12px ${s.FONT}`, color: '#AAA' }}>
               {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} overview
             </div>
           </div>
@@ -148,19 +175,18 @@ export default function Home() {
           {/* KPI cards */}
           <div className="home-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 16 }}>
             {[
-              { label: "Today's Appts", value: todayAppts.length },
+              { label: 'Classes Today', value: todayAppts.length },
               { label: 'Monthly Revenue', value: fmt(monthRevenue) },
-              { label: 'Active Patients', value: patients.length },
-              { label: 'Retention Alerts', value: pendingAlerts },
+              { label: 'Active Clients', value: clients.length },
+              { label: 'Follow-Ups', value: pendingAlerts },
             ].map(k => (
               <div key={k.label} style={{
                 padding: '14px 12px', borderRadius: 12,
-                background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255,255,255,0.6)',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                background: '#FAF6F1',
+                border: '1px solid rgba(0,0,0,0.04)',
               }}>
-                <div style={{ font: `500 8px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.2, color: '#999', marginBottom: 4 }}>{k.label}</div>
-                <div style={{ font: `600 20px ${s.FONT}`, color: '#111' }}>{k.value}</div>
+                <div style={{ font: `500 8px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.2, color: '#AAA', marginBottom: 4 }}>{k.label}</div>
+                <div style={{ font: `600 20px ${s.FONT}`, color: '#2D2A26' }}>{k.value}</div>
               </div>
             ))}
           </div>
@@ -168,13 +194,13 @@ export default function Home() {
           {/* Mini appointment list */}
           <div style={{
             padding: '12px 14px', borderRadius: 12,
-            background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.6)',
+            background: '#FAF6F1', border: '1px solid rgba(0,0,0,0.04)',
           }}>
-            <div style={{ font: `600 11px ${s.FONT}`, color: '#111', marginBottom: 8 }}>Upcoming</div>
+            <div style={{ font: `600 11px ${s.FONT}`, color: '#2D2A26', marginBottom: 8 }}>Upcoming Classes</div>
             {appointments.filter(a => a.date >= today && a.status !== 'completed').sort((a, b) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`)).slice(0, 3).map(a => (
               <div key={a.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
-                <span style={{ font: `400 11px ${s.FONT}`, color: '#555' }}>{a.patientName}</span>
-                <span style={{ font: `500 10px ${s.MONO}`, color: '#999' }}>{a.time}</span>
+                <span style={{ font: `400 11px ${s.FONT}`, color: '#6B6560' }}>{a.patientName}</span>
+                <span style={{ font: `500 10px ${s.MONO}`, color: '#AAA' }}>{a.time}</span>
               </div>
             ))}
           </div>
@@ -190,32 +216,33 @@ export default function Home() {
         display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center',
         padding: '0 24px 40px', position: 'relative', zIndex: 10,
       }}>
-        {['22 Admin Pages', 'Patient Portal', 'DM Inbox', 'Clinical Charts', 'Online Booking', 'Memberships', 'Aftercare', 'Referrals', 'White-Label Branding'].map(f => (
+        {['22 Admin Pages', 'Client Portal', 'DM Inbox', 'Progress Tracking', 'Online Booking', 'Memberships', 'Recovery Tips', 'Referrals', 'White-Label Branding'].map(f => (
           <span key={f} style={{
             padding: '6px 14px', borderRadius: 100, font: `400 11px ${s.FONT}`,
-            color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.08)',
+            color: '#8A847D', border: '1px solid rgba(0,0,0,0.08)',
+            background: 'rgba(255,255,255,0.5)',
           }}>{f}</span>
         ))}
       </div>
 
       {/* Quick links */}
       <div style={{
-        display: 'flex', gap: 12, justifyContent: 'center', padding: '20px 24px 40px',
+        display: 'flex', gap: 12, justifyContent: 'center', padding: '20px 24px 60px',
         position: 'relative', zIndex: 10,
       }}>
         {[
-          { label: 'Admin Dashboard', path: '/admin' },
-          { label: 'Patient Portal', path: '/portal' },
-          { label: 'Online Booking', path: '/book' },
+          { label: 'Studio Dashboard', path: '/admin' },
+          { label: 'Client Portal', path: '/portal' },
+          { label: 'Book Online', path: '/book' },
         ].map(l => (
           <button key={l.label} onClick={() => nav(l.path)} style={{
             padding: '12px 28px', borderRadius: 14, cursor: 'pointer',
-            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-            font: `500 13px ${s.FONT}`, color: 'rgba(255,255,255,0.6)',
+            background: 'rgba(255,255,255,0.6)', border: '1px solid rgba(0,0,0,0.06)',
+            font: `500 13px ${s.FONT}`, color: '#6B6560',
             backdropFilter: 'blur(8px)', transition: 'all 0.2s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.borderColor = `${theme.accent}30`; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.9)'; e.currentTarget.style.borderColor = `${theme.accent}30`; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.6)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)'; }}
           >{l.label}</button>
         ))}
       </div>
@@ -233,41 +260,16 @@ export default function Home() {
             font-size: 11px !important;
           }
           .home-hero-section {
-            padding: 80px 18px 24px !important;
+            padding: 90px 18px 32px !important;
           }
           .home-hero-section h1 {
-            font-size: 30px !important;
+            font-size: 32px !important;
           }
           .home-hero-section p {
             font-size: 14px !important;
           }
-          .home-hero-section .home-hero-btns {
-            flex-direction: column !important;
-            width: 100% !important;
-          }
-          .home-hero-section .home-hero-btns button {
-            width: 100% !important;
-          }
           .home-preview-section {
             padding: 0 14px 40px !important;
-          }
-          .home-features-pills {
-            padding: 0 14px 30px !important;
-          }
-          .home-quick-links {
-            flex-direction: column !important;
-            padding: 10px 14px 30px !important;
-          }
-          .home-quick-links button {
-            width: 100% !important;
-          }
-          .home-services-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 8px !important;
-            padding: 0 14px !important;
-          }
-          nav {
-            padding: 12px 14px !important;
           }
         }
         @media (max-width: 380px) {
@@ -275,7 +277,7 @@ export default function Home() {
             display: none !important;
           }
           .home-hero-section h1 {
-            font-size: 26px !important;
+            font-size: 28px !important;
           }
         }
       `}</style>

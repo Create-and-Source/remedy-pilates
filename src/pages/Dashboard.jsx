@@ -123,7 +123,7 @@ export default function Dashboard() {
   const [, setTick] = useState(0);
   useEffect(() => subscribe(() => setTick(t => t + 1)), []);
 
-  const patients = getPatients();
+  const clients = getPatients();
   const appointments = getAppointments();
   const inventory = getInventory();
   const alerts = getRetentionAlerts();
@@ -143,8 +143,8 @@ export default function Dashboard() {
     return sum + (svc?.price || 0);
   }, 0);
 
-  // New patients this month
-  const newPatientsMonth = patients.filter(p => p.createdAt?.startsWith(thisMonth)).length;
+  // New clients this month
+  const newPatientsMonth = clients.filter(p => p.createdAt?.startsWith(thisMonth)).length;
 
   // Low stock
   const lowStock = inventory.filter(i => i.quantity <= i.reorderAt);
@@ -181,10 +181,10 @@ export default function Dashboard() {
   ];
 
   const kpis = [
-    { label: "Today's Appointments", value: todayAppts.length, sub: `${confirmedToday} confirmed, ${pendingToday} pending`, path: '/schedule' },
-    { label: 'Monthly Revenue', value: fmt(monthRevenue), sub: `${monthAppts.length} completed treatments`, path: '/reports' },
-    { label: 'Active Patients', value: patients.length, sub: `${newPatientsMonth} new this month`, path: '/patients' },
-    { label: 'Retention Alerts', value: pendingAlerts.length, sub: pendingAlerts.length > 0 ? `${pendingAlerts.filter(a => a.priority === 'high').length} high priority` : 'All caught up', path: '/retention' },
+    { label: "Classes Today", value: todayAppts.length, sub: `${confirmedToday} confirmed, ${pendingToday} pending`, path: '/schedule' },
+    { label: 'Monthly Revenue', value: fmt(monthRevenue), sub: `${monthAppts.length} sessions completed`, path: '/reports' },
+    { label: 'Active Clients', value: clients.length, sub: `${newPatientsMonth} new this month`, path: '/clients' },
+    { label: 'Client Follow-Ups', value: pendingAlerts.length, sub: pendingAlerts.length > 0 ? `${pendingAlerts.filter(a => a.priority === 'high').length} high priority` : 'All caught up', path: '/retention' },
   ];
 
   return (
@@ -264,7 +264,7 @@ export default function Dashboard() {
             padding: '18px 22px', borderBottom: '1px solid rgba(0,0,0,0.04)',
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           }}>
-            <span style={{ font: `600 15px ${s.FONT}`, color: s.text }}>Upcoming Appointments</span>
+            <span style={{ font: `600 15px ${s.FONT}`, color: s.text }}>Upcoming Classes</span>
             <button onClick={() => nav('/schedule')} style={{ ...s.pillGhost, padding: '5px 14px', fontSize: 11 }}>View All</button>
           </div>
           <div>
@@ -299,7 +299,7 @@ export default function Dashboard() {
                   {/* Info */}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{a.patientName}</div>
-                    <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{svc?.name || 'Service'} — {prov?.name || 'Provider'}</div>
+                    <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{svc?.name || 'Class'} — {prov?.name || 'Instructor'}</div>
                   </div>
                   {/* Time + status */}
                   <div style={{ textAlign: 'right', flexShrink: 0 }}>
@@ -315,7 +315,7 @@ export default function Dashboard() {
               );
             })}
             {upcoming.length === 0 && (
-              <div style={{ padding: 48, textAlign: 'center', font: `400 13px ${s.FONT}`, color: s.text3 }}>No upcoming appointments</div>
+              <div style={{ padding: 48, textAlign: 'center', font: `400 13px ${s.FONT}`, color: s.text3 }}>No upcoming classes</div>
             )}
           </div>
         </div>
@@ -392,12 +392,12 @@ export default function Dashboard() {
             <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 14 }}>Quick Actions</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               {[
-                { label: 'New Patient', path: '/patients', icon: (
+                { label: 'New Client', path: '/clients', icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="8.5" cy="7" r="4" /><line x1="20" y1="8" x2="20" y2="14" /><line x1="23" y1="11" x2="17" y2="11" />
                   </svg>
                 )},
-                { label: 'Book Appointment', path: '/schedule', icon: (
+                { label: 'Schedule Class', path: '/schedule', icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                     <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                   </svg>

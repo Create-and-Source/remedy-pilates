@@ -3,13 +3,13 @@ import { useStyles } from '../theme';
 import { getSocialPosts, addSocialPost, updateSocialPost, deleteSocialPost, getAppointments, getPatients, getServices, getSettings, subscribe } from '../data/store';
 
 const PLATFORMS = ['Instagram', 'Facebook', 'TikTok', 'X', 'LinkedIn'];
-const CONN_KEY = 'ms_social_connections';
+const CONN_KEY = 'rp_social_connections';
 const loadConns = () => { try { return JSON.parse(localStorage.getItem(CONN_KEY)) || { instagram: true, facebook: true, tiktok: false, x: false, linkedin: false }; } catch { return { instagram: true, facebook: true, tiktok: false, x: false, linkedin: false }; } };
 const saveConns = (c) => localStorage.setItem(CONN_KEY, JSON.stringify(c));
 
 const CONTENT_TYPES = [
-  { id: 'service', label: 'Service Spotlight', desc: 'Highlight a treatment' },
-  { id: 'before-after', label: 'Before & After', desc: 'Show transformation results' },
+  { id: 'service', label: 'Service Spotlight', desc: 'Highlight a session' },
+  { id: 'before-after', label: 'Transformations', desc: 'Show transformation results' },
   { id: 'education', label: 'Educational', desc: 'Tips, myths, skincare advice' },
   { id: 'promo', label: 'Promotion', desc: 'Special offer or deal' },
   { id: 'team', label: 'Meet the Team', desc: 'Staff spotlight' },
@@ -20,7 +20,7 @@ const CONTENT_TYPES = [
 const TONES = ['Professional', 'Friendly', 'Luxurious', 'Educational', 'Playful', 'Urgent'];
 
 function generateCopy(type, platforms, tone, settings) {
-  const name = settings.businessName || 'Your MedSpa';
+  const name = settings.businessName || 'Remedy Pilates & Barre';
   const posts = [];
   const toneWord = tone === 'Luxurious' ? 'Indulge in' : tone === 'Friendly' ? 'We love helping you with' : tone === 'Urgent' ? 'Limited time:' : 'Discover';
 
@@ -28,22 +28,22 @@ function generateCopy(type, platforms, tone, settings) {
     const pl = p.toLowerCase();
     let text = '';
     if (type === 'service') {
-      if (pl === 'instagram') text = `${toneWord} the art of [Service Name]\n\nAt ${name}, every treatment is personalized to your unique skin goals.\n\n[Describe the treatment and its benefits]\n\nBook your consultation — link in bio\n\n#MedSpa #Aesthetics #[ServiceHashtag] #Skincare #Beauty #SelfCare`;
-      else if (pl === 'facebook') text = `${toneWord} our [Service Name] treatment\n\n[Describe the treatment, benefits, and what makes it special]\n\nResults you can see. Confidence you can feel.\n\nBook online: ${settings.email || 'yourmedspa.com'}`;
-      else if (pl === 'tiktok') text = `POV: You just got [Service] and your skin is GLOWING ✨\n\n#MedSpa #Aesthetics #GlowUp #SkinCare #Beauty`;
-      else if (pl === 'x') text = `${toneWord} [Service] at ${name}.\n\n[One-liner about the treatment]\n\nBook now: ${settings.email || ''}\n\n#MedSpa #Aesthetics`;
-      else if (pl === 'linkedin') text = `At ${name}, we combine advanced medical aesthetics with personalized care.\n\n[Describe the treatment and its clinical benefits]\n\nOur team of certified providers delivers results backed by science.\n\n#MedicalAesthetics #MedSpa #Skincare`;
+      if (pl === 'instagram') text = `${toneWord} the art of [Service Name]\n\nAt ${name}, every session is personalized to your unique skin goals.\n\n[Describe the session and its benefits]\n\nBook your consultation — link in bio\n\n#Remedy #Aesthetics #[ServiceHashtag] #Skincare #Beauty #SelfCare`;
+      else if (pl === 'facebook') text = `${toneWord} our [Service Name] session\n\n[Describe the session, benefits, and what makes it special]\n\nResults you can see. Confidence you can feel.\n\nBook online: ${settings.email || 'remedypilates.com'}`;
+      else if (pl === 'tiktok') text = `POV: You just got [Service] and your skin is GLOWING ✨\n\n#Remedy #Aesthetics #GlowUp #SkinCare #Beauty`;
+      else if (pl === 'x') text = `${toneWord} [Service] at ${name}.\n\n[One-liner about the session]\n\nBook now: ${settings.email || ''}\n\n#Remedy #Aesthetics`;
+      else if (pl === 'linkedin') text = `At ${name}, we combine advanced medical aesthetics with personalized care.\n\n[Describe the session and its clinical benefits]\n\nOur team of certified providers delivers results backed by science.\n\n#MedicalAesthetics #Remedy #Skincare`;
     } else if (type === 'before-after') {
-      if (pl === 'instagram') text = `The results speak for themselves ✨\n\nBefore → After\n[Treatment Name]\n[Number] sessions\n\nEvery journey is unique. Book your consultation to create your personalized plan.\n\nLink in bio\n\n#BeforeAndAfter #MedSpa #Results #Transformation #${name.replace(/\s/g, '')}`;
-      else text = `Real results from real patients.\n\n[Treatment] — [number] sessions\n\nSee what is possible at ${name}.\n\n#BeforeAndAfter #MedSpa`;
+      if (pl === 'instagram') text = `The results speak for themselves ✨\n\nBefore → After\n[Treatment Name]\n[Number] sessions\n\nEvery journey is unique. Book your consultation to create your personalized plan.\n\nLink in bio\n\n#BeforeAndAfter #Remedy #Results #Transformation #${name.replace(/\s/g, '')}`;
+      else text = `Real results from real clients.\n\n[Treatment] — [number] sessions\n\nSee what is possible at ${name}.\n\n#BeforeAndAfter #Remedy`;
     } else if (type === 'promo') {
-      if (pl === 'instagram') text = `SPECIAL OFFER ✨\n\n[Offer details — e.g., 20% off Botox this month]\n\nValid through [end date]\nBook now — link in bio\n\nLimited spots available.\n\n#MedSpa #SpecialOffer #Beauty #${name.replace(/\s/g, '')}`;
+      if (pl === 'instagram') text = `SPECIAL OFFER ✨\n\n[Offer details — e.g., 20% off Reformer this month]\n\nValid through [end date]\nBook now — link in bio\n\nLimited spots available.\n\n#Remedy #SpecialOffer #Beauty #${name.replace(/\s/g, '')}`;
       else text = `Special offer at ${name}!\n\n[Offer details]\n\nBook by [end date] to save.\n\n${settings.phone || ''}`;
     } else if (type === 'education') {
-      if (pl === 'instagram') text = `DID YOU KNOW? 💡\n\n[Educational fact about skincare/treatment]\n\n[2-3 sentences expanding on the topic]\n\nHave questions? Drop them in the comments 👇\n\n#SkincareTips #MedSpa #Education #SkinHealth #Beauty`;
+      if (pl === 'instagram') text = `DID YOU KNOW? 💡\n\n[Educational fact about skincare/session]\n\n[2-3 sentences expanding on the topic]\n\nHave questions? Drop them in the comments 👇\n\n#SkincareTips #Remedy #Education #SkinHealth #Beauty`;
       else text = `Skincare tip from ${name}:\n\n[Educational content]\n\nYour skin deserves science-backed care.`;
     } else {
-      text = `[Your custom post for ${p}]\n\n#MedSpa #${name.replace(/\s/g, '')}`;
+      text = `[Your custom post for ${p}]\n\n#Remedy #${name.replace(/\s/g, '')}`;
     }
     posts.push({ platform: pl, text });
   }
@@ -329,7 +329,7 @@ export default function SocialMedia() {
                       [Image/Video]
                     </div>
                     <div style={{ padding: '12px 14px' }}>
-                      <div style={{ font: `600 12px ${s.FONT}`, color: s.text, marginBottom: 4 }}>{settings.businessName || 'yourmedspa'}</div>
+                      <div style={{ font: `600 12px ${s.FONT}`, color: s.text, marginBottom: 4 }}>{settings.businessName || 'yourstudio'}</div>
                       <div style={{ font: `400 12px ${s.FONT}`, color: s.text2, lineHeight: 1.5, whiteSpace: 'pre-wrap', maxHeight: 200, overflowY: 'auto' }}>
                         {activePost?.text || 'Select a platform'}
                       </div>

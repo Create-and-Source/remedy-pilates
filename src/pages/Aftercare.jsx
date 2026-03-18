@@ -2,43 +2,43 @@ import { useState, useEffect } from 'react';
 import { useStyles } from '../theme';
 import { getPatients, subscribe } from '../data/store';
 
-const KEY = 'ms_aftercare';
+const KEY = 'rp_recovery_tips';
 
 function get() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } }
 function save(data) { localStorage.setItem(KEY, JSON.stringify(data)); }
 
-// ── Aftercare Templates ──
+// ── Recovery Tips Templates ──
 const TEMPLATES = [
   {
-    id: 'tmpl-botox', service: 'Botox', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Botox Instructions', body: "Don't lay down for 4 hours, no exercise for 24 hours, avoid rubbing the treated area. Mild bruising or redness is normal and should resolve within a few hours." },
+    id: 'tmpl-botox', service: 'Reformer', messages: [
+      { delay: 0, label: 'Immediate', subject: 'Post-Reformer Instructions', body: "Don't lay down for 4 hours, no exercise for 24 hours, avoid rubbing the treated area. Mild bruising or redness is normal and should resolve within a few hours." },
       { delay: 2, label: '48 Hours', subject: '48-Hour Check-In', body: 'How are you feeling? Any bruising or tenderness? This is completely normal. Avoid heat exposure and strenuous activity for the next 24 hours.' },
-      { delay: 14, label: '2 Weeks', subject: 'Results Check', body: 'Your Botox should be fully settled! Love your results? If you notice any asymmetry or areas that need a touch-up, let us know within the next week.' },
-      { delay: 84, label: '12 Weeks', subject: 'Time for a Touch-Up!', body: 'Time for a touch-up! Book your next Botox appointment to maintain your smooth, refreshed look. Early re-treatment can help results last longer over time.' },
+      { delay: 14, label: '2 Weeks', subject: 'Results Check', body: 'Your Reformer should be fully settled! Love your results? If you notice any asymmetry or areas that need a touch-up, let us know within the next week.' },
+      { delay: 84, label: '12 Weeks', subject: 'Time for a Touch-Up!', body: 'Time for a touch-up! Book your next Reformer appointment to maintain your smooth, refreshed look. Early re-session can help results last longer over time.' },
     ],
   },
   {
-    id: 'tmpl-filler', service: 'Filler', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Filler Care', body: 'Avoid touching or massaging the treated area for 6 hours. Sleep face-up tonight. Mild swelling and bruising are expected and will subside within 3-5 days.' },
+    id: 'tmpl-filler', service: 'Barre', messages: [
+      { delay: 0, label: 'Immediate', subject: 'Post-Barre Care', body: 'Avoid touching or massaging the treated area for 6 hours. Sleep face-up tonight. Mild swelling and bruising are expected and will subside within 3-5 days.' },
       { delay: 1, label: '24 Hours', subject: '24-Hour Follow-Up', body: 'How is the swelling? Apply a cold compress gently if needed. Avoid alcohol, strenuous exercise, and extreme heat for the next 48 hours.' },
       { delay: 7, label: '1 Week', subject: 'One Week Check-In', body: 'Your filler should be settling in beautifully! Swelling should be mostly resolved. If you have any concerns about shape or symmetry, we are here to help.' },
-      { delay: 180, label: '6 Months', subject: 'Maintenance Reminder', body: 'It has been 6 months since your filler appointment. Many patients choose to refresh around this time. Book your next session to maintain your look!' },
+      { delay: 180, label: '6 Months', subject: 'Maintenance Reminder', body: 'It has been 6 months since your filler appointment. Many clients choose to refresh around this time. Book your next session to maintain your look!' },
     ],
   },
   {
-    id: 'tmpl-microneedling', service: 'Microneedling', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Microneedling Instructions', body: 'Your skin will be red and feel warm — like a sunburn. Avoid makeup, retinols, and active ingredients for 24 hours. Use only gentle cleanser and the recovery balm provided.' },
+    id: 'tmpl-microneedling', service: 'Private Session', messages: [
+      { delay: 0, label: 'Immediate', subject: 'Post-Private Session Instructions', body: 'Your skin will be red and feel warm — like a sunburn. Avoid makeup, retinols, and active ingredients for 24 hours. Use only gentle cleanser and the recovery balm provided.' },
       { delay: 1, label: '24 Hours', subject: 'Day-After Care', body: 'Redness should be fading. Keep skin hydrated with a gentle moisturizer. Avoid direct sun exposure and apply SPF 30+ before going outside.' },
       { delay: 7, label: '1 Week', subject: 'How Is Your Skin?', body: 'You may start noticing improved texture and glow! Continue using SPF daily. Avoid exfoliants for another week. Your skin is regenerating beautifully.' },
-      { delay: 28, label: '4 Weeks', subject: 'Ready for Your Next Session?', body: 'For optimal results, we recommend a series of 3-4 treatments spaced 4-6 weeks apart. Ready to book your next microneedling session?' },
+      { delay: 28, label: '4 Weeks', subject: 'Ready for Your Next Session?', body: 'For optimal results, we recommend a series of 3-4 sessions spaced 4-6 weeks apart. Ready to book your next microneedling session?' },
     ],
   },
   {
-    id: 'tmpl-ipl', service: 'IPL', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-IPL Care Instructions', body: 'Treated areas may appear slightly red or feel warm. Dark spots will darken before they flake off — this is normal! Avoid sun exposure and use SPF 50 religiously.' },
-      { delay: 2, label: '48 Hours', subject: 'IPL Recovery Update', body: 'Darkened spots are part of the healing process and will begin to flake off within 5-7 days. Do not pick at them. Keep the area moisturized.' },
+    id: 'tmpl-ipl', service: 'TRX', messages: [
+      { delay: 0, label: 'Immediate', subject: 'Post-TRX Care Instructions', body: 'Treated areas may appear slightly red or feel warm. Dark spots will darken before they flake off — this is normal! Avoid sun exposure and use SPF 50 religiously.' },
+      { delay: 2, label: '48 Hours', subject: 'TRX Recovery Update', body: 'Darkened spots are part of the healing process and will begin to flake off within 5-7 days. Do not pick at them. Keep the area moisturized.' },
       { delay: 10, label: '10 Days', subject: 'How Are Your Results?', body: 'Your skin should be looking clearer as those dark spots have shed. Full results continue to improve over the next 2-4 weeks as collagen remodels.' },
-      { delay: 28, label: '4 Weeks', subject: 'Next IPL Session', body: 'For best results, most patients benefit from a series of 3-5 IPL treatments. Ready to schedule your next photofacial? Each session builds on the last.' },
+      { delay: 28, label: '4 Weeks', subject: 'Next TRX Session', body: 'For best results, most clients benefit from a series of 3-5 TRX sessions. Ready to schedule your next photofacial? Each session builds on the last.' },
     ],
   },
   {
@@ -53,7 +53,7 @@ const TEMPLATES = [
     id: 'tmpl-laser-hair', service: 'Laser Hair Removal', messages: [
       { delay: 0, label: 'Immediate', subject: 'Post-Laser Hair Removal Care', body: 'Mild redness and bumps are normal. Apply aloe vera or a cool compress. Avoid hot showers, saunas, and exercise for 24 hours. Do not shave the area for 48 hours.' },
       { delay: 2, label: '48 Hours', subject: 'Recovery Check-In', body: 'Redness should be subsiding. You can resume shaving if needed but avoid waxing or plucking — these remove the hair root we are targeting.' },
-      { delay: 10, label: '10 Days', subject: 'Shedding Phase', body: 'You may notice treated hairs shedding or "pushing out" — this means the treatment is working! Gently exfoliate in the shower to help the process.' },
+      { delay: 10, label: '10 Days', subject: 'Shedding Phase', body: 'You may notice treated hairs shedding or "pushing out" — this means the session is working! Gently exfoliate in the shower to help the process.' },
       { delay: 42, label: '6 Weeks', subject: 'Next Laser Session', body: 'Time for your next laser hair removal session! Treatments are spaced 4-6 weeks apart to catch hair in the active growth phase. Book now to stay on track.' },
     ],
   },
@@ -85,9 +85,9 @@ const TEMPLATES = [
   {
     id: 'tmpl-hrt', service: 'Hormone Replacement (HRT)', messages: [
       { delay: 0, label: 'Day 1', subject: 'After Your HRT Treatment', body: 'Your hormone pellets have been inserted. Keep the insertion site clean and dry for 24 hours. Avoid submerging in water (pools, baths) for 5 days. Mild soreness at the site is normal.' },
-      { delay: 14, label: 'Week 2', subject: 'Hormones Adjusting', body: 'Your hormones are starting to optimize. You may notice improved energy, mood, or sleep. Some patients experience a brief adjustment period — this is normal. Report any unusual symptoms.' },
+      { delay: 14, label: 'Week 2', subject: 'Hormones Adjusting', body: 'Your hormones are starting to optimize. You may notice improved energy, mood, or sleep. Some clients experience a brief adjustment period — this is normal. Report any unusual symptoms.' },
       { delay: 60, label: 'Month 2', subject: 'How Are You Feeling?', body: 'You should be feeling the full benefits now. Schedule your follow-up labs so we can check your hormone levels and ensure everything is optimized. Book your lab appointment.' },
-      { delay: 90, label: '3 Months', subject: 'Re-Pellet Reminder', body: 'It is almost time for your next pellet insertion. Most patients need re-pelting every 3-4 months for women and 4-6 months for men. Book your appointment to maintain your levels.' },
+      { delay: 90, label: '3 Months', subject: 'Re-Pellet Reminder', body: 'It is almost time for your next pellet insertion. Most clients need re-pelting every 3-4 months for women and 4-6 months for men. Book your appointment to maintain your levels.' },
     ],
   },
   {
@@ -100,46 +100,46 @@ const TEMPLATES = [
   },
 ];
 
-function initAftercare() {
-  if (localStorage.getItem('ms_aftercare_init')) return;
+function initRecoveryTips() {
+  if (localStorage.getItem('rp_recovery_tips_init')) return;
 
-  const patients = getPatients();
-  if (patients.length === 0) return;
+  const clients = getPatients();
+  if (clients.length === 0) return;
 
   const now = new Date();
   const d = (offset) => { const dt = new Date(now); dt.setDate(dt.getDate() + offset); return dt.toISOString(); };
 
   const sequences = [
-    { id: 'AC-1001', patientId: patients[0]?.id, patientName: `${patients[0]?.firstName} ${patients[0]?.lastName}`, templateId: 'tmpl-botox', service: 'Botox', startedAt: d(-5), status: 'active', messagesSent: [
+    { id: 'AC-1001', patientId: clients[0]?.id, patientName: `${clients[0]?.firstName} ${clients[0]?.lastName}`, templateId: 'tmpl-botox', service: 'Reformer', startedAt: d(-5), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-5), status: 'sent' },
       { index: 1, sentAt: d(-3), status: 'sent' },
     ]},
-    { id: 'AC-1002', patientId: patients[1]?.id, patientName: `${patients[1]?.firstName} ${patients[1]?.lastName}`, templateId: 'tmpl-filler', service: 'Filler', startedAt: d(-2), status: 'active', messagesSent: [
+    { id: 'AC-1002', patientId: clients[1]?.id, patientName: `${clients[1]?.firstName} ${clients[1]?.lastName}`, templateId: 'tmpl-filler', service: 'Barre', startedAt: d(-2), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-2), status: 'sent' },
       { index: 1, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1003', patientId: patients[2]?.id, patientName: `${patients[2]?.firstName} ${patients[2]?.lastName}`, templateId: 'tmpl-microneedling', service: 'Microneedling', startedAt: d(-8), status: 'active', messagesSent: [
+    { id: 'AC-1003', patientId: clients[2]?.id, patientName: `${clients[2]?.firstName} ${clients[2]?.lastName}`, templateId: 'tmpl-microneedling', service: 'Private Session', startedAt: d(-8), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-8), status: 'sent' },
       { index: 1, sentAt: d(-7), status: 'sent' },
       { index: 2, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1004', patientId: patients[3]?.id, patientName: `${patients[3]?.firstName} ${patients[3]?.lastName}`, templateId: 'tmpl-ipl', service: 'IPL', startedAt: d(-3), status: 'active', messagesSent: [
+    { id: 'AC-1004', patientId: clients[3]?.id, patientName: `${clients[3]?.firstName} ${clients[3]?.lastName}`, templateId: 'tmpl-ipl', service: 'TRX', startedAt: d(-3), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-3), status: 'sent' },
       { index: 1, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1005', patientId: patients[5]?.id, patientName: `${patients[5]?.firstName} ${patients[5]?.lastName}`, templateId: 'tmpl-peel', service: 'Chemical Peel', startedAt: d(-1), status: 'active', messagesSent: [
+    { id: 'AC-1005', patientId: clients[5]?.id, patientName: `${clients[5]?.firstName} ${clients[5]?.lastName}`, templateId: 'tmpl-peel', service: 'Chemical Peel', startedAt: d(-1), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1006', patientId: patients[7]?.id, patientName: `${patients[7]?.firstName} ${patients[7]?.lastName}`, templateId: 'tmpl-laser-hair', service: 'Laser Hair Removal', startedAt: d(0), status: 'active', messagesSent: [
+    { id: 'AC-1006', patientId: clients[7]?.id, patientName: `${clients[7]?.firstName} ${clients[7]?.lastName}`, templateId: 'tmpl-laser-hair', service: 'Laser Hair Removal', startedAt: d(0), status: 'active', messagesSent: [
       { index: 0, sentAt: d(0), status: 'sent' },
     ]},
-    { id: 'AC-1007', patientId: patients[9]?.id, patientName: `${patients[9]?.firstName} ${patients[9]?.lastName}`, templateId: 'tmpl-botox', service: 'Botox', startedAt: d(-90), status: 'completed', messagesSent: [
+    { id: 'AC-1007', patientId: clients[9]?.id, patientName: `${clients[9]?.firstName} ${clients[9]?.lastName}`, templateId: 'tmpl-botox', service: 'Reformer', startedAt: d(-90), status: 'completed', messagesSent: [
       { index: 0, sentAt: d(-90), status: 'sent' },
       { index: 1, sentAt: d(-88), status: 'sent' },
       { index: 2, sentAt: d(-76), status: 'sent' },
       { index: 3, sentAt: d(-6), status: 'sent' },
     ]},
-    { id: 'AC-1008', patientId: patients[12]?.id, patientName: `${patients[12]?.firstName} ${patients[12]?.lastName}`, templateId: 'tmpl-filler', service: 'Filler', startedAt: d(-10), status: 'active', messagesSent: [
+    { id: 'AC-1008', patientId: clients[12]?.id, patientName: `${clients[12]?.firstName} ${clients[12]?.lastName}`, templateId: 'tmpl-filler', service: 'Barre', startedAt: d(-10), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-10), status: 'sent' },
       { index: 1, sentAt: d(-9), status: 'sent' },
       { index: 2, sentAt: d(-3), status: 'sent' },
@@ -147,14 +147,14 @@ function initAftercare() {
   ];
 
   save(sequences);
-  localStorage.setItem('ms_aftercare_init', 'true');
+  localStorage.setItem('rp_recovery_tips_init', 'true');
 }
 
-export default function Aftercare() {
+export default function RecoveryTips() {
   const s = useStyles();
   const [, setTick] = useState(0);
   useEffect(() => subscribe(() => setTick(t => t + 1)), []);
-  useEffect(() => { initAftercare(); }, []);
+  useEffect(() => { initRecoveryTips(); }, []);
 
   const [tab, setTab] = useState('dashboard');
   const [search, setSearch] = useState('');
@@ -167,7 +167,7 @@ export default function Aftercare() {
   const [expandedSeq, setExpandedSeq] = useState(null);
 
   const sequences = get();
-  const patients = getPatients();
+  const clients = getPatients();
   const now = new Date();
 
   // Dashboard stats
@@ -211,7 +211,7 @@ export default function Aftercare() {
 
   const handleTrigger = () => {
     if (!triggerPatient || !triggerTemplate) return;
-    const pat = patients.find(p => p.id === triggerPatient);
+    const pat = clients.find(p => p.id === triggerPatient);
     const tmpl = TEMPLATES.find(t => t.id === triggerTemplate);
     if (!pat || !tmpl) return;
     const all = get();
@@ -270,8 +270,8 @@ export default function Aftercare() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Aftercare</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Automated post-treatment care sequences for every patient</p>
+          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Recovery Tips</h1>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Automated post-session care sequences for every patient</p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={() => setShowTemplates(true)} style={s.pillOutline}>View Templates</button>
@@ -354,7 +354,7 @@ export default function Aftercare() {
       {tab === 'sequences' && (
         <div>
           <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patients or services..." style={{ ...s.input, maxWidth: 260 }} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search clients or services..." style={{ ...s.input, maxWidth: 260 }} />
             <div style={{ display: 'flex', gap: 6 }}>
               {[['all', 'All'], ['active', 'Active'], ['completed', 'Completed']].map(([id, label]) => (
                 <button key={id} onClick={() => setFilter(id)} style={{
@@ -497,7 +497,7 @@ export default function Aftercare() {
       {showTemplates && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowTemplates(false)}>
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 640, width: '90%', boxShadow: s.shadowLg, maxHeight: '85vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Aftercare Templates</h2>
+            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Recovery Tips Templates</h2>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Pre-built message sequences for each service type</p>
             {TEMPLATES.map(tmpl => (
               <div key={tmpl.id} style={{ marginBottom: 20, padding: 16, background: '#FAFAFA', borderRadius: 10 }}>
@@ -524,13 +524,13 @@ export default function Aftercare() {
       {showTrigger && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowTrigger(false)}>
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 480, width: '90%', boxShadow: s.shadowLg }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Start Aftercare Sequence</h2>
-            <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Select a patient and treatment type to begin automated care messages</p>
+            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Start Recovery Tips Sequence</h2>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Select a patient and session type to begin automated care messages</p>
             <div style={{ marginBottom: 16 }}>
               <label style={s.label}>Patient</label>
               <select value={triggerPatient} onChange={e => setTriggerPatient(e.target.value)} style={{ ...s.input, cursor: 'pointer' }}>
                 <option value="">Select a patient...</option>
-                {patients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
+                {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
               </select>
             </div>
             <div style={{ marginBottom: 24 }}>

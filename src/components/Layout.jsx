@@ -11,19 +11,21 @@ const NAV_ITEMS = [
     { path: '/admin', label: 'Dashboard', icon: 'grid' },
     { path: '/admin/checkin', label: 'Check-In', icon: 'clipboard' },
   ]},
-  { section: 'Patients', items: [
-    { path: '/admin/patients', label: 'Patients', icon: 'users' },
+  { section: 'Clients', items: [
+    { path: '/admin/clients', label: 'Clients', icon: 'users' },
     { path: '/admin/schedule', label: 'Schedule', icon: 'calendar' },
-    { path: '/admin/treatments', label: 'Treatment Plans', icon: 'clipboard' },
-    { path: '/admin/charts', label: 'Clinical Charts', icon: 'clipboard' },
-    { path: '/admin/photos', label: 'Before & After', icon: 'heart' },
-    { path: '/admin/waivers', label: 'Consent & Waivers', icon: 'clipboard' },
-    { path: '/admin/aftercare', label: 'Aftercare', icon: 'heart' },
+    { path: '/admin/sessions', label: 'Class Packages', icon: 'clipboard' },
+    { path: '/admin/charts', label: 'Progress Tracking', icon: 'clipboard' },
+    { path: '/admin/photos', label: 'Transformations', icon: 'heart' },
+    { path: '/admin/waivers', label: 'Waivers', icon: 'clipboard' },
+    { path: '/admin/recovery-tips', label: 'Recovery Tips', icon: 'heart' },
   ]},
   { section: 'Billing', items: [
     { path: '/admin/memberships', label: 'Memberships', icon: 'users' },
-    { path: '/admin/wallet', label: 'Patient Wallet', icon: 'package' },
+    { path: '/admin/membership-perks', label: 'Membership Perks', icon: 'heart' },
+    { path: '/admin/wallet', label: 'Client Wallet', icon: 'package' },
     { path: '/admin/referrals', label: 'Referrals', icon: 'share' },
+    { path: '/admin/loyalty', label: 'Loyalty Program', icon: 'heart' },
   ]},
   { section: 'Operations', items: [
     { path: '/admin/inventory', label: 'Inventory', icon: 'package' },
@@ -36,6 +38,49 @@ const NAV_ITEMS = [
     { path: '/admin/email', label: 'Email', icon: 'mail' },
     { path: '/admin/texts', label: 'Text Messages', icon: 'message' },
     { path: '/admin/social', label: 'Social Media', icon: 'share' },
+    { path: '/admin/tiktok', label: 'TikTok Strategy', icon: 'share' },
+    { path: '/admin/group-bookings', label: 'Group Bookings', icon: 'calendar' },
+  ]},
+  { section: 'Content', items: [
+    { path: '/admin/on-demand', label: 'On-Demand Library', icon: 'share' },
+    { path: '/admin/brand-guide', label: 'Brand Guide', icon: 'clipboard' },
+  ]},
+  { section: 'Body Intelligence', items: [
+    { path: '/admin/posture', label: 'Posture AI', icon: 'heart' },
+    { path: '/admin/posture-timelapse', label: 'Posture Time-lapse', icon: 'heart' },
+    { path: '/admin/movement-rx', label: 'Movement Rx', icon: 'clipboard' },
+    { path: '/admin/ai-intake', label: 'AI Intake → Rx', icon: 'clipboard' },
+    { path: '/admin/fatigue', label: 'Fatigue Tracker', icon: 'heart' },
+    { path: '/admin/spring-engine', label: 'Spring Engine', icon: 'settings' },
+    { path: '/admin/sequencer', label: 'Class Sequencer', icon: 'calendar' },
+    { path: '/admin/wearables', label: 'Wearables Hub', icon: 'heart' },
+    { path: '/admin/ar-simulator', label: 'AR Reformer', icon: 'grid' },
+  ]},
+  { section: 'Retention & Growth', items: [
+    { path: '/admin/retention-brain', label: 'Retention Brain', icon: 'users' },
+    { path: '/admin/cohort-analysis', label: 'Cohort Analysis', icon: 'bar-chart' },
+    { path: '/admin/referral-engine', label: 'Referral Engine', icon: 'share' },
+    { path: '/admin/challenges', label: 'Challenges', icon: 'heart' },
+    { path: '/admin/recovery-text', label: 'Recovery Texts', icon: 'message' },
+  ]},
+  { section: 'Studio Tech', items: [
+    { path: '/admin/instructors', label: 'Instructor Metrics', icon: 'bar-chart' },
+    { path: '/admin/voice-clone', label: 'Voice Clone', icon: 'message' },
+    { path: '/admin/virtual-studio', label: 'Virtual Studio', icon: 'share' },
+    { path: '/admin/ai-front-desk', label: 'AI Front Desk', icon: 'message' },
+    { path: '/admin/smart-inventory', label: 'Smart Inventory', icon: 'package' },
+    { path: '/admin/voice-ai', label: 'Voice AI Phone', icon: 'message' },
+    { path: '/admin/live-dashboard', label: 'Live Dashboard', icon: 'grid' },
+  ]},
+  { section: 'Intelligence', items: [
+    { path: '/admin/natural-language-bi', label: 'Ask Studio AI', icon: 'message' },
+    { path: '/admin/class-recommender', label: 'Class Recommender', icon: 'heart' },
+    { path: '/admin/dynamic-pricing', label: 'Dynamic Pricing', icon: 'bar-chart' },
+    { path: '/admin/instructor-tipping', label: 'Instructor Tipping', icon: 'heart' },
+  ]},
+  { section: 'Staff', items: [
+    { path: '/admin/training', label: 'Teacher Training', icon: 'clipboard' },
+    { path: '/admin/trainee-portal', label: 'Trainee Portal', icon: 'users' },
   ]},
   { section: 'Reporting', items: [
     { path: '/admin/reports', label: 'Reports', icon: 'bar-chart' },
@@ -179,10 +224,10 @@ export default function Layout({ children }) {
         {!collapsed && (
           <div>
             <div style={{ font: "600 14px 'Inter', sans-serif", color: '#FFFFFF', lineHeight: 1.2 }}>
-              {settings.businessName || 'MedSpa'}
+              {settings.businessName || 'Remedy'}
             </div>
             <div style={{ font: "400 11px 'Inter', sans-serif", color: sidebarMuted }}>
-              {settings.tagline || 'Platform'}
+              {settings.tagline || 'Pilates & Barre'}
             </div>
           </div>
         )}
@@ -240,7 +285,7 @@ export default function Layout({ children }) {
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F5F3F0', position: 'relative' }}>
+    <div style={{ minHeight: '100vh', background: '#FAF6F1', position: 'relative' }}>
 
       {/* Desktop sidebar */}
       <div className="sidebar-desktop" style={{ display: 'block' }}>

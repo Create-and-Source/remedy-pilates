@@ -6,7 +6,7 @@ import { useStyles } from '../theme';
 import { getServices, getPatients } from '../data/store';
 
 const TAX_RATE = 0.086; // 8.6%
-const TX_KEY = 'ms_transactions';
+const TX_KEY = 'rp_transactions';
 
 function getTransactions() {
   try { return JSON.parse(localStorage.getItem(TX_KEY)) || []; } catch { return []; }
@@ -21,16 +21,16 @@ function saveTransaction(tx) {
 
 function getWallet(patientId) {
   try {
-    const wallets = JSON.parse(localStorage.getItem('ms_wallets')) || {};
+    const wallets = JSON.parse(localStorage.getItem('rp_wallets')) || {};
     return wallets[patientId] || { membershipUnits: 0, giftCard: 0, credit: 0 };
   } catch { return { membershipUnits: 0, giftCard: 0, credit: 0 }; }
 }
 
 function updateWallet(patientId, updates) {
   try {
-    const wallets = JSON.parse(localStorage.getItem('ms_wallets')) || {};
+    const wallets = JSON.parse(localStorage.getItem('rp_wallets')) || {};
     wallets[patientId] = { ...getWallet(patientId), ...updates };
-    localStorage.setItem('ms_wallets', JSON.stringify(wallets));
+    localStorage.setItem('rp_wallets', JSON.stringify(wallets));
   } catch {}
 }
 

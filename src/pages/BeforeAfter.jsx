@@ -1,4 +1,4 @@
-// Before & After Photos — clinical documentation + marketing asset management
+// Transformations Photos — clinical documentation + marketing asset management
 // Standardized angles, patient consent tracking, comparison views
 import { useState, useEffect, useRef } from 'react';
 import { useStyles } from '../theme';
@@ -18,23 +18,23 @@ const ANGLES = [...new Set([...FACE_ANGLES, ...BODY_ANGLES, ...SCALP_ANGLES])];
 const LIGHTING = ['Clinical (white)', 'Natural', 'Ring Light'];
 
 function initPhotos() {
-  if (localStorage.getItem('ms_photos_init')) return;
-  const store = JSON.parse(localStorage.getItem('ms_photos') || '[]');
-  if (store.length > 0) { localStorage.setItem('ms_photos_init', 'true'); return; }
+  if (localStorage.getItem('rp_photos_init')) return;
+  const store = JSON.parse(localStorage.getItem('rp_photos') || '[]');
+  if (store.length > 0) { localStorage.setItem('rp_photos_init', 'true'); return; }
 
   // Seed demo photo sets (no actual images — placeholders)
   const sets = [
-    { id: 'PHT-1', patientId: 'PAT-1000', patientName: 'Emma Johnson', serviceId: 'SVC-1', serviceName: 'Botox', providerId: 'PRV-1', angle: 'Front', phase: 'before', date: '2025-12-10', notes: 'Forehead lines at rest, crows feet moderate', consent: true, createdAt: '2025-12-10T10:00:00Z' },
-    { id: 'PHT-2', patientId: 'PAT-1000', patientName: 'Emma Johnson', serviceId: 'SVC-1', serviceName: 'Botox', providerId: 'PRV-1', angle: 'Front', phase: 'after', date: '2025-12-24', notes: '2 weeks post — significant reduction in forehead lines', consent: true, createdAt: '2025-12-24T10:00:00Z' },
-    { id: 'PHT-3', patientId: 'PAT-1003', patientName: 'Ava Jones', serviceId: 'SVC-6', serviceName: 'IPL Photofacial', providerId: 'PRV-2', angle: 'Left 45°', phase: 'before', date: '2026-01-05', notes: 'Sun damage, dark spots on cheekbone', consent: true, createdAt: '2026-01-05T09:00:00Z' },
-    { id: 'PHT-4', patientId: 'PAT-1003', patientName: 'Ava Jones', serviceId: 'SVC-6', serviceName: 'IPL Photofacial', providerId: 'PRV-2', angle: 'Left 45°', phase: 'after', date: '2026-02-15', notes: 'After 3 sessions — 80% clearing of pigmentation', consent: true, createdAt: '2026-02-15T09:00:00Z' },
-    { id: 'PHT-5', patientId: 'PAT-1002', patientName: 'Sophia Brown', serviceId: 'SVC-5', serviceName: 'RF Microneedling', providerId: 'PRV-3', angle: 'Front', phase: 'before', date: '2026-01-20', notes: 'Acne scarring, uneven texture', consent: true, createdAt: '2026-01-20T11:00:00Z' },
-    { id: 'PHT-6', patientId: 'PAT-1002', patientName: 'Sophia Brown', serviceId: 'SVC-5', serviceName: 'RF Microneedling', providerId: 'PRV-3', angle: 'Front', phase: 'after', date: '2026-03-01', notes: 'After 3 sessions — significant improvement in texture', consent: true, createdAt: '2026-03-01T11:00:00Z' },
-    { id: 'PHT-7', patientId: 'PAT-1001', patientName: 'Olivia Williams', serviceId: 'SVC-2', serviceName: 'Juvederm Filler', providerId: 'PRV-1', angle: 'Front', phase: 'before', date: '2026-02-01', notes: 'Volume loss nasolabial folds', consent: true, createdAt: '2026-02-01T14:00:00Z' },
-    { id: 'PHT-8', patientId: 'PAT-1001', patientName: 'Olivia Williams', serviceId: 'SVC-2', serviceName: 'Juvederm Filler', providerId: 'PRV-1', angle: 'Front', phase: 'after', date: '2026-02-01', notes: 'Immediately post — 1 syringe each side', consent: true, createdAt: '2026-02-01T15:00:00Z' },
+    { id: 'PHT-1', patientId: 'PAT-1000', patientName: 'Emma Johnson', serviceId: 'SVC-1', serviceName: 'Reformer', providerId: 'PRV-1', angle: 'Front', phase: 'before', date: '2025-12-10', notes: 'Forehead lines at rest, crows feet moderate', consent: true, createdAt: '2025-12-10T10:00:00Z' },
+    { id: 'PHT-2', patientId: 'PAT-1000', patientName: 'Emma Johnson', serviceId: 'SVC-1', serviceName: 'Reformer', providerId: 'PRV-1', angle: 'Front', phase: 'after', date: '2025-12-24', notes: '2 weeks post — significant reduction in forehead lines', consent: true, createdAt: '2025-12-24T10:00:00Z' },
+    { id: 'PHT-3', patientId: 'PAT-1003', patientName: 'Ava Jones', serviceId: 'SVC-6', serviceName: 'TRX Photofacial', providerId: 'PRV-2', angle: 'Left 45°', phase: 'before', date: '2026-01-05', notes: 'Sun damage, dark spots on cheekbone', consent: true, createdAt: '2026-01-05T09:00:00Z' },
+    { id: 'PHT-4', patientId: 'PAT-1003', patientName: 'Ava Jones', serviceId: 'SVC-6', serviceName: 'TRX Photofacial', providerId: 'PRV-2', angle: 'Left 45°', phase: 'after', date: '2026-02-15', notes: 'After 3 sessions — 80% clearing of pigmentation', consent: true, createdAt: '2026-02-15T09:00:00Z' },
+    { id: 'PHT-5', patientId: 'PAT-1002', patientName: 'Sophia Brown', serviceId: 'SVC-5', serviceName: 'RF Private Session', providerId: 'PRV-3', angle: 'Front', phase: 'before', date: '2026-01-20', notes: 'Acne scarring, uneven texture', consent: true, createdAt: '2026-01-20T11:00:00Z' },
+    { id: 'PHT-6', patientId: 'PAT-1002', patientName: 'Sophia Brown', serviceId: 'SVC-5', serviceName: 'RF Private Session', providerId: 'PRV-3', angle: 'Front', phase: 'after', date: '2026-03-01', notes: 'After 3 sessions — significant improvement in texture', consent: true, createdAt: '2026-03-01T11:00:00Z' },
+    { id: 'PHT-7', patientId: 'PAT-1001', patientName: 'Olivia Williams', serviceId: 'SVC-2', serviceName: 'Juvederm Barre', providerId: 'PRV-1', angle: 'Front', phase: 'before', date: '2026-02-01', notes: 'Volume loss nasolabial folds', consent: true, createdAt: '2026-02-01T14:00:00Z' },
+    { id: 'PHT-8', patientId: 'PAT-1001', patientName: 'Olivia Williams', serviceId: 'SVC-2', serviceName: 'Juvederm Barre', providerId: 'PRV-1', angle: 'Front', phase: 'after', date: '2026-02-01', notes: 'Immediately post — 1 syringe each side', consent: true, createdAt: '2026-02-01T15:00:00Z' },
   ];
-  localStorage.setItem('ms_photos', JSON.stringify(sets));
-  localStorage.setItem('ms_photos_init', 'true');
+  localStorage.setItem('rp_photos', JSON.stringify(sets));
+  localStorage.setItem('rp_photos_init', 'true');
 }
 
 export default function BeforeAfter() {
@@ -51,7 +51,7 @@ export default function BeforeAfter() {
   const [form, setForm] = useState({ patientId: '', serviceId: '', angle: 'Front', phase: 'before', lighting: 'Clinical (white)', notes: '', consent: false });
 
   const photos = getPhotos();
-  const patients = getPatients();
+  const clients = getPatients();
   const services = getServices();
   const providers = getProviders();
 
@@ -77,7 +77,7 @@ export default function BeforeAfter() {
 
   const handleUpload = () => {
     if (!form.patientId || !form.serviceId || !form.consent) return;
-    const pat = patients.find(p => p.id === form.patientId);
+    const pat = clients.find(p => p.id === form.patientId);
     const svc = services.find(sv => sv.id === form.serviceId);
     addPhoto({
       ...form,
@@ -94,8 +94,8 @@ export default function BeforeAfter() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Before & After</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{photos.length} photos across {sets.length} treatment sets — clinical documentation + marketing</p>
+          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Transformations</h1>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{photos.length} photos across {sets.length} session sets — clinical documentation + marketing</p>
         </div>
         <button onClick={() => setShowUpload(true)} style={s.pillAccent}>+ Upload Photos</button>
       </div>
@@ -198,7 +198,7 @@ export default function BeforeAfter() {
                 <label style={s.label}>Patient</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select patient...</option>
-                  {patients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
+                  {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>
               <div>

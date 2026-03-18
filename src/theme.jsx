@@ -1,16 +1,16 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
-const THEME_KEY = 'ms_theme';
+const THEME_KEY = 'rp_theme';
 
 export const PRESETS = [
-  { id: 'default', name: 'Monochrome', accent: '#111111', accentLight: '#F5F5F5', accentText: '#FFFFFF' },
-  { id: 'gold', name: 'Gold', accent: '#B8960C', accentLight: '#FBF7EC', accentText: '#FFFFFF' },
-  { id: 'rose', name: 'Rose', accent: '#BE185D', accentLight: '#FDF2F8', accentText: '#FFFFFF' },
-  { id: 'ocean', name: 'Ocean', accent: '#0369A1', accentLight: '#F0F9FF', accentText: '#FFFFFF' },
-  { id: 'sage', name: 'Sage', accent: '#4D7C56', accentLight: '#F0FDF4', accentText: '#FFFFFF' },
-  { id: 'plum', name: 'Plum', accent: '#7C3AED', accentLight: '#F5F3FF', accentText: '#FFFFFF' },
-  { id: 'coral', name: 'Coral', accent: '#DC6843', accentLight: '#FFF7ED', accentText: '#FFFFFF' },
-  { id: 'slate', name: 'Slate', accent: '#475569', accentLight: '#F8FAFC', accentText: '#FFFFFF' },
+  { id: 'default', name: 'Clay', accent: '#C4704B', accentLight: '#FDF5F0', accentText: '#FFFFFF' },
+  { id: 'eucalyptus', name: 'Eucalyptus', accent: '#6B8F71', accentLight: '#F0F5F1', accentText: '#FFFFFF' },
+  { id: 'blush', name: 'Blush', accent: '#C47B8E', accentLight: '#FDF2F5', accentText: '#FFFFFF' },
+  { id: 'storm', name: 'Storm', accent: '#5B7B8F', accentLight: '#F0F4F7', accentText: '#FFFFFF' },
+  { id: 'linen', name: 'Linen', accent: '#A68B6B', accentLight: '#F9F5F0', accentText: '#FFFFFF' },
+  { id: 'dusk', name: 'Dusk', accent: '#8B6B94', accentLight: '#F5F0F7', accentText: '#FFFFFF' },
+  { id: 'ember', name: 'Ember', accent: '#B85C38', accentLight: '#FDF0EA', accentText: '#FFFFFF' },
+  { id: 'charcoal', name: 'Charcoal', accent: '#3D3D3D', accentLight: '#F5F5F5', accentText: '#FFFFFF' },
 ];
 
 function loadTheme() {
@@ -55,7 +55,7 @@ export function useTheme() {
   return useContext(ThemeContext);
 }
 
-// Generate a unique gradient for patient avatars based on their name
+// Generate a unique gradient for client avatars based on their name
 const AVATAR_PALETTES = [
   ['#FF6B6B', '#EE5A24'], ['#A29BFE', '#6C5CE7'], ['#55E6C1', '#1ABC9C'],
   ['#FDA7DF', '#D980FA'], ['#74B9FF', '#0984E3'], ['#FDCB6E', '#F39C12'],
@@ -93,10 +93,11 @@ export function useStyles() {
     accentLight: AL,
     accentText: AT,
     // Typography
-    FONT: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    FONT: "'Outfit', -apple-system, BlinkMacSystemFont, sans-serif",
+    DISPLAY: "'Playfair Display', Georgia, serif",
     MONO: "'JetBrains Mono', 'SF Mono', monospace",
     // Colors
-    bg: '#F5F3F0',
+    bg: '#FAF6F1',
     card: 'rgba(255,255,255,0.72)',
     cardSolid: '#FFFFFF',
     border: 'rgba(255,255,255,0.6)',
@@ -114,23 +115,23 @@ export function useStyles() {
     // Common styles — premium pill buttons
     pill: {
       padding: '9px 20px', borderRadius: 100, border: 'none', cursor: 'pointer',
-      font: "500 13px 'Inter', sans-serif", transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+      font: "500 13px 'Outfit', sans-serif", transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
     },
     pillAccent: {
       padding: '9px 20px', borderRadius: 100, border: 'none', cursor: 'pointer',
-      font: "500 13px 'Inter', sans-serif", transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+      font: "500 13px 'Outfit', sans-serif", transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
       background: A, color: AT,
       boxShadow: `0 2px 12px ${A}33`,
     },
     pillOutline: {
       padding: '9px 20px', borderRadius: 100, cursor: 'pointer',
-      font: "500 13px 'Inter', sans-serif", transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+      font: "500 13px 'Outfit', sans-serif", transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
       background: 'rgba(255,255,255,0.5)', color: A, border: `1.5px solid ${A}40`,
       backdropFilter: 'blur(8px)',
     },
     pillGhost: {
       padding: '9px 20px', borderRadius: 100, cursor: 'pointer',
-      font: "500 13px 'Inter', sans-serif", transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+      font: "500 13px 'Outfit', sans-serif", transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
       background: 'rgba(255,255,255,0.4)', color: '#555', border: '1px solid rgba(0,0,0,0.06)',
       backdropFilter: 'blur(8px)',
     },
@@ -138,7 +139,7 @@ export function useStyles() {
       width: '100%', padding: '12px 16px',
       background: 'rgba(255,255,255,0.7)',
       border: '1px solid rgba(0,0,0,0.06)', borderRadius: 12,
-      font: "400 14px 'Inter', sans-serif", color: '#111', outline: 'none',
+      font: "400 14px 'Outfit', sans-serif", color: '#111', outline: 'none',
       transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)', boxSizing: 'border-box',
       backdropFilter: 'blur(8px)',
     },

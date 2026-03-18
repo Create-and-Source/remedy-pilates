@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useStyles } from '../theme';
 import { subscribe } from '../data/store';
 
-const STORE_KEY = 'ms_waitlist';
+const STORE_KEY = 'rp_waitlist';
 
 function getWaitlist() {
   try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; }
@@ -15,18 +15,18 @@ function seedWaitlist() {
   const d = (offset) => { const dt = new Date(now); dt.setDate(dt.getDate() + offset); return dt.toISOString(); };
 
   const entries = [
-    { name: 'Sophia Brown', patientId: 'PAT-1002', service: 'Botox', preferredDays: ['Monday', 'Wednesday'], preferredTimes: 'Morning', status: 'waiting' },
-    { name: 'Ava Jones', patientId: 'PAT-1003', service: 'Juvederm Filler', preferredDays: ['Tuesday', 'Thursday'], preferredTimes: 'Afternoon', status: 'notified' },
-    { name: 'Mia Miller', patientId: 'PAT-1005', service: 'RF Microneedling', preferredDays: ['Friday'], preferredTimes: 'Morning', status: 'waiting' },
-    { name: 'Charlotte Davis', patientId: 'PAT-1006', service: 'IPL Photofacial', preferredDays: ['Monday', 'Tuesday'], preferredTimes: 'Any', status: 'confirmed' },
+    { name: 'Sophia Brown', patientId: 'PAT-1002', service: 'Reformer', preferredDays: ['Monday', 'Wednesday'], preferredTimes: 'Morning', status: 'waiting' },
+    { name: 'Ava Jones', patientId: 'PAT-1003', service: 'Juvederm Barre', preferredDays: ['Tuesday', 'Thursday'], preferredTimes: 'Afternoon', status: 'notified' },
+    { name: 'Mia Miller', patientId: 'PAT-1005', service: 'RF Private Session', preferredDays: ['Friday'], preferredTimes: 'Morning', status: 'waiting' },
+    { name: 'Charlotte Davis', patientId: 'PAT-1006', service: 'TRX Photofacial', preferredDays: ['Monday', 'Tuesday'], preferredTimes: 'Any', status: 'confirmed' },
     { name: 'Amelia Thompson', patientId: 'PAT-1007', service: 'Chemical Peel', preferredDays: ['Wednesday', 'Friday'], preferredTimes: 'Morning', status: 'booked' },
-    { name: 'Harper White', patientId: 'PAT-1008', service: 'Botox', preferredDays: ['Thursday'], preferredTimes: 'Afternoon', status: 'waiting' },
-    { name: 'Evelyn Lopez', patientId: 'PAT-1009', service: 'HydraFacial', preferredDays: ['Monday', 'Wednesday', 'Friday'], preferredTimes: 'Morning', status: 'expired' },
+    { name: 'Harper White', patientId: 'PAT-1008', service: 'Reformer', preferredDays: ['Thursday'], preferredTimes: 'Afternoon', status: 'waiting' },
+    { name: 'Evelyn Lopez', patientId: 'PAT-1009', service: 'Mat Pilates', preferredDays: ['Monday', 'Wednesday', 'Friday'], preferredTimes: 'Morning', status: 'expired' },
     { name: 'Abigail Taylor', patientId: 'PAT-1010', service: 'Sculptra', preferredDays: ['Tuesday'], preferredTimes: 'Afternoon', status: 'notified' },
     { name: 'Ella Thomas', patientId: 'PAT-1011', service: 'Laser Hair Removal', preferredDays: ['Monday', 'Thursday'], preferredTimes: 'Any', status: 'waiting' },
-    { name: 'Scarlett Hernandez', patientId: 'PAT-1012', service: 'RF Microneedling', preferredDays: ['Wednesday'], preferredTimes: 'Morning', status: 'booked' },
-    { name: 'Grace Moore', patientId: 'PAT-1013', service: 'Botox', preferredDays: ['Friday'], preferredTimes: 'Afternoon', status: 'waiting' },
-    { name: 'Chloe Martin', patientId: 'PAT-1014', service: 'Juvederm Filler', preferredDays: ['Tuesday', 'Thursday'], preferredTimes: 'Morning', status: 'confirmed' },
+    { name: 'Scarlett Hernandez', patientId: 'PAT-1012', service: 'RF Private Session', preferredDays: ['Wednesday'], preferredTimes: 'Morning', status: 'booked' },
+    { name: 'Grace Moore', patientId: 'PAT-1013', service: 'Reformer', preferredDays: ['Friday'], preferredTimes: 'Afternoon', status: 'waiting' },
+    { name: 'Chloe Martin', patientId: 'PAT-1014', service: 'Juvederm Barre', preferredDays: ['Tuesday', 'Thursday'], preferredTimes: 'Morning', status: 'confirmed' },
   ];
 
   const seed = entries.map((e, i) => ({
@@ -124,7 +124,7 @@ export default function Waitlist() {
     if (waiting.length === 0) return;
     const all = getWaitlist().map(e => e.status === 'waiting' ? { ...e, status: 'notified', notifiedAt: new Date().toISOString() } : e);
     setWaitlist(all);
-    setToast(`Notified ${waiting.length} waitlisted patients`);
+    setToast(`Notified ${waiting.length} waitlisted clients`);
     setTimeout(() => setToast(null), 3000);
     setTick(t => t + 1);
   };
@@ -211,7 +211,7 @@ export default function Waitlist() {
 
       {/* Filters */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patients or services..." style={{ ...s.input, maxWidth: 260 }} />
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search clients or services..." style={{ ...s.input, maxWidth: 260 }} />
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {[['all', 'All'], ['waiting', 'Waiting'], ['notified', 'Notified'], ['confirmed', 'Confirmed'], ['booked', 'Booked'], ['expired', 'Expired']].map(([id, label]) => (
             <button key={id} onClick={() => setFilter(id)} style={{

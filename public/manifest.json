@@ -1,11 +1,11 @@
 {
-  "name": "MedSpa Platform",
-  "short_name": "MedSpa",
-  "description": "Premium medspa management platform",
+  "name": "Remedy Pilates & Barre",
+  "short_name": "Remedy",
+  "description": "Studio management platform for Remedy Pilates & Barre",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAFAFA",
-  "theme_color": "#111111",
+  "background_color": "#FAF6F1",
+  "theme_color": "#C4704B",
   "orientation": "any",
   "icons": [
     {

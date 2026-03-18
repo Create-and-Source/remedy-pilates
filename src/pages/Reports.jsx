@@ -12,7 +12,7 @@ export default function Reports() {
   const [reportType, setReportType] = useState('revenue');
   const [period, setPeriod] = useState('month');
 
-  const patients = getPatients();
+  const clients = getPatients();
   const appointments = getAppointments();
   const services = getServices();
   const providers = getProviders();
@@ -56,19 +56,19 @@ export default function Reports() {
   }).sort((a, b) => b.revenue - a.revenue);
 
   // Patient retention
-  const activePatients = patients.filter(p => {
+  const activePatients = clients.filter(p => {
     if (!p.lastVisit) return false;
     const days = (today - new Date(p.lastVisit)) / (1000 * 60 * 60 * 24);
     return days <= 90;
   }).length;
-  const retentionRate = patients.length > 0 ? Math.round((activePatients / patients.length) * 100) : 0;
+  const retentionRate = clients.length > 0 ? Math.round((activePatients / clients.length) * 100) : 0;
 
-  const newPatientsThisMonth = patients.filter(p => p.createdAt?.startsWith(thisMonth)).length;
-  const avgSpend = patients.length > 0 ? patients.reduce((sum, p) => sum + p.totalSpent, 0) / patients.length : 0;
+  const newPatientsThisMonth = clients.filter(p => p.createdAt?.startsWith(thisMonth)).length;
+  const avgSpend = clients.length > 0 ? clients.reduce((sum, p) => sum + p.totalSpent, 0) / clients.length : 0;
 
   // Membership breakdown
   const memberCounts = { None: 0, Silver: 0, Gold: 0, Platinum: 0 };
-  patients.forEach(p => { memberCounts[p.membershipTier || 'None']++; });
+  clients.forEach(p => { memberCounts[p.membershipTier || 'None']++; });
 
   const exportCSV = (data, filename) => {
     if (!data.length) return;
@@ -94,7 +94,7 @@ export default function Reports() {
             const prov = providers.find(p => p.id === a.providerId);
             return { date: a.date, patient: a.patientName, service: svc?.name, provider: prov?.name, revenue: fmt(svc?.price || 0) };
           }),
-          `medspa-report-${today.toISOString().slice(0, 10)}.csv`
+          `studio-report-${today.toISOString().slice(0, 10)}.csv`
         )} style={s.pillOutline}>Export CSV</button>
       </div>
 
@@ -103,7 +103,7 @@ export default function Reports() {
         {[
           { label: 'Monthly Revenue', value: fmt(thisMonthRev), sub: revChange >= 0 ? `+${revChange}% vs last month` : `${revChange}% vs last month`, subColor: revChange >= 0 ? s.success : s.danger },
           { label: 'Treatments This Month', value: thisMonthAppts.length, sub: `${lastMonthAppts.length} last month` },
-          { label: 'Retention Rate', value: `${retentionRate}%`, sub: `${activePatients} active of ${patients.length}`, subColor: retentionRate > 70 ? s.success : s.warning },
+          { label: 'Retention Rate', value: `${retentionRate}%`, sub: `${activePatients} active of ${clients.length}`, subColor: retentionRate > 70 ? s.success : s.warning },
           { label: 'Avg Patient Spend', value: fmt(avgSpend), sub: `${newPatientsThisMonth} new this month` },
         ].map(k => (
           <div key={k.label} style={{ ...s.cardStyle, padding: '20px' }}>
@@ -132,7 +132,7 @@ export default function Reports() {
                 </div>
               </div>
             ))}
-            {topServices.length === 0 && <div style={{ padding: 20, font: `400 13px ${s.FONT}`, color: s.text3, textAlign: 'center' }}>No completed treatments yet</div>}
+            {topServices.length === 0 && <div style={{ padding: 20, font: `400 13px ${s.FONT}`, color: s.text3, textAlign: 'center' }}>No completed sessions yet</div>}
           </div>
         </div>
 
@@ -150,7 +150,7 @@ export default function Reports() {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ font: `600 14px ${s.MONO}`, color: s.text }}>{fmt(p.revenue)}</div>
-                  <div style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>{p.appointments} treatments</div>
+                  <div style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>{p.appointments} sessions</div>
                 </div>
               </div>
             ))}
@@ -169,7 +169,7 @@ export default function Reports() {
               <span style={{ font: `500 13px ${s.FONT}`, color: s.text, flex: 1 }}>{tier}</span>
               <span style={{ font: `500 13px ${s.MONO}`, color: s.text }}>{memberCounts[tier]}</span>
               <span style={{ font: `400 12px ${s.FONT}`, color: s.text3, width: 40, textAlign: 'right' }}>
-                {patients.length > 0 ? Math.round((memberCounts[tier] / patients.length) * 100) : 0}%
+                {clients.length > 0 ? Math.round((memberCounts[tier] / clients.length) * 100) : 0}%
               </span>
             </div>
           ))}

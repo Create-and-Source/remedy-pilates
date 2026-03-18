@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useStyles } from '../theme';
 import { subscribe } from '../data/store';
 
-const STORAGE_KEY = 'ms_referrals';
-const SETTINGS_KEY = 'ms_referral_settings';
+const STORAGE_KEY = 'rp_referrals';
+const SETTINGS_KEY = 'rp_referral_settings';
 
 function getReferrals() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
@@ -16,32 +16,32 @@ function getRefSettings() {
 function setRefSettings(data) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(data)); }
 
 function getPatients() {
-  try { return JSON.parse(localStorage.getItem('ms_patients')) || []; } catch { return []; }
+  try { return JSON.parse(localStorage.getItem('rp_clients')) || []; } catch { return []; }
 }
 
 function seedReferrals() {
-  if (localStorage.getItem('ms_referrals_seeded')) return;
-  const patients = getPatients();
-  if (patients.length < 12) return;
+  if (localStorage.getItem('rp_referrals_seeded')) return;
+  const clients = getPatients();
+  if (clients.length < 12) return;
 
   const now = new Date();
   const d = (offset) => { const dt = new Date(now); dt.setDate(dt.getDate() + offset); return dt.toISOString().slice(0, 10); };
 
   const seed = [
-    { id: 'REF-1', referrerId: patients[0].id, referrerName: `${patients[0].firstName} ${patients[0].lastName}`, code: `REF-${patients[0].firstName.toUpperCase()}-1000`, friendName: `${patients[10].firstName} ${patients[10].lastName}`, friendId: patients[10].id, friendEmail: patients[10].email, status: 'credited', referredDate: d(-45), bookedDate: d(-38), creditedDate: d(-38), referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-2', referrerId: patients[0].id, referrerName: `${patients[0].firstName} ${patients[0].lastName}`, code: `REF-${patients[0].firstName.toUpperCase()}-1000`, friendName: `${patients[11].firstName} ${patients[11].lastName}`, friendId: patients[11].id, friendEmail: patients[11].email, status: 'credited', referredDate: d(-30), bookedDate: d(-24), creditedDate: d(-24), referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-3', referrerId: patients[0].id, referrerName: `${patients[0].firstName} ${patients[0].lastName}`, code: `REF-${patients[0].firstName.toUpperCase()}-1000`, friendName: 'Taylor Swift', friendId: null, friendEmail: 'taylor@example.com', status: 'pending', referredDate: d(-5), bookedDate: null, creditedDate: null, referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-4', referrerId: patients[1].id, referrerName: `${patients[1].firstName} ${patients[1].lastName}`, code: `REF-${patients[1].firstName.toUpperCase()}-1001`, friendName: `${patients[12].firstName} ${patients[12].lastName}`, friendId: patients[12].id, friendEmail: patients[12].email, status: 'credited', referredDate: d(-60), bookedDate: d(-52), creditedDate: d(-52), referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-5', referrerId: patients[1].id, referrerName: `${patients[1].firstName} ${patients[1].lastName}`, code: `REF-${patients[1].firstName.toUpperCase()}-1001`, friendName: `${patients[13].firstName} ${patients[13].lastName}`, friendId: patients[13].id, friendEmail: patients[13].email, status: 'booked', referredDate: d(-10), bookedDate: d(-3), creditedDate: null, referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-6', referrerId: patients[2].id, referrerName: `${patients[2].firstName} ${patients[2].lastName}`, code: `REF-${patients[2].firstName.toUpperCase()}-1002`, friendName: `${patients[14].firstName} ${patients[14].lastName}`, friendId: patients[14].id, friendEmail: patients[14].email, status: 'credited', referredDate: d(-90), bookedDate: d(-82), creditedDate: d(-82), referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-7', referrerId: patients[3].id, referrerName: `${patients[3].firstName} ${patients[3].lastName}`, code: `REF-${patients[3].firstName.toUpperCase()}-1003`, friendName: 'Jordan Lee', friendId: null, friendEmail: 'jordan@example.com', status: 'pending', referredDate: d(-2), bookedDate: null, creditedDate: null, referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-8', referrerId: patients[4].id, referrerName: `${patients[4].firstName} ${patients[4].lastName}`, code: `REF-${patients[4].firstName.toUpperCase()}-1004`, friendName: `${patients[15].firstName} ${patients[15].lastName}`, friendId: patients[15].id, friendEmail: patients[15].email, status: 'booked', referredDate: d(-14), bookedDate: d(-7), creditedDate: null, referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-9', referrerId: patients[5].id, referrerName: `${patients[5].firstName} ${patients[5].lastName}`, code: `REF-${patients[5].firstName.toUpperCase()}-1005`, friendName: `${patients[16].firstName} ${patients[16].lastName}`, friendId: patients[16].id, friendEmail: patients[16].email, status: 'credited', referredDate: d(-40), bookedDate: d(-33), creditedDate: d(-33), referrerCredit: 50, friendCredit: 50 },
-    { id: 'REF-10', referrerId: patients[6].id, referrerName: `${patients[6].firstName} ${patients[6].lastName}`, code: `REF-${patients[6].firstName.toUpperCase()}-1006`, friendName: 'Morgan Blake', friendId: null, friendEmail: 'morgan@example.com', status: 'pending', referredDate: d(-1), bookedDate: null, creditedDate: null, referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-1', referrerId: clients[0].id, referrerName: `${clients[0].firstName} ${clients[0].lastName}`, code: `REF-${clients[0].firstName.toUpperCase()}-1000`, friendName: `${clients[10].firstName} ${clients[10].lastName}`, friendId: clients[10].id, friendEmail: clients[10].email, status: 'credited', referredDate: d(-45), bookedDate: d(-38), creditedDate: d(-38), referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-2', referrerId: clients[0].id, referrerName: `${clients[0].firstName} ${clients[0].lastName}`, code: `REF-${clients[0].firstName.toUpperCase()}-1000`, friendName: `${clients[11].firstName} ${clients[11].lastName}`, friendId: clients[11].id, friendEmail: clients[11].email, status: 'credited', referredDate: d(-30), bookedDate: d(-24), creditedDate: d(-24), referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-3', referrerId: clients[0].id, referrerName: `${clients[0].firstName} ${clients[0].lastName}`, code: `REF-${clients[0].firstName.toUpperCase()}-1000`, friendName: 'Taylor Swift', friendId: null, friendEmail: 'taylor@example.com', status: 'pending', referredDate: d(-5), bookedDate: null, creditedDate: null, referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-4', referrerId: clients[1].id, referrerName: `${clients[1].firstName} ${clients[1].lastName}`, code: `REF-${clients[1].firstName.toUpperCase()}-1001`, friendName: `${clients[12].firstName} ${clients[12].lastName}`, friendId: clients[12].id, friendEmail: clients[12].email, status: 'credited', referredDate: d(-60), bookedDate: d(-52), creditedDate: d(-52), referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-5', referrerId: clients[1].id, referrerName: `${clients[1].firstName} ${clients[1].lastName}`, code: `REF-${clients[1].firstName.toUpperCase()}-1001`, friendName: `${clients[13].firstName} ${clients[13].lastName}`, friendId: clients[13].id, friendEmail: clients[13].email, status: 'booked', referredDate: d(-10), bookedDate: d(-3), creditedDate: null, referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-6', referrerId: clients[2].id, referrerName: `${clients[2].firstName} ${clients[2].lastName}`, code: `REF-${clients[2].firstName.toUpperCase()}-1002`, friendName: `${clients[14].firstName} ${clients[14].lastName}`, friendId: clients[14].id, friendEmail: clients[14].email, status: 'credited', referredDate: d(-90), bookedDate: d(-82), creditedDate: d(-82), referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-7', referrerId: clients[3].id, referrerName: `${clients[3].firstName} ${clients[3].lastName}`, code: `REF-${clients[3].firstName.toUpperCase()}-1003`, friendName: 'Jordan Lee', friendId: null, friendEmail: 'jordan@example.com', status: 'pending', referredDate: d(-2), bookedDate: null, creditedDate: null, referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-8', referrerId: clients[4].id, referrerName: `${clients[4].firstName} ${clients[4].lastName}`, code: `REF-${clients[4].firstName.toUpperCase()}-1004`, friendName: `${clients[15].firstName} ${clients[15].lastName}`, friendId: clients[15].id, friendEmail: clients[15].email, status: 'booked', referredDate: d(-14), bookedDate: d(-7), creditedDate: null, referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-9', referrerId: clients[5].id, referrerName: `${clients[5].firstName} ${clients[5].lastName}`, code: `REF-${clients[5].firstName.toUpperCase()}-1005`, friendName: `${clients[16].firstName} ${clients[16].lastName}`, friendId: clients[16].id, friendEmail: clients[16].email, status: 'credited', referredDate: d(-40), bookedDate: d(-33), creditedDate: d(-33), referrerCredit: 50, friendCredit: 50 },
+    { id: 'REF-10', referrerId: clients[6].id, referrerName: `${clients[6].firstName} ${clients[6].lastName}`, code: `REF-${clients[6].firstName.toUpperCase()}-1006`, friendName: 'Morgan Blake', friendId: null, friendEmail: 'morgan@example.com', status: 'pending', referredDate: d(-1), bookedDate: null, creditedDate: null, referrerCredit: 50, friendCredit: 50 },
   ];
 
   setReferrals(seed);
-  localStorage.setItem('ms_referrals_seeded', 'true');
+  localStorage.setItem('rp_referrals_seeded', 'true');
 }
 
 export default function Referrals() {
@@ -58,7 +58,7 @@ export default function Referrals() {
   const [generateSearch, setGenerateSearch] = useState('');
 
   const referrals = getReferrals();
-  const patients = getPatients();
+  const clients = getPatients();
 
   // Filter referrals
   const filtered = referrals.filter(r => {
@@ -107,7 +107,7 @@ export default function Referrals() {
 
   const generateLink = (patient) => {
     const code = `REF-${patient.firstName.toUpperCase()}-${patient.id.split('-')[1]}`;
-    navigator.clipboard?.writeText(`https://yourmedspa.com/refer/${code}`);
+    navigator.clipboard?.writeText(`https://remedypilates.com/refer/${code}`);
     setShowGenerate(false);
     setGenerateSearch('');
   };
@@ -117,7 +117,7 @@ export default function Referrals() {
     setShowSettings(false);
   };
 
-  const filteredPatients = patients.filter(p => {
+  const filteredPatients = clients.filter(p => {
     if (!generateSearch) return true;
     const q = generateSearch.toLowerCase();
     return `${p.firstName} ${p.lastName}`.toLowerCase().includes(q);
@@ -140,7 +140,7 @@ export default function Referrals() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Referrals</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Track referrals, reward loyalty, and grow your patient base</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Track referrals, reward loyalty, and grow your client base</p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={() => setShowSettings(true)} style={s.pillGhost}>Settings</button>
@@ -258,7 +258,7 @@ export default function Referrals() {
           <div onClick={e => e.stopPropagation()} style={{ ...s.cardStyle, padding: 28, width: 420, maxHeight: '80vh', overflow: 'auto' }}>
             <div style={{ font: `600 18px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Generate Referral Link</div>
             <div style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 16 }}>Select a patient to generate their unique referral link</div>
-            <input value={generateSearch} onChange={e => setGenerateSearch(e.target.value)} placeholder="Search patients..." style={{ ...s.input, marginBottom: 12 }} />
+            <input value={generateSearch} onChange={e => setGenerateSearch(e.target.value)} placeholder="Search clients..." style={{ ...s.input, marginBottom: 12 }} />
             <div style={{ display: 'grid', gap: 6 }}>
               {filteredPatients.map(p => {
                 const code = `REF-${p.firstName.toUpperCase()}-${p.id.split('-')[1]}`;

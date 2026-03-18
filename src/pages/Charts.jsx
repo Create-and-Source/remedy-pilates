@@ -1,16 +1,16 @@
-// Clinical Charts — SOAP notes, injection maps, treatment documentation
+// Progress Tracking — SOAP notes, injection maps, session documentation
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useStyles } from '../theme';
 import { getPatients, getServices, getProviders, subscribe } from '../data/store';
 
-const CHARTS_KEY = 'ms_charts';
+const CHARTS_KEY = 'rp_charts';
 function getCharts() { try { return JSON.parse(localStorage.getItem(CHARTS_KEY)) || []; } catch { return []; } }
 function saveCharts(c) { localStorage.setItem(CHARTS_KEY, JSON.stringify(c)); }
 
-function getInjectableInventory() {
+function getEquipmentInventory() {
   try {
-    const all = JSON.parse(localStorage.getItem('ms_inventory') || '[]');
-    return all.filter(i => i.category === 'Injectables');
+    const all = JSON.parse(localStorage.getItem('rp_inventory') || '[]');
+    return all.filter(i => i.category === 'Equipment');
   } catch { return []; }
 }
 
@@ -257,7 +257,7 @@ function VitalsPanel({ form, setForm, s }) {
 // ── Zone Annotation Popover (structured form) ────────────────────────────────
 
 function ZoneAnnotationPopover({ zoneId, zoneLabel, currentValue, onSave, onClose, s, mapType }) {
-  const injectables = getInjectableInventory();
+  const injectables = getEquipmentInventory();
 
   // Parse existing value to pre-populate form
   const parseInitial = () => {
@@ -596,16 +596,16 @@ function initCharts() {
   const existing = getCharts();
   const hasNewFormat = existing.length > 0 && existing[0].mapType;
   if (existing.length >= 8 && hasNewFormat) return;
-  localStorage.removeItem('ms_charts_init');
+  localStorage.removeItem('rp_charts_init');
   saveCharts([
     {
       id: 'CHT-1', patientId: 'PAT-1000', patientName: 'Emma Johnson', providerId: 'PRV-1',
-      date: '2026-03-10', serviceId: 'SVC-1', serviceName: 'Botox',
+      date: '2026-03-10', serviceId: 'SVC-1', serviceName: 'Reformer',
       mapType: 'face',
-      subjective: 'Patient presents for routine Botox. Concerned about forehead lines deepening and early crows feet. No new medications. Denies pregnancy. Last Botox 4 months ago — satisfied with results but wants slightly heavier dose on forehead this time.',
+      subjective: 'Patient presents for routine Reformer. Concerned about forehead lines deepening and early crows feet. No new medications. Denies pregnancy. Last Reformer 4 months ago — satisfied with results but wants slightly heavier dose on forehead this time.',
       objective: 'Moderate dynamic rhytids across forehead. Moderate glabellar lines (11s). Mild-moderate crows feet bilateral. Mild bunny lines noted. Skin in good condition, well-hydrated.',
-      assessment: 'Excellent candidate for neuromodulator treatment. Forehead, glabella, lateral canthal lines, and bunny lines.',
-      plan: '38 units Botox total: 12 units forehead (6 injection sites), 14 units glabella (5 sites), 8 units crows feet (3 sites bilateral), 4 units bunny lines (2 sites). Follow up 2 weeks for assessment. Discuss nasolabial filler at follow-up.',
+      assessment: 'Excellent candidate for neuromodulator session. Forehead, glabella, lateral canthal lines, and bunny lines.',
+      plan: '38 units Reformer total: 12 units forehead (6 injection sites), 14 units glabella (5 sites), 8 units crows feet (3 sites bilateral), 4 units bunny lines (2 sites). Follow up 2 weeks for assessment. Discuss nasolabial filler at follow-up.',
       injectionMap: { forehead: '12u BTX', glabella: '14u BTX', 'crow-l': '4u BTX', 'crow-r': '4u BTX', 'brow-l': '2u lift', 'brow-r': '2u lift' },
       vitals: { bp: '118/76', pulse: '72', temp: '98.6' },
       medications: 'None',
@@ -615,7 +615,7 @@ function initCharts() {
     },
     {
       id: 'CHT-2', patientId: 'PAT-1001', patientName: 'Olivia Williams', providerId: 'PRV-1',
-      date: '2026-03-11', serviceId: 'SVC-2', serviceName: 'Juvederm Filler',
+      date: '2026-03-11', serviceId: 'SVC-2', serviceName: 'Juvederm Barre',
       mapType: 'face',
       subjective: 'Patient desires volume restoration to nasolabial folds and cheeks. Reports looking "tired and hollow." No previous filler. No allergies. Not pregnant. Stopped fish oil 7 days ago as instructed.',
       objective: 'Moderate volume loss bilateral malar region. Deep nasolabial folds. Mild marionette lines. Mild jowling. Skin type II, good elasticity for age.',
@@ -630,15 +630,15 @@ function initCharts() {
     },
     {
       id: 'CHT-3', patientId: 'PAT-1003', patientName: 'Ava Jones', providerId: 'PRV-2',
-      date: '2026-03-12', serviceId: 'SVC-6', serviceName: 'IPL Photofacial',
+      date: '2026-03-12', serviceId: 'SVC-6', serviceName: 'TRX Photofacial',
       mapType: 'face',
-      subjective: 'Follow-up IPL session 3 of 3. Reports significant improvement in sun spots after sessions 1 and 2. No adverse reactions. Wearing SPF 50 daily as instructed.',
+      subjective: 'Follow-up TRX session 3 of 3. Reports significant improvement in sun spots after sessions 1 and 2. No adverse reactions. Wearing SPF 50 daily as instructed.',
       objective: 'Marked improvement in pigmentation bilateral cheeks and nose. Remaining focal hyperpigmentation left cheekbone. Skin texture improved. No scarring or hypopigmentation from prior sessions.',
-      assessment: 'Excellent response to IPL series. Final session of planned protocol. Recommend maintenance every 6 months.',
-      plan: 'IPL treatment bilateral cheeks, nose, and chin. Settings: 560nm filter, 15J/cm2, 3ms pulse, double pass on residual pigment left cheek. Post-care: SPF 50 daily, avoid sun exposure 2 weeks, gentle cleanser only for 48 hours. Follow up 4 weeks for final assessment. Discuss maintenance schedule.',
-      injectionMap: { 'cheek-l': 'IPL 2x pass', 'cheek-r': 'IPL 1x', chin: 'IPL 1x' },
+      assessment: 'Excellent response to TRX series. Final session of planned protocol. Recommend maintenance every 6 months.',
+      plan: 'TRX session bilateral cheeks, nose, and chin. Settings: 560nm filter, 15J/cm2, 3ms pulse, double pass on residual pigment left cheek. Post-care: SPF 50 daily, avoid sun exposure 2 weeks, gentle cleanser only for 48 hours. Follow up 4 weeks for final assessment. Discuss maintenance schedule.',
+      injectionMap: { 'cheek-l': 'TRX 2x pass', 'cheek-r': 'TRX 1x', chin: 'TRX 1x' },
       vitals: { bp: '122/78', pulse: '68', temp: '98.4' },
-      medications: 'Tretinoin 0.025% (paused 1 week pre-treatment)',
+      medications: 'Tretinoin 0.025% (paused 1 week pre-session)',
       status: 'signed',
       reviewRequired: false,
       createdAt: '2026-03-12T14:00:00Z',
@@ -662,7 +662,7 @@ function initCharts() {
       id: 'CHT-5', patientId: 'PAT-1004', patientName: 'Isabella Martinez', providerId: 'PRV-1',
       date: '2026-03-14', serviceId: 'SVC-4', serviceName: 'PDO Threads',
       mapType: 'face',
-      subjective: 'Patient presents for PDO thread lift consultation and treatment. Concerns: jowling, loss of jawline definition, mild neck laxity. Desires non-surgical lift. Not ready for facelift. No blood thinners. Stopped supplements 10 days ago.',
+      subjective: 'Patient presents for PDO thread lift consultation and session. Concerns: jowling, loss of jawline definition, mild neck laxity. Desires non-surgical lift. Not ready for facelift. No blood thinners. Stopped supplements 10 days ago.',
       objective: 'Moderate jowling bilateral. Loss of jawline definition. Mild platysmal banding. Moderate skin laxity lower face. Good skin thickness — appropriate for thread placement. Fitzpatrick III.',
       assessment: 'Good candidate for PDO cog thread lift bilateral jawline and lower face. Will provide significant lift with collagen stimulation over 3-6 months.',
       plan: '8 PDO cog threads bilateral jawline (4 per side). 4 smooth threads bilateral marionette area. Entry points: preauricular and temporal. Lidocaine 1% with epi for local anesthesia. Mark vectors with patient upright before reclining. Post-care: sleep on back elevated 1 week, soft diet 2 days, no dental work 2 weeks, no massage or pressure on face. Follow up 1 week then 1 month.',
@@ -710,11 +710,11 @@ function initCharts() {
     },
     {
       id: 'CHT-8', patientId: 'PAT-1010', patientName: 'Lily Lee', providerId: 'PRV-2',
-      date: '2026-03-15', serviceId: 'SVC-2', serviceName: 'Lip Filler',
+      date: '2026-03-15', serviceId: 'SVC-2', serviceName: 'Lip Barre',
       mapType: 'face',
       subjective: 'Patient presents for lip augmentation. First time filler patient. Desires subtle, natural enhancement — "I want my lips to look like mine but better." Showed reference photos. No allergies. Not pregnant. Stopped ibuprofen 7 days ago.',
       objective: 'Thin upper lip with mild asymmetry (right side slightly smaller). Adequate vermillion border. Good hydration. No active cold sores. Fitzpatrick II.',
-      assessment: 'Candidate for conservative lip augmentation. Recommend 0.5-1 syringe Juvederm Ultra XC. Discussed that less is more for first treatment — can always add more.',
+      assessment: 'Candidate for conservative lip augmentation. Recommend 0.5-1 syringe Juvederm Ultra XC. Discussed that less is more for first session — can always add more.',
       plan: '0.7 syringe Juvederm Ultra XC: 0.3cc upper lip (focus on cupids bow and right side correction), 0.2cc lower lip (subtle volume), 0.2cc border definition. Dental block bilateral infraorbital nerve. Slow injection with aspiration. Ice pre and post. Post-care: no kissing or straws 24 hours, ice 10 min on/off, sleep elevated tonight. Arnica gel for bruising. Follow up 2 weeks — may add remaining 0.3cc at that time.',
       injectionMap: { 'lips-upper': '0.3cc JUV', 'lips-lower': '0.2cc JUV' },
       vitals: { bp: '116/72', pulse: '82', temp: '98.6' },
@@ -724,7 +724,7 @@ function initCharts() {
       createdAt: '2026-03-15T14:00:00Z',
     },
   ]);
-  localStorage.setItem('ms_charts_init', 'true');
+  localStorage.setItem('rp_charts_init', 'true');
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
@@ -754,7 +754,7 @@ export default function Charts() {
   };
   const [form, setForm] = useState(emptyForm);
 
-  const patients = getPatients();
+  const clients = getPatients();
   const services = getServices();
   const providers = getProviders();
 
@@ -767,7 +767,7 @@ export default function Charts() {
   const currentMapLabel = getMapLabel(currentMapType);
 
   // Selected patient for allergy warning
-  const selectedPatient = patients.find(p => p.id === form.patientId);
+  const selectedPatient = clients.find(p => p.id === form.patientId);
 
   const filtered = charts.filter(c => {
     if (search) {
@@ -800,7 +800,7 @@ export default function Charts() {
 
   const handleSave = (action = 'draft') => {
     // action: 'draft' | 'sign' | 'submit_review'
-    const pat = patients.find(p => p.id === form.patientId);
+    const pat = clients.find(p => p.id === form.patientId);
     const svc = services.find(sv => sv.id === form.serviceId);
     const mapType = getMapType(form.serviceId, services);
 
@@ -891,8 +891,8 @@ export default function Charts() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Clinical Charts</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>SOAP notes, injection mapping, and treatment documentation</p>
+          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Progress Tracking</h1>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>SOAP notes, injection mapping, and session documentation</p>
         </div>
         <button onClick={openNew} style={s.pillAccent}>+ New Chart</button>
       </div>
@@ -995,7 +995,7 @@ export default function Charts() {
                 <label style={s.label}>Patient</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select...</option>
-                  {patients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
+                  {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>
               <div>
@@ -1034,7 +1034,7 @@ export default function Charts() {
                 {[
                   { key: 'subjective', label: 'S — Subjective', placeholder: 'Chief complaint, patient history, symptoms, concerns...' },
                   { key: 'objective', label: 'O — Objective', placeholder: 'Physical findings, observations, measurements...' },
-                  { key: 'assessment', label: 'A — Assessment', placeholder: 'Clinical assessment, diagnosis, treatment candidacy...' },
+                  { key: 'assessment', label: 'A — Assessment', placeholder: 'Clinical assessment, diagnosis, session candidacy...' },
                   { key: 'plan', label: 'P — Plan', placeholder: 'Treatment performed, products/units used, post-care instructions, follow-up...' },
                 ].map(field => (
                   <div key={field.key} style={{ marginBottom: 14 }}>
@@ -1092,8 +1092,8 @@ export default function Charts() {
                     </div>
                     <div style={{ font: `400 10px ${s.FONT}`, color: s.text3, marginTop: 6, textAlign: 'center' }}>
                       {currentMapType === 'face' && 'Click points to add injection details'}
-                      {currentMapType === 'body' && 'Click zones to add treatment details'}
-                      {currentMapType === 'scalp' && 'Click zones to add treatment details'}
+                      {currentMapType === 'body' && 'Click zones to add session details'}
+                      {currentMapType === 'scalp' && 'Click zones to add session details'}
                     </div>
 
                     {/* Treatment summary (edit mode) */}

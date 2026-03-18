@@ -5,7 +5,7 @@ import { getPatients, addPatient, updatePatient, deletePatient, getAppointments,
 const fmt = (cents) => `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0 })}`;
 
 /* --- inject patient page keyframes once --- */
-const PAT_ANIM_ID = 'patients-premium-anims';
+const PAT_ANIM_ID = 'clients-premium-anims';
 if (!document.getElementById(PAT_ANIM_ID)) {
   const sheet = document.createElement('style');
   sheet.id = PAT_ANIM_ID;
@@ -62,11 +62,11 @@ export default function Patients() {
   const [viewMode, setViewMode] = useState('cards'); // 'cards' | 'table'
   const [detail, setDetail] = useState(null);
 
-  const patients = getPatients();
+  const clients = getPatients();
   const appointments = getAppointments();
   const services = getServices();
 
-  const filtered = patients.filter(p => {
+  const filtered = clients.filter(p => {
     const q = search.toLowerCase();
     const nameMatch = `${p.firstName} ${p.lastName}`.toLowerCase().includes(q) || p.email?.toLowerCase().includes(q) || p.phone?.includes(q);
     if (!nameMatch) return false;
@@ -110,9 +110,9 @@ export default function Patients() {
 
   // Stats
   const thisMonth = new Date().toISOString().slice(0, 7);
-  const newThisMonth = patients.filter(p => p.createdAt?.startsWith(thisMonth)).length;
-  const avgSpend = patients.length > 0 ? Math.round(patients.reduce((sum, p) => sum + p.totalSpent, 0) / patients.length) : 0;
-  const activeMembers = patients.filter(p => p.membershipTier && p.membershipTier !== 'None').length;
+  const newThisMonth = clients.filter(p => p.createdAt?.startsWith(thisMonth)).length;
+  const avgSpend = clients.length > 0 ? Math.round(clients.reduce((sum, p) => sum + p.totalSpent, 0) / clients.length) : 0;
+  const activeMembers = clients.filter(p => p.membershipTier && p.membershipTier !== 'None').length;
 
   const glass = {
     background: 'rgba(255,255,255,0.6)',
@@ -140,17 +140,17 @@ export default function Patients() {
       }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4, letterSpacing: '-0.3px' }}>Patients</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{patients.length} total patients</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{clients.length} total clients</p>
         </div>
         <button onClick={() => { setSelected(null); setForm({ firstName: '', lastName: '', email: '', phone: '', dob: '', gender: 'Female', allergies: '', notes: '', membershipTier: 'None' }); setShowForm(true); }} style={s.pillAccent}>
-          + New Patient
+          + New Client
         </button>
       </div>
 
       {/* ═══ STATS ROW ═══ */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 24 }}>
         {[
-          { label: 'Total Patients', value: patients.length, icon: (
+          { label: 'Total Patients', value: clients.length, icon: (
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={s.accent} strokeWidth="1.5" strokeLinecap="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
@@ -201,7 +201,7 @@ export default function Patients() {
             style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }}>
             <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patients..."
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search clients..."
             style={{ ...s.input, paddingLeft: 40, background: 'rgba(255,255,255,0.5)', borderRadius: 100 }} />
         </div>
 
@@ -243,7 +243,7 @@ export default function Patients() {
       </div>
 
       {/* ═══ MAIN CONTENT ═══ */}
-      <div className="patients-main-grid" style={{ display: 'grid', gridTemplateColumns: detail ? '1fr 380px' : '1fr', gap: 20 }}>
+      <div className="clients-main-grid" style={{ display: 'grid', gridTemplateColumns: detail ? '1fr 380px' : '1fr', gap: 20 }}>
 
         {/* ═══ CARD VIEW ═══ */}
         {viewMode === 'cards' && (
@@ -303,9 +303,9 @@ export default function Patients() {
             })}
             {filtered.length === 0 && (
               <div style={{ ...glass, padding: 48, textAlign: 'center', gridColumn: '1 / -1' }}>
-                <div style={{ font: `400 14px ${s.FONT}`, color: s.text3, marginBottom: 12 }}>No patients found</div>
+                <div style={{ font: `400 14px ${s.FONT}`, color: s.text3, marginBottom: 12 }}>No clients found</div>
                 <button onClick={() => { setSelected(null); setForm({ firstName: '', lastName: '', email: '', phone: '', dob: '', gender: 'Female', allergies: '', notes: '', membershipTier: 'None' }); setShowForm(true); }} style={s.pillAccent}>
-                  + New Patient
+                  + New Client
                 </button>
               </div>
             )}
@@ -372,7 +372,7 @@ export default function Patients() {
                     );
                   })}
                   {filtered.length === 0 && (
-                    <tr><td colSpan="7" style={{ padding: 48, textAlign: 'center', font: `400 13px ${s.FONT}`, color: s.text3 }}>No patients found</td></tr>
+                    <tr><td colSpan="7" style={{ padding: 48, textAlign: 'center', font: `400 13px ${s.FONT}`, color: s.text3 }}>No clients found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -382,7 +382,7 @@ export default function Patients() {
 
         {/* ═══ DETAIL PANEL ═══ */}
         {detail && (
-          <div className="patients-detail-panel" style={{
+          <div className="clients-detail-panel" style={{
             alignSelf: 'start', position: 'sticky', top: 80, overflow: 'hidden',
             ...glass, borderRadius: 20, padding: 0,
             animation: 'patSlideIn 0.35s cubic-bezier(0.16,1,0.3,1) both',
@@ -498,10 +498,10 @@ export default function Patients() {
 
       <style>{`
         @media (max-width: 768px) {
-          .patients-main-grid {
+          .clients-main-grid {
             grid-template-columns: 1fr !important;
           }
-          .patients-detail-panel {
+          .clients-detail-panel {
             position: fixed !important;
             top: 0 !important;
             right: 0 !important;
@@ -528,7 +528,7 @@ export default function Patients() {
             boxShadow: s.shadowLg, maxHeight: '90vh', overflowY: 'auto',
             animation: 'patFadeInUp 0.35s cubic-bezier(0.16,1,0.3,1) both',
           }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 24 }}>{selected ? 'Edit Patient' : 'New Patient'}</h2>
+            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 24 }}>{selected ? 'Edit Patient' : 'New Client'}</h2>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {[

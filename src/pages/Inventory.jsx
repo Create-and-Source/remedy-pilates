@@ -24,7 +24,7 @@ export default function Inventory() {
   const [showAdjust, setShowAdjust] = useState(null);
   const [adjustQty, setAdjustQty] = useState(0);
   const [adjustReason, setAdjustReason] = useState('');
-  const [form, setForm] = useState({ name: '', category: 'Injectables', sku: '', lotNumber: '', ndc: '', quantity: 0, reorderAt: 5, unitCost: 0, location: 'LOC-1', expirationDate: '' });
+  const [form, setForm] = useState({ name: '', category: 'Equipment', sku: '', lotNumber: '', ndc: '', quantity: 0, reorderAt: 5, unitCost: 0, location: 'LOC-1', expirationDate: '' });
 
   const inventory = getInventory();
   const locations = getLocations();
@@ -84,7 +84,7 @@ export default function Inventory() {
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Inventory</h1>
           <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{inventory.length} items — Track injectables, products, and supplies</p>
         </div>
-        <button onClick={() => { setEditItem(null); setForm({ name: '', category: 'Injectables', sku: '', lotNumber: '', ndc: '', quantity: 0, reorderAt: 5, unitCost: 0, location: 'LOC-1', expirationDate: '' }); setShowForm(true); }} style={s.pillAccent}>
+        <button onClick={() => { setEditItem(null); setForm({ name: '', category: 'Equipment', sku: '', lotNumber: '', ndc: '', quantity: 0, reorderAt: 5, unitCost: 0, location: 'LOC-1', expirationDate: '' }); setShowForm(true); }} style={s.pillAccent}>
           + Add Item
         </button>
       </div>
@@ -184,7 +184,7 @@ export default function Inventory() {
               <select value={adjustReason} onChange={e => setAdjustReason(e.target.value)} style={{ ...s.input, cursor: 'pointer' }}>
                 <option value="">Select reason...</option>
                 <option value="Received shipment">Received shipment</option>
-                <option value="Used in treatment">Used in treatment</option>
+                <option value="Used in session">Used in session</option>
                 <option value="Damaged/expired">Damaged / Expired</option>
                 <option value="Returned to vendor">Returned to vendor</option>
                 <option value="Inventory count correction">Count correction</option>
@@ -209,12 +209,12 @@ export default function Inventory() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: '1 / -1' }}>
                 <label style={s.label}>Item Name</label>
-                <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={s.input} placeholder="e.g., Botox (100u vial)" />
+                <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={s.input} placeholder="e.g., Reformer (100u vial)" />
               </div>
               <div>
                 <label style={s.label}>Category</label>
                 <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option>Injectables</option><option>Wellness</option><option>Supplies</option><option>Retail</option>
+                  <option>Equipment</option><option>Wellness</option><option>Supplies</option><option>Retail</option>
                 </select>
               </div>
               <div>
@@ -225,7 +225,7 @@ export default function Inventory() {
                 <label style={s.label}>Lot Number</label>
                 <input value={form.lotNumber} onChange={e => setForm({ ...form, lotNumber: e.target.value })} style={s.input} placeholder="e.g., BTX-2026-0312" />
               </div>
-              {form.category === 'Injectables' && (
+              {form.category === 'Equipment' && (
                 <div style={{ gridColumn: '1 / -1' }}>
                   <label style={s.label}>NDC (National Drug Code)</label>
                   <input value={form.ndc} onChange={e => setForm({ ...form, ndc: e.target.value })} style={s.input} placeholder="e.g., 0023-1145-01" />

@@ -14,7 +14,7 @@ export default function Schedule() {
   const [form, setForm] = useState({ patientId: '', serviceId: '', providerId: '', date: '', time: '', duration: 30, location: 'LOC-1', room: '', notes: '' });
 
   const appointments = getAppointments();
-  const patients = getPatients();
+  const clients = getPatients();
   const services = getServices();
   const providers = getProviders();
   const locations = getLocations();
@@ -50,7 +50,7 @@ export default function Schedule() {
   };
 
   const handleSave = () => {
-    const pat = patients.find(p => p.id === form.patientId);
+    const pat = clients.find(p => p.id === form.patientId);
     const data = { ...form, patientName: pat ? `${pat.firstName} ${pat.lastName}` : 'Unknown', status: 'confirmed' };
     if (editAppt) {
       updateAppointment(editAppt.id, data);
@@ -256,7 +256,7 @@ export default function Schedule() {
                 <label style={s.label}>Patient</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select patient...</option>
-                  {patients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
+                  {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>
               <div style={{ gridColumn: '1 / -1' }}>
