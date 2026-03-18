@@ -6,3 +6,8 @@ dist
 ios/App/Pods
 android/.gradle
 android/app/build
+
+# Terraform
+terraform/.terraform
+terraform/*.tfstate
+terraform/*.tfstate.backup
