@@ -1,10 +1,13 @@
 // Remedy Pilates — Frontend API Client
 // Drop-in replacement for the localStorage store.js.
 // All functions are async and communicate with the AWS Lambda backend.
+// Auto-refreshes Cognito tokens on 401 responses.
+
+import { getValidToken, signOut } from './auth';
 
 const API = import.meta.env.VITE_API_URL || '';
 
-async function request(path, options = {}) {
+async function request(path, options = {}, retry = true) {
   const token = localStorage.getItem('rp_auth_token');
   const res = await fetch(`${API}${path}`, {
     headers: {
@@ -13,6 +16,19 @@ async function request(path, options = {}) {
     },
     ...options,
   });
+
+  // Auto-refresh token on 401 and retry once
+  if (res.status === 401 && retry) {
+    const newToken = await getValidToken();
+    if (newToken) {
+      return request(path, options, false); // retry with fresh token
+    }
+    // Refresh failed — sign out and redirect
+    signOut();
+    window.location.href = '/signin';
+    throw new Error('Session expired');
+  }
+
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: 'Request failed' }));
     throw new Error(err.error || `HTTP ${res.status}`);

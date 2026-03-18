@@ -15,34 +15,35 @@ module.exports.handler = async function handler(event) {
       const serviceId = queryParam(event, 'serviceId');
       if (serviceId) {
         const items = await query(TABLE, SERVICE_INDEX, 'serviceId = :s', { ':s': serviceId });
-        return ok(items);
+        return ok(items, event);
       }
       const items = await scan(TABLE);
-      return ok(items);
+      return ok(items, event);
     }
 
     if (method === 'POST') {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const newId = genId('WL');
       const item = {
         ...body,
         id: newId,
         createdAt: new Date().toISOString(),
+        expiresAt: Math.floor(Date.now() / 1000) + 30 * 86400, // TTL: 30 days
       };
       await putItem(TABLE, item);
-      return created(item);
+      return created(item, event);
     }
 
     if (method === 'DELETE') {
-      if (!id) return badRequest('id path parameter is required');
+      if (!id) return badRequest('id path parameter is required', event);
       await deleteItem(TABLE, { id });
-      return noContent();
+      return noContent(event);
     }
 
-    return badRequest(`Unsupported method: ${method}`);
+    return badRequest(`Unsupported method: ${method}`, event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

@@ -32,7 +32,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-# DynamoDB full access for all remedy- tables
+# DynamoDB least-privilege: CRUD only (no CreateTable, DeleteTable, admin ops)
 resource "aws_iam_role_policy" "lambda_dynamo" {
   name = "${var.project}-lambda-dynamo"
   role = aws_iam_role.lambda.id
@@ -40,8 +40,17 @@ resource "aws_iam_role_policy" "lambda_dynamo" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow"
-      Action   = ["dynamodb:*"]
+      Effect = "Allow"
+      Action = [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Scan",
+        "dynamodb:Query",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:BatchGetItem",
+      ]
       Resource = [
         "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${var.table_prefix}*",
         "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${var.table_prefix}*/index/*",
@@ -65,7 +74,7 @@ resource "aws_iam_role_policy" "lambda_s3" {
   })
 }
 
-# ── Lambda Functions (28) ───────────────────────────────────────────
+# ── Lambda Functions (29 — 28 CRUD + init) ────────────────────────
 data "archive_file" "handlers" {
   for_each = local.lambda_handlers
 
@@ -83,8 +92,8 @@ resource "aws_lambda_function" "handlers" {
   handler          = "index.handler"
   runtime          = "nodejs20.x"
   role             = aws_iam_role.lambda.arn
-  memory_size      = 256
-  timeout          = 10
+  memory_size      = lookup(local.lambda_memory, each.key, 128)
+  timeout          = each.key == "init" ? 15 : 10
   layers           = [aws_lambda_layer_version.shared.arn]
 
   environment {

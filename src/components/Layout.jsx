@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme, useStyles, PRESETS } from '../theme';
 import { getSettings } from '../data/store';
+import { signOut } from '../api/auth';
 import HelpChat from './HelpChat';
 import CommandPalette from './CommandPalette';
 import NotificationBell from './NotificationBell';
@@ -268,6 +269,17 @@ export default function Layout({ children }) {
         }}>
           <span style={{ width: 18, height: 18, borderRadius: '50%', background: sidebarAccent, flexShrink: 0 }} />
           {!collapsed && 'Brand Color'}
+        </button>
+        {/* Sign out */}
+        <button onClick={() => { signOut(); window.location.href = '/signin'; }} style={{
+          display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+          padding: collapsed ? '10px 0' : '10px 16px', justifyContent: collapsed ? 'center' : 'flex-start',
+          background: 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer',
+          font: "400 13px 'Inter', sans-serif", color: sidebarMuted, transition: 'all 0.15s',
+          marginTop: 4,
+        }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          {!collapsed && 'Sign Out'}
         </button>
         {!mobile && (
           <button onClick={() => setCollapsed(!collapsed)} style={{

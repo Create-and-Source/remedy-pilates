@@ -13,9 +13,9 @@ module.exports.handler = async function handler(event) {
     // DELETE /{id}
     if (method === 'DELETE') {
       const id = pathParam(event, 'id');
-      if (!id) return badRequest('Missing path parameter: id');
+      if (!id) return badRequest('Missing path parameter: id', event);
       await deleteItem(TABLE, { id });
-      return noContent();
+      return noContent(event);
     }
 
     // GET
@@ -23,27 +23,27 @@ module.exports.handler = async function handler(event) {
       const clientId = queryParam(event, 'clientId');
       if (clientId) {
         const items = await query(TABLE, GSI, 'patientId = :pid', { ':pid': clientId });
-        return ok(items);
+        return ok(items, event);
       }
       const items = await scan(TABLE);
-      return ok(items);
+      return ok(items, event);
     }
 
     // POST
     if (method === 'POST') {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
       const item = {
         ...body,
         id: genId('PA'),
         createdAt: new Date().toISOString(),
       };
       await putItem(TABLE, item);
-      return created(item);
+      return created(item, event);
     }
 
-    return badRequest(`Unsupported method: ${method}`);
+    return badRequest(`Unsupported method: ${method}`, event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

@@ -2,7 +2,9 @@ import { lazy, Suspense, useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './theme';
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 import { initStore } from './data/store';
+import { getValidToken } from './api/auth';
 
 const Home = lazy(() => import('./pages/Home'));
 const SignIn = lazy(() => import('./pages/SignIn'));
@@ -95,7 +97,11 @@ export default function App() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    initStore().then(() => setReady(true));
+    // Refresh auth token (if expired but refresh token available), then load data
+    getValidToken()
+      .catch(() => {}) // Ignore if not logged in
+      .then(() => initStore())
+      .then(() => setReady(true));
   }, []);
 
   if (!ready) return <Loader />;
@@ -107,15 +113,22 @@ export default function App() {
           {/* Public pages — no sidebar */}
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/portal" element={<Portal />} />
           <Route path="/book" element={<BookOnline />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/team" element={<Team />} />
           <Route path="/book/free-trial" element={<FreeTrialFlow />} />
 
-          {/* Admin — with sidebar */}
+          {/* Portal — requires auth (any role) */}
+          <Route path="/portal" element={
+            <ProtectedRoute>
+              <Portal />
+            </ProtectedRoute>
+          } />
+
+          {/* Admin — requires auth (owner, instructor, front_desk) */}
           <Route path="/admin/*" element={
-            <Layout>
+            <ProtectedRoute roles={['owner', 'instructor', 'front_desk']}>
+              <Layout>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/checkin" element={<CheckIn />} />
@@ -174,6 +187,7 @@ export default function App() {
                 <Route path="/settings" element={<Settings />} />
               </Routes>
             </Layout>
+            </ProtectedRoute>
           } />
         </Routes>
       </Suspense>

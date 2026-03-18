@@ -19,29 +19,29 @@ module.exports.handler = async function handler(event) {
     if (isPackagesRoute) {
       if (method === 'GET') {
         const packages = await scan(PACKAGES_TABLE);
-        return ok(packages);
+        return ok(packages, event);
       }
 
       if (method === 'POST') {
         const body = parseBody(event);
-        if (!body) return badRequest('Request body is required');
+        if (!body) return badRequest('Request body is required', event);
 
         const newId = genId('MPKG');
         const item = { ...body, id: newId };
         await putItem(PACKAGES_TABLE, item);
-        return created(item);
+        return created(item, event);
       }
 
       if (method === 'PUT') {
-        if (!id) return badRequest('id path parameter is required');
+        if (!id) return badRequest('id path parameter is required', event);
         const body = parseBody(event);
-        if (!body) return badRequest('Request body is required');
+        if (!body) return badRequest('Request body is required', event);
 
         const updated = await updateItem(PACKAGES_TABLE, { id }, body);
-        return ok(updated);
+        return ok(updated, event);
       }
 
-      return badRequest(`Unsupported method for membership-packages: ${method}`);
+      return badRequest(`Unsupported method for membership-packages: ${method}`, event);
     }
 
     // ── memberships routes ──────────────────────────────────────────────────
@@ -59,12 +59,12 @@ module.exports.handler = async function handler(event) {
       }
 
       const packages = await scan(PACKAGES_TABLE);
-      return ok({ memberships, packages });
+      return ok({ memberships, packages }, event);
     }
 
     if (method === 'POST') {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const newId = genId('MBR');
       const item = {
@@ -73,26 +73,26 @@ module.exports.handler = async function handler(event) {
         createdAt: new Date().toISOString(),
       };
       await putItem(MEMBERSHIPS_TABLE, item);
-      return created(item);
+      return created(item, event);
     }
 
     if (method === 'PUT') {
-      if (!id) return badRequest('id path parameter is required');
+      if (!id) return badRequest('id path parameter is required', event);
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const updated = await updateItem(MEMBERSHIPS_TABLE, { id }, body);
-      return ok(updated);
+      return ok(updated, event);
     }
 
     if (method === 'DELETE') {
-      if (!id) return badRequest('id path parameter is required');
+      if (!id) return badRequest('id path parameter is required', event);
       await deleteItem(MEMBERSHIPS_TABLE, { id });
-      return noContent();
+      return noContent(event);
     }
 
-    return badRequest(`Unsupported method: ${method}`);
+    return badRequest(`Unsupported method: ${method}`, event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

@@ -42,6 +42,23 @@ resource "aws_dynamodb_table" "tables" {
     }
   }
 
+  # TTL for transient tables (auto-expire old checkins, waitlist entries, inbox messages)
+  dynamic "ttl" {
+    for_each = contains(["checkins", "waitlist", "inbox"], each.key) ? [1] : []
+    content {
+      attribute_name = "expiresAt"
+      enabled        = true
+    }
+  }
+
+  # Point-in-time recovery for critical data tables
+  dynamic "point_in_time_recovery" {
+    for_each = contains(["clients", "appointments", "transactions", "memberships"], each.key) ? [1] : []
+    content {
+      enabled = true
+    }
+  }
+
   lifecycle {
     prevent_destroy = false
   }

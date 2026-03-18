@@ -10,7 +10,7 @@ const doc = DynamoDBDocumentClient.from(client, {
   marshallOptions: { removeUndefinedValues: true },
 });
 
-const PREFIX = process.env.TABLE_PREFIX || 'darksky-';
+const PREFIX = process.env.TABLE_PREFIX || 'remedy-';
 const table = (name) => `${PREFIX}${name}`;
 
 // ── Read ────────────────────────────────────────────────────────
@@ -23,6 +23,7 @@ async function getItem(tableName, key) {
   return Item || null;
 }
 
+// Full scan (all pages) — use for small tables or admin views
 async function scan(tableName, filterExpr, exprValues, exprNames) {
   const params = { TableName: table(tableName) };
   if (filterExpr) {
@@ -41,6 +42,20 @@ async function scan(tableName, filterExpr, exprValues, exprNames) {
   return items;
 }
 
+// Paginated scan — returns { items, lastKey } for cursor-based pagination
+async function scanPage(tableName, { limit = 50, startKey, filterExpr, exprValues, exprNames } = {}) {
+  const params = { TableName: table(tableName), Limit: limit };
+  if (startKey) params.ExclusiveStartKey = startKey;
+  if (filterExpr) {
+    params.FilterExpression = filterExpr;
+    if (exprValues) params.ExpressionAttributeValues = exprValues;
+    if (exprNames) params.ExpressionAttributeNames = exprNames;
+  }
+  const result = await doc.send(new ScanCommand(params));
+  return { items: result.Items || [], lastKey: result.LastEvaluatedKey || null };
+}
+
+// Full query (all pages)
 async function query(tableName, indexName, keyExpr, exprValues, exprNames) {
   const params = {
     TableName: table(tableName),
@@ -58,6 +73,22 @@ async function query(tableName, indexName, keyExpr, exprValues, exprNames) {
     lastKey = result.LastEvaluatedKey;
   } while (lastKey);
   return items;
+}
+
+// Paginated query — returns { items, lastKey }
+async function queryPage(tableName, indexName, keyExpr, exprValues, { limit = 50, startKey, exprNames, scanForward = true } = {}) {
+  const params = {
+    TableName: table(tableName),
+    KeyConditionExpression: keyExpr,
+    ExpressionAttributeValues: exprValues,
+    Limit: limit,
+    ScanIndexForward: scanForward,
+  };
+  if (indexName) params.IndexName = indexName;
+  if (exprNames) params.ExpressionAttributeNames = exprNames;
+  if (startKey) params.ExclusiveStartKey = startKey;
+  const result = await doc.send(new QueryCommand(params));
+  return { items: result.Items || [], lastKey: result.LastEvaluatedKey || null };
 }
 
 // ── Write ───────────────────────────────────────────────────────
@@ -104,19 +135,25 @@ async function deleteItem(tableName, key) {
 }
 
 async function batchWrite(tableName, items) {
-  // DynamoDB batch limit is 25
+  const fullName = table(tableName);
   const chunks = [];
   for (let i = 0; i < items.length; i += 25) {
     chunks.push(items.slice(i, i + 25));
   }
   for (const chunk of chunks) {
-    await doc.send(new BatchWriteCommand({
-      RequestItems: {
-        [table(tableName)]: chunk.map(item => ({
-          PutRequest: { Item: item },
-        })),
-      },
-    }));
+    let unprocessed = {
+      [fullName]: chunk.map(item => ({ PutRequest: { Item: item } })),
+    };
+    // Retry unprocessed items with exponential backoff
+    let retries = 0;
+    while (unprocessed && Object.keys(unprocessed).length > 0 && retries < 5) {
+      const result = await doc.send(new BatchWriteCommand({ RequestItems: unprocessed }));
+      unprocessed = result.UnprocessedItems;
+      if (unprocessed && Object.keys(unprocessed).length > 0) {
+        retries++;
+        await new Promise(r => setTimeout(r, Math.pow(2, retries) * 50));
+      }
+    }
   }
 }
 
@@ -129,7 +166,7 @@ function genId(prefix = '') {
 }
 
 module.exports = {
-  getItem, scan, query,
+  getItem, scan, scanPage, query, queryPage,
   putItem, updateItem, deleteItem, batchWrite,
   genId, table, doc,
 };

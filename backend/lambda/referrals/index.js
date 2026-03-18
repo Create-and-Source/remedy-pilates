@@ -14,22 +14,22 @@ async function handleReferralSettings(method, event) {
       acc[item.key] = item.value;
       return acc;
     }, {});
-    return ok(merged);
+    return ok(merged, event);
   }
 
   if (method === 'PUT') {
     const body = parseBody(event);
-    if (!body) return badRequest('Request body is required');
+    if (!body) return badRequest('Request body is required', event);
 
     const puts = Object.entries(body).map(([key, value]) =>
       putItem(SETTINGS_TABLE, { key, value })
     );
     await Promise.all(puts);
 
-    return ok(body);
+    return ok(body, event);
   }
 
-  return badRequest('Method not allowed');
+  return badRequest('Method not allowed', event);
 }
 
 async function handleReferrals(method, event) {
@@ -57,12 +57,12 @@ async function handleReferrals(method, event) {
       return acc;
     }, {});
 
-    return ok({ referrals, settings });
+    return ok({ referrals, settings }, event);
   }
 
   if (method === 'POST') {
     const body = parseBody(event);
-    if (!body) return badRequest('Request body is required');
+    if (!body) return badRequest('Request body is required', event);
 
     const item = {
       ...body,
@@ -71,19 +71,19 @@ async function handleReferrals(method, event) {
     };
 
     await putItem(REFERRALS_TABLE, item);
-    return created(item);
+    return created(item, event);
   }
 
   if (method === 'PUT') {
-    if (!id) return badRequest('Missing id path parameter');
+    if (!id) return badRequest('Missing id path parameter', event);
     const body = parseBody(event);
-    if (!body) return badRequest('Request body is required');
+    if (!body) return badRequest('Request body is required', event);
 
     const updated = await updateItem(REFERRALS_TABLE, { id }, body);
-    return ok(updated);
+    return ok(updated, event);
   }
 
-  return badRequest('Method not allowed');
+  return badRequest('Method not allowed', event);
 }
 
 module.exports.handler = async function handler(event) {
@@ -97,6 +97,6 @@ module.exports.handler = async function handler(event) {
 
     return await handleReferrals(method, event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

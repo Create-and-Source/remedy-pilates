@@ -21,7 +21,7 @@ module.exports.handler = async function handler(event) {
           if (!b.date) return -1;
           return b.date.localeCompare(a.date);
         });
-        return ok(items);
+        return ok(items, event);
       }
       const items = await scan(TABLE);
       items.sort((a, b) => {
@@ -30,12 +30,12 @@ module.exports.handler = async function handler(event) {
         if (!b.date) return -1;
         return b.date.localeCompare(a.date);
       });
-      return ok(items);
+      return ok(items, event);
     }
 
     if (method === 'POST') {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const today = new Date().toISOString();
       const newId = genId('TXN');
@@ -46,11 +46,11 @@ module.exports.handler = async function handler(event) {
         date: body.date || today,
       };
       await putItem(TABLE, item);
-      return created(item);
+      return created(item, event);
     }
 
-    return badRequest(`Unsupported method: ${method}`);
+    return badRequest(`Unsupported method: ${method}`, event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

@@ -15,6 +15,39 @@ resource "aws_apigatewayv2_stage" "default" {
   api_id      = aws_apigatewayv2_api.main.id
   name        = "$default"
   auto_deploy = true
+
+  # Access logging for debugging and cost attribution
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.apigw.arn
+    format = jsonencode({
+      requestId      = "$context.requestId"
+      ip             = "$context.identity.sourceIp"
+      method         = "$context.httpMethod"
+      path           = "$context.path"
+      status         = "$context.status"
+      latency        = "$context.responseLatency"
+      integrationErr = "$context.integrationErrorMessage"
+    })
+  }
+}
+
+# CloudWatch log group for API Gateway access logs
+resource "aws_cloudwatch_log_group" "apigw" {
+  name              = "/aws/apigateway/${var.project}-api"
+  retention_in_days = 30
+}
+
+# Cognito JWT Authorizer — validates tokens on protected routes
+resource "aws_apigatewayv2_authorizer" "cognito" {
+  api_id           = aws_apigatewayv2_api.main.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+  name             = "${var.project}-cognito-jwt"
+
+  jwt_configuration {
+    audience = [aws_cognito_user_pool_client.web.id]
+    issuer   = "https://cognito-idp.${var.region}.amazonaws.com/${aws_cognito_user_pool.main.id}"
+  }
 }
 
 # ── Route definitions ───────────────────────────────────────────────
@@ -143,6 +176,8 @@ locals {
     "GET /api/charts"               = "charts"
     "POST /api/charts"              = "charts"
     "PUT /api/charts/{id}"          = "charts"
+    # Init (single request loads all data for app startup)
+    "GET /api/init"                 = "init"
   }
 }
 
@@ -157,13 +192,16 @@ resource "aws_apigatewayv2_integration" "lambda" {
   payload_format_version = "2.0"
 }
 
-# ── Routes (95+) ───────────────────────────────────────────────────
+# ── Routes (95+) — all protected by Cognito JWT ───────────────────
 resource "aws_apigatewayv2_route" "routes" {
   for_each = local.routes
 
   api_id    = aws_apigatewayv2_api.main.id
   route_key = each.key
   target    = "integrations/${aws_apigatewayv2_integration.lambda[each.value].id}"
+
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.cognito.id
 }
 
 # ── Lambda invoke permissions for API Gateway ──────────────────────

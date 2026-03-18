@@ -13,12 +13,12 @@ module.exports.handler = async function handler(event) {
     if (method === 'GET') {
       const items = await scan(TABLE);
       items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      return ok(items);
+      return ok(items, event);
     }
 
     if (method === 'POST') {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const item = {
         ...body,
@@ -27,26 +27,26 @@ module.exports.handler = async function handler(event) {
       };
 
       await putItem(TABLE, item);
-      return created(item);
+      return created(item, event);
     }
 
     if (method === 'PUT') {
-      if (!id) return badRequest('Missing id path parameter');
+      if (!id) return badRequest('Missing id path parameter', event);
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const updated = await updateItem(TABLE, { id }, body);
-      return ok(updated);
+      return ok(updated, event);
     }
 
     if (method === 'DELETE') {
-      if (!id) return badRequest('Missing id path parameter');
+      if (!id) return badRequest('Missing id path parameter', event);
       await deleteItem(TABLE, { id });
-      return noContent();
+      return noContent(event);
     }
 
-    return badRequest('Method not allowed');
+    return badRequest('Method not allowed', event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

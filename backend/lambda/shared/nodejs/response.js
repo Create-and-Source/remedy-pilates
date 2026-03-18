@@ -1,51 +1,64 @@
 // Standard HTTP response helpers for API Gateway
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-  'Content-Type': 'application/json',
-};
+// CORS: reflect the request origin if it matches allowed origins, else deny
 
-const ok = (body) => ({
+const ALLOWED_ORIGINS = new Set([
+  'http://localhost:5173',
+  'https://remedypilates.com',
+]);
+
+function corsHeaders(event) {
+  const origin = event?.headers?.origin || '';
+  // If origin matches allowed list, reflect it. If no event passed (legacy call), use first allowed origin.
+  const matched = ALLOWED_ORIGINS.has(origin) ? origin : (!event ? [...ALLOWED_ORIGINS][0] : '');
+  return {
+    'Access-Control-Allow-Origin': matched,
+    'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+    'Content-Type': 'application/json',
+    'Vary': 'Origin',
+  };
+}
+
+const ok = (body, event) => ({
   statusCode: 200,
-  headers: CORS,
+  headers: corsHeaders(event),
   body: JSON.stringify(body),
 });
 
-const created = (body) => ({
+const created = (body, event) => ({
   statusCode: 201,
-  headers: CORS,
+  headers: corsHeaders(event),
   body: JSON.stringify(body),
 });
 
-const noContent = () => ({
+const noContent = (event) => ({
   statusCode: 204,
-  headers: CORS,
+  headers: corsHeaders(event),
   body: '',
 });
 
-const badRequest = (message = 'Bad request') => ({
+const badRequest = (message = 'Bad request', event) => ({
   statusCode: 400,
-  headers: CORS,
+  headers: corsHeaders(event),
   body: JSON.stringify({ error: message }),
 });
 
-const notFound = (message = 'Not found') => ({
+const notFound = (message = 'Not found', event) => ({
   statusCode: 404,
-  headers: CORS,
+  headers: corsHeaders(event),
   body: JSON.stringify({ error: message }),
 });
 
-const forbidden = (message = 'Forbidden') => ({
+const forbidden = (message = 'Forbidden', event) => ({
   statusCode: 403,
-  headers: CORS,
+  headers: corsHeaders(event),
   body: JSON.stringify({ error: message }),
 });
 
-const serverError = (err) => {
+const serverError = (err, event) => {
   console.error('Lambda error:', err);
   return {
     statusCode: 500,
-    headers: CORS,
+    headers: corsHeaders(event),
     body: JSON.stringify({ error: 'Internal server error' }),
   };
 };

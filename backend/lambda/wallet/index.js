@@ -15,15 +15,15 @@ module.exports.handler = async function handler(event) {
       const clientId = queryParam(event, 'clientId');
       if (clientId) {
         const items = await query(TABLE, CLIENT_INDEX, 'clientId = :c', { ':c': clientId });
-        return ok(items);
+        return ok(items, event);
       }
       const items = await scan(TABLE);
-      return ok(items);
+      return ok(items, event);
     }
 
     if (method === 'POST') {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const newId = genId('WAL');
       const item = {
@@ -31,20 +31,20 @@ module.exports.handler = async function handler(event) {
         id: newId,
       };
       await putItem(TABLE, item);
-      return created(item);
+      return created(item, event);
     }
 
     if (method === 'PUT') {
-      if (!id) return badRequest('id path parameter is required');
+      if (!id) return badRequest('id path parameter is required', event);
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const updated = await updateItem(TABLE, { id }, body);
-      return ok(updated);
+      return ok(updated, event);
     }
 
-    return badRequest(`Unsupported method: ${method}`);
+    return badRequest(`Unsupported method: ${method}`, event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

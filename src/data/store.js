@@ -17,11 +17,16 @@ function get(key, fallback = []) {
 function set(key, data) { localStorage.setItem(key, JSON.stringify(data)); notify(); }
 
 // ── API helpers (fire-and-forget — never block UI) ──
-const hdrs = { 'Content-Type': 'application/json' };
-function apiGet(path) { return fetch(`${API}${path}`, { headers: hdrs }).then(r => r.ok ? r.json() : null).catch(() => null); }
-function apiPost(path, body) { if (API) fetch(`${API}${path}`, { method: 'POST', headers: hdrs, body: JSON.stringify(body) }).catch(() => {}); }
-function apiPut(path, body) { if (API) fetch(`${API}${path}`, { method: 'PUT', headers: hdrs, body: JSON.stringify(body) }).catch(() => {}); }
-function apiDel(path) { if (API) fetch(`${API}${path}`, { method: 'DELETE' }).catch(() => {}); }
+function authHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+  const token = localStorage.getItem('rp_auth_token');
+  if (token) h.Authorization = `Bearer ${token}`;
+  return h;
+}
+function apiGet(path) { return fetch(`${API}${path}`, { headers: authHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null); }
+function apiPost(path, body) { if (API) fetch(`${API}${path}`, { method: 'POST', headers: authHeaders(), body: JSON.stringify(body) }).catch(() => {}); }
+function apiPut(path, body) { if (API) fetch(`${API}${path}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(body) }).catch(() => {}); }
+function apiDel(path) { if (API) fetch(`${API}${path}`, { method: 'DELETE', headers: authHeaders() }).catch(() => {}); }
 
 // ── Clients ──
 export function getPatients() { return get('rp_clients', []); }
@@ -140,33 +145,40 @@ export async function initStore() {
 
   // ── API mode: pull from backend into localStorage cache ──
   if (API) {
-    const endpoints = [
-      ['rp_clients', '/api/clients'],
-      ['rp_appointments', '/api/appointments'],
-      ['rp_services', '/api/services'],
-      ['rp_instructors', '/api/instructors'],
-      ['rp_locations', '/api/locations'],
-      ['rp_class_packages', '/api/packages'],
-      ['rp_inventory', '/api/inventory'],
-      ['rp_emails', '/api/emails'],
-      ['rp_texts', '/api/texts'],
-      ['rp_social_posts', '/api/social-posts'],
-      ['rp_retention_alerts', '/api/retention'],
-      ['rp_trainees', '/api/trainees'],
-      ['rp_checkins', '/api/checkins'],
-    ];
-    const results = await Promise.all(endpoints.map(([, path]) => apiGet(path)));
-    endpoints.forEach(([key], i) => {
-      const data = results[i];
-      if (Array.isArray(data) && data.length > 0) {
-        localStorage.setItem(key, JSON.stringify(data));
+    // Single request replaces 14 individual endpoint calls
+    const initData = await apiGet('/api/init');
+
+    if (initData) {
+      // Map API response keys to localStorage keys
+      const keyMap = {
+        clients:          'rp_clients',
+        appointments:     'rp_appointments',
+        services:         'rp_services',
+        instructors:      'rp_instructors',
+        locations:        'rp_locations',
+        class_packages:   'rp_class_packages',
+        inventory:        'rp_inventory',
+        emails:           'rp_emails',
+        texts:            'rp_texts',
+        social_posts:     'rp_social_posts',
+        retention_alerts: 'rp_retention_alerts',
+        trainees:         'rp_trainees',
+        checkins:         'rp_checkins',
+      };
+
+      for (const [apiKey, lsKey] of Object.entries(keyMap)) {
+        const data = initData[apiKey];
+        if (Array.isArray(data) && data.length > 0) {
+          localStorage.setItem(lsKey, JSON.stringify(data));
+        }
       }
-    });
-    // Settings is an object, not an array
-    const settings = await apiGet('/api/settings');
-    if (settings && Object.keys(settings).length > 0) {
-      localStorage.setItem('rp_settings', JSON.stringify(settings));
+
+      // Settings is an object, not an array
+      if (initData.settings && Object.keys(initData.settings).length > 0) {
+        localStorage.setItem('rp_settings', JSON.stringify(initData.settings));
+      }
     }
+
     // Seed any gaps the API didn't have
     seedIfEmpty(d, today, t);
     return;

@@ -23,7 +23,7 @@ module.exports.handler = async function handler(event) {
             'preferredInstructor = :v',
             { ':v': instructor }
           );
-          return ok(items);
+          return ok(items, event);
         }
 
         if (email) {
@@ -33,16 +33,16 @@ module.exports.handler = async function handler(event) {
             'email = :v',
             { ':v': email }
           );
-          return ok(items);
+          return ok(items, event);
         }
 
         const items = await scan(TABLE);
-        return ok(items);
+        return ok(items, event);
       }
 
       if (method === 'POST') {
         const body = parseBody(event);
-        if (!body) return badRequest('Request body is required');
+        if (!body) return badRequest('Request body is required', event);
 
         const item = {
           ...body,
@@ -51,35 +51,35 @@ module.exports.handler = async function handler(event) {
         };
 
         await putItem(TABLE, item);
-        return created(item);
+        return created(item, event);
       }
 
-      return badRequest('Method not allowed');
+      return badRequest('Method not allowed', event);
     }
 
     // Item routes — with {id}
     if (method === 'GET') {
       const item = await getItem(TABLE, { id });
-      if (!item) return notFound('Client not found');
-      return ok(item);
+      if (!item) return notFound('Client not found', event);
+      return ok(item, event);
     }
 
     if (method === 'PUT') {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const updates = { ...body, updatedAt: new Date().toISOString() };
       const updated = await updateItem(TABLE, { id }, updates);
-      return ok(updated);
+      return ok(updated, event);
     }
 
     if (method === 'DELETE') {
       await deleteItem(TABLE, { id });
-      return noContent();
+      return noContent(event);
     }
 
-    return badRequest('Method not allowed');
+    return badRequest('Method not allowed', event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

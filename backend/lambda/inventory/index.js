@@ -14,14 +14,14 @@ module.exports.handler = async function handler(event) {
     // POST /api/inventory/adjust — must be checked before generic POST
     if (method === 'POST' && rawPath.includes('/adjust')) {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const { id: itemId, delta, note } = body;
-      if (!itemId) return badRequest('id is required');
-      if (typeof delta !== 'number') return badRequest('delta must be a number');
+      if (!itemId) return badRequest('id is required', event);
+      if (typeof delta !== 'number') return badRequest('delta must be a number', event);
 
       const existing = await getItem(TABLE, { id: itemId });
-      if (!existing) return notFound('Inventory item not found');
+      if (!existing) return notFound('Inventory item not found', event);
 
       const updatedItem = {
         ...existing,
@@ -31,19 +31,19 @@ module.exports.handler = async function handler(event) {
       };
 
       await putItem(TABLE, updatedItem);
-      return ok(updatedItem);
+      return ok(updatedItem, event);
     }
 
     // Collection routes — no {id}
     if (!id) {
       if (method === 'GET') {
         const items = await scan(TABLE);
-        return ok(items);
+        return ok(items, event);
       }
 
       if (method === 'POST') {
         const body = parseBody(event);
-        if (!body) return badRequest('Request body is required');
+        if (!body) return badRequest('Request body is required', event);
 
         const item = {
           ...body,
@@ -52,24 +52,24 @@ module.exports.handler = async function handler(event) {
         };
 
         await putItem(TABLE, item);
-        return created(item);
+        return created(item, event);
       }
 
-      return badRequest('Method not allowed');
+      return badRequest('Method not allowed', event);
     }
 
     // Item routes — with {id}
     if (method === 'PUT') {
       const body = parseBody(event);
-      if (!body) return badRequest('Request body is required');
+      if (!body) return badRequest('Request body is required', event);
 
       const updates = { ...body, updatedAt: new Date().toISOString() };
       const updated = await updateItem(TABLE, { id }, updates);
-      return ok(updated);
+      return ok(updated, event);
     }
 
-    return badRequest('Method not allowed');
+    return badRequest('Method not allowed', event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };

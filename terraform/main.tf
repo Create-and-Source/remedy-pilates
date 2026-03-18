@@ -12,14 +12,14 @@ terraform {
     }
   }
 
-  # Remote state in S3 (create the bucket first, or comment out for local state)
-  # backend "s3" {
-  #   bucket         = "remedy-terraform-state"
-  #   key            = "remedy/terraform.tfstate"
-  #   region         = "us-west-2"
-  #   dynamodb_table = "remedy-terraform-lock"
-  #   encrypt        = true
-  # }
+  # Remote state in S3 — create bucket first with: aws s3 mb s3://remedy-terraform-state --region us-west-2
+  backend "s3" {
+    bucket         = "remedy-terraform-state"
+    key            = "remedy/terraform.tfstate"
+    region         = "us-west-2"
+    dynamodb_table = "remedy-terraform-lock"
+    encrypt        = true
+  }
 }
 
 provider "aws" {
@@ -108,5 +108,14 @@ locals {
     memberships    = ["memberships", "membership_packages"]
     recovery-tips  = ["recovery_tips"]
     charts         = ["charts"]
+    init           = ["clients", "appointments", "services", "instructors", "locations", "class_packages", "inventory", "emails", "texts", "social_posts", "retention_alerts", "trainees", "checkins", "settings"]
+  }
+
+  # Memory tiering: heavy handlers get 256MB, simple CRUD gets 128MB, init gets 512MB
+  lambda_memory = {
+    clients      = 256
+    appointments = 256
+    memberships  = 256
+    init         = 512
   }
 }

@@ -20,25 +20,25 @@ module.exports.handler = async function handler(event) {
         return acc;
       }, {});
 
-      return ok(merged);
+      return ok(merged, event);
     }
 
     if (method === 'PUT') {
       const body = parseBody(event);
-      if (!body || typeof body !== 'object') return badRequest('Request body must be a key-value object');
+      if (!body || typeof body !== 'object') return badRequest('Request body must be a key-value object', event);
 
       const entries = Object.entries(body);
-      if (entries.length === 0) return badRequest('Request body must contain at least one key-value pair');
+      if (entries.length === 0) return badRequest('Request body must contain at least one key-value pair', event);
 
       await Promise.all(
         entries.map(([k, v]) => putItem(TABLE, { key: k, value: v }))
       );
 
-      return ok({ updated: entries.length });
+      return ok({ updated: entries.length }, event);
     }
 
-    return badRequest('Method not allowed');
+    return badRequest('Method not allowed', event);
   } catch (err) {
-    return serverError(err);
+    return serverError(err, event);
   }
 };
