@@ -5,7 +5,6 @@ import { getSettings } from '../data/store';
 import HelpChat from './HelpChat';
 import CommandPalette from './CommandPalette';
 import NotificationBell from './NotificationBell';
-import DemoTour from './DemoTour';
 
 const NAV_ITEMS = [
   { section: 'Overview', items: [
@@ -108,7 +107,6 @@ export default function Layout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showTheme, setShowTheme] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
-  const [showTour, setShowTour] = useState(false);
   const { theme } = useTheme();
   const isEmbed = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('embed');
   const s = useStyles();
@@ -319,7 +317,6 @@ export default function Layout({ children }) {
       {!isEmbed && <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />}
       <ThemePicker show={showTheme} onClose={() => setShowTheme(false)} />
       {!isEmbed && <HelpChat />}
-      {!isEmbed && <DemoTour showTour={showTour} onClose={() => setShowTour(false)} />}
 
       <style>{`
         @media (max-width: 860px) {
