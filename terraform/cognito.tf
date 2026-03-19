@@ -47,8 +47,8 @@ resource "aws_cognito_user_pool_client" "web" {
     "ALLOW_REFRESH_TOKEN_AUTH",
   ]
 
-  callback_urls = ["http://localhost:5173/auth/callback", "https://remedypilates.com/auth/callback"]
-  logout_urls   = ["http://localhost:5173", "https://remedypilates.com"]
+  callback_urls = ["http://localhost:5173/auth/callback", "https://pilatesstudio.com/auth/callback"]
+  logout_urls   = ["http://localhost:5173", "https://pilatesstudio.com"]
 
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["openid", "email", "profile"]

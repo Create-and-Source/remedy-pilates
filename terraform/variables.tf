@@ -3,13 +3,13 @@ variable "region" {
 }
 
 variable "table_prefix" {
-  default = "remedy-"
+  default = "pilates-"
 }
 
 variable "project" {
-  default = "remedy"
+  default = "pilates"
 }
 
 variable "cors_origins" {
-  default = ["http://localhost:5173", "https://remedypilates.com"]
+  default = ["http://localhost:5173", "https://pilatesstudio.com"]
 }

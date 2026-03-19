@@ -71,8 +71,8 @@ const LOCATIONS = [
 
 const CLASSES = [
   {
-    id: "remedy-first",
-    name: "REMEDY FIRST",
+    id: "studio-first",
+    name: "STUDIO FIRST",
     tagline: "Your intro to the reformer.",
     description: "Zero experience needed. We walk you through everything from foot bar height to spring resistance. The perfect starting point.",
     duration: "50 min",
@@ -82,8 +82,8 @@ const CLASSES = [
     bg: "#FDF5F0",
   },
   {
-    id: "remedy-core",
-    name: "REMEDY CORE",
+    id: "studio-core",
+    name: "STUDIO CORE",
     tagline: "Mat-based class for all levels.",
     description: "Core focus with foundational Pilates movements on the mat. Accessible for newcomers, challenging for regulars.",
     duration: "45 min",
@@ -93,8 +93,8 @@ const CLASSES = [
     bg: "#EDEFFD",
   },
   {
-    id: "remedy-sculpt",
-    name: "REMEDY SCULPT",
+    id: "studio-sculpt",
+    name: "STUDIO SCULPT",
     tagline: "Barre-inspired toning.",
     description: "Great energy, great music. Small isometric movements that create long, lean lines. Expect to feel the burn.",
     duration: "55 min",
@@ -104,8 +104,8 @@ const CLASSES = [
     bg: "#FEF3C7",
   },
   {
-    id: "remedy-restore",
-    name: "REMEDY RESTORE",
+    id: "studio-restore",
+    name: "STUDIO RESTORE",
     tagline: "Gentle stretching. Perfect first experience.",
     description: "A slower, more mindful practice focused on flexibility, breathwork, and recovery. Deeply nourishing.",
     duration: "50 min",
@@ -127,7 +127,7 @@ const TIME_SLOTS = [
 
 const TESTIMONIALS = [
   {
-    quote: "I was terrified to try my first class — I had zero Pilates experience. Remedy made me feel completely at home from the second I walked in.",
+    quote: "I was terrified to try my first class — I had zero Pilates experience. Pilates Studio made me feel completely at home from the second I walked in.",
     name: "Sarah M.",
     location: "Scottsdale",
     months: "Member for 8 months",
@@ -191,7 +191,7 @@ function TopNav() {
         R
       </a>
       <span style={{ fontFamily: FONT, fontWeight: 600, fontSize: 15, color: "#2D2320", letterSpacing: "-0.01em" }}>
-        Remedy Pilates &amp; Barre
+        Pilates &amp; Barre
       </span>
     </nav>
   );
@@ -396,7 +396,7 @@ function StepClass({ selected, onSelect }) {
         Pick your first class
       </h2>
       <p style={{ fontFamily: FONT, fontSize: 15, color: "#8A7068", textAlign: "center", margin: "0 0 28px" }}>
-        Not sure? We recommend starting with Remedy First — it's designed exactly for this moment.
+        Not sure? We recommend starting with Studio First — it's designed exactly for this moment.
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {CLASSES.map((cls) => {
@@ -995,7 +995,7 @@ export default function FreeTrialFlow() {
             lineHeight: 1.15,
             letterSpacing: "-0.01em",
           }}>
-            Experience Remedy
+            Experience Pilates
           </h1>
           <p style={{
             fontFamily: FONT,

@@ -178,7 +178,7 @@ export default function TextMessages() {
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div style={{ width: 280, background: '#F8F8F8', borderRadius: 32, padding: '48px 16px 32px', border: '1px solid #E5E5E5' }}>
               <div style={{ textAlign: 'center', marginBottom: 16 }}>
-                <div style={{ font: `600 12px ${s.FONT}`, color: s.text }}>{settings.businessName || 'Remedy Pilates & Barre'}</div>
+                <div style={{ font: `600 12px ${s.FONT}`, color: s.text }}>{settings.businessName || 'Pilates & Barre'}</div>
                 <div style={{ font: `400 10px ${s.FONT}`, color: s.text3 }}>SMS</div>
               </div>
               <div style={{ background: '#fff', borderRadius: 16, padding: 14, minHeight: 120, boxShadow: s.shadow }}>

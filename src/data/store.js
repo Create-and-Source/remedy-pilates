@@ -65,7 +65,7 @@ export function adjustStock(id, qty, reason) {
   apiPost('/api/inventory/adjust', { id, delta, note: reason });
 }
 
-export function getInjectableInventory() {
+export function getEquipmentInventory() {
   return getInventory().filter(i => i.category === 'Equipment');
 }
 
@@ -191,12 +191,12 @@ export async function initStore() {
 
   // Instructors (6 — led by Kelly Snailum, founder)
   set('rp_instructors', [
-    { id: 'INS-1', name: 'Kelly Snailum', title: 'Owner & Master Trainer', specialties: ['Reformer Pilates', 'Mat Pilates', 'Barre', 'Private Training', 'Teacher Training', 'TRX'], color: '#C4704B', certifications: ['Pilates Sports Center — Full Comprehensive', 'ACE Certified Personal Trainer', 'Balanced Body Master Instructor', 'TRX Certified'], bio: 'Kelly founded Remedy in 2008 with a single reformer and a vision for movement that transforms. With over 18 years of teaching experience and thousands of hours on the apparatus, she has built Remedy into one of Arizona\'s most respected Pilates studios. She leads the Pilates Sports Center teacher training program and has mentored dozens of instructors.', yearsExperience: 18, location: 'All Locations' },
-    { id: 'INS-2', name: 'Megan Torres', title: 'Lead Reformer Instructor', specialties: ['Reformer Pilates', 'Reformer + Cardio', 'Private Training', 'Prenatal Pilates'], color: '#6B8F71', certifications: ['Pilates Sports Center — Reformer/Mat', 'NPCP Certified', 'Prenatal/Postnatal Pilates Certification', 'CPR/AED'], bio: 'Megan brings athletic precision to every class. A former collegiate gymnast, she discovered Pilates during injury recovery and never looked back. She specializes in Reformer + Cardio and has a gift for making complex exercises feel accessible. Her prenatal classes are among Remedy\'s most waitlisted.', yearsExperience: 8, location: 'Scottsdale' },
+    { id: 'INS-1', name: 'Kelly Snailum', title: 'Owner & Master Trainer', specialties: ['Reformer Pilates', 'Mat Pilates', 'Barre', 'Private Training', 'Teacher Training', 'TRX'], color: '#C4704B', certifications: ['Pilates Sports Center — Full Comprehensive', 'ACE Certified Personal Trainer', 'Balanced Body Master Instructor', 'TRX Certified'], bio: 'Kelly founded the studio in 2008 with a single reformer and a vision for movement that transforms. With over 18 years of teaching experience and thousands of hours on the apparatus, she has built Pilates Studio into one of Arizona\'s most respected Pilates studios. She leads the Pilates Sports Center teacher training program and has mentored dozens of instructors.', yearsExperience: 18, location: 'All Locations' },
+    { id: 'INS-2', name: 'Megan Torres', title: 'Lead Reformer Instructor', specialties: ['Reformer Pilates', 'Reformer + Cardio', 'Private Training', 'Prenatal Pilates'], color: '#6B8F71', certifications: ['Pilates Sports Center — Reformer/Mat', 'NPCP Certified', 'Prenatal/Postnatal Pilates Certification', 'CPR/AED'], bio: 'Megan brings athletic precision to every class. A former collegiate gymnast, she discovered Pilates during injury recovery and never looked back. She specializes in Reformer + Cardio and has a gift for making complex exercises feel accessible. Her prenatal classes are among the studio\'s most waitlisted.', yearsExperience: 8, location: 'Scottsdale' },
     { id: 'INS-3', name: 'Danielle Park', title: 'Barre & TRX Specialist', specialties: ['Barre', 'TRX Fusion', 'Barre Burn', 'Group Apparatus'], color: '#8B6B94', certifications: ['Barre Above Certified', 'TRX Group Training Certified', 'Balanced Body Reformer', 'NASM CES'], bio: 'Danielle\'s high-energy Barre Burn classes have a cult following. With a background in dance and functional movement, she blends ballet-inspired technique with modern strength training. Her TRX Fusion class is the studio\'s most intense offering — and consistently sells out.', yearsExperience: 6, location: 'Arcadia' },
     { id: 'INS-4', name: 'Rachel Kim', title: 'Pilates Instructor', specialties: ['Mat Pilates', 'Reformer Pilates', 'Stretch & Restore', 'Youth Conditioning'], color: '#5B7B8F', certifications: ['Pilates Sports Center — Mat/Reformer', 'Youth Fitness Specialist (ISSA)', 'Myofascial Release Certification'], bio: 'Rachel has a calm, encouraging teaching style that makes beginners feel at home. She specializes in working with young athletes and brings a rehab-informed approach to every session. Her Stretch & Restore classes are the perfect antidote to a high-intensity week.', yearsExperience: 5, location: 'North Central' },
-    { id: 'INS-5', name: 'Ava Mitchell', title: 'Pilates Instructor', specialties: ['Reformer Pilates', 'Mat Pilates', 'Barre', 'Private Training'], color: '#A68B6B', certifications: ['Balanced Body Comprehensive', 'Barre Above Certified', 'CPR/AED'], bio: 'Ava is known for her creative sequencing and upbeat energy. She completed her comprehensive certification under Kelly\'s mentorship and has quickly become one of Remedy\'s most requested instructors. Her classes blend classical Pilates principles with contemporary movement.', yearsExperience: 3, location: 'Scottsdale' },
-    { id: 'INS-6', name: 'Jordan Reeves', title: 'Teacher Training Lead', specialties: ['Teacher Training', 'Reformer Pilates', 'Group Apparatus', 'Mat Pilates'], color: '#B85C38', certifications: ['Pilates Sports Center — Full Comprehensive', 'Balanced Body Faculty', 'Anatomy Trains Structural Integration', 'NCPT Certified'], bio: 'Jordan co-leads Remedy\'s Pilates Sports Center teacher training program alongside Kelly. With deep expertise in anatomy and biomechanics, he brings a science-first approach to instructor education. He has trained over 40 instructors who now teach across Arizona.', yearsExperience: 12, location: 'Scottsdale' },
+    { id: 'INS-5', name: 'Ava Mitchell', title: 'Pilates Instructor', specialties: ['Reformer Pilates', 'Mat Pilates', 'Barre', 'Private Training'], color: '#A68B6B', certifications: ['Balanced Body Comprehensive', 'Barre Above Certified', 'CPR/AED'], bio: 'Ava is known for her creative sequencing and upbeat energy. She completed her comprehensive certification under Kelly\'s mentorship and has quickly become one of the studio\'s most requested instructors. Her classes blend classical Pilates principles with contemporary movement.', yearsExperience: 3, location: 'Scottsdale' },
+    { id: 'INS-6', name: 'Jordan Reeves', title: 'Teacher Training Lead', specialties: ['Teacher Training', 'Reformer Pilates', 'Group Apparatus', 'Mat Pilates'], color: '#B85C38', certifications: ['Pilates Sports Center — Full Comprehensive', 'Balanced Body Faculty', 'Anatomy Trains Structural Integration', 'NCPT Certified'], bio: 'Jordan co-leads the studio\'s Pilates Sports Center teacher training program alongside Kelly. With deep expertise in anatomy and biomechanics, he brings a science-first approach to instructor education. He has trained over 40 instructors who now teach across Arizona.', yearsExperience: 12, location: 'Scottsdale' },
   ]);
 
   // Services / Classes
@@ -352,7 +352,7 @@ export async function initStore() {
     { id: 'INV-9', name: 'Foam Roller (36")', category: 'Props', sku: 'FR-36', quantity: 12, reorderAt: 5, unitCost: 2000, location: 'LOC-1', adjustmentLog: [] },
     { id: 'INV-10', name: 'TRX Suspension Trainer', category: 'Equipment', sku: 'TRX-ST', quantity: 10, reorderAt: 3, unitCost: 15000, location: 'LOC-1', adjustmentLog: [] },
     { id: 'INV-11', name: 'Barre Grip Socks (retail)', category: 'Retail', sku: 'GS-01', quantity: 45, reorderAt: 15, unitCost: 800, location: 'LOC-1', adjustmentLog: [] },
-    { id: 'INV-12', name: 'Remedy Water Bottle', category: 'Retail', sku: 'RWB-01', quantity: 20, reorderAt: 8, unitCost: 1200, location: 'LOC-1', adjustmentLog: [] },
+    { id: 'INV-12', name: 'Pilates Water Bottle', category: 'Retail', sku: 'RWB-01', quantity: 20, reorderAt: 8, unitCost: 1200, location: 'LOC-1', adjustmentLog: [] },
     { id: 'INV-13', name: 'Reformer Springs (set)', category: 'Parts', sku: 'SP-SET', quantity: 6, reorderAt: 3, unitCost: 8500, location: 'LOC-1', adjustmentLog: [] },
     { id: 'INV-14', name: 'Jump Board', category: 'Equipment', sku: 'JB-01', quantity: 8, reorderAt: 3, unitCost: 25000, location: 'LOC-1', adjustmentLog: [] },
     { id: 'INV-15', name: 'Barre Grip Socks (retail)', category: 'Retail', sku: 'GS-02', quantity: 3, reorderAt: 10, unitCost: 800, location: 'LOC-2', adjustmentLog: [] },
@@ -382,7 +382,7 @@ export async function initStore() {
   set('rp_retention_alerts', alerts);
 
   set('rp_social_connections', { instagram: true, facebook: true, x: false, linkedin: false, tiktok: true });
-  set('rp_settings', { businessName: 'Remedy Pilates & Barre', tagline: 'Form. Strength. Balance.', email: 'info@remedypilates.com', phone: '(480) 699-8160' });
+  set('rp_settings', { businessName: 'Pilates & Barre', tagline: 'Form. Strength. Balance.', email: 'info@pilatesstudio.com', phone: '(480) 699-8160' });
 
   // Teacher Training Pipeline
   set('rp_trainees', [
@@ -399,7 +399,7 @@ export async function initStore() {
 function seedIfEmpty(d, today, t) {
   // Ensure settings always exist
   if (!localStorage.getItem('rp_settings')) {
-    set('rp_settings', { businessName: 'Remedy Pilates & Barre', tagline: 'Form. Strength. Balance.', email: 'info@remedypilates.com', phone: '(480) 699-8160' });
+    set('rp_settings', { businessName: 'Pilates & Barre', tagline: 'Form. Strength. Balance.', email: 'info@pilatesstudio.com', phone: '(480) 699-8160' });
   }
   if (!localStorage.getItem('rp_social_connections')) {
     set('rp_social_connections', { instagram: true, facebook: true, x: false, linkedin: false, tiktok: true });
@@ -407,29 +407,29 @@ function seedIfEmpty(d, today, t) {
 
   // Seed Sent Emails
   if (get('rp_emails', []).length === 0) set('rp_emails', [
-    { id: 'EM-1', subject: 'March Newsletter — New Spring Schedule', body: 'Hi there, here is what is new this month at Remedy...', audience: 'All Clients', status: 'Sent', recipientCount: 30, sentDate: d(-3) + 'T10:00:00Z' },
+    { id: 'EM-1', subject: 'March Newsletter — New Spring Schedule', body: 'Hi there, here is what is new this month at Pilates Studio...', audience: 'All Clients', status: 'Sent', recipientCount: 30, sentDate: d(-3) + 'T10:00:00Z' },
     { id: 'EM-2', subject: 'Exclusive: New Client Special — 3 Classes for $49', body: 'Special offer for new members...', audience: 'New Clients', status: 'Sent', recipientCount: 12, sentDate: d(-7) + 'T14:00:00Z' },
     { id: 'EM-3', subject: 'Your Class is Tomorrow!', body: 'Hi [Client], reminder about your upcoming Reformer class...', audience: 'Upcoming Bookings', status: 'Sent', recipientCount: 8, sentDate: d(-1) + 'T09:00:00Z' },
     { id: 'EM-4', subject: 'We Miss You — Come Back & Save', body: 'It has been a while since your last class...', audience: 'Lapsed Clients', status: 'Sent', recipientCount: 15, sentDate: d(-14) + 'T11:00:00Z' },
-    { id: 'EM-5', subject: 'Welcome to the Remedy Family!', body: 'Thank you for becoming a member...', audience: 'Members', status: 'Sent', recipientCount: 3, sentDate: d(-21) + 'T16:00:00Z' },
+    { id: 'EM-5', subject: 'Welcome to the Pilates Family!', body: 'Thank you for becoming a member...', audience: 'Members', status: 'Sent', recipientCount: 3, sentDate: d(-21) + 'T16:00:00Z' },
   ]);
 
   // Seed Sent Text Messages
   if (get('rp_texts', []).length === 0) set('rp_texts', [
     { id: 'TXT-1', message: 'Hi! Reminder: your Reformer class is tomorrow at 9am. Reply C to confirm or R to reschedule.', audience: 'upcoming', recipientCount: 6, template: 'reminder', status: 'Sent', sentDate: d(-1) + 'T08:00:00Z' },
     { id: 'TXT-2', message: 'Hi! How are you feeling after your first Barre class? Any soreness is totally normal — you did great! Reply with any questions.', audience: 'all', recipientCount: 4, template: 'followup', status: 'Sent', sentDate: d(-2) + 'T10:00:00Z' },
-    { id: 'TXT-3', message: 'Spring into shape! 20% off your first month of unlimited classes. Reply BOOK or visit remedypilates.com', audience: 'all', recipientCount: 30, template: 'promo', status: 'Sent', sentDate: d(-5) + 'T12:00:00Z' },
+    { id: 'TXT-3', message: 'Spring into shape! 20% off your first month of unlimited classes. Reply BOOK or visit pilatesstudio.com', audience: 'all', recipientCount: 30, template: 'promo', status: 'Sent', sentDate: d(-5) + 'T12:00:00Z' },
     { id: 'TXT-4', message: 'Thanks for taking class with us! Loved your experience? Leave us a quick review: [Google link]', audience: 'all', recipientCount: 8, template: 'review', status: 'Sent', sentDate: d(-3) + 'T15:00:00Z' },
     { id: 'TXT-5', message: 'Hi! It has been a while — we would love to see you back on the reformer. Enjoy $25 off your next class pack. Reply BOOK to schedule.', audience: 'lapsed', recipientCount: 12, template: 'reactivation', status: 'Sent', sentDate: d(-10) + 'T11:00:00Z' },
   ]);
 
   // Seed Social Media Posts
   if (get('rp_social_posts', []).length === 0) set('rp_social_posts', [
-    { id: 'SP-1', contentType: 'service', platforms: ['instagram', 'facebook'], posts: [{ platform: 'instagram', text: 'Find your form on the reformer\n\nStrength. Balance. Control.\n\nBook your intro class — link in bio\n\n#RemedyPilates #Reformer #PilatesLife' }, { platform: 'facebook', text: 'Reformer Pilates classes for all levels. Small groups, personal attention. Book your intro today!' }], status: 'published', publishedAt: d(-2) + 'T10:00:00Z', createdAt: d(-2) + 'T09:00:00Z' },
-    { id: 'SP-2', contentType: 'before-after', platforms: ['instagram'], posts: [{ platform: 'instagram', text: 'The transformation is real\n\n8 weeks of consistent Pilates\n\nStronger core. Better posture. More confidence.\n\n#PilatesTransformation #RemedyPilates #Results' }], status: 'published', publishedAt: d(-5) + 'T14:00:00Z', createdAt: d(-5) + 'T13:00:00Z' },
-    { id: 'SP-3', contentType: 'promo', platforms: ['instagram', 'facebook', 'tiktok'], posts: [{ platform: 'instagram', text: 'SPRING INTO STRENGTH\n\nNew client special: 3 classes for $49\n\nLink in bio\n\n#RemedyPilates #NewClient' }, { platform: 'facebook', text: 'Spring into strength — new clients get 3 classes for just $49!' }, { platform: 'tiktok', text: 'POV: You just finished your first reformer class and you are HOOKED' }], status: 'scheduled', scheduledAt: d(2) + 'T10:00:00Z', createdAt: d(-1) + 'T16:00:00Z' },
-    { id: 'SP-4', contentType: 'education', platforms: ['instagram', 'linkedin'], posts: [{ platform: 'instagram', text: 'DID YOU KNOW?\n\nPilates was originally called "Contrology" — the art of controlled movement.\n\n#PilatesFacts #RemedyPilates' }, { platform: 'linkedin', text: 'Fun fact: Joseph Pilates designed the reformer from hospital bed springs during WWI. The equipment has evolved, but the principles remain.' }], status: 'draft', createdAt: d(0) + 'T08:00:00Z' },
-    { id: 'SP-5', contentType: 'team', platforms: ['instagram'], posts: [{ platform: 'instagram', text: 'Meet Kelly Snailum\n\nOur founder & master trainer has been transforming bodies through Pilates since 2005. Named Best Pilates Studio 5 years running.\n\n#MeetTheTeam #RemedyPilates' }], status: 'published', publishedAt: d(-8) + 'T11:00:00Z', createdAt: d(-8) + 'T10:00:00Z' },
+    { id: 'SP-1', contentType: 'service', platforms: ['instagram', 'facebook'], posts: [{ platform: 'instagram', text: 'Find your form on the reformer\n\nStrength. Balance. Control.\n\nBook your intro class — link in bio\n\n#PilatesStudio #Reformer #PilatesLife' }, { platform: 'facebook', text: 'Reformer Pilates classes for all levels. Small groups, personal attention. Book your intro today!' }], status: 'published', publishedAt: d(-2) + 'T10:00:00Z', createdAt: d(-2) + 'T09:00:00Z' },
+    { id: 'SP-2', contentType: 'before-after', platforms: ['instagram'], posts: [{ platform: 'instagram', text: 'The transformation is real\n\n8 weeks of consistent Pilates\n\nStronger core. Better posture. More confidence.\n\n#PilatesTransformation #PilatesStudio #Results' }], status: 'published', publishedAt: d(-5) + 'T14:00:00Z', createdAt: d(-5) + 'T13:00:00Z' },
+    { id: 'SP-3', contentType: 'promo', platforms: ['instagram', 'facebook', 'tiktok'], posts: [{ platform: 'instagram', text: 'SPRING INTO STRENGTH\n\nNew client special: 3 classes for $49\n\nLink in bio\n\n#PilatesStudio #NewClient' }, { platform: 'facebook', text: 'Spring into strength — new clients get 3 classes for just $49!' }, { platform: 'tiktok', text: 'POV: You just finished your first reformer class and you are HOOKED' }], status: 'scheduled', scheduledAt: d(2) + 'T10:00:00Z', createdAt: d(-1) + 'T16:00:00Z' },
+    { id: 'SP-4', contentType: 'education', platforms: ['instagram', 'linkedin'], posts: [{ platform: 'instagram', text: 'DID YOU KNOW?\n\nPilates was originally called "Contrology" — the art of controlled movement.\n\n#PilatesFacts #PilatesStudio' }, { platform: 'linkedin', text: 'Fun fact: Joseph Pilates designed the reformer from hospital bed springs during WWI. The equipment has evolved, but the principles remain.' }], status: 'draft', createdAt: d(0) + 'T08:00:00Z' },
+    { id: 'SP-5', contentType: 'team', platforms: ['instagram'], posts: [{ platform: 'instagram', text: 'Meet Kelly Snailum\n\nOur founder & master trainer has been transforming bodies through Pilates since 2005. Named Best Pilates Studio 5 years running.\n\n#MeetTheTeam #PilatesStudio' }], status: 'published', publishedAt: d(-8) + 'T11:00:00Z', createdAt: d(-8) + 'T10:00:00Z' },
   ]);
 
   // Seed Check-Ins (for today's classes)

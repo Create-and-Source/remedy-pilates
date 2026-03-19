@@ -1,4 +1,4 @@
-package com.remedypilates.app;
+package com.pilatesstudio.app;
 
 import com.getcapacitor.BridgeActivity;
 

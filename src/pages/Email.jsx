@@ -4,10 +4,10 @@ import { getEmails, addEmail, getPatients, getAppointments, getSettings, subscri
 
 const TEMPLATES = {
   appointment: { name: 'Appointment Reminder', icon: '📅', desc: 'Remind clients of upcoming visits', subject: 'Your Appointment is Coming Up!', body: 'Hi [Patient],\n\nThis is a friendly reminder about your upcoming appointment:\n\nService: [Service]\nDate: [Date]\nTime: [Time]\nProvider: [Provider]\n\nPlease arrive 10 minutes early. If you need to reschedule, reply to this email or call us.\n\nSee you soon!' },
-  followup: { name: 'Post-Treatment Follow-Up', icon: '💝', desc: 'Check in after a session', subject: 'How Are You Feeling After Your Treatment?', body: 'Hi [Patient],\n\nWe hope you are feeling wonderful after your recent [Service] session!\n\nHere are your recovery tips reminders:\n- [Recovery Tips tip 1]\n- [Recovery Tips tip 2]\n- [Recovery Tips tip 3]\n\nIf you have any questions or concerns, do not hesitate to reach out.\n\nTo maintain your results, we recommend scheduling your next session in [timeframe].\n\nWarmly,\n[Remedy Pilates & Barre] Team' },
-  promo: { name: 'Special Offer', icon: '✨', desc: 'Promote a deal or package', subject: 'Exclusive Offer Just For You', body: 'Hi [Patient],\n\nWe have something special for you!\n\n[Offer details — e.g., 20% off your next Reformer session]\n\nThis offer is valid through [end date]. Book online or reply to this email to reserve your spot.\n\nLimited availability — do not miss out!\n\nBest,\n[Remedy Pilates & Barre] Team' },
-  newsletter: { name: 'Monthly Newsletter', icon: '📰', desc: 'Monthly updates and tips', subject: 'Monthly Update from [Remedy Pilates & Barre]', body: 'Hi [Patient],\n\nHere is what is new this month:\n\nNEW SERVICES\n- [New service or session]\n\nSKIN TIPS\n[Seasonal skincare advice]\n\nSPECIAL OFFERS\n- [Current promotions]\n\nUPCOMING\n- [Events or availability updates]\n\nThank you for trusting us with your care.\n\nWarmly,\n[Remedy Pilates & Barre] Team' },
-  reengagement: { name: 'We Miss You', icon: '💌', desc: 'Re-engage lapsed clients', subject: 'It Has Been a While — We Would Love to See You', body: 'Hi [Patient],\n\nWe noticed it has been a while since your last visit and wanted to check in!\n\nYour last session was [Service] on [Date]. To maintain your beautiful results, we recommend scheduling a follow-up.\n\nAs a welcome back, enjoy [offer] on your next visit.\n\nBook online or reply to schedule.\n\nWe miss you!\n[Remedy Pilates & Barre] Team' },
+  followup: { name: 'Post-Treatment Follow-Up', icon: '💝', desc: 'Check in after a session', subject: 'How Are You Feeling After Your Treatment?', body: 'Hi [Patient],\n\nWe hope you are feeling wonderful after your recent [Service] session!\n\nHere are your recovery tips reminders:\n- [Recovery Tips tip 1]\n- [Recovery Tips tip 2]\n- [Recovery Tips tip 3]\n\nIf you have any questions or concerns, do not hesitate to reach out.\n\nTo maintain your results, we recommend scheduling your next session in [timeframe].\n\nWarmly,\n[Pilates & Barre] Team' },
+  promo: { name: 'Special Offer', icon: '✨', desc: 'Promote a deal or package', subject: 'Exclusive Offer Just For You', body: 'Hi [Patient],\n\nWe have something special for you!\n\n[Offer details — e.g., 20% off your next Reformer session]\n\nThis offer is valid through [end date]. Book online or reply to this email to reserve your spot.\n\nLimited availability — do not miss out!\n\nBest,\n[Pilates & Barre] Team' },
+  newsletter: { name: 'Monthly Newsletter', icon: '📰', desc: 'Monthly updates and tips', subject: 'Monthly Update from [Pilates & Barre]', body: 'Hi [Patient],\n\nHere is what is new this month:\n\nNEW SERVICES\n- [New service or session]\n\nSKIN TIPS\n[Seasonal skincare advice]\n\nSPECIAL OFFERS\n- [Current promotions]\n\nUPCOMING\n- [Events or availability updates]\n\nThank you for trusting us with your care.\n\nWarmly,\n[Pilates & Barre] Team' },
+  reengagement: { name: 'We Miss You', icon: '💌', desc: 'Re-engage lapsed clients', subject: 'It Has Been a While — We Would Love to See You', body: 'Hi [Patient],\n\nWe noticed it has been a while since your last visit and wanted to check in!\n\nYour last session was [Service] on [Date]. To maintain your beautiful results, we recommend scheduling a follow-up.\n\nAs a welcome back, enjoy [offer] on your next visit.\n\nBook online or reply to schedule.\n\nWe miss you!\n[Pilates & Barre] Team' },
   blank: { name: 'Start from Scratch', icon: '📝', desc: 'Empty canvas', subject: '', body: '' },
 };
 
@@ -53,8 +53,8 @@ export default function Email() {
   const selectTemplate = (key) => {
     setTemplate(key);
     const tpl = TEMPLATES[key];
-    setSubject(tpl.subject.replace('[Remedy Pilates & Barre]', settings.businessName || 'Remedy Pilates & Barre'));
-    setBody(tpl.body.replace(/\[Remedy Pilates & Barre\]/g, settings.businessName || 'Remedy Pilates & Barre'));
+    setSubject(tpl.subject.replace('[Pilates & Barre]', settings.businessName || 'Pilates & Barre'));
+    setBody(tpl.body.replace(/\[Pilates & Barre\]/g, settings.businessName || 'Pilates & Barre'));
   };
 
   const handleSend = () => {
@@ -198,7 +198,7 @@ export default function Email() {
               <div style={{ background: '#F5F5F5', borderRadius: 12, padding: 24, marginBottom: 20 }}>
                 <div style={{ background: '#fff', borderRadius: 10, overflow: 'hidden', boxShadow: s.shadow, maxWidth: 520, margin: '0 auto' }}>
                   <div style={{ background: s.accent, padding: '20px 24px', textAlign: 'center' }}>
-                    <div style={{ font: `600 16px ${s.FONT}`, color: s.accentText }}>{settings.businessName || 'Remedy Pilates & Barre'}</div>
+                    <div style={{ font: `600 16px ${s.FONT}`, color: s.accentText }}>{settings.businessName || 'Pilates & Barre'}</div>
                     <div style={{ font: `400 11px ${s.FONT}`, color: s.accentText, opacity: 0.7 }}>{settings.tagline || ''}</div>
                   </div>
                   <div style={{ padding: '24px' }}>

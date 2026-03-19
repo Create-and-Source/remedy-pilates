@@ -1,4 +1,4 @@
-// Remedy Pilates — Frontend API Client
+// Pilates Studio — Frontend API Client
 // Drop-in replacement for the localStorage store.js.
 // All functions are async and communicate with the AWS Lambda backend.
 // Auto-refreshes Cognito tokens on 401 responses.

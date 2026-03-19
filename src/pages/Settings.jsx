@@ -153,11 +153,11 @@ export default function Settings() {
         <div className="set-general" style={{ maxWidth: 520 }}>
           <div style={{ ...s.cardStyle, padding: 24 }}>
             {[
-              { key: 'businessName', label: 'Business Name', placeholder: 'Remedy Pilates & Barre' },
+              { key: 'businessName', label: 'Business Name', placeholder: 'Pilates & Barre' },
               { key: 'tagline', label: 'Tagline', placeholder: 'Where Science Meets Beauty' },
-              { key: 'email', label: 'Email', placeholder: 'info@remedypilates.com' },
+              { key: 'email', label: 'Email', placeholder: 'info@pilatesstudio.com' },
               { key: 'phone', label: 'Phone', placeholder: '(480) 555-0100' },
-              { key: 'website', label: 'Website', placeholder: 'remedypilates.com' },
+              { key: 'website', label: 'Website', placeholder: 'pilatesstudio.com' },
             ].map(f => (
               <div key={f.key} style={{ marginBottom: 16 }}>
                 <label style={s.label}>{f.label}</label>
@@ -312,7 +312,7 @@ export default function Settings() {
             <div style={{ display: 'grid', gap: 12 }}>
               {[
                 { id: 'instagram', name: 'Instagram', desc: 'DMs, comments, story replies', color: '#E1306C', handle: '@yourstudio' },
-                { id: 'facebook', name: 'Facebook', desc: 'Messenger, page messages', color: '#1877F2', handle: 'Remedy Pilates & Barre' },
+                { id: 'facebook', name: 'Facebook', desc: 'Messenger, page messages', color: '#1877F2', handle: 'Pilates & Barre' },
                 { id: 'tiktok', name: 'TikTok', desc: 'DMs, comment replies', color: '#FE2C55', handle: '@yourstudio' },
               ].map(p => (
                 <div key={p.id} style={{ ...s.cardStyle, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>

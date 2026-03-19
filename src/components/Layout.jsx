@@ -245,7 +245,7 @@ export default function Layout({ children }) {
         {!collapsed && (
           <div>
             <div style={{ font: "600 14px 'Inter', sans-serif", color: '#FFFFFF', lineHeight: 1.2 }}>
-              {settings.businessName || 'Remedy'}
+              {settings.businessName || 'Pilates'}
             </div>
             <div style={{ font: "400 11px 'Inter', sans-serif", color: sidebarMuted }}>
               {settings.tagline || 'Pilates & Barre'}

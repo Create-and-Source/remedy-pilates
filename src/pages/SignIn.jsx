@@ -62,13 +62,13 @@ export default function SignIn() {
             color: '#2D2A26', fontFamily: "'Outfit', sans-serif",
             marginBottom: 4,
           }}>
-            Remedy
+            Pilates
           </div>
           <div style={{
             fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
             color: '#9C9488', fontFamily: "'Outfit', sans-serif",
           }}>
-            Pilates & Barre
+            & Barre
           </div>
         </div>
 

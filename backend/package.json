@@ -1,8 +1,8 @@
 {
-  "name": "remedy-backend",
+  "name": "pilates-backend",
   "version": "1.0.0",
   "bin": {
-    "remedy": "bin/remedy.js"
+    "pilates": "bin/pilates.js"
   },
   "scripts": {
     "cdk": "cdk",

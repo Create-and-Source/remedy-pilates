@@ -178,7 +178,7 @@ export default function Portal() {
   };
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(`https://remedypilates.com/refer/${referralCode}`);
+    navigator.clipboard.writeText(`https://pilatesstudio.com/refer/${referralCode}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -983,7 +983,7 @@ export default function Portal() {
           </button>
         </div>
         <div style={{ font: `400 13px ${s.FONT}`, color: s.text3 }}>
-          Share link: https://remedypilates.com/refer/{referralCode}
+          Share link: https://pilatesstudio.com/refer/{referralCode}
         </div>
       </Card>
 

@@ -123,7 +123,7 @@ export default function BookOnline() {
   const settings = getSettings();
   const appointments = getAppointments();
 
-  const businessName = settings.businessName || 'Remedy';
+  const businessName = settings.businessName || 'Pilates';
   const tagline = settings.tagline || '';
 
   // Build 14 days from today
@@ -267,7 +267,7 @@ export default function BookOnline() {
     const ics = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Remedy//Booking//EN',
+      'PRODID:-//Pilates//Booking//EN',
       'BEGIN:VEVENT',
       `DTSTART:${startTime}`,
       `DTEND:${endTime}`,

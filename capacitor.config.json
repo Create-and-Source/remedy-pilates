@@ -1,6 +1,6 @@
 {
-  "appId": "com.remedypilates.app",
-  "appName": "Remedy Pilates",
+  "appId": "com.pilatesstudio.app",
+  "appName": "Pilates Studio",
   "webDir": "dist",
   "server": {
     "androidScheme": "https",

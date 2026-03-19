@@ -1,4 +1,4 @@
-const CACHE_NAME = 'remedy-v2';
+const CACHE_NAME = 'pilates-v2';
 const OFFLINE_URL = '/offline.html';
 
 // Core shell to pre-cache on install
@@ -106,7 +106,7 @@ self.addEventListener('fetch', (e) => {
 // ── Push notifications ──
 self.addEventListener('push', (e) => {
   const data = e.data ? e.data.json() : {};
-  const title = data.title || 'Remedy Pilates & Barre';
+  const title = data.title || 'Pilates & Barre';
   const options = {
     body: data.body || 'You have a new notification',
     icon: '/icon-192.png',

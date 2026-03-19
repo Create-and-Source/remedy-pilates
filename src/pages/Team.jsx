@@ -10,7 +10,7 @@ export default function Team() {
   const instructors = getProviders();
   const locations = getLocations();
   const settings = getSettings();
-  const name = settings.businessName || 'Remedy Pilates & Barre';
+  const name = settings.businessName || 'Pilates & Barre';
 
   return (
     <div style={{ minHeight: '100vh', background: '#FAF6F1', color: '#2D2A26', overflow: 'hidden' }}>
@@ -66,7 +66,7 @@ export default function Team() {
           font: `300 17px ${s.FONT}`, color: '#8A847D',
           maxWidth: 520, margin: '0 auto', lineHeight: 1.7,
         }}>
-          Every instructor at Remedy is certified, experienced, and passionate about helping you move better.
+          Every instructor at Pilates Studio is certified, experienced, and passionate about helping you move better.
         </p>
       </div>
 
@@ -218,7 +218,7 @@ export default function Team() {
             font: `300 15px ${s.FONT}`, color: '#8A847D', maxWidth: 500,
             margin: '0 auto 20px', lineHeight: 1.6,
           }}>
-            Remedy is a Pilates Sports Center training facility. Our 450+ hour comprehensive program prepares you to teach with confidence.
+            Pilates Studio is a Pilates Sports Center training facility. Our 450+ hour comprehensive program prepares you to teach with confidence.
           </p>
           <button onClick={() => nav('/admin/training')} style={{
             padding: '12px 32px', borderRadius: 100, border: 'none',

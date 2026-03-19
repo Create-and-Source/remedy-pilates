@@ -51,7 +51,7 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: terraHeaders(),
         body: JSON.stringify({
-          reference_id: `remedy-${Date.now()}`,
+          reference_id: `pilates-${Date.now()}`,
           providers: 'APPLE,GARMIN,FITBIT,SAMSUNG,WHOOP,OURA',
           language: 'en',
           auth_success_redirect_url: `${origin}/admin/wearables?terra=connected`,

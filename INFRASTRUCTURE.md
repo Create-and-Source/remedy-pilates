@@ -1,8 +1,8 @@
-# Remedy Pilates — IT Infrastructure & Credentials
+# Pilates Studio — IT Infrastructure & Credentials
 
 > **Last updated**: 2026-03-18
-> **Project**: Remedy Pilates & Barre — Studio Management Platform
-> **Repo**: https://github.com/Create-and-Source/remedy-pilates
+> **Project**: Pilates & Barre — Studio Management Platform
+> **Repo**: https://github.com/Create-and-Source/pilates
 > **Status**: Demo-ready (hybrid localStorage + AWS API)
 
 ---
@@ -12,10 +12,10 @@
 | Field | Value |
 |-------|-------|
 | **AWS Account ID** | `092016234733` |
-| **Account Name** | Remedy Pilates |
+| **Account Name** | Pilates Studio |
 | **Organization** | Under management account `010822068371` |
 | **Region** | `us-west-2` (Oregon) |
-| **CLI Profile** | `remedy` (assumes `OrganizationAccountAccessRole` from management account) |
+| **CLI Profile** | `pilates` (assumes `OrganizationAccountAccessRole` from management account) |
 | **IaC** | Terraform (in `terraform/` directory) |
 
 ---
@@ -93,7 +93,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Bucket Name** | `remedy-uploads-092016234733` |
+| **Bucket Name** | `pilates-uploads-092016234733` |
 | **Region** | `us-west-2` |
 | **Public Access** | Blocked (all four block settings enabled) |
 | **CORS** | Allows PUT from configured origins |
@@ -104,42 +104,42 @@
 ## 5. DynamoDB (Database)
 
 **Billing**: PAY_PER_REQUEST (on-demand) for all tables
-**Table prefix**: `remedy-`
+**Table prefix**: `pilates-`
 **Total tables**: 30
 
 | Table Name | Partition Key | GSIs |
 |------------|--------------|------|
-| `remedy-clients` | `id` | `email-index` (pk: email) |
-| `remedy-appointments` | `id` | `client-index` (pk: clientId, sk: date), `date-index` (pk: date) |
-| `remedy-services` | `id` | `category-index` (pk: category) |
-| `remedy-instructors` | `id` | `email-index` (pk: email) |
-| `remedy-locations` | `id` | — |
-| `remedy-packages` | `id` | `type-index` (pk: type) |
-| `remedy-inventory` | `id` | `category-index` (pk: category) |
-| `remedy-orders` | `id` | `client-index` (pk: clientId), `date-index` (pk: date) |
-| `remedy-emails` | `id` | `date-index` (pk: sentDate) |
-| `remedy-texts` | `id` | `client-index` (pk: clientId) |
-| `remedy-social-posts` | `id` | `status-index` (pk: status) |
-| `remedy-retention` | `id` | `client-index` (pk: clientId) |
-| `remedy-photos` | `id` | `client-index` (pk: clientId) |
-| `remedy-trainees` | `id` | `email-index` (pk: email) |
-| `remedy-posture` | `id` | `client-index` (pk: clientId) |
-| `remedy-prescriptions` | `id` | `client-index` (pk: clientId) |
-| `remedy-bookings` | `id` | `client-index` (pk: clientId), `date-index` (pk: date) |
-| `remedy-settings` | `key` | — |
-| `remedy-checkins` | `id` | `client-index` (pk: clientId), `date-index` (pk: date) |
-| `remedy-waivers` | `id` | `client-index` (pk: clientId) |
-| `remedy-waitlist` | `id` | `class-index` (pk: classId) |
-| `remedy-wallet` | `id` | `client-index` (pk: clientId) |
-| `remedy-transactions` | `id` | `client-index` (pk: clientId), `date-index` (pk: date) |
-| `remedy-inbox` | `id` | `client-index` (pk: clientId) |
-| `remedy-reviews` | `id` | `client-index` (pk: clientId) |
-| `remedy-referrals` | `id` | `referrer-index` (pk: referrerId) |
-| `remedy-referral-settings` | `key` | — |
-| `remedy-memberships` | `id` | `client-index` (pk: clientId), `status-index` (pk: status) |
-| `remedy-membership-packages` | `id` | `type-index` (pk: type) |
-| `remedy-recovery-tips` | `id` | `category-index` (pk: category) |
-| `remedy-charts` | `id` | `client-index` (pk: clientId) |
+| `pilates-clients` | `id` | `email-index` (pk: email) |
+| `pilates-appointments` | `id` | `client-index` (pk: clientId, sk: date), `date-index` (pk: date) |
+| `pilates-services` | `id` | `category-index` (pk: category) |
+| `pilates-instructors` | `id` | `email-index` (pk: email) |
+| `pilates-locations` | `id` | — |
+| `pilates-packages` | `id` | `type-index` (pk: type) |
+| `pilates-inventory` | `id` | `category-index` (pk: category) |
+| `pilates-orders` | `id` | `client-index` (pk: clientId), `date-index` (pk: date) |
+| `pilates-emails` | `id` | `date-index` (pk: sentDate) |
+| `pilates-texts` | `id` | `client-index` (pk: clientId) |
+| `pilates-social-posts` | `id` | `status-index` (pk: status) |
+| `pilates-retention` | `id` | `client-index` (pk: clientId) |
+| `pilates-photos` | `id` | `client-index` (pk: clientId) |
+| `pilates-trainees` | `id` | `email-index` (pk: email) |
+| `pilates-posture` | `id` | `client-index` (pk: clientId) |
+| `pilates-prescriptions` | `id` | `client-index` (pk: clientId) |
+| `pilates-bookings` | `id` | `client-index` (pk: clientId), `date-index` (pk: date) |
+| `pilates-settings` | `key` | — |
+| `pilates-checkins` | `id` | `client-index` (pk: clientId), `date-index` (pk: date) |
+| `pilates-waivers` | `id` | `client-index` (pk: clientId) |
+| `pilates-waitlist` | `id` | `class-index` (pk: classId) |
+| `pilates-wallet` | `id` | `client-index` (pk: clientId) |
+| `pilates-transactions` | `id` | `client-index` (pk: clientId), `date-index` (pk: date) |
+| `pilates-inbox` | `id` | `client-index` (pk: clientId) |
+| `pilates-reviews` | `id` | `client-index` (pk: clientId) |
+| `pilates-referrals` | `id` | `referrer-index` (pk: referrerId) |
+| `pilates-referral-settings` | `key` | — |
+| `pilates-memberships` | `id` | `client-index` (pk: clientId), `status-index` (pk: status) |
+| `pilates-membership-packages` | `id` | `type-index` (pk: type) |
+| `pilates-recovery-tips` | `id` | `category-index` (pk: category) |
+| `pilates-charts` | `id` | `client-index` (pk: clientId) |
 
 ---
 
@@ -156,35 +156,35 @@
 
 | Function | Source | Tables Accessed |
 |----------|--------|-----------------|
-| `remedy-clients` | `backend/lambda/clients/` | clients |
-| `remedy-appointments` | `backend/lambda/appointments/` | appointments |
-| `remedy-services` | `backend/lambda/services/` | services |
-| `remedy-instructors` | `backend/lambda/instructors/` | instructors |
-| `remedy-locations` | `backend/lambda/locations/` | locations |
-| `remedy-packages` | `backend/lambda/packages/` | packages |
-| `remedy-inventory` | `backend/lambda/inventory/` | inventory |
-| `remedy-orders` | `backend/lambda/orders/` | orders |
-| `remedy-emails` | `backend/lambda/emails/` | emails |
-| `remedy-texts` | `backend/lambda/texts/` | texts |
-| `remedy-social-posts` | `backend/lambda/social-posts/` | social-posts |
-| `remedy-retention` | `backend/lambda/retention/` | retention |
-| `remedy-photos` | `backend/lambda/photos/` | photos |
-| `remedy-trainees` | `backend/lambda/trainees/` | trainees |
-| `remedy-posture` | `backend/lambda/posture/` | posture |
-| `remedy-prescriptions` | `backend/lambda/prescriptions/` | prescriptions |
-| `remedy-bookings` | `backend/lambda/bookings/` | bookings |
-| `remedy-settings` | `backend/lambda/settings/` | settings |
-| `remedy-checkins` | `backend/lambda/checkins/` | checkins |
-| `remedy-waivers` | `backend/lambda/waivers/` | waivers |
-| `remedy-waitlist` | `backend/lambda/waitlist/` | waitlist |
-| `remedy-wallet` | `backend/lambda/wallet/` | wallet |
-| `remedy-transactions` | `backend/lambda/transactions/` | transactions |
-| `remedy-inbox` | `backend/lambda/inbox/` | inbox |
-| `remedy-reviews` | `backend/lambda/reviews/` | reviews |
-| `remedy-referrals` | `backend/lambda/referrals/` | referrals, referral-settings |
-| `remedy-memberships` | `backend/lambda/memberships/` | memberships, membership-packages |
-| `remedy-recovery-tips` | `backend/lambda/recovery-tips/` | recovery-tips |
-| `remedy-charts` | `backend/lambda/charts/` | charts |
+| `pilates-clients` | `backend/lambda/clients/` | clients |
+| `pilates-appointments` | `backend/lambda/appointments/` | appointments |
+| `pilates-services` | `backend/lambda/services/` | services |
+| `pilates-instructors` | `backend/lambda/instructors/` | instructors |
+| `pilates-locations` | `backend/lambda/locations/` | locations |
+| `pilates-packages` | `backend/lambda/packages/` | packages |
+| `pilates-inventory` | `backend/lambda/inventory/` | inventory |
+| `pilates-orders` | `backend/lambda/orders/` | orders |
+| `pilates-emails` | `backend/lambda/emails/` | emails |
+| `pilates-texts` | `backend/lambda/texts/` | texts |
+| `pilates-social-posts` | `backend/lambda/social-posts/` | social-posts |
+| `pilates-retention` | `backend/lambda/retention/` | retention |
+| `pilates-photos` | `backend/lambda/photos/` | photos |
+| `pilates-trainees` | `backend/lambda/trainees/` | trainees |
+| `pilates-posture` | `backend/lambda/posture/` | posture |
+| `pilates-prescriptions` | `backend/lambda/prescriptions/` | prescriptions |
+| `pilates-bookings` | `backend/lambda/bookings/` | bookings |
+| `pilates-settings` | `backend/lambda/settings/` | settings |
+| `pilates-checkins` | `backend/lambda/checkins/` | checkins |
+| `pilates-waivers` | `backend/lambda/waivers/` | waivers |
+| `pilates-waitlist` | `backend/lambda/waitlist/` | waitlist |
+| `pilates-wallet` | `backend/lambda/wallet/` | wallet |
+| `pilates-transactions` | `backend/lambda/transactions/` | transactions |
+| `pilates-inbox` | `backend/lambda/inbox/` | inbox |
+| `pilates-reviews` | `backend/lambda/reviews/` | reviews |
+| `pilates-referrals` | `backend/lambda/referrals/` | referrals, referral-settings |
+| `pilates-memberships` | `backend/lambda/memberships/` | memberships, membership-packages |
+| `pilates-recovery-tips` | `backend/lambda/recovery-tips/` | recovery-tips |
+| `pilates-charts` | `backend/lambda/charts/` | charts |
 
 ---
 
@@ -204,8 +204,8 @@
 
 | Field | Value |
 |-------|-------|
-| **Bundle ID** | `com.remedypilates.app` |
-| **App Name** | Remedy Pilates |
+| **Bundle ID** | `com.pilatesstudio.app` |
+| **App Name** | Pilates Studio |
 | **Web Dir** | `dist` |
 | **iOS Scheme** | `https` |
 | **Android Scheme** | `https` |
@@ -232,7 +232,7 @@ npx cap open android       # Open Android Studio
 VITE_API_URL=https://zctgtqjm54.execute-api.us-west-2.amazonaws.com
 VITE_COGNITO_USER_POOL_ID=us-west-2_Y0gGN3ZqQ
 VITE_COGNITO_CLIENT_ID=2mur2u917rd7tvcgg267hrlof7
-VITE_S3_BUCKET=remedy-uploads-092016234733
+VITE_S3_BUCKET=pilates-uploads-092016234733
 ```
 
 ---
@@ -272,8 +272,8 @@ VITE_S3_BUCKET=remedy-uploads-092016234733
            ▼                      ▼
 ┌──────────────────┐   ┌──────────────────┐
 │   DynamoDB (30)  │   │   S3 Uploads     │
-│   PAY_PER_REQUEST│   │   remedy-uploads  │
-│   remedy-* prefix│   │   -092016234733   │
+│   PAY_PER_REQUEST│   │   pilates-uploads  │
+│   pilates-* prefix│   │   -092016234733   │
 └──────────────────┘   └──────────────────┘
            │
            ▼
@@ -300,8 +300,8 @@ terraform plan
 # Apply changes
 terraform apply
 
-# Use the remedy AWS profile
-export AWS_PROFILE=remedy
+# Use the pilates AWS profile
+export AWS_PROFILE=pilates
 ```
 
 ### Terraform Files
@@ -322,7 +322,7 @@ export AWS_PROFILE=remedy
 ## 12. AWS CLI Profile (~/.aws/config)
 
 ```ini
-[profile remedy]
+[profile pilates]
 role_arn = arn:aws:iam::092016234733:role/OrganizationAccountAccessRole
 source_profile = default
 region = us-west-2
@@ -337,9 +337,9 @@ region = us-west-2
 | **API** | `https://zctgtqjm54.execute-api.us-west-2.amazonaws.com` |
 | **Cognito Pool** | `us-west-2_Y0gGN3ZqQ` |
 | **Cognito Client** | `2mur2u917rd7tvcgg267hrlof7` |
-| **S3 Bucket** | `remedy-uploads-092016234733` |
+| **S3 Bucket** | `pilates-uploads-092016234733` |
 | **AWS Account** | `092016234733` |
 | **AWS Region** | `us-west-2` |
-| **GitHub Repo** | `Create-and-Source/remedy-pilates` |
-| **Bundle ID** | `com.remedypilates.app` |
+| **GitHub Repo** | `Create-and-Source/pilates` |
+| **Bundle ID** | `com.pilatesstudio.app` |
 | **Apple Developer** | Tovah Marx |

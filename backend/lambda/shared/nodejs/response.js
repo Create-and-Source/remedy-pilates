@@ -3,7 +3,7 @@
 
 const ALLOWED_ORIGINS = new Set([
   'http://localhost:5173',
-  'https://remedypilates.com',
+  'https://pilatesstudio.com',
 ]);
 
 function corsHeaders(event) {

@@ -1,4 +1,4 @@
-// Home — warm editorial landing for Remedy Pilates & Barre
+// Home — warm editorial landing for Pilates & Barre
 import { useNavigate } from 'react-router-dom';
 import { useStyles, useTheme } from '../theme';
 import { getSettings, getPatients, getAppointments, getServices, getInventory, getRetentionAlerts } from '../data/store';
@@ -10,7 +10,7 @@ export default function Home() {
   const { theme } = useTheme();
   const nav = useNavigate();
   const settings = getSettings();
-  const name = settings.businessName || 'Remedy Pilates & Barre';
+  const name = settings.businessName || 'Pilates & Barre';
   const tagline = settings.tagline || 'Form. Strength. Balance.';
 
   // Pull real data for the dashboard preview
@@ -151,7 +151,7 @@ export default function Home() {
           <div style={{
             flex: 1, background: 'rgba(0,0,0,0.03)', borderRadius: 8, padding: '5px 14px',
             font: `400 11px ${s.MONO}`, color: '#AAA', textAlign: 'center',
-          }}>remedypilates.com/admin</div>
+          }}>pilatesstudio.com/admin</div>
         </div>
 
         {/* Dashboard content */}

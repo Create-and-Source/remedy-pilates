@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// ── DynamoDB Seed Script for Remedy Pilates ──────────────────────
+// ── DynamoDB Seed Script for Pilates Studio ──────────────────────
 // Mirrors initStore() from src/data/store.js → writes to DynamoDB.
 // Usage: AWS_REGION=us-west-2 node lambda/seed/run.js [--force]
 
@@ -9,7 +9,7 @@ const { DynamoDBDocumentClient, PutCommand, BatchWriteCommand, ScanCommand } = r
 const client = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-west-2' });
 const doc = DynamoDBDocumentClient.from(client, { marshallOptions: { removeUndefinedValues: true } });
 
-const PREFIX = 'remedy-';
+const PREFIX = 'pilates-';
 const t = (name) => `${PREFIX}${name}`;
 
 async function batchPut(tableName, items) {
@@ -85,13 +85,13 @@ const INVENTORY = [
   { id: 'INV-9', name: 'Foam Roller (36")', category: 'Props', sku: 'FR-36', quantity: 12, reorderAt: 5, unitCost: 2000, location: 'LOC-1' },
   { id: 'INV-10', name: 'TRX Suspension Trainer', category: 'Equipment', sku: 'TRX-ST', quantity: 10, reorderAt: 3, unitCost: 15000, location: 'LOC-1' },
   { id: 'INV-11', name: 'Barre Grip Socks (retail)', category: 'Retail', sku: 'GS-01', quantity: 45, reorderAt: 15, unitCost: 800, location: 'LOC-1' },
-  { id: 'INV-12', name: 'Remedy Water Bottle', category: 'Retail', sku: 'RWB-01', quantity: 20, reorderAt: 8, unitCost: 1200, location: 'LOC-1' },
+  { id: 'INV-12', name: 'Pilates Water Bottle', category: 'Retail', sku: 'RWB-01', quantity: 20, reorderAt: 8, unitCost: 1200, location: 'LOC-1' },
   { id: 'INV-13', name: 'Reformer Springs (set)', category: 'Parts', sku: 'SP-SET', quantity: 6, reorderAt: 3, unitCost: 8500, location: 'LOC-1' },
   { id: 'INV-14', name: 'Jump Board', category: 'Equipment', sku: 'JB-01', quantity: 8, reorderAt: 3, unitCost: 25000, location: 'LOC-1' },
   { id: 'INV-15', name: 'Barre Grip Socks (retail)', category: 'Retail', sku: 'GS-02', quantity: 3, reorderAt: 10, unitCost: 800, location: 'LOC-2' },
 ];
 
-const SETTINGS = { businessName: 'Remedy Pilates & Barre', tagline: 'Form. Strength. Balance.', email: 'info@remedypilates.com', phone: '(480) 699-8160' };
+const SETTINGS = { businessName: 'Pilates & Barre', tagline: 'Form. Strength. Balance.', email: 'info@pilatesstudio.com', phone: '(480) 699-8160' };
 
 function generateClients() {
   const firstNames = ['Emma', 'Olivia', 'Sophia', 'Ava', 'Isabella', 'Mia', 'Charlotte', 'Amelia', 'Harper', 'Evelyn', 'Abigail', 'Ella', 'Scarlett', 'Grace', 'Chloe', 'Victoria', 'Riley', 'Aria', 'Lily', 'Aubrey', 'Zoe', 'Penelope', 'Layla', 'Nora', 'Camila', 'Hannah', 'Addison', 'Luna', 'Savannah', 'Brooklyn'];
@@ -146,7 +146,7 @@ const EMAILS = [
   { id: 'EM-2', subject: 'Exclusive: New Client Special — 3 Classes for $49', audience: 'New Clients', status: 'Sent', recipientCount: 12, sentDate: d(-7) + 'T14:00:00Z' },
   { id: 'EM-3', subject: 'Your Class is Tomorrow!', audience: 'Upcoming Bookings', status: 'Sent', recipientCount: 8, sentDate: d(-1) + 'T09:00:00Z' },
   { id: 'EM-4', subject: 'We Miss You — Come Back & Save', audience: 'Lapsed Clients', status: 'Sent', recipientCount: 15, sentDate: d(-14) + 'T11:00:00Z' },
-  { id: 'EM-5', subject: 'Welcome to the Remedy Family!', audience: 'Members', status: 'Sent', recipientCount: 3, sentDate: d(-21) + 'T16:00:00Z' },
+  { id: 'EM-5', subject: 'Welcome to the Pilates Family!', audience: 'Members', status: 'Sent', recipientCount: 3, sentDate: d(-21) + 'T16:00:00Z' },
 ];
 
 const TEXTS = [
@@ -166,7 +166,7 @@ const TRAINEES = [
 
 // ── MAIN ─────────────────────────────────────────────────────────
 async function seed() {
-  console.log('\n🧘 Remedy Pilates & Barre — DynamoDB Seed\n');
+  console.log('\n🧘 Pilates & Barre — DynamoDB Seed\n');
 
   if (!(await isEmpty('clients'))) {
     console.log('⚠️  Tables already contain data. Use --force to re-seed.');

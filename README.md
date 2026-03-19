@@ -1,4 +1,4 @@
-# Remedy Pilates & Barre
+# Pilates & Barre
 
 > Full-stack studio management platform — 55 pages across client-facing booking, member portal, and admin dashboard.
 
@@ -112,7 +112,7 @@ npm run preview  # Preview production build
 | Route | Component | Description |
 |-------|-----------|-------------|
 | `/admin/on-demand` | OnDemandLibrary | On-demand video library (24 classes, 6 instructors, collections) |
-| `/admin/brand-guide` | BrandedFormats | REMEDY-branded class format guide (13 formats) |
+| `/admin/brand-guide` | BrandedFormats | STUDIO-branded class format guide (13 formats) |
 | `/admin/loyalty` | LoyaltyProgram | Points-based rewards program (4 tiers, leaderboard) |
 | `/admin/membership-perks` | MembershipPerks | Membership perks manager (friend passes, birthdays, booking windows) |
 | `/admin/group-bookings` | GroupBookings | Group event packages + quote builder (6 event types) |

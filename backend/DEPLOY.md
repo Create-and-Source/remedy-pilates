@@ -1,4 +1,4 @@
-# Remedy Pilates — AWS Backend Deployment
+# Pilates Studio — AWS Backend Deployment
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ Load initial data (instructors, services, locations, sample clients, etc.):
 
 ```bash
 # Set the table prefix (must match CDK stack)
-export TABLE_PREFIX=remedy-
+export TABLE_PREFIX=pilates-
 export AWS_REGION=us-west-2
 
 node lambda/seed/run.js

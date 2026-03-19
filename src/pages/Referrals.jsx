@@ -107,7 +107,7 @@ export default function Referrals() {
 
   const generateLink = (patient) => {
     const code = `REF-${patient.firstName.toUpperCase()}-${patient.id.split('-')[1]}`;
-    navigator.clipboard?.writeText(`https://remedypilates.com/refer/${code}`);
+    navigator.clipboard?.writeText(`https://pilatesstudio.com/refer/${code}`);
     setShowGenerate(false);
     setGenerateSearch('');
   };

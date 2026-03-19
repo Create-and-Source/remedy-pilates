@@ -166,7 +166,7 @@ const IDEAS = [
     title: "New Studio Tour — Come See Us!",
     pillar: "community",
     format: "Timelapse",
-    hook: "We got a glow-up 🪄 Come see the new Remedy Pilates studio",
+    hook: "We got a glow-up 🪄 Come see the new Pilates Studio studio",
     audio: "Trending",
     difficulty: "Easy",
     views: "10K–30K",
@@ -906,7 +906,7 @@ export default function TikTokDashboard() {
             </div>
           </div>
           <p style={{ fontFamily: FONT, fontSize: 14, color: "#888", maxWidth: 560, margin: 0 }}>
-            Content ideas, weekly scheduling, trending audios, and performance analytics for Remedy Pilates on TikTok.
+            Content ideas, weekly scheduling, trending audios, and performance analytics for Pilates Studio on TikTok.
           </p>
         </div>
 

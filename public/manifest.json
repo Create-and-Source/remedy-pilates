@@ -1,7 +1,7 @@
 {
-  "name": "Remedy Pilates & Barre",
-  "short_name": "Remedy",
-  "description": "Studio management platform for Remedy Pilates & Barre",
+  "name": "Pilates & Barre",
+  "short_name": "Pilates",
+  "description": "Studio management platform for Pilates & Barre",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF6F1",

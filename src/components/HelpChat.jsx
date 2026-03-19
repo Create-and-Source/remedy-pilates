@@ -222,7 +222,7 @@ function TypingDots() {
 export default function HelpChat() {
   const s = useStyles();
   const settings = getSettings();
-  const businessName = settings.businessName || 'Remedy';
+  const businessName = settings.businessName || 'Pilates';
 
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);

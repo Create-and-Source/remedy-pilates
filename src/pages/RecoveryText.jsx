@@ -69,7 +69,7 @@ const GREETINGS = [
 ];
 
 const FATIGUE_NOTE = "Your body's been working hard this week — extra rest tonight. 💙";
-const SIGNOFF = '— The Remedy Team';
+const SIGNOFF = '— The Pilates Team';
 const OPT_OUT = 'Reply STOP to opt out.';
 
 function buildMessage(clientName, className, weekClassCount, greetingIdx = 0) {
@@ -390,7 +390,7 @@ export default function RecoveryText() {
             }}>
               <div style={{ height: 10, background: '#2c2c2e', borderRadius: 6, marginBottom: 12, width: '40%', margin: '0 auto 12px' }} />
               <div style={{ background: '#fff', borderRadius: 24, minHeight: 180, padding: '14px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <div style={{ fontSize: 11, color: '#6b7280', textAlign: 'center', fontFamily: s.MONO }}>Remedy Pilates · Today {fmtTime(new Date())}</div>
+                <div style={{ fontSize: 11, color: '#6b7280', textAlign: 'center', fontFamily: s.MONO }}>Pilates Studio · Today {fmtTime(new Date())}</div>
                 <div style={{
                   background: '#e5e7eb', borderRadius: '16px 16px 16px 4px',
                   padding: '10px 12px', fontSize: 11.5, color: '#111', lineHeight: 1.55, whiteSpace: 'pre-line',

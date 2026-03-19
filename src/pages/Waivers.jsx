@@ -881,7 +881,7 @@ export default function Waivers() {
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 640, width: '90%', boxShadow: s.shadowLg, maxHeight: '85vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 18px ${s.FONT}`, color: s.text, marginBottom: 16 }}>{showPreview.name}</h2>
             <div style={{ font: `400 13px ${s.FONT}`, color: s.text2, lineHeight: 1.8, whiteSpace: 'pre-wrap', background: '#FAFAFA', padding: 20, borderRadius: 10, border: '1px solid #F0F0F0' }}>
-              {showPreview.content.replace(/\[Business Name\]/g, settings.businessName || 'Remedy Pilates & Barre')}
+              {showPreview.content.replace(/\[Business Name\]/g, settings.businessName || 'Pilates & Barre')}
             </div>
             <button onClick={() => setShowPreview(null)} style={{ ...s.pillGhost, marginTop: 16 }}>Close</button>
           </div>

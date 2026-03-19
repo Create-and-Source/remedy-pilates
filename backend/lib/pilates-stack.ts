@@ -169,13 +169,13 @@ const ROUTES: [string, string, string, string[]][] = [
   ['PUT',    '/api/charts/{id}',          'charts',         ['charts']],
 ];
 
-export class RemedyStack extends cdk.Stack {
+export class PilatesStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     // ── S3 bucket for uploads (photos, waivers, etc.) ────────────
     const uploadsBucket = new s3.Bucket(this, 'UploadsBucket', {
-      bucketName: `remedy-uploads-${this.account}`,
+      bucketName: `pilates-uploads-${this.account}`,
       cors: [{
         allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT, s3.HttpMethods.POST],
         allowedOrigins: ['*'],
@@ -187,8 +187,8 @@ export class RemedyStack extends cdk.Stack {
     });
 
     // ── Cognito User Pool ────────────────────────────────────────
-    const userPool = new cognito.UserPool(this, 'RemedyUserPool', {
-      userPoolName: 'remedy-users',
+    const userPool = new cognito.UserPool(this, 'PilatesUserPool', {
+      userPoolName: 'pilates-users',
       selfSignUpEnabled: true,
       signInAliases: { email: true },
       autoVerify: { email: true },
@@ -208,8 +208,8 @@ export class RemedyStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
 
-    const userPoolClient = userPool.addClient('RemedyWebClient', {
-      userPoolClientName: 'remedy-web',
+    const userPoolClient = userPool.addClient('PilatesWebClient', {
+      userPoolClientName: 'pilates-web',
       authFlows: {
         userPassword: true,
         userSrp: true,
@@ -217,8 +217,8 @@ export class RemedyStack extends cdk.Stack {
       oAuth: {
         flows: { authorizationCodeGrant: true },
         scopes: [cognito.OAuthScope.OPENID, cognito.OAuthScope.EMAIL, cognito.OAuthScope.PROFILE],
-        callbackUrls: ['http://localhost:5173/auth/callback', 'https://remedypilates.com/auth/callback'],
-        logoutUrls: ['http://localhost:5173', 'https://remedypilates.com'],
+        callbackUrls: ['http://localhost:5173/auth/callback', 'https://pilatesstudio.com/auth/callback'],
+        logoutUrls: ['http://localhost:5173', 'https://pilatesstudio.com'],
       },
     });
 
@@ -236,7 +236,7 @@ export class RemedyStack extends cdk.Stack {
 
     for (const def of TABLES) {
       const table = new dynamodb.Table(this, `Table-${def.name}`, {
-        tableName: `remedy-${def.name}`,
+        tableName: `pilates-${def.name}`,
         partitionKey: { name: def.pk, type: dynamodb.AttributeType.STRING },
         ...(def.sk ? { sortKey: { name: def.sk, type: dynamodb.AttributeType.STRING } } : {}),
         billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
@@ -258,10 +258,10 @@ export class RemedyStack extends cdk.Stack {
     }
 
     // ── API Gateway HTTP API ─────────────────────────────────────
-    const api = new apigw.HttpApi(this, 'RemedyApi', {
-      apiName: 'remedy-api',
+    const api = new apigw.HttpApi(this, 'PilatesApi', {
+      apiName: 'pilates-api',
       corsPreflight: {
-        allowOrigins: ['http://localhost:5173', 'https://remedypilates.com'],
+        allowOrigins: ['http://localhost:5173', 'https://pilatesstudio.com'],
         allowMethods: [apigw.CorsHttpMethod.ANY],
         allowHeaders: ['Content-Type', 'Authorization'],
         maxAge: cdk.Duration.hours(1),
@@ -281,7 +281,7 @@ export class RemedyStack extends cdk.Stack {
     for (const [method, routePath, folder, tableNames] of ROUTES) {
       if (!lambdaCache[folder]) {
         const fn = new lambda.Function(this, `Fn-${folder}`, {
-          functionName: `remedy-${folder}`,
+          functionName: `pilates-${folder}`,
           runtime: lambda.Runtime.NODEJS_20_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(path.join(lambdaDir, folder)),
@@ -289,7 +289,7 @@ export class RemedyStack extends cdk.Stack {
           memorySize: 256,
           timeout: cdk.Duration.seconds(10),
           environment: {
-            TABLE_PREFIX: 'remedy-',
+            TABLE_PREFIX: 'pilates-',
             UPLOADS_BUCKET: uploadsBucket.bucketName,
             USER_POOL_ID: userPool.userPoolId,
           },

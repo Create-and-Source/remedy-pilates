@@ -407,7 +407,7 @@ export default function LiveDashboard() {
               Real-Time Studio Activity
             </h1>
             <div style={{ fontFamily: s.FONT, fontSize: 14, color: s.text2 || '#666', marginTop: 6 }}>
-              Live check-ins across all 3 Remedy Pilates locations
+              Live check-ins across all 3 Pilates Studio locations
             </div>
           </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -468,7 +468,7 @@ export default function LiveDashboard() {
           }}
         >
           <div style={{ fontFamily: s.DISPLAY, fontSize: 22, color: '#e0d8ff', fontWeight: 700 }}>
-            Remedy Pilates &middot; Live
+            Pilates Studio &middot; Live
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <div style={{ fontFamily: s.MONO, fontSize: 12, color: '#9090b0' }}>
@@ -1042,7 +1042,7 @@ export default function LiveDashboard() {
             letterSpacing: '0.08em',
           }}
         >
-          REMEDY PILATES &middot; CROSS-LOCATION LIVE DASHBOARD &middot; AUTO-REFRESHING
+          PILATES STUDIO &middot; CROSS-LOCATION LIVE DASHBOARD &middot; AUTO-REFRESHING
         </div>
       </div>
     </div>

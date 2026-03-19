@@ -10,7 +10,7 @@ const doc = DynamoDBDocumentClient.from(client, {
   marshallOptions: { removeUndefinedValues: true },
 });
 
-const PREFIX = process.env.TABLE_PREFIX || 'remedy-';
+const PREFIX = process.env.TABLE_PREFIX || 'pilates-';
 const table = (name) => `${PREFIX}${name}`;
 
 // ── Read ────────────────────────────────────────────────────────

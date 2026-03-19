@@ -72,7 +72,7 @@ export default function Reviews() {
   const [toast, setToast] = useState(null);
 
   const settings = getSettings();
-  const businessName = settings.businessName || 'Remedy Pilates & Barre';
+  const businessName = settings.businessName || 'Pilates & Barre';
 
   const reviews = getReviews();
 

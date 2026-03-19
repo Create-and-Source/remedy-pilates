@@ -12,12 +12,12 @@ terraform {
     }
   }
 
-  # Remote state in S3 — create bucket first with: aws s3 mb s3://remedy-terraform-state --region us-west-2
+  # Remote state in S3 — create bucket first with: aws s3 mb s3://pilates-terraform-state --region us-west-2
   backend "s3" {
-    bucket         = "remedy-terraform-state"
-    key            = "remedy/terraform.tfstate"
+    bucket         = "pilates-terraform-state"
+    key            = "pilates/terraform.tfstate"
     region         = "us-west-2"
-    dynamodb_table = "remedy-terraform-lock"
+    dynamodb_table = "pilates-terraform-lock"
     encrypt        = true
   }
 }
@@ -27,7 +27,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Project   = "Remedy Pilates"
+      Project   = "Pilates Studio"
       ManagedBy = "Terraform"
     }
   }

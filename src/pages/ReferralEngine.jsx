@@ -48,7 +48,7 @@ function makeReferralLink(client) {
     .toUpperCase()
     .slice(0, 2));
   const code = Math.abs((client.id || 0) * 9973 + 1337) % 9000 + 1000;
-  return `remedy.link/ref/${initials}-${code}`;
+  return `pilates.link/ref/${initials}-${code}`;
 }
 
 // ── Simulated referral data ───────────────────────────────────────────────────
@@ -84,7 +84,7 @@ const NUDGE_TEMPLATES = [
     id: 'streak',
     name: 'Streak Nudge',
     trigger: '4 consecutive weeks of attendance',
-    preview: "4 weeks strong! Know someone who'd love Remedy? Share your link and get them started.",
+    preview: "4 weeks strong! Know someone who'd love Pilates? Share your link and get them started.",
     channel: 'SMS',
     icon: '🔥',
   },

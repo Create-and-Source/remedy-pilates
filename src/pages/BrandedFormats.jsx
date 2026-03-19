@@ -41,7 +41,7 @@ const s = {
 const FORMATS = [
   {
     classType:   "Reformer",
-    brandName:   "REMEDY FLOW",
+    brandName:   "STUDIO FLOW",
     tagline:     "Lengthen. Strengthen. Transform.",
     color:       "#C4704B",
     category:    "Reformer-based",
@@ -52,7 +52,7 @@ const FORMATS = [
   },
   {
     classType:   "Mat",
-    brandName:   "REMEDY CORE",
+    brandName:   "STUDIO CORE",
     tagline:     "Your foundation starts here.",
     color:       "#6B8F71",
     category:    "Mat-based",
@@ -63,7 +63,7 @@ const FORMATS = [
   },
   {
     classType:   "Barre",
-    brandName:   "REMEDY SCULPT",
+    brandName:   "STUDIO SCULPT",
     tagline:     "Pulse. Hold. Shake. Repeat.",
     color:       "#8B6B94",
     category:    "Barre-based",
@@ -74,18 +74,18 @@ const FORMATS = [
   },
   {
     classType:   "Barre Burn",
-    brandName:   "REMEDY BURN",
+    brandName:   "STUDIO BURN",
     tagline:     "Turn up the burn.",
     color:       "#B85C38",
     category:    "Barre-based",
-    description: "The elevated version of REMEDY SCULPT. Faster tempo, heavier weights, and cardio intervals between barre sections. Your muscles will not forget this one.",
+    description: "The elevated version of STUDIO SCULPT. Faster tempo, heavier weights, and cardio intervals between barre sections. Your muscles will not forget this one.",
     equipment:   ["Barre", "Mat", "Medium Weights", "Resistance Band"],
     duration:    55,
     difficulty:  "Intermediate–Advanced",
   },
   {
     classType:   "TRX Fusion",
-    brandName:   "REMEDY SUSPEND",
+    brandName:   "STUDIO SUSPEND",
     tagline:     "Defy gravity.",
     color:       "#5B7B8F",
     category:    "Specialty",
@@ -96,7 +96,7 @@ const FORMATS = [
   },
   {
     classType:   "Stretch & Restore",
-    brandName:   "REMEDY RESTORE",
+    brandName:   "STUDIO RESTORE",
     tagline:     "Move better. Feel better.",
     color:       "#7BA68B",
     category:    "Specialty",
@@ -107,7 +107,7 @@ const FORMATS = [
   },
   {
     classType:   "Reformer + Cardio",
-    brandName:   "REMEDY TORCH",
+    brandName:   "STUDIO TORCH",
     tagline:     "Reformer meets cardio fire.",
     color:       "#D4704B",
     category:    "Reformer-based",
@@ -118,7 +118,7 @@ const FORMATS = [
   },
   {
     classType:   "Group Apparatus",
-    brandName:   "REMEDY APPARATUS",
+    brandName:   "STUDIO APPARATUS",
     tagline:     "The full studio experience.",
     color:       "#A68B6B",
     category:    "Reformer-based",
@@ -129,18 +129,18 @@ const FORMATS = [
   },
   {
     classType:   "Private Training",
-    brandName:   "REMEDY PRIVATE",
+    brandName:   "STUDIO PRIVATE",
     tagline:     "Your body. Your plan.",
     color:       "#8B7B6B",
     category:    "Specialty",
-    description: "One-on-one session with a REMEDY instructor. Your goals, your timeline, your full attention. The fastest path to results and the most personalized experience we offer.",
+    description: "One-on-one session with a STUDIO instructor. Your goals, your timeline, your full attention. The fastest path to results and the most personalized experience we offer.",
     equipment:   ["Full Studio Access"],
     duration:    55,
     difficulty:  "All Levels",
   },
   {
     classType:   "Semi-Private",
-    brandName:   "REMEDY DUO",
+    brandName:   "STUDIO DUO",
     tagline:     "Better together.",
     color:       "#6B8B8F",
     category:    "Specialty",
@@ -151,7 +151,7 @@ const FORMATS = [
   },
   {
     classType:   "Prenatal",
-    brandName:   "REMEDY BLOOM",
+    brandName:   "STUDIO BLOOM",
     tagline:     "Strength for two.",
     color:       "#C47B8E",
     category:    "Specialty",
@@ -162,7 +162,7 @@ const FORMATS = [
   },
   {
     classType:   "Youth Conditioning",
-    brandName:   "REMEDY JUNIOR",
+    brandName:   "STUDIO JUNIOR",
     tagline:     "Start strong. Stay strong.",
     color:       "#5BA68B",
     category:    "Specialty",
@@ -173,7 +173,7 @@ const FORMATS = [
   },
   {
     classType:   "Intro to Reformer",
-    brandName:   "REMEDY FIRST",
+    brandName:   "STUDIO FIRST",
     tagline:     "Your first step.",
     color:       "#7B8FC4",
     category:    "Reformer-based",
@@ -486,7 +486,7 @@ export default function BrandedFormats() {
             lineHeight: 1.6,
           }}
         >
-          Every class format at REMEDY carries a distinct identity. Use this
+          Every class format at PILATES STUDIO carries a distinct identity. Use this
           guide to understand the brand name, voice, and purpose behind each
           offering.
         </p>

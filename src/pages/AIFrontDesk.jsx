@@ -127,7 +127,7 @@ function processQuery(query) {
   // ── Hours / Location ──
   if (q.includes('hour') || q.includes('open') || q.includes('location') || q.includes('address') || q.includes('where')) {
     return {
-      text: `**${settings.businessName || 'Remedy Pilates & Barre'}**`,
+      text: `**${settings.businessName || 'Pilates & Barre'}**`,
       details: [
         '📍 **Scottsdale** — 6949 E Shea Blvd, Scottsdale, AZ 85254',
         '📍 **Arcadia** — 3629 E Indian School Rd, Phoenix, AZ 85018',
@@ -138,7 +138,7 @@ function processQuery(query) {
         '🕐 Sun: 8am – 12pm',
         '',
         `📞 ${settings.phone || '(480) 699-8160'}`,
-        `📧 ${settings.email || 'info@remedypilates.com'}`,
+        `📧 ${settings.email || 'info@pilatesstudio.com'}`,
       ],
       type: 'info',
     };
@@ -215,7 +215,7 @@ function processQuery(query) {
 export default function AIFrontDesk() {
   const s = useStyles();
   const [messages, setMessages] = useState([
-    { role: 'assistant', text: `Welcome to **${getSettings().businessName || 'Remedy Pilates & Barre'}**! I'm your AI front desk assistant. Ask me about classes, clients, pricing, or anything else.`, details: null, type: 'greeting' },
+    { role: 'assistant', text: `Welcome to **${getSettings().businessName || 'Pilates & Barre'}**! I'm your AI front desk assistant. Ask me about classes, clients, pricing, or anything else.`, details: null, type: 'greeting' },
   ]);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);

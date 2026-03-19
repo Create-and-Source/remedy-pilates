@@ -1,13 +1,13 @@
-# Remedy Pilates & Barre — Studio Management Platform
+# Pilates & Barre — Studio Management Platform
 
-> Pilates & Barre studio management platform for Remedy Pilates & Barre (3 Arizona locations).
+> Pilates & Barre studio management platform for Pilates & Barre (3 Arizona locations).
 > Founded by Kelly Snailum in 2008. This is a full admin + client-facing demo with Body Intelligence AI features.
 
 ## Tech Stack
 
 - **Framework**: React 19 + React Router DOM 7.13.1 + Vite (latest)
 - **Hosting**: Vercel (SPA routing via `vercel.json` rewrites)
-- **Deploy URL**: https://remedy-pilates.vercel.app
+- **Deploy URL**: https://pilates-web.vercel.app
 - **Styling**: CSS-in-JS via `theme.jsx` (useStyles hook) + inline styles
 - **State**: React hooks (useState, useCallback, useMemo, useContext) + localStorage
 - **Persistence**: All data in localStorage — no backend, no database, no API
@@ -313,7 +313,7 @@ subscribe() / notify() pattern for cross-component reactivity
 
 2. **Cohort Analysis** (`CohortAnalysis.jsx`) — Retention heatmap by signup month (M+0 through M+6). 3 simulated A/B intervention experiments (Welcome Back discount, personal outreach vs email, free guest pass vs loyalty points) with conversion rates, lift %, confidence indicators (z-score approximation). Churn waterfall chart (Starting → New → Reactivated → Churned → Current). Risk segment donut. Predictive engagement timeline with linear regression trend lines.
 
-3. **Referral Virality Loop** (`ReferralEngine.jsx`) — Engagement scoring: frequency (35pts), consistency (30pts), tenure (20pts), variety (15pts). Clients 75+ = Advocates. Unique referral links (`remedy.link/ref/XX-1234`). 3 auto-trigger nudge templates (Milestone, Streak, Post-Class High). Full funnel visualization (Shared → Clicked → Booked → Attended → Converted). Leaderboard with reward tiers (Bronze/Silver/Gold). Location breakdown.
+3. **Referral Virality Loop** (`ReferralEngine.jsx`) — Engagement scoring: frequency (35pts), consistency (30pts), tenure (20pts), variety (15pts). Clients 75+ = Advocates. Unique referral links (`pilates.link/ref/XX-1234`). 3 auto-trigger nudge templates (Milestone, Streak, Post-Class High). Full funnel visualization (Shared → Clicked → Booked → Attended → Converted). Leaderboard with reward tiers (Bronze/Silver/Gold). Location breakdown.
 
 4. **Gamified Challenges** (`Challenges.jsx`) — Points system (10pts/class, streak bonuses: 3-day=25, 5-day=50, 7-day=100). 12 unlockable badges with condition functions. 4 studio challenges with progress tracking. Bronze/Silver/Gold/Platinum leveling (0/200/500/1000 pts). Podium layout for top 3 on leaderboard.
 

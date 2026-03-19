@@ -103,9 +103,9 @@ const REWARDS = [
   { id: 1, name: "Grip Socks", pts: 100, icon: "🧦", category: "Gear", desc: "Studio-branded grip socks, one pair" },
   { id: 2, name: "$10 Credit", pts: 150, icon: "💳", category: "Credit", desc: "Applied to next class booking" },
   { id: 3, name: "Free Class", pts: 200, icon: "🎟️", category: "Classes", desc: "Any group class, any time" },
-  { id: 4, name: "Water Bottle", pts: 200, icon: "💧", category: "Gear", desc: "Remedy Pilates insulated bottle" },
+  { id: 4, name: "Water Bottle", pts: 200, icon: "💧", category: "Gear", desc: "Pilates Studio insulated bottle" },
   { id: 5, name: "Friend Pass", pts: 250, icon: "🤝", category: "Classes", desc: "Bring a friend to any class free" },
-  { id: 6, name: "Branded Tank", pts: 350, icon: "👕", category: "Gear", desc: "Remedy Pilates premium tank top" },
+  { id: 6, name: "Branded Tank", pts: 350, icon: "👕", category: "Gear", desc: "Pilates Studio premium tank top" },
   { id: 7, name: "Private Session", pts: 500, icon: "🏆", category: "Classes", desc: "60-min 1-on-1 with any instructor" },
   { id: 8, name: "1-Month Upgrade", pts: 750, icon: "⬆️", category: "Membership", desc: "Upgrade your membership tier for one month" },
 ];
@@ -1085,7 +1085,7 @@ export default function LoyaltyProgram() {
               margin: 0,
             }}
           >
-            Remedy Rewards
+            Pilates Rewards
           </h1>
         </div>
         <p style={{ fontFamily: FONT, fontSize: 14, color: "#888", margin: 0 }}>

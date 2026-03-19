@@ -39,7 +39,7 @@ export default function Pricing() {
           <div style={{ font: `500 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 2, color: s.text3, marginBottom: 12 }}>Pricing Strategy</div>
           <h1 style={{ font: `600 36px ${s.FONT}`, color: s.text, marginBottom: 8, letterSpacing: '-0.5px' }}>How We Got to $500/month</h1>
           <p style={{ font: `400 16px ${s.FONT}`, color: s.text2, maxWidth: 600, margin: '0 auto' }}>
-            Research-backed pricing for Remedy's studio platform. Here's the math.
+            Research-backed pricing for Pilates's studio platform. Here's the math.
           </p>
         </div>
 
@@ -276,7 +276,7 @@ export default function Pricing() {
 
         {/* Footer */}
         <div style={{ textAlign: 'center', padding: '32px 0', font: `400 13px ${s.FONT}`, color: s.text3 }}>
-          Remedy Pilates & Barre — Studio Platform, March 2026
+          Pilates & Barre — Studio Platform, March 2026
         </div>
       </div>
     </div>

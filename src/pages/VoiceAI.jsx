@@ -83,7 +83,7 @@ function buildScript(providers, services) {
   return [
     {
       role: 'ai',
-      text: `Thank you for calling Remedy Pilates & Barre! I'm your AI assistant. How can I help you today?`,
+      text: `Thank you for calling Pilates & Barre! I'm your AI assistant. How can I help you today?`,
       intent: null,
       confidence: null,
     },
@@ -209,7 +209,7 @@ export default function VoiceAI() {
   const [voiceStyle, setVoiceStyle] = useState('friendly');
   const [afterHours, setAfterHours] = useState(true);
   const [greeting, setGreeting] = useState(
-    "Thank you for calling Remedy Pilates & Barre! I'm your AI assistant. How can I help you today?"
+    "Thank you for calling Pilates & Barre! I'm your AI assistant. How can I help you today?"
   );
 
   const timerRef = useRef(null);
@@ -368,7 +368,7 @@ export default function VoiceAI() {
               🎙️
             </div>
             <div style={{ color: '#F0F0F8', fontWeight: 700, fontSize: 18, letterSpacing: '-0.01em' }}>
-              Remedy Pilates AI
+              Pilates Studio AI
             </div>
             <div style={{ color: '#6B6B80', fontSize: 13, marginTop: 3, fontFamily: s.MONO }}>
               (480) 699-8160
@@ -474,7 +474,7 @@ export default function VoiceAI() {
                   fontSize: 10, color: '#3A3A50', marginTop: 2, fontFamily: s.MONO,
                   textAlign: msg.role === 'caller' ? 'right' : 'left',
                 }}>
-                  {msg.role === 'ai' ? 'Remedy AI' : 'Caller'}
+                  {msg.role === 'ai' ? 'Pilates AI' : 'Caller'}
                 </div>
               </div>
             ))}
