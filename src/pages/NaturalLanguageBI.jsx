@@ -552,7 +552,7 @@ export default function NaturalLanguageBI() {
   const card = { background: 'rgba(255,255,255,0.72)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 16, boxShadow: s.shadow };
 
   return (
-    <div style={{ padding: '32px 28px', maxWidth: 1200, margin: '0 auto' }}>
+    <div className="nlbi-root" style={{ padding: '32px 28px', maxWidth: 1200, margin: '0 auto' }}>
       {/* header */}
       <div style={{ marginBottom: 32 }}>
         <div style={{ fontFamily: s.MONO, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: s.accent, marginBottom: 8 }}>
@@ -566,7 +566,7 @@ export default function NaturalLanguageBI() {
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 24, alignItems: 'start' }}>
+      <div className="nlbi-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 24, alignItems: 'start' }}>
         {/* main column */}
         <div>
           {/* query input */}
@@ -635,7 +635,7 @@ export default function NaturalLanguageBI() {
         </div>
 
         {/* right sidebar: quick insights */}
-        <div style={{ position: 'sticky', top: 20 }}>
+        <div className="nlbi-sidebar" style={{ position: 'sticky', top: 20 }}>
           <div style={{ ...card, padding: '18px 20px', marginBottom: 16 }}>
             <div style={{ fontFamily: s.MONO, fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: s.accent, marginBottom: 12 }}>
               Today's Briefing
@@ -697,7 +697,14 @@ export default function NaturalLanguageBI() {
         </div>
       </div>
 
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 768px) {
+          .nlbi-root { padding: 20px 16px !important; }
+          .nlbi-layout { grid-template-columns: 1fr !important; }
+          .nlbi-sidebar { position: static !important; }
+        }
+      `}</style>
     </div>
   );
 }

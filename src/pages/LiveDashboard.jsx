@@ -332,7 +332,14 @@ export default function LiveDashboard() {
 
   return (
     <div style={bgStyle}>
-      <style>{ANIM_CSS}</style>
+      <style>{ANIM_CSS + `
+        @media (max-width: 768px) {
+          .ld-locations { grid-template-columns: 1fr !important; }
+          .ld-main { grid-template-columns: 1fr !important; }
+          .ld-padding { padding: 20px 16px 28px !important; }
+          .ld-header { flex-wrap: wrap !important; gap: 12px !important; }
+        }
+      `}</style>
 
       {/* Toast notifications */}
       <div
@@ -373,7 +380,7 @@ export default function LiveDashboard() {
 
       {/* Header — normal mode */}
       {!fullscreen && (
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
+        <div className="ld-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
           <div>
             <div
               style={{
@@ -508,9 +515,9 @@ export default function LiveDashboard() {
         </div>
       )}
 
-      <div style={{ padding: fullscreen ? '20px 28px 28px' : 0 }}>
+      <div className="ld-padding" style={{ padding: fullscreen ? '20px 28px 28px' : 0 }}>
         {/* Location Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 20 }}>
+        <div className="ld-locations" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 20 }}>
           {LOCATIONS.map((loc, li) => {
             const ls = locationState[li];
             const locColor = loc.color || accentColor;
@@ -739,6 +746,7 @@ export default function LiveDashboard() {
 
         {/* Schedule Timeline + KPIs */}
         <div
+          className="ld-main"
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr 260px',

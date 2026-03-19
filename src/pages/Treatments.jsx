@@ -122,6 +122,16 @@ export default function Treatments() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .tx-modal-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .tx-session-add-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 28px ${s.FONT}`, color: s.text, marginBottom: 6, letterSpacing: '-0.3px' }}>Class Packages</h1>
@@ -366,7 +376,7 @@ export default function Treatments() {
           <div style={{ background: '#fff', borderRadius: 20, padding: 32, maxWidth: 600, width: '90%', boxShadow: s.shadowLg, maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 24 }}>{editPlan ? 'Edit Treatment Plan' : 'New Treatment Plan'}</h2>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+            <div className="tx-modal-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
               <div style={{ gridColumn: '1 / -1' }}>
                 <label style={s.label}>Patient</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
@@ -400,7 +410,7 @@ export default function Treatments() {
             ))}
 
             <div style={{ padding: 14, background: 'rgba(0,0,0,0.02)', borderRadius: 12, border: '1px dashed rgba(0,0,0,0.08)', marginTop: 8 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <div className="tx-session-add-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 <div>
                   <label style={{ ...s.label, fontSize: 10 }}>Service</label>
                   <select value={sessionForm.serviceId} onChange={e => { const svc = services.find(sv => sv.id === e.target.value); setSessionForm({ ...sessionForm, serviceId: e.target.value, name: svc?.name || '' }); }} style={{ ...s.input, fontSize: 12, padding: '8px 10px', cursor: 'pointer' }}>

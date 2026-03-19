@@ -222,6 +222,11 @@ export default function TraineePortal() {
         .tp-btn { transition: opacity 0.15s ease, transform 0.15s ease; cursor: pointer; }
         .tp-btn:hover { opacity: 0.88; transform: translateY(-1px); }
         .tp-btn:active { transform: scale(0.97); }
+        @media (max-width: 768px) {
+          .tp-stats-grid { grid-template-columns: 1fr 1fr !important; }
+          .tp-form-grid { grid-template-columns: 1fr !important; }
+          .tp-two-col { grid-template-columns: 1fr !important; }
+        }
       `}</style>
 
       {/* Celebration confetti */}
@@ -319,7 +324,7 @@ export default function TraineePortal() {
         {activeTab === 'dashboard' && (
           <div>
             {/* Hero stats */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 16, marginBottom: 20 }}>
+            <div className="tp-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 16, marginBottom: 20 }}>
               {/* Hours ring */}
               <div style={{ ...card, padding: '24px 20px', textAlign: 'center', gridColumn: 'span 1' }}>
                 <div style={{ position: 'relative', display: 'inline-block', marginBottom: 10 }}>
@@ -406,7 +411,7 @@ export default function TraineePortal() {
             </div>
 
             {/* Avg score + next up */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="tp-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ ...card, padding: '20px 24px' }}>
                 <div style={{ fontFamily: s.MONO, fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: s.text3, marginBottom: 8 }}>Average Exam Score</div>
                 {completedModules.length > 0 ? (
@@ -530,7 +535,7 @@ export default function TraineePortal() {
               </div>
 
               {showLogForm && (
-                <form onSubmit={handleLogSubmit} style={{ background: 'rgba(0,0,0,0.03)', borderRadius: 12, padding: 20, marginBottom: 20, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <form onSubmit={handleLogSubmit} className="tp-form-grid" style={{ background: 'rgba(0,0,0,0.03)', borderRadius: 12, padding: 20, marginBottom: 20, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div style={{ gridColumn: 'span 1' }}>
                     <label style={{ fontFamily: s.MONO, fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: s.text3, display: 'block', marginBottom: 6 }}>Date</label>
                     <input type="date" required value={logForm.date} onChange={e => setLogForm(f => ({ ...f, date: e.target.value }))}
@@ -669,7 +674,7 @@ export default function TraineePortal() {
 
         {/* ── MENTOR ────────────────────────────────────────────────────────── */}
         {activeTab === 'mentor' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div className="tp-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <div style={{ ...card, padding: '28px 28px' }}>
               <div style={{ fontFamily: s.MONO, fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: s.text3, marginBottom: 16 }}>Your Mentor</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginBottom: 20 }}>

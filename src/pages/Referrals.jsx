@@ -137,7 +137,28 @@ export default function Referrals() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .ref-kpi-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .ref-header {
+            flex-wrap: wrap !important;
+          }
+          .ref-header-btns {
+            flex-wrap: wrap !important;
+          }
+          .ref-table-wrap {
+            overflow-x: auto !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .ref-kpi-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
+      <div className="ref-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Referrals</h1>
           <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Track referrals, reward loyalty, and grow your client base</p>
@@ -149,7 +170,7 @@ export default function Referrals() {
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
+      <div className="ref-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
         {[
           { label: 'Total Referrals', value: totalReferrals, color: s.text },
           { label: 'Pending', value: pendingCount, color: pendingCount > 0 ? s.warning : s.success },
@@ -198,7 +219,7 @@ export default function Referrals() {
       </div>
 
       {/* Referral Table */}
-      <div style={s.tableWrap}>
+      <div className="ref-table-wrap" style={{ ...s.tableWrap, overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', font: `400 13px ${s.FONT}` }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #E5E5E5' }}>

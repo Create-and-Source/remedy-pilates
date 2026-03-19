@@ -147,6 +147,26 @@ export default function Reviews() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .rev-kpi-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .rev-card {
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+          }
+          .rev-card-actions {
+            flex-direction: row !important;
+            width: 100% !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .rev-kpi-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       {/* Toast */}
       {toast && (
         <div style={{
@@ -164,7 +184,7 @@ export default function Reviews() {
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
+      <div className="rev-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
         {[
           { label: 'Total Reviews', value: totalReviews, color: s.text },
           { label: 'Average Rating', value: avgRating, color: Number(avgRating) >= 4.5 ? s.success : Number(avgRating) >= 3.5 ? s.warning : s.danger, extra: completed.length > 0 ? <Stars rating={Math.round(Number(avgRating))} size={12} /> : null },

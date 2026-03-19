@@ -238,6 +238,18 @@ export default function MovementRx() {
   // ── LIST VIEW ──
   if (step === 'list') return (
     <div style={{ minHeight: '100vh', background: '#fafaf8' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .mrx-weeks-grid { grid-template-columns: 1fr 1fr !important; }
+          .mrx-plan-grid { grid-template-columns: 1fr 1fr !important; }
+          .mrx-page-pad { padding: 16px !important; }
+          .mrx-header-pad { padding: 20px 16px 0 !important; }
+        }
+        @media (max-width: 480px) {
+          .mrx-weeks-grid { grid-template-columns: 1fr !important; }
+          .mrx-plan-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       <div style={{ padding: '32px 32px 0', borderBottom: '1px solid #eee' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 3, color: theme.accent, marginBottom: 8 }}>
@@ -297,7 +309,7 @@ export default function MovementRx() {
                         ))}
                       </div>
                     )}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+                    <div className="mrx-weeks-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
                       {rx.weeks.map(week => (
                         <div key={week.week} style={{ padding: 14, borderRadius: 10, background: '#fafaf8' }}>
                           <div style={{ font: `600 12px ${s.MONO}`, color: theme.accent, marginBottom: 8 }}>Week {week.week}</div>
@@ -485,7 +497,7 @@ export default function MovementRx() {
         )}
 
         {/* 4-week grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
+        <div className="mrx-plan-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
           {plan.weeks.map(week => (
             <div key={week.week} style={{
               padding: 24, borderRadius: 16, background: '#fff', border: '1px solid #eee',
@@ -564,3 +576,4 @@ export default function MovementRx() {
 
   return null;
 }
+

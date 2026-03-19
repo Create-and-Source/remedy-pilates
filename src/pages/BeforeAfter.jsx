@@ -92,6 +92,13 @@ export default function BeforeAfter() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .ba-photo-comparison { grid-template-columns: 1fr !important; height: auto !important; }
+          .ba-photo-comparison > div { height: 160px; border-right: none !important; border-bottom: 1px solid #E5E5E5; }
+          .ba-upload-form-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Transformations</h1>
@@ -134,7 +141,7 @@ export default function BeforeAfter() {
           return (
             <div key={idx} style={{ ...s.cardStyle, overflow: 'hidden' }}>
               {/* Comparison Area */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', height: 200 }}>
+              <div className="ba-photo-comparison" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', height: 200 }}>
                 <div style={{ background: '#F0F0F0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', borderRight: '1px solid #E5E5E5', position: 'relative' }}>
                   <span style={{ position: 'absolute', top: 8, left: 8, padding: '2px 8px', borderRadius: 4, background: 'rgba(0,0,0,0.6)', color: '#fff', font: `500 9px ${s.MONO}`, textTransform: 'uppercase' }}>Before</span>
                   {latestBefore ? (
@@ -193,7 +200,7 @@ export default function BeforeAfter() {
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 560, width: '90%', boxShadow: s.shadowLg, maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 24 }}>Upload Photo</h2>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="ba-upload-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: '1 / -1' }}>
                 <label style={s.label}>Patient</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>

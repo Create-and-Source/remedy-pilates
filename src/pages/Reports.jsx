@@ -83,6 +83,13 @@ export default function Reports() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .reports-two-col {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Reports</h1>
@@ -114,7 +121,7 @@ export default function Reports() {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div className="reports-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         {/* Top Services */}
         <div style={{ ...s.cardStyle, overflow: 'hidden' }}>
           <div style={{ padding: '18px 20px', borderBottom: '1px solid #F0F0F0' }}>

@@ -338,6 +338,16 @@ export default function WearablesHub() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .wh-mini-metrics { grid-template-columns: 1fr 1fr !important; }
+          .wh-trends-grid { grid-template-columns: 1fr !important; }
+          .wh-page-header { margin-bottom: 16px !important; }
+        }
+        @media (max-width: 480px) {
+          .wh-mini-metrics { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ font: `400 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5, color: s.text3, marginBottom: 4 }}>
@@ -759,7 +769,7 @@ export default function WearablesHub() {
               </div>
 
               {/* Mini metrics */}
-              <div style={{ padding: '12px 18px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+              <div className="wh-mini-metrics" style={{ padding: '12px 18px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
                 {[
                   { label: 'Resting HR', value: `${w.daily[w.daily.length - 1].restingHR}`, unit: 'bpm' },
                   { label: 'HRV', value: `${w.daily[w.daily.length - 1].hrv}`, unit: 'ms' },
@@ -787,7 +797,7 @@ export default function WearablesHub() {
                   </div>
 
                   <div style={{ font: `600 11px ${s.MONO}`, color: s.text3, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>7-Day Trends</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <div className="wh-trends-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     {[
                       { label: 'Heart Rate', key: 'restingHR', color: '#DC2626' },
                       { label: 'HRV', key: 'hrv', color: '#2563EB' },

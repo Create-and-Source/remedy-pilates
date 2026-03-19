@@ -76,6 +76,12 @@ if (!document.getElementById(ANIM_ID)) {
     .portal-stagger-7 { animation-delay: 0.28s; }
     .portal-stagger-8 { animation-delay: 0.32s; }
     .portal-tabs::-webkit-scrollbar { display:none; }
+    @media (max-width: 768px) {
+      .portal-two-col { grid-template-columns: 1fr !important; }
+      .portal-three-col { grid-template-columns: 1fr !important; }
+      .portal-form-grid { grid-template-columns: 1fr !important; }
+      .portal-two-col .portal-span-all { grid-column: 1 !important; }
+    }
   `;
   document.head.appendChild(sheet);
 }
@@ -836,7 +842,7 @@ export default function Portal() {
               <div style={{ font: `400 12px ${s.FONT}`, color: s.text3, marginBottom: 18 }}>
                 Angle: {pair.angle}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div className="portal-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                 {['before', 'after'].map(phase => {
                   const photo = pair[phase];
                   return (
@@ -980,7 +986,7 @@ export default function Portal() {
       </Card>
 
       {/* Stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 28 }}>
+      <div className="portal-three-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 28 }}>
         {[
           { label: 'Total Referrals', value: referrals.length, color: s.text },
           { label: 'Completed', value: creditedReferrals.length, color: s.success },

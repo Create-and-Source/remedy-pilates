@@ -238,6 +238,14 @@ export default function DynamicPricing() {
 
   return (
     <div style={{ padding: '32px 28px', maxWidth: 1200, margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .dp-kpi-grid { grid-template-columns: 1fr 1fr !important; }
+          .dp-rules-grid { grid-template-columns: 1fr !important; }
+          .dp-sim-grid { grid-template-columns: 1fr !important; }
+          .dp-pricing-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
 
       {/* Header */}
       <div style={{ marginBottom: 32 }}>
@@ -253,7 +261,7 @@ export default function DynamicPricing() {
       </div>
 
       {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 14, marginBottom: 28 }}>
+      <div className="dp-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 14, marginBottom: 28 }}>
         {[
           { label: 'Current Monthly', value: `$${(kpis.baseMonthly / 1000).toFixed(1)}k`, sub: 'flat pricing', color: s.text2 },
           { label: 'With Dynamic Pricing', value: `$${(kpis.dynamicMonthly / 1000).toFixed(1)}k`, sub: `+${kpis.lift}% lift`, color: '#059669' },
@@ -280,7 +288,7 @@ export default function DynamicPricing() {
             {Object.values(activeRules).filter(Boolean).length} of {RULES.length} rules active
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+        <div className="dp-rules-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           {RULES.map(rule => {
             const on = activeRules[rule.key];
             return (
@@ -326,7 +334,7 @@ export default function DynamicPricing() {
       {simMode && (
         <div style={{ ...card, padding: '20px 24px', marginBottom: 20, borderColor: '#ddd6fe' }}>
           <div style={{ fontFamily: s.DISPLAY, fontSize: 16, fontWeight: 700, color: '#7c3aed', marginBottom: 16 }}>What-If Simulation</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24, alignItems: 'center' }}>
+          <div className="dp-sim-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 24, alignItems: 'center' }}>
             <div>
               <div style={{ fontFamily: s.MONO, fontSize: 10, textTransform: 'uppercase', color: s.text3, marginBottom: 8, letterSpacing: '0.08em' }}>Peak Multiplier</div>
               <input type="range" min={1.0} max={1.5} step={0.05} value={simPeakMult} onChange={e => setSimPeakMult(parseFloat(e.target.value))} style={{ width: '100%', accentColor: '#7c3aed' }} />
@@ -350,7 +358,7 @@ export default function DynamicPricing() {
 
       {/* Live Pricing Grid */}
       {activeTab === 'grid' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <div className="dp-pricing-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           <div style={{ ...card, padding: '20px 20px 16px' }}>
             <div style={{ fontFamily: s.DISPLAY, fontSize: 16, fontWeight: 700, color: s.text, marginBottom: 4 }}>This Week's Classes</div>
             <div style={{ fontFamily: s.FONT, fontSize: 12, color: s.text2, marginBottom: 16 }}>Click any class to see pricing breakdown</div>

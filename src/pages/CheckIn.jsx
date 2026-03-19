@@ -100,6 +100,27 @@ export default function CheckIn() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .ci-kpi-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .ci-modal-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .ci-modal-grid > div[style*="1 / -1"] {
+            grid-column: 1 !important;
+          }
+          .ci-appt-card {
+            flex-wrap: wrap !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .ci-kpi-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Check-In</h1>
@@ -108,7 +129,7 @@ export default function CheckIn() {
       </div>
 
       {/* Stats bar */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12, marginBottom: 24 }}>
+      <div className="ci-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12, marginBottom: 24 }}>
         {[
           { label: 'Total Today', value: todayAppts.length },
           { label: 'Checked In', value: checkedInCount, color: s.success },
@@ -189,7 +210,7 @@ export default function CheckIn() {
             <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 8 }}>Check In: {showVerify.patientName}</h2>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Verify patient information before checking in.</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+            <div className="ci-modal-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
               <div>
                 <label style={s.label}>Phone (verify)</label>
                 <input value={verifyForm.phone} onChange={e => setVerifyForm({ ...verifyForm, phone: e.target.value })} style={s.input} />

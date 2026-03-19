@@ -202,6 +202,12 @@ export default function RetentionBrain() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .rb-kpi-grid { grid-template-columns: 1fr 1fr !important; }
+          .rb-factor-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ font: `400 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5, color: s.text3, marginBottom: 4 }}>
@@ -216,7 +222,7 @@ export default function RetentionBrain() {
       </div>
 
       {/* Summary KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14, marginBottom: 24 }}>
+      <div className="rb-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14, marginBottom: 24 }}>
         {[
           { label: 'Critical', value: summary.critical, color: '#DC2626', bg: '#FEE2E2' },
           { label: 'High Risk', value: summary.highRisk, color: '#D97706', bg: '#FEF3C7' },
@@ -353,7 +359,7 @@ export default function RetentionBrain() {
                   <div style={{ font: `600 12px ${s.MONO}`, color: s.text3, margin: '16px 0 10px', textTransform: 'uppercase', letterSpacing: 1 }}>
                     Risk Factors
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
+                  <div className="rb-factor-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
                     {Object.entries(client.factors).map(([key, f]) => (
                       <div key={key} style={{ padding: 12, background: 'rgba(0,0,0,0.02)', borderRadius: 10 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>

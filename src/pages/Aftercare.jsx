@@ -268,6 +268,13 @@ export default function RecoveryTips() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .ac-upcoming-row { flex-direction: column !important; align-items: flex-start !important; gap: 10px !important; }
+          .ac-upcoming-right { flex-direction: row !important; justify-content: space-between; width: 100%; }
+          .ac-upcoming-body { flex: 1 !important; min-width: 0; }
+        }
+      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Recovery Tips</h1>

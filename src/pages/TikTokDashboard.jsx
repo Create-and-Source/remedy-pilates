@@ -416,7 +416,7 @@ function ContentIdeasTab() {
       </div>
 
       {/* Card grid */}
-      <div style={{
+      <div className="tt-ideas-grid" style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
         gap: 16,
@@ -507,7 +507,7 @@ function ScheduleTab() {
       </div>
 
       {/* 7-column grid */}
-      <div style={{
+      <div className="tt-schedule-grid" style={{
         display: "grid",
         gridTemplateColumns: "repeat(7, 1fr)",
         gap: 12,
@@ -719,7 +719,7 @@ function AnalyticsTab() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
       {/* Quick metric cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 14 }}>
+      <div className="tt-metrics-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 14 }}>
         {METRICS.map((m) => (
           <div key={m.label} style={{ ...s.card, padding: 20 }}>
             <div style={s.label}>{m.label}</div>
@@ -734,7 +734,7 @@ function AnalyticsTab() {
       </div>
 
       {/* Two-column row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <div className="tt-analytics-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         {/* Best performing content types */}
         <div style={{ ...s.card, padding: 24 }}>
           <div style={{ ...s.label, marginBottom: 18 }}>Avg Views by Content Pillar</div>
@@ -800,7 +800,7 @@ function AnalyticsTab() {
       {/* Pillar distribution: actual vs target */}
       <div style={{ ...s.card, padding: 24 }}>
         <div style={{ ...s.label, marginBottom: 18 }}>Content Mix — Actual vs Target</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 20 }}>
+        <div className="tt-content-mix" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 20 }}>
           {PILLARS.map((p) => {
             const actual = ACTUAL_PCTS.find((a) => a.id === p.id)?.actual ?? 0;
             return (
@@ -862,12 +862,22 @@ export default function TikTokDashboard() {
   ];
 
   return (
-    <div style={{
+    <div className="tt-root" style={{
       minHeight: "100vh",
       background: "#FAF6F1",
       fontFamily: FONT,
       padding: "32px 24px",
     }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .tt-root { padding: 20px 16px !important; }
+          .tt-ideas-grid { grid-template-columns: 1fr !important; }
+          .tt-schedule-grid { grid-template-columns: repeat(4, 1fr) !important; }
+          .tt-metrics-grid { grid-template-columns: 1fr 1fr !important; }
+          .tt-analytics-row { grid-template-columns: 1fr !important; }
+          .tt-content-mix { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
       {/* Max width container */}
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 

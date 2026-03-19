@@ -106,6 +106,11 @@ export default function ARSimulator() {
         .spring-line { animation: springOscillate 1.2s ease-in-out infinite; stroke-dasharray: 6 3; }
         .core-indicator { animation: coreGlow 1.8s ease-in-out infinite; }
         .fade-in { animation: fadeIn 0.4s ease; }
+        @media (max-width: 768px) {
+          .ar-main-grid { grid-template-columns: 1fr !important; }
+          .ar-form-metrics { grid-template-columns: 1fr !important; }
+          .ar-page { padding: 16px 12px !important; }
+        }
       `}</style>
 
       {/* Header */}
@@ -121,7 +126,7 @@ export default function ARSimulator() {
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 }}>
+      <div className="ar-main-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 }}>
 
         {/* Left column */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -320,7 +325,7 @@ export default function ARSimulator() {
               )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="ar-form-metrics" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {/* Alignment Score */}
               <div style={{ background: 'rgba(0,0,0,0.03)', borderRadius: 12, padding: 16 }}>
                 <div style={{ fontFamily: s.MONO, fontSize: 10, color: s.text3, marginBottom: 10, letterSpacing: '0.08em' }}>ALIGNMENT SCORE</div>

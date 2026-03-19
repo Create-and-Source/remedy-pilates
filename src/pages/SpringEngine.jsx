@@ -282,6 +282,12 @@ export default function SpringEngine() {
 
   return (
     <div style={{ padding: '32px 28px', maxWidth: 1200, margin: '0 auto', fontFamily: s.FONT }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .se-page { padding: 16px 12px !important; }
+          .se-header h1 { font-size: 24px !important; }
+        }
+      `}</style>
 
       {/* Header */}
       <div style={{ marginBottom: 32 }}>

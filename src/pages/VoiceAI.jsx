@@ -40,6 +40,10 @@ const WAVEFORM_CSS = `
 .chat-bubble { animation: fadeSlideIn 0.35s ease forwards; }
 .active-dot { animation: pulseDot 1.5s ease-in-out infinite; }
 .call-ring { animation: callRing 1.8s ease-in-out infinite; }
+@media (max-width: 768px) {
+  .vai-root { padding: 20px 16px !important; }
+  .vai-phone { width: 100% !important; max-width: 320px; margin: 0 auto; }
+}
 `;
 
 const RECENT_CALLS = [
@@ -317,7 +321,7 @@ export default function VoiceAI() {
   const maxBarCalls = Math.max(...BAR_CALLS);
 
   return (
-    <div style={{ padding: '32px 28px', fontFamily: s.FONT, color: s.text, maxWidth: 1200, margin: '0 auto' }}>
+    <div className="vai-root" style={{ padding: '32px 28px', fontFamily: s.FONT, color: s.text, maxWidth: 1200, margin: '0 auto' }}>
       <style>{WAVEFORM_CSS}</style>
 
       {/* Header */}
@@ -337,7 +341,7 @@ export default function VoiceAI() {
       <div style={{ display: 'flex', gap: 28, marginBottom: 28, alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
         {/* Phone */}
-        <div style={{
+        <div className="vai-phone" style={{
           width: 320, flexShrink: 0,
           background: '#0F0F14',
           borderRadius: 44,

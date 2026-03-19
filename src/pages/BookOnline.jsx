@@ -76,6 +76,13 @@ if (!document.getElementById(ANIM_ID)) {
     .book-stagger-8 { animation-delay: 0.24s; }
     .book-cats::-webkit-scrollbar { display:none; }
     .book-days::-webkit-scrollbar { display:none; }
+    @media (max-width: 768px) {
+      .book-container { padding: 24px 14px 48px !important; }
+      .book-step-card { padding: 20px 16px !important; }
+      .book-provider-grid { grid-template-columns: 1fr !important; }
+      .book-form-name-row { flex-direction: column !important; }
+      .book-form-name-row > div { width: 100% !important; }
+    }
   `;
   document.head.appendChild(sheet);
 }
@@ -370,7 +377,7 @@ export default function BookOnline() {
       )}
 
       {/* Main container */}
-      <div style={{
+      <div className="book-container" style={{
         maxWidth: 700, margin: '0 auto', padding: '40px 20px 60px',
         position: 'relative', zIndex: 1,
       }}>

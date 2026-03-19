@@ -159,6 +159,13 @@ export default function InstructorDashboard() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .id-kpi-grid { grid-template-columns: 1fr 1fr !important; }
+          .id-instructor-grid { grid-template-columns: 1fr !important; }
+          .id-card-metrics { grid-template-columns: 1fr 1fr 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ font: `400 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5, color: s.text3, marginBottom: 4 }}>
@@ -173,7 +180,7 @@ export default function InstructorDashboard() {
       </div>
 
       {/* Studio KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 14, marginBottom: 24 }}>
+      <div className="id-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 14, marginBottom: 24 }}>
         {[
           { label: 'Revenue (30d)', value: `$${(studioTotals.totalRevenue / 100).toLocaleString()}`, color: s.accent },
           { label: 'Classes Taught', value: studioTotals.totalClasses, color: '#2563EB' },
@@ -188,7 +195,7 @@ export default function InstructorDashboard() {
       </div>
 
       {/* Instructor Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+      <div className="id-instructor-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
         {instructors.map(ins => {
           const m = ins.metrics;
           const isSelected = selectedId === ins.id;
@@ -218,7 +225,7 @@ export default function InstructorDashboard() {
               </div>
 
               {/* Metrics */}
-              <div style={{ padding: '14px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div className="id-card-metrics" style={{ padding: '14px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ position: 'relative', display: 'inline-block' }}>
                     <DonutChart value={m.fillRate} color={m.fillRate >= 0.8 ? '#16A34A' : m.fillRate >= 0.6 ? '#D97706' : '#DC2626'} size={48} strokeWidth={4} />

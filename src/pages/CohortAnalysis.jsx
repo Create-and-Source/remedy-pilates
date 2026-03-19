@@ -520,7 +520,14 @@ export default function CohortAnalysis() {
   const s = useStyles();
 
   return (
-    <div style={{ padding: '40px 32px', maxWidth: 1100, margin: '0 auto' }}>
+    <div className="ca-root" style={{ padding: '40px 32px', maxWidth: 1100, margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .ca-root { padding: 20px 16px !important; }
+          .ca-row2 { grid-template-columns: 1fr !important; }
+          .ca-row3 { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       {/* Page Header */}
       <div style={{ marginBottom: 36 }}>
         <div style={{ fontFamily: s.MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: s.accent, marginBottom: 8 }}>Advanced Analytics</div>
@@ -534,7 +541,7 @@ export default function CohortAnalysis() {
       </div>
 
       {/* Row 2: Waterfall + Donut */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24, marginBottom: 24 }}>
+      <div className="ca-row2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24, marginBottom: 24 }}>
         <ChurnWaterfall s={s} />
         <RiskDonut s={s} />
       </div>
@@ -543,7 +550,7 @@ export default function CohortAnalysis() {
       <div style={{ marginBottom: 8 }}>
         <div style={{ fontFamily: s.MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: s.accent, marginBottom: 14 }}>Intervention Experiments</div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 24 }}>
+      <div className="ca-row3" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 24 }}>
         {EXPERIMENTS.map(exp => <ExperimentCard key={exp.id} exp={exp} s={s} />)}
       </div>
 

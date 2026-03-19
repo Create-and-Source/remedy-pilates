@@ -667,7 +667,7 @@ export default function AIIntake() {
               {plan.contraindications.map(({ condition, avoid, alternatives }) => (
                 <div key={condition}>
                   <div style={{ fontFamily: s.FONT, fontWeight: 700, fontSize: 14, color: '#dc2626', marginBottom: 8 }}>{condition}</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <div className="ai-contra-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     <div>
                       <div style={{ fontFamily: s.MONO, fontSize: 10, color: s.text3, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Avoid</div>
                       <ul style={{ margin: 0, paddingLeft: 16 }}>
@@ -790,6 +790,19 @@ export default function AIIntake() {
 
   return (
     <div style={{ maxWidth: 660, margin: '0 auto', padding: '40px 24px 80px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .ai-name-grid { grid-template-columns: 1fr !important; }
+          .ai-age-grid { grid-template-columns: 1fr !important; }
+          .ai-pt-grid { grid-template-columns: 1fr !important; }
+          .ai-exp-grid { grid-template-columns: 1fr 1fr !important; }
+          .ai-format-grid { grid-template-columns: 1fr !important; }
+          .ai-contra-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .ai-exp-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
       {toast && (
         <div style={{ position: 'fixed', bottom: 32, left: '50%', transform: 'translateX(-50%)', background: s.text, color: '#fff', padding: '12px 24px', borderRadius: 10, fontFamily: s.FONT, fontSize: 14, zIndex: 9999, boxShadow: s.shadow }}>
           {toast}
@@ -816,7 +829,7 @@ export default function AIIntake() {
         {step === 0 && (
           <div>
             <div style={{ fontFamily: s.DISPLAY, fontSize: 22, color: s.text, marginBottom: 24 }}>Tell us about yourself</div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
+            <div className="ai-name-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
               <Field label="First Name" s={s} required>
                 <input value={form.firstName} onChange={e => set('firstName', e.target.value)} style={{ ...inputStyle(s), borderColor: errors.firstName ? '#dc2626' : 'rgba(0,0,0,0.15)' }} placeholder="e.g. Jordan" />
                 {errors.firstName && <div style={{ fontFamily: s.FONT, fontSize: 12, color: '#dc2626', marginTop: 4 }}>{errors.firstName}</div>}
@@ -833,7 +846,7 @@ export default function AIIntake() {
             <Field label="Phone" s={s}>
               <input type="tel" value={form.phone} onChange={e => set('phone', e.target.value)} style={inputStyle(s)} placeholder="(555) 000-0000" />
             </Field>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
+            <div className="ai-age-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
               <Field label="Age Range" s={s} required>
                 <select value={form.ageRange} onChange={e => set('ageRange', e.target.value)} style={{ ...inputStyle(s), borderColor: errors.ageRange ? '#dc2626' : 'rgba(0,0,0,0.15)' }}>
                   <option value="">Select…</option>
@@ -857,7 +870,7 @@ export default function AIIntake() {
             <div style={{ fontFamily: s.DISPLAY, fontSize: 22, color: s.text, marginBottom: 24 }}>Health History</div>
 
             <Field label="Movement Experience" s={s} required>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+              <div className="ai-exp-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
                 {EXPERIENCE_LEVELS.map(lvl => (
                   <button key={lvl} onClick={() => set('experience', lvl)} style={{ padding: '10px 6px', borderRadius: 10, border: `1.5px solid ${form.experience === lvl ? s.accent : 'rgba(0,0,0,0.12)'}`, background: form.experience === lvl ? `${s.accent}18` : 'transparent', color: form.experience === lvl ? s.accent : s.text2, fontFamily: s.FONT, fontSize: 13, fontWeight: form.experience === lvl ? 700 : 400, cursor: 'pointer', transition: 'all 0.18s' }}>
                     {lvl}
@@ -890,7 +903,7 @@ export default function AIIntake() {
               </Field>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
+            <div className="ai-pt-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
               <Field label="Currently seeing PT / Chiropractor?" s={s}>
                 <div style={{ display: 'flex', gap: 10 }}>
                   {['Yes', 'No'].map(opt => (
@@ -932,7 +945,7 @@ export default function AIIntake() {
             </Field>
 
             <Field label="Class Format Preference" s={s} required>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
+              <div className="ai-format-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
                 {FORMATS.map(f => (
                   <button key={f} onClick={() => set('format', f)} style={{ padding: '12px', borderRadius: 10, border: `1.5px solid ${form.format === f ? s.accent : 'rgba(0,0,0,0.12)'}`, background: form.format === f ? `${s.accent}18` : 'transparent', color: form.format === f ? s.accent : s.text, fontFamily: s.FONT, fontSize: 14, fontWeight: form.format === f ? 700 : 400, cursor: 'pointer', transition: 'all 0.18s', textAlign: 'center' }}>
                     {f}

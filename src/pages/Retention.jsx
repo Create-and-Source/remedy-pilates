@@ -39,13 +39,32 @@ export default function Retention() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .ret-kpi-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .ret-card {
+            flex-wrap: wrap !important;
+          }
+          .ret-card-actions {
+            flex-direction: row !important;
+            width: 100% !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .ret-kpi-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Retention</h1>
         <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Smart alerts for clients who need re-engagement — stop the drift</p>
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
+      <div className="ret-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
         {[
           { label: 'Pending Alerts', value: pendingCount, color: pendingCount > 0 ? s.warning : s.success },
           { label: 'High Priority', value: highCount, color: highCount > 0 ? s.danger : s.success },

@@ -64,6 +64,11 @@ export default function VirtualStudio() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .vs-analytics-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ font: `400 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5, color: s.text3, marginBottom: 4 }}>
@@ -245,7 +250,7 @@ export default function VirtualStudio() {
 
       {/* Analytics */}
       {tab === 'analytics' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div className="vs-analytics-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div style={{ ...cardStyle, padding: 24 }}>
             <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 16 }}>Revenue by Format</div>
             {[

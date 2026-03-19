@@ -134,6 +134,11 @@ export default function SmartInventory() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .si-detail-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ font: `400 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5, color: s.text3, marginBottom: 4 }}>
@@ -266,7 +271,7 @@ export default function SmartInventory() {
 
               {expanded && (
                 <div style={{ padding: '0 18px 18px', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, marginTop: 14 }}>
+                  <div className="si-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, marginTop: 14 }}>
                     <div style={{ padding: 10, background: 'rgba(0,0,0,0.02)', borderRadius: 8 }}>
                       <div style={{ font: `600 14px ${s.FONT}`, color: s.text }}>{item.quantity}</div>
                       <div style={{ font: `400 9px ${s.MONO}`, color: s.text3, textTransform: 'uppercase' }}>Current Stock</div>

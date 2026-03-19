@@ -261,7 +261,7 @@ function OverviewTab({ members }) {
       </div>
 
       {/* Tier breakdown + Activity feed */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+      <div className="lp-overview-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
         {/* Tier Distribution */}
         <div style={{ ...s.card, padding: 24 }}>
           <div style={{ marginBottom: 20 }}>
@@ -494,6 +494,7 @@ function LeaderboardTab({ members }) {
 
         {/* Header */}
         <div
+          className="lp-table-header"
           style={{
             display: "grid",
             gridTemplateColumns: "40px 1fr 120px 80px 80px 160px",
@@ -515,6 +516,7 @@ function LeaderboardTab({ members }) {
           return (
             <div
               key={m.id}
+              className="lp-table-row"
               style={{
                 display: "grid",
                 gridTemplateColumns: "40px 1fr 120px 80px 80px 160px",
@@ -680,7 +682,7 @@ function RewardsTab() {
       </div>
 
       {/* Redemption stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+      <div className="lp-redemption-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
         {[
           { label: "Total Redeemed", value: "247", icon: "🎁" },
           { label: "Most Popular", value: "Free Class", icon: "🎟️" },
@@ -805,7 +807,7 @@ function EarningRulesTab() {
         <div style={{ fontFamily: DISPLAY, fontSize: 18, fontWeight: 600, color: "#1A1A1A", marginBottom: 16 }}>
           Maximum Earning Potential
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+        <div className="lp-earning-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
           {[
             { label: "Per class (Platinum)", value: "20 pts" },
             { label: "Best streak bonus", value: "100 pts" },
@@ -838,7 +840,7 @@ function EarningRulesTab() {
 function TierConfigTab({ members }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20 }}>
+      <div className="lp-tier-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20 }}>
         {TIERS.map((tier) => {
           const tierMembers = members.filter((m) => getTier(m.points).id === tier.id);
           const nextTier = TIERS[TIERS.indexOf(tier) + 1];
@@ -1055,6 +1057,21 @@ export default function LoyaltyProgram() {
         padding: "32px 40px",
       }}
     >
+      <style>{`
+        @media (max-width: 768px) {
+          .lp-tier-grid { grid-template-columns: 1fr !important; }
+          .lp-overview-grid { grid-template-columns: 1fr !important; }
+          .lp-redemption-grid { grid-template-columns: 1fr 1fr !important; }
+          .lp-earning-grid { grid-template-columns: 1fr !important; }
+          .lp-table-header { display: none !important; }
+          .lp-table-row { grid-template-columns: 40px 1fr auto !important; }
+          .lp-table-row > *:nth-child(n+4) { display: none !important; }
+          .lp-page { padding: 16px 12px !important; }
+        }
+        @media (max-width: 480px) {
+          .lp-redemption-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       {/* Page header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>

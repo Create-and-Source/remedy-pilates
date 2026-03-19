@@ -222,6 +222,18 @@ export default function RecoveryText() {
 
   return (
     <div style={{ padding: '36px 32px', maxWidth: 1100, margin: '0 auto', fontFamily: s.FONT }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .rt-stats-grid { grid-template-columns: 1fr 1fr !important; }
+          .rt-main-grid { grid-template-columns: 1fr !important; }
+          .rt-automation-grid { grid-template-columns: 1fr !important; }
+          .rt-analytics-grid { grid-template-columns: 1fr !important; }
+          .rt-page { padding: 16px 12px !important; }
+        }
+        @media (max-width: 480px) {
+          .rt-stats-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
 
       {/* Header */}
       <div style={{ marginBottom: 36 }}>
@@ -237,7 +249,7 @@ export default function RecoveryText() {
       </div>
 
       {/* Stats + Auto-send toggle */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr) auto', gap: 16, marginBottom: 28, alignItems: 'stretch' }}>
+      <div className="rt-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr) auto', gap: 16, marginBottom: 28, alignItems: 'stretch' }}>
         {[
           { label: 'Sent Today', value: todaySent },
           { label: 'Open Rate', value: '78%' },
@@ -271,7 +283,7 @@ export default function RecoveryText() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 28 }}>
+      <div className="rt-main-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 28 }}>
 
         {/* Recent Messages Feed */}
         <div style={card}>
@@ -393,7 +405,7 @@ export default function RecoveryText() {
       </div>
 
       {/* Automation Settings + Twilio */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 28 }}>
+      <div className="rt-automation-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 28 }}>
         <div style={card}>
           <div style={{ fontFamily: s.MONO, fontSize: 11, color: s.text3, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 18 }}>Automation Settings</div>
 
@@ -462,7 +474,7 @@ export default function RecoveryText() {
       {/* Analytics */}
       <div style={card}>
         <div style={{ fontFamily: s.MONO, fontSize: 11, color: s.text3, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 20 }}>Analytics — Last 7 Days</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 28 }}>
+        <div className="rt-analytics-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 28 }}>
 
           {/* Bar chart */}
           <div>

@@ -145,6 +145,11 @@ export default function Challenges() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .ch-podium-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ font: `400 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5, color: s.text3, marginBottom: 4 }}>
@@ -190,7 +195,7 @@ export default function Challenges() {
       {tab === 'leaderboard' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {/* Top 3 podium */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 12 }}>
+          <div className="ch-podium-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 12 }}>
             {leaderboard.slice(0, 3).map((client, i) => {
               const medals = ['🥇', '🥈', '🥉'];
               const sizes = [56, 48, 44];

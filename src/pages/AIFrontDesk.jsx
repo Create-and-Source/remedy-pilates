@@ -248,7 +248,7 @@ export default function AIFrontDesk() {
   };
 
   return (
-    <div style={{ animation: 'fadeIn 0.5s ease', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 150px)', maxHeight: 800 }}>
+    <div className="afd-root" style={{ animation: 'fadeIn 0.5s ease', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 150px)', maxHeight: 800 }}>
       {/* Header */}
       <div style={{ marginBottom: 20, flexShrink: 0 }}>
         <div style={{ font: `400 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5, color: s.text3, marginBottom: 4 }}>
@@ -356,6 +356,9 @@ export default function AIFrontDesk() {
         @keyframes pulse {
           0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
           40% { opacity: 1; transform: scale(1); }
+        }
+        @media (max-width: 768px) {
+          .afd-root { height: calc(100vh - 120px) !important; }
         }
       `}</style>
     </div>

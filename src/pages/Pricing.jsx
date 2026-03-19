@@ -19,6 +19,19 @@ export default function Pricing() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#FAF6F1', padding: '40px 20px' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .pr-competitor-row { grid-template-columns: 1fr 80px !important; }
+          .pr-competitor-row .pr-comp-features { display: none; }
+          .pr-competitor-row .pr-comp-missing { display: none; }
+          .pr-frankenstack { grid-template-columns: 1fr auto !important; }
+          .pr-totals { grid-template-columns: 1fr !important; }
+          .pr-features { grid-template-columns: 1fr !important; }
+          .pr-two-col { grid-template-columns: 1fr !important; }
+          .pr-backend-row { grid-template-columns: 40px 1fr !important; }
+          .pr-backend-row .pr-effort { display: none; }
+        }
+      `}</style>
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
 
         {/* Header */}
@@ -45,15 +58,15 @@ export default function Pricing() {
               { name: 'Glofox', price: '$100-300/mo', features: 'Gym/studio management', missing: 'No DM inbox, no referral system, no waitlist intelligence, gym-first design', color: '#E5E5E5' },
               { name: 'ClubReady', price: '$200-500/mo', features: 'Franchise-scale management', missing: 'Overkill for boutique, complex setup, no social media tools, rigid workflows', color: '#E5E5E5' },
             ].map(c => (
-              <div key={c.name} style={{
+              <div key={c.name} className="pr-competitor-row" style={{
                 display: 'grid', gridTemplateColumns: '140px 100px 1fr 1fr', gap: 12, padding: '12px 16px',
                 borderRadius: 12, background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(0,0,0,0.04)',
                 alignItems: 'center',
               }}>
                 <span style={{ font: `600 14px ${s.FONT}`, color: s.text }}>{c.name}</span>
                 <span style={{ font: `600 14px ${s.MONO}`, color: s.accent }}>{c.price}</span>
-                <span style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{c.features}</span>
-                <span style={{ font: `400 12px ${s.FONT}`, color: s.danger }}>{c.missing}</span>
+                <span className="pr-comp-features" style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{c.features}</span>
+                <span className="pr-comp-missing" style={{ font: `400 12px ${s.FONT}`, color: s.danger }}>{c.missing}</span>
               </div>
             ))}
           </div>
@@ -83,7 +96,7 @@ export default function Pricing() {
             ))}
           </div>
 
-          <div style={{ marginTop: 20, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+          <div className="pr-totals" style={{ marginTop: 20, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
             {[
               { label: 'Low End', software: '$300', labor: '$250 (10 hrs)', total: '$550/mo' },
               { label: 'Typical', software: '$550', labor: '$500 (20 hrs)', total: '$1,050/mo' },
@@ -112,7 +125,7 @@ export default function Pricing() {
           <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 6 }}>3. What We Offer — Everything, One Platform</h2>
           <p style={{ font: `400 14px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Features no competitor has, marked with a star.</p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          <div className="pr-features" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
             {[
               { name: 'Class Scheduling & Calendar', star: false },
               { name: 'Client Management (30+ fields)', star: false },
@@ -173,7 +186,7 @@ export default function Pricing() {
             <div style={{ font: `400 14px ${s.FONT}`, opacity: 0.65 }}>+ White-glove onboarding, data migration, staff training</div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div className="pr-two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <div style={{ padding: 20, borderRadius: 14, background: 'rgba(0,0,0,0.03)' }}>
               <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 8 }}>Why $500 works</div>
               <ul style={{ font: `400 13px ${s.FONT}`, color: s.text2, lineHeight: 1.8, paddingLeft: 16 }}>
@@ -232,7 +245,7 @@ export default function Pricing() {
               { priority: 'P2', task: 'Google Business Profile API', desc: 'Read/reply to Google reviews from within the Reviews page.', effort: '3-5 days' },
               { priority: 'P2', task: 'Push Notifications (SNS)', desc: 'Service worker is registered. Just need SNS to send push events.', effort: '2-3 days' },
             ].map(item => (
-              <div key={item.task} style={{
+              <div key={item.task} className="pr-backend-row" style={{
                 display: 'grid', gridTemplateColumns: '50px 1fr auto', gap: 12, padding: '14px 18px',
                 borderRadius: 12, background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(0,0,0,0.04)',
                 alignItems: 'center',
@@ -247,7 +260,7 @@ export default function Pricing() {
                   <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 2 }}>{item.task}</div>
                   <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{item.desc}</div>
                 </div>
-                <span style={{ font: `500 12px ${s.MONO}`, color: s.text3, whiteSpace: 'nowrap' }}>{item.effort}</span>
+                <span className="pr-effort" style={{ font: `500 12px ${s.MONO}`, color: s.text3, whiteSpace: 'nowrap' }}>{item.effort}</span>
               </div>
             ))}
           </div>

@@ -154,6 +154,29 @@ export default function Waitlist() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .wl-kpi-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .wl-header {
+            flex-wrap: wrap !important;
+          }
+          .wl-card {
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+          }
+          .wl-card-actions {
+            flex-direction: row !important;
+            width: 100% !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .wl-kpi-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       {/* Toast */}
       {toast && (
         <div style={{
@@ -165,7 +188,7 @@ export default function Waitlist() {
         }}>{toast}</div>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+      <div className="wl-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Waitlist</h1>
           <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Smart waitlist with auto-backfill — fill cancellations fast</p>
@@ -176,7 +199,7 @@ export default function Waitlist() {
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
+      <div className="wl-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
         {[
           { label: 'Currently Waiting', value: totalWaiting, color: totalWaiting > 0 ? s.warning : s.success },
           { label: 'Notified', value: notifiedCount, color: notifiedCount > 0 ? '#2563EB' : s.text3 },

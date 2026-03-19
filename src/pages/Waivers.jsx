@@ -750,6 +750,21 @@ export default function Waivers() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .wv-kpi-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .wv-template-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .wv-kpi-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Waivers</h1>
@@ -759,7 +774,7 @@ export default function Waivers() {
       </div>
 
       {/* Stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 24 }}>
+      <div className="wv-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 24 }}>
         {[
           { label: 'Total Waivers', value: waivers.length },
           { label: 'Signed', value: signedCount, color: s.success },
@@ -852,7 +867,7 @@ export default function Waivers() {
       )}
 
       {tab === 'templates' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
+        <div className="wv-template-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
           {TEMPLATES.map(tpl => (
             <div key={tpl.id} style={{ ...s.cardStyle, padding: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>

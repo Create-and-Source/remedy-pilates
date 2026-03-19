@@ -242,6 +242,16 @@ export default function Memberships() {
 
   return (
     <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .mem-tier-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .mem-kpi-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+        }
+      `}</style>
 
       {/* ===== HEADER ===== */}
       <div style={{ marginBottom: 36, ...stagger(0) }}>
@@ -254,7 +264,7 @@ export default function Memberships() {
       </div>
 
       {/* ===== TIER SHOWCASE ===== */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 32 }}>
+      <div className="mem-tier-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 32 }}>
         {Object.entries(TIERS).map(([name, tier], idx) => {
           const isHovered = hoveredTier === name;
           return (
@@ -345,7 +355,7 @@ export default function Memberships() {
       </div>
 
       {/* ===== KPI ROW ===== */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
+      <div className="mem-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
         {[
           { label: 'Monthly Revenue', value: `$${mrr.toLocaleString()}`, icon: '$', color: s.success, sub: 'Recurring' },
           { label: 'Total Members', value: activeMemberships, icon: '#', color: s.accent, sub: 'Active' },

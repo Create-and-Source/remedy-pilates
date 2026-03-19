@@ -94,13 +94,51 @@ export default function Settings() {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 768px) {
+          .set-tabs {
+            width: 100% !important;
+            overflow-x: auto !important;
+          }
+          .set-tabs button {
+            padding: 9px 14px !important;
+            font-size: 12px !important;
+          }
+          .set-color-presets {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+          .set-integrations-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .set-svc-modal-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .set-svc-modal-grid > div[style*="1 / -1"] {
+            grid-column: 1 !important;
+          }
+          .set-general {
+            max-width: 100% !important;
+          }
+          .set-payments {
+            max-width: 100% !important;
+          }
+          .set-integrations {
+            max-width: 100% !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .set-color-presets {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+      `}</style>
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Settings</h1>
         <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Configure your studio platform — brand it for any client demo</p>
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: 0, marginBottom: 28, background: '#F0F0F0', borderRadius: 8, overflow: 'hidden', width: 'fit-content' }}>
+      <div className="set-tabs" style={{ display: 'flex', gap: 0, marginBottom: 28, background: '#F0F0F0', borderRadius: 8, overflow: 'hidden', width: 'fit-content' }}>
         {tabs.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} style={{
             padding: '9px 20px', background: tab === t.id ? '#fff' : 'transparent', border: 'none',
@@ -112,7 +150,7 @@ export default function Settings() {
 
       {/* General */}
       {tab === 'general' && (
-        <div style={{ maxWidth: 520 }}>
+        <div className="set-general" style={{ maxWidth: 520 }}>
           <div style={{ ...s.cardStyle, padding: 24 }}>
             {[
               { key: 'businessName', label: 'Business Name', placeholder: 'Remedy Pilates & Barre' },
@@ -151,7 +189,7 @@ export default function Settings() {
               Pick the studio's brand color. This changes the entire platform accent instantly.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20 }}>
+            <div className="set-color-presets" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20 }}>
               {PRESETS.map(p => (
                 <button key={p.id} onClick={() => setTheme(p)} style={{
                   padding: '14px 10px', borderRadius: 12, cursor: 'pointer',
@@ -190,7 +228,7 @@ export default function Settings() {
 
       {/* Payments */}
       {tab === 'payments' && (
-        <div style={{ maxWidth: 600 }}>
+        <div className="set-payments" style={{ maxWidth: 600 }}>
           <div style={{ ...s.cardStyle, padding: 24, marginBottom: 20 }}>
             <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Payment Processing</div>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
@@ -265,7 +303,7 @@ export default function Settings() {
 
       {/* Integrations */}
       {tab === 'integrations' && (
-        <div style={{ maxWidth: 600 }}>
+        <div className="set-integrations" style={{ maxWidth: 600 }}>
           <div style={{ ...s.cardStyle, padding: 24, marginBottom: 20 }}>
             <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Social Media — DM Inbox</div>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
@@ -339,7 +377,7 @@ export default function Settings() {
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
               Coming soon — connect your other tools.
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            <div className="set-integrations-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               {[
                 { name: 'QuickBooks', desc: 'Accounting sync', status: 'coming' },
                 { name: 'Google Calendar', desc: 'Two-way calendar sync', status: 'coming' },
@@ -459,7 +497,7 @@ export default function Settings() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowSvcForm(false)}>
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 480, width: '90%', boxShadow: s.shadowLg }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 18px ${s.FONT}`, color: s.text, marginBottom: 20 }}>{editSvc ? 'Edit Service' : 'Add Service'}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+            <div className="set-svc-modal-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
               <div style={{ gridColumn: '1 / -1' }}>
                 <label style={s.label}>Name</label>
                 <input value={svcForm.name} onChange={e => setSvcForm({ ...svcForm, name: e.target.value })} style={s.input} />

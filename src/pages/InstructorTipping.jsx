@@ -140,7 +140,17 @@ export default function InstructorTipping() {
   }
 
   return (
-    <div style={{ padding: '32px 28px', maxWidth: 1100, margin: '0 auto', fontFamily: s.FONT, color: s.text }}>
+    <div className="it-root" style={{ padding: '32px 28px', maxWidth: 1100, margin: '0 auto', fontFamily: s.FONT, color: s.text }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .it-root { padding: 20px 16px !important; }
+          .it-kpi-grid { grid-template-columns: 1fr 1fr !important; }
+          .it-board-grid { grid-template-columns: 1fr !important; }
+          .it-card-stats { grid-template-columns: 1fr 1fr 1fr !important; }
+          .it-analytics-grid { grid-template-columns: 1fr !important; }
+          .it-settings-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ marginBottom: 32 }}>
         <div style={{ fontFamily: s.MONO, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', color: accentColor, marginBottom: 8 }}>Digital Tipping</div>
@@ -149,7 +159,7 @@ export default function InstructorTipping() {
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14, marginBottom: 28 }}>
+      <div className="it-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14, marginBottom: 28 }}>
         {[
           { label: 'Tips This Month', value: `$${totalThisMonth.toFixed(0)}`, sub: `${monthTips.length} transactions` },
           { label: 'Avg Tip Amount', value: `$${avgTip.toFixed(2)}`, sub: 'per transaction' },
@@ -177,7 +187,7 @@ export default function InstructorTipping() {
       {/* Earnings Board */}
       {activeTab === 'board' && (
         <>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16, marginBottom: 24 }}>
+          <div className="it-board-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16, marginBottom: 24 }}>
             {instructorStats.map((ist, i) => (
               <div key={i} style={card}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
@@ -189,7 +199,7 @@ export default function InstructorTipping() {
                     {ist.stripeStatus}
                   </span>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 14 }}>
+                <div className="it-card-stats" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 14 }}>
                   {[['Total', `$${ist.total.toFixed(0)}`], ['Tips', ist.count], ['Avg', `$${ist.avg.toFixed(2)}`]].map(([l, v]) => (
                     <div key={l} style={{ textAlign: 'center' }}>
                       <div style={{ fontSize: 18, fontWeight: 700, color: s.text }}>{v}</div>
@@ -284,7 +294,7 @@ export default function InstructorTipping() {
 
       {/* Analytics */}
       {activeTab === 'analytics' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 18 }}>
+        <div className="it-analytics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 18 }}>
           <div style={card}>
             <div style={{ fontFamily: s.MONO, fontSize: 10, textTransform: 'uppercase', letterSpacing: 1.2, color: s.text3, marginBottom: 14 }}>Tips by Day of Week</div>
             <BarChart data={dayData} color={accentColor} labelKey="label" valueKey="value" />
@@ -308,7 +318,7 @@ export default function InstructorTipping() {
 
       {/* Settings */}
       {activeTab === 'settings' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 18 }}>
+        <div className="it-settings-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 18 }}>
           <div style={card}>
             <div style={{ fontWeight: 700, marginBottom: 16 }}>Platform Settings</div>
             <div style={{ marginBottom: 16 }}>

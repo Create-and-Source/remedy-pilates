@@ -255,6 +255,17 @@ export default function ReferralEngine() {
 
   return (
     <div style={{ padding: '32px 28px', maxWidth: 1200, margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .re-kpi-grid { grid-template-columns: 1fr 1fr !important; }
+          .re-main-grid { grid-template-columns: 1fr !important; }
+          .re-pipeline-grid { grid-template-columns: 1fr !important; }
+          .re-page { padding: 16px 12px !important; }
+        }
+        @media (max-width: 480px) {
+          .re-kpi-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ marginBottom: 36 }}>
         <div style={{ fontFamily: s.MONO, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em', color: s.accent, marginBottom: 8 }}>
@@ -269,7 +280,7 @@ export default function ReferralEngine() {
       </div>
 
       {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 28 }}>
+      <div className="re-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16, marginBottom: 28 }}>
         {[
           { label: 'Referrals This Month', value: totalReferrals, sub: '+12% vs last month' },
           { label: 'Conversion Rate', value: `${conversionRate}%`, sub: 'Referred → Booked' },
@@ -290,7 +301,7 @@ export default function ReferralEngine() {
       </div>
 
       {/* Advocates + Nudge Templates */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24, marginBottom: 24 }}>
+      <div className="re-main-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24, marginBottom: 24 }}>
 
         {/* Advocate Grid */}
         <div style={card}>
@@ -422,7 +433,7 @@ export default function ReferralEngine() {
       </div>
 
       {/* Referral Pipeline + Leaderboard */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+      <div className="re-pipeline-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
 
         {/* Funnel */}
         <div style={card}>

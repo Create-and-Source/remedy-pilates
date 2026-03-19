@@ -198,6 +198,16 @@ export default function FatigueTracker() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#fafaf8' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .ft-main-grid { grid-template-columns: 1fr !important; }
+          .ft-muscle-grid { grid-template-columns: 1fr 1fr !important; }
+          .ft-recovery-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .ft-muscle-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       {/* Header */}
       <div style={{ padding: '32px 32px 0', borderBottom: '1px solid #eee' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
@@ -278,7 +288,7 @@ export default function FatigueTracker() {
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 }}>
+        <div className="ft-main-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 }}>
           {/* Body diagram */}
           <div>
             {/* Visual body map */}
@@ -289,7 +299,7 @@ export default function FatigueTracker() {
                 Muscle Load Map — {selectedClient} — Last {windowHrs}hrs
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+              <div className="ft-muscle-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
                 {/* Upper body */}
                 <div>
                   <div style={{ font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: '#ccc', marginBottom: 10 }}>Upper</div>
@@ -437,7 +447,7 @@ export default function FatigueTracker() {
                   <div style={{ font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: '#ccc', marginBottom: 10 }}>
                     Recovery Summary
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                  <div className="ft-recovery-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <div style={{ padding: 10, borderRadius: 8, background: '#fafaf8', textAlign: 'center' }}>
                       <div style={{ font: `600 20px ${s.DISPLAY}`, color: STATUS_COLORS[analysis.results.some(r => r.status === 'overloaded') ? 'overloaded' : analysis.results.some(r => r.status === 'loaded') ? 'loaded' : 'fresh'] }}>
                         {analysis.results.filter(r => r.status === 'fresh').length}

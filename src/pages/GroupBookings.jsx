@@ -636,6 +636,16 @@ export default function GroupBookings() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#FAF6F1", fontFamily: FONT }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .gb-table-header { display: none !important; }
+          .gb-table-row { grid-template-columns: 1fr auto !important; }
+          .gb-table-row > *:nth-child(n+3) { display: none !important; }
+          .gb-builder-grid { grid-template-columns: 1fr !important; }
+          .gb-guest-grid { grid-template-columns: 1fr !important; }
+          .gb-page-inner { padding: 16px 12px !important; }
+        }
+      `}</style>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px" }}>
 
         {/* Page header */}
@@ -719,7 +729,7 @@ export default function GroupBookings() {
         {activeTab === "bookings" && (
           <div style={{ ...s.card, overflow: "hidden" }}>
             {/* Table header */}
-            <div style={{
+            <div className="gb-table-header" style={{
               display:      "grid",
               gridTemplateColumns: "2fr 1fr 1fr 1fr 80px 100px 100px",
               gap:          12,
@@ -736,6 +746,7 @@ export default function GroupBookings() {
             {SEEDED_BOOKINGS.map((booking, i) => (
               <div
                 key={booking.id}
+                className="gb-table-row"
                 style={{
                   display:         "grid",
                   gridTemplateColumns: "2fr 1fr 1fr 1fr 80px 100px 100px",
@@ -776,7 +787,7 @@ export default function GroupBookings() {
 
         {/* ── Builder tab ───────────────────────────────────────────────────── */}
         {activeTab === "builder" && (
-          <div style={{
+          <div className="gb-builder-grid" style={{
             display:             "grid",
             gridTemplateColumns: "1fr 320px",
             gap:                 24,
@@ -819,7 +830,7 @@ export default function GroupBookings() {
               </div>
 
               {/* Guest counter + location + date */}
-              <div style={{ ...s.card, padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
+              <div className="gb-guest-grid" style={{ ...s.card, padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
                 {/* Guest counter */}
                 <div>
                   <div style={{ ...s.label, marginBottom: 10 }}>Number of Guests</div>

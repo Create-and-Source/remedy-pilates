@@ -443,8 +443,19 @@ export default function BrandedFormats() {
         paddingBottom: 80,
       }}
     >
+      <style>{`
+        @media (max-width: 768px) {
+          .bf-page-header { padding: 24px 16px 0 !important; }
+          .bf-cards-container { padding: 0 16px !important; }
+          .bf-stats-container { padding: 32px 16px 0 !important; }
+          .bf-stats-row { gap: 10px !important; }
+          .bf-stat-card { min-width: 100px !important; padding: 14px 16px !important; }
+          .bf-cards-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       {/* Page Header */}
       <div
+        className="bf-page-header"
         style={{
           padding: "48px 48px 0",
           maxWidth: 1280,
@@ -582,6 +593,7 @@ export default function BrandedFormats() {
 
       {/* Cards Grid */}
       <div
+        className="bf-cards-container"
         style={{
           padding: "0 48px",
           maxWidth: 1280,
@@ -603,6 +615,7 @@ export default function BrandedFormats() {
           </div>
         ) : (
           <div
+            className="bf-cards-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
@@ -618,6 +631,7 @@ export default function BrandedFormats() {
 
       {/* Summary Stats */}
       <div
+        className="bf-stats-container"
         style={{
           padding: "56px 48px 0",
           maxWidth: 1280,
@@ -632,6 +646,7 @@ export default function BrandedFormats() {
         >
           <div style={{ ...s.label, marginBottom: 20 }}>Brand System Overview</div>
           <div
+            className="bf-stats-row"
             style={{
               display: "flex",
               flexWrap: "wrap",
