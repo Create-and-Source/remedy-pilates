@@ -1,1183 +1,1129 @@
-// Progress Tracking — SOAP notes, body maps, session documentation
+// Session Notes — progress tracking, body map, session documentation
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useStyles } from '../theme';
 import { getPatients, getServices, getProviders, subscribe } from '../data/store';
 
-const CHARTS_KEY = 'rp_charts';
-function getCharts() { try { return JSON.parse(localStorage.getItem(CHARTS_KEY)) || []; } catch { return []; } }
-function saveCharts(c) { localStorage.setItem(CHARTS_KEY, JSON.stringify(c)); }
+const NOTES_KEY = 'rp_session_notes';
+function getNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY)) || []; } catch { return []; } }
+function saveNotes(n) { localStorage.setItem(NOTES_KEY, JSON.stringify(n)); }
 
-function getEquipmentInventory() {
-  try {
-    const all = JSON.parse(localStorage.getItem('rp_inventory') || '[]');
-    return all.filter(i => i.category === 'Equipment');
-  } catch { return []; }
-}
+// ── Muscle Group Map ──────────────────────────────────────────────────────────
+// Front/back body: click to toggle activation state
 
-// ── Zone definitions ──────────────────────────────────────────────────────────
-
-const FACE_ZONES = [
-  { id: 'forehead', label: 'Forehead', x: 50, y: 15 },
-  { id: 'glabella', label: 'Glabella (11s)', x: 50, y: 22 },
-  { id: 'crow-l', label: 'Crows Feet L', x: 28, y: 28 },
-  { id: 'crow-r', label: 'Crows Feet R', x: 72, y: 28 },
-  { id: 'brow-l', label: 'Brow L', x: 34, y: 25 },
-  { id: 'brow-r', label: 'Brow R', x: 66, y: 25 },
-  { id: 'temple-l', label: 'Temple L', x: 22, y: 22 },
-  { id: 'temple-r', label: 'Temple R', x: 78, y: 22 },
-  { id: 'cheek-l', label: 'Cheek L', x: 32, y: 45 },
-  { id: 'cheek-r', label: 'Cheek R', x: 68, y: 45 },
-  { id: 'naso-l', label: 'Nasolabial L', x: 38, y: 52 },
-  { id: 'naso-r', label: 'Nasolabial R', x: 62, y: 52 },
-  { id: 'lips-upper', label: 'Upper Lip', x: 50, y: 58 },
-  { id: 'lips-lower', label: 'Lower Lip', x: 50, y: 63 },
-  { id: 'marionette-l', label: 'Marionette L', x: 40, y: 68 },
-  { id: 'marionette-r', label: 'Marionette R', x: 60, y: 68 },
-  { id: 'chin', label: 'Chin', x: 50, y: 73 },
-  { id: 'jawline-l', label: 'Jawline L', x: 28, y: 62 },
-  { id: 'jawline-r', label: 'Jawline R', x: 72, y: 62 },
-  { id: 'neck', label: 'Neck', x: 50, y: 85 },
+const MUSCLE_GROUPS_FRONT = [
+  { id: 'core',       label: 'Core',        x: 50, y: 38, side: 'front' },
+  { id: 'quads-l',    label: 'Quads L',     x: 38, y: 58, side: 'front' },
+  { id: 'quads-r',    label: 'Quads R',     x: 62, y: 58, side: 'front' },
+  { id: 'hip-l',      label: 'Hip Flexor L',x: 37, y: 48, side: 'front' },
+  { id: 'hip-r',      label: 'Hip Flexor R',x: 63, y: 48, side: 'front' },
+  { id: 'chest',      label: 'Chest',       x: 50, y: 26, side: 'front' },
+  { id: 'shoulders',  label: 'Shoulders',   x: 50, y: 19, side: 'front' },
+  { id: 'biceps-l',   label: 'Biceps L',    x: 28, y: 32, side: 'front' },
+  { id: 'biceps-r',   label: 'Biceps R',    x: 72, y: 32, side: 'front' },
+  { id: 'calves-l',   label: 'Calves L',    x: 39, y: 76, side: 'front' },
+  { id: 'calves-r',   label: 'Calves R',    x: 61, y: 76, side: 'front' },
+  { id: 'adductors',  label: 'Inner Thighs',x: 50, y: 53, side: 'front' },
 ];
 
-const BODY_ZONES = [
-  { id: 'chin-neck', label: 'Chin / Neck', x: 50, y: 8 },
-  { id: 'chest', label: 'Chest', x: 50, y: 18 },
-  { id: 'arm-l', label: 'Left Arm', x: 18, y: 30 },
-  { id: 'arm-r', label: 'Right Arm', x: 82, y: 30 },
-  { id: 'abdomen', label: 'Abdomen', x: 50, y: 34 },
-  { id: 'flank-l', label: 'Left Flank', x: 28, y: 38 },
-  { id: 'flank-r', label: 'Right Flank', x: 72, y: 38 },
-  { id: 'back', label: 'Back', x: 50, y: 45 },
-  { id: 'buttocks', label: 'Buttocks', x: 50, y: 54 },
-  { id: 'thigh-l', label: 'Left Thigh', x: 36, y: 66 },
-  { id: 'thigh-r', label: 'Right Thigh', x: 64, y: 66 },
-  { id: 'knee-l', label: 'Left Knee', x: 38, y: 78 },
-  { id: 'knee-r', label: 'Right Knee', x: 62, y: 78 },
+const MUSCLE_GROUPS_BACK = [
+  { id: 'upper-back', label: 'Upper Back',  x: 50, y: 26, side: 'back' },
+  { id: 'mid-back',   label: 'Mid Back',    x: 50, y: 35, side: 'back' },
+  { id: 'lower-back', label: 'Low Back',    x: 50, y: 44, side: 'back' },
+  { id: 'glutes-l',   label: 'Glutes L',    x: 38, y: 52, side: 'back' },
+  { id: 'glutes-r',   label: 'Glutes R',    x: 62, y: 52, side: 'back' },
+  { id: 'hamstrings-l',label:'Hamstrings L',x: 38, y: 62, side: 'back' },
+  { id: 'hamstrings-r',label:'Hamstrings R',x: 62, y: 62, side: 'back' },
+  { id: 'triceps-l',  label: 'Triceps L',   x: 28, y: 32, side: 'back' },
+  { id: 'triceps-r',  label: 'Triceps R',   x: 72, y: 32, side: 'back' },
+  { id: 'lats-l',     label: 'Lats L',      x: 35, y: 31, side: 'back' },
+  { id: 'lats-r',     label: 'Lats R',      x: 65, y: 31, side: 'back' },
+  { id: 'calves-back-l', label: 'Calves L', x: 39, y: 76, side: 'back' },
+  { id: 'calves-back-r', label: 'Calves R', x: 61, y: 76, side: 'back' },
 ];
 
-const SCALP_ZONES = [
-  { id: 'frontal', label: 'Frontal', x: 50, y: 18 },
-  { id: 'temporal-l', label: 'Temporal L', x: 18, y: 40 },
-  { id: 'temporal-r', label: 'Temporal R', x: 82, y: 40 },
-  { id: 'crown', label: 'Crown', x: 50, y: 42 },
-  { id: 'vertex', label: 'Vertex', x: 50, y: 60 },
-  { id: 'occipital', label: 'Occipital', x: 50, y: 80 },
+const ALL_MUSCLES = [...MUSCLE_GROUPS_FRONT, ...MUSCLE_GROUPS_BACK];
+
+// Status colors for muscle groups
+const MUSCLE_STATUS = {
+  strong:    { color: '#16A34A', bg: '#DCFCE7', label: 'Strong / Activated' },
+  working:   { color: '#CA8A04', bg: '#FEF9C3', label: 'Working On It' },
+  attention: { color: '#DC2626', bg: '#FEE2E2', label: 'Needs Attention' },
+};
+
+const CLASS_TYPES = [
+  'Reformer', 'Barre', 'Mat Pilates', 'Private Session', 'Group Reformer',
+  'Tower', 'Chair', 'Barrel', 'Cardio Pilates', 'Body Sculpt', 'TRX',
+  'Prenatal Pilates', 'Pilates for Seniors', 'Pilates for Rehabilitation',
+  'Stretch & Restore', 'Online Session',
 ];
 
-// ── Map type resolver ─────────────────────────────────────────────────────────
+const SPRING_OPTIONS = [
+  '1 red', '2 red', '3 red', '4 red',
+  '1 red + 1 blue', '2 red + 1 blue', '3 red + 1 blue',
+  '1 blue', '2 blue', '1 yellow', '1 green',
+  'Max springs', 'No springs (bodyweight)',
+];
 
-function getMapType(serviceId, services) {
-  if (!serviceId) return 'face'; // default
-  const svc = services.find(s => s.id === serviceId);
-  if (!svc) return 'face';
+// ── Seed data ────────────────────────────────────────────────────────────────
 
-  // Hair Restoration specifically
-  if (serviceId === 'SVC-25') return 'scalp';
-
-  const cat = (svc.category || '').toLowerCase();
-
-  // Focus-area services (posture, alignment, face/neck)
-  if (['reformer', 'barre', 'mat', 'private'].includes(cat)) return 'face';
-
-  // Full-body services
-  if (['body', 'equipment'].includes(cat)) return 'body';
-
-  // No-map services: Wellness, Consultation, Packages
-  if (['wellness', 'consultation', 'packages'].includes(cat)) return 'none';
-
-  return 'face';
-}
-
-function getZonesForType(mapType) {
-  if (mapType === 'face') return FACE_ZONES;
-  if (mapType === 'body') return BODY_ZONES;
-  if (mapType === 'scalp') return SCALP_ZONES;
-  return [];
-}
-
-function getMapLabel(mapType) {
-  if (mapType === 'face') return 'Movement Map';
-  if (mapType === 'body') return 'Treatment Zones';
-  if (mapType === 'scalp') return 'Scalp Map';
-  return null;
-}
-
-// ── Zone annotation helpers ───────────────────────────────────────────────────
-
-// Returns true if annotation is a structured object (new format)
-function isStructuredAnnotation(val) {
-  return val && typeof val === 'object' && !Array.isArray(val);
-}
-
-// Format annotation as compact pill text for the map dot
-function formatAnnotationPill(val) {
-  if (!val) return '';
-  if (isStructuredAnnotation(val)) {
-    const dose = val.dose != null ? val.dose : '';
-    const unitAbbrev = { units: 'u', mL: 'mL', cc: 'cc', syringes: 'syr' }[val.unit] || val.unit || '';
-    const prodShort = val.product ? val.product.split(' ')[0] : '';
-    return dose !== '' ? `${dose}${unitAbbrev} ${prodShort}`.trim() : prodShort;
-  }
-  // Legacy string — show as-is
-  return String(val);
-}
-
-// Format annotation as full display string for the list/table
-function formatAnnotationDisplay(val) {
-  if (!val) return '';
-  if (isStructuredAnnotation(val)) {
-    const parts = [];
-    if (val.dose != null && val.dose !== '') parts.push(`${val.dose} ${val.unit || ''}`);
-    if (val.product) parts.push(val.product);
-    if (val.lotNumber) parts.push(`Lot: ${val.lotNumber}`);
-    if (val.notes) parts.push(`(${val.notes})`);
-    return parts.join(' · ') || '—';
-  }
-  return String(val);
-}
-
-// ── SVG outlines ──────────────────────────────────────────────────────────────
-
-function FaceSVG() {
-  return (
-    <svg viewBox="0 0 200 260" style={{ width: '100%', height: '100%', position: 'absolute' }}>
-      <ellipse cx="100" cy="110" rx="72" ry="90" fill="none" stroke="#DDD" strokeWidth="1.5" />
-      <ellipse cx="70" cy="85" rx="10" ry="6" fill="none" stroke="#DDD" strokeWidth="1" />
-      <ellipse cx="130" cy="85" rx="10" ry="6" fill="none" stroke="#DDD" strokeWidth="1" />
-      <path d="M90 120 Q100 130 110 120" fill="none" stroke="#DDD" strokeWidth="1" />
-      <path d="M85 150 Q100 165 115 150" fill="none" stroke="#DDD" strokeWidth="1" />
-      <line x1="100" y1="200" x2="100" y2="240" stroke="#DDD" strokeWidth="1" />
-    </svg>
-  );
-}
-
-function BodySVG() {
-  return (
-    <svg viewBox="0 0 200 320" style={{ width: '100%', height: '100%', position: 'absolute' }}>
-      {/* Head */}
-      <ellipse cx="100" cy="20" rx="16" ry="18" fill="none" stroke="#DDD" strokeWidth="1.5" />
-      {/* Neck */}
-      <line x1="94" y1="38" x2="94" y2="48" stroke="#DDD" strokeWidth="1" />
-      <line x1="106" y1="38" x2="106" y2="48" stroke="#DDD" strokeWidth="1" />
-      {/* Torso */}
-      <path d="M94 48 L70 52 L60 80 L58 130 L68 160 L78 170 L78 170" fill="none" stroke="#DDD" strokeWidth="1.5" />
-      <path d="M106 48 L130 52 L140 80 L142 130 L132 160 L122 170 L122 170" fill="none" stroke="#DDD" strokeWidth="1.5" />
-      {/* Waist / hip line */}
-      <path d="M78 170 Q100 178 122 170" fill="none" stroke="#DDD" strokeWidth="1" />
-      {/* Left arm */}
-      <path d="M70 52 L48 68 L32 110 L28 140 L34 142 L44 112 L60 80" fill="none" stroke="#DDD" strokeWidth="1.2" />
-      {/* Right arm */}
-      <path d="M130 52 L152 68 L168 110 L172 140 L166 142 L156 112 L140 80" fill="none" stroke="#DDD" strokeWidth="1.2" />
-      {/* Left leg */}
-      <path d="M78 170 L76 210 L74 250 L70 290 L64 300 L80 300 L78 290 L82 250 L84 210 L88 170" fill="none" stroke="#DDD" strokeWidth="1.2" />
-      {/* Right leg */}
-      <path d="M112 170 L116 210 L118 250 L122 290 L120 300 L136 300 L130 290 L126 250 L124 210 L122 170" fill="none" stroke="#DDD" strokeWidth="1.2" />
-      {/* Center line (subtle) */}
-      <line x1="100" y1="48" x2="100" y2="170" stroke="#EEE" strokeWidth="0.5" strokeDasharray="4 3" />
-    </svg>
-  );
-}
-
-function ScalpSVG() {
-  return (
-    <svg viewBox="0 0 200 260" style={{ width: '100%', height: '100%', position: 'absolute' }}>
-      {/* Top-down head outline */}
-      <ellipse cx="100" cy="120" rx="75" ry="90" fill="none" stroke="#DDD" strokeWidth="1.5" />
-      {/* Ear bumps */}
-      <ellipse cx="24" cy="130" rx="8" ry="16" fill="none" stroke="#DDD" strokeWidth="1" />
-      <ellipse cx="176" cy="130" rx="8" ry="16" fill="none" stroke="#DDD" strokeWidth="1" />
-      {/* Hairline guide */}
-      <path d="M45 60 Q100 30 155 60" fill="none" stroke="#E5E5E5" strokeWidth="1" strokeDasharray="4 3" />
-      {/* Region dividers (subtle) */}
-      <line x1="100" y1="40" x2="100" y2="210" stroke="#EEE" strokeWidth="0.5" strokeDasharray="4 3" />
-      <line x1="35" y1="120" x2="165" y2="120" stroke="#EEE" strokeWidth="0.5" strokeDasharray="4 3" />
-      {/* Crown circle marker */}
-      <circle cx="100" cy="110" r="18" fill="none" stroke="#E8E8E8" strokeWidth="0.8" strokeDasharray="3 3" />
-    </svg>
-  );
-}
-
-// ── Vitals & Measurements panel (for no-map services) ─────────────────────────
-
-function VitalsPanel({ form, setForm, s }) {
-  const measurements = form.measurements || { weight: '', bmi: '', waistCircumference: '', measurementNotes: '' };
-
-  const updateMeasurement = (key, value) => {
-    setForm({ ...form, measurements: { ...measurements, [key]: value } });
+function buildSeedNotes(clients, instructors) {
+  const c = (i) => clients[i] || {};
+  const ins = (i) => instructors[i] || {};
+  const d = (offset) => {
+    const dt = new Date();
+    dt.setDate(dt.getDate() + offset);
+    return dt.toISOString().slice(0, 10);
   };
 
-  return (
-    <div>
-      <label style={{ ...s.label, marginBottom: 12 }}>Vitals & Measurements</label>
-      <div style={{ background: '#FAFAFA', borderRadius: 12, border: '1px solid #E5E5E5', padding: 20 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
-          <div>
-            <label style={{ ...s.label, fontSize: 11 }}>Weight (lbs)</label>
-            <input
-              value={measurements.weight || ''}
-              onChange={e => updateMeasurement('weight', e.target.value)}
-              style={s.input}
-              placeholder="e.g., 178"
-            />
-          </div>
-          <div>
-            <label style={{ ...s.label, fontSize: 11 }}>BMI</label>
-            <input
-              value={measurements.bmi || ''}
-              onChange={e => updateMeasurement('bmi', e.target.value)}
-              style={s.input}
-              placeholder="e.g., 28.7"
-            />
-          </div>
-        </div>
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ ...s.label, fontSize: 11 }}>Waist Circumference (in)</label>
-          <input
-            value={measurements.waistCircumference || ''}
-            onChange={e => updateMeasurement('waistCircumference', e.target.value)}
-            style={s.input}
-            placeholder="e.g., 36"
-          />
-        </div>
-        <div>
-          <label style={{ ...s.label, fontSize: 11 }}>Measurement Notes</label>
-          <textarea
-            value={measurements.measurementNotes || ''}
-            onChange={e => updateMeasurement('measurementNotes', e.target.value)}
-            rows={4}
-            style={{ ...s.input, resize: 'vertical', lineHeight: 1.6 }}
-            placeholder="Body composition notes, progress observations, dosage adjustments..."
-          />
-        </div>
-      </div>
-    </div>
-  );
+  return [
+    {
+      id: 'SN-001',
+      clientId: c(0).id, clientName: `${c(0).firstName || 'Emma'} ${c(0).lastName || 'Johnson'}`,
+      instructorId: ins(0).id, instructorName: ins(0).name || 'Sarah Chen',
+      date: d(-3), classType: 'Reformer', duration: 55,
+      status: 'complete',
+      observations: 'Emma demonstrated strong hip flexor engagement during footwork series. Spinal articulation on long spine massage improved significantly from last session. Shoulder tension noted during pulling straps — cued to widen scapular base.',
+      areasOfFocus: ['Core', 'Hip mobility', 'Shoulder integration'],
+      springSettings: { footwork: '4 red', arms: '1 red + 1 blue', longBox: '2 red' },
+      exercisesCompleted: ['Footwork (heels/balls/toes)', 'Hundred', 'Long spine massage', 'Pulling straps A + B', 'Elephant', 'Short box series', 'Snake (modified)'],
+      flexibility: { forwardFold: 8, hipRotation: 7, shoulderMobility: 6 },
+      strengthBenchmarks: { coreHold: 45, springResistance: '2 red + 1 blue', legPress: '4 red' },
+      discomfortNotes: 'Mild right hip tightness at the start — resolved after warm-up.',
+      goals: 'Build single-leg stability for standing work. Progress toward full snake on 2 red.',
+      instructorRecommendations: 'Add single-leg footwork next session. Continue releasing shoulder girdle before pulling exercises.',
+      muscleMap: { core: 'strong', quads: 'working', 'upper-back': 'working', shoulders: 'attention', 'hip-l': 'working', 'hip-r': 'attention' },
+    },
+    {
+      id: 'SN-002',
+      clientId: c(1).id, clientName: `${c(1).firstName || 'Marcus'} ${c(1).lastName || 'Rivera'}`,
+      instructorId: ins(1).id, instructorName: ins(1).name || 'Jordan Kim',
+      date: d(-5), classType: 'Private Session', duration: 60,
+      status: 'complete',
+      observations: 'Post-ACL rehab focus. Marcus is 4 months post-surgery. Demonstrated good quad activation but avoids full knee flexion in lunge variations. Excellent upper body strength — reformer box exercises felt effortless.',
+      areasOfFocus: ['Knee rehabilitation', 'Quad activation', 'Single-leg balance'],
+      springSettings: { footwork: '2 red', singleLeg: '1 red', upperBody: '2 red + 1 blue' },
+      exercisesCompleted: ['Footwork (heels only)', 'Single-leg press (modified range)', 'Side-lying abduction series', 'Kneeling arm series on tower', 'Prone back extension', 'Seated roll-down on barrel'],
+      flexibility: { forwardFold: 6, hipRotation: 5, shoulderMobility: 9 },
+      strengthBenchmarks: { coreHold: 30, springResistance: '2 red', legPress: '2 red (modified)' },
+      discomfortNotes: 'Reported 3/10 discomfort in right knee during lunge position. Stopped and modified immediately.',
+      goals: 'Restore full range of motion in right knee. Return to Group Reformer by end of month.',
+      instructorRecommendations: 'Stay with 2 red on footwork until full range is comfortable. Add standing balance exercises on soft surface next session.',
+      muscleMap: { 'quads-l': 'working', 'quads-r': 'attention', 'glutes-l': 'working', 'glutes-r': 'working', core: 'strong', 'hamstrings-r': 'attention' },
+    },
+    {
+      id: 'SN-003',
+      clientId: c(2).id, clientName: `${c(2).firstName || 'Lily'} ${c(2).lastName || 'Park'}`,
+      instructorId: ins(2).id, instructorName: ins(2).name || 'Mia Torres',
+      date: d(-7), classType: 'Barre', duration: 50,
+      status: 'complete',
+      observations: 'Lily is progressing well in the barre fundamentals track. Turnout is improving — heels lifted cleanly in all plié variations. Core connection still needs work during high kick sequences. Great energy and attitude throughout.',
+      areasOfFocus: ['Turnout', 'Core during standing work', 'Arabesque extension'],
+      springSettings: {},
+      exercisesCompleted: ['Parallel relevé warm-up', 'Plié series (parallel + turned out)', 'Tendu + dégagé', 'Grand battement', 'Arabesque series', 'Floor barre: leg circles + clam shells', 'Standing balance sequence'],
+      flexibility: { forwardFold: 9, hipRotation: 8, shoulderMobility: 8 },
+      strengthBenchmarks: { coreHold: 40, springResistance: 'N/A (barre)', legPress: 'N/A (barre)' },
+      discomfortNotes: 'None reported.',
+      goals: 'Achieve 90° arabesque with control. Hold relevé balance for 10 counts without barre support.',
+      instructorRecommendations: 'Practice single-leg balance at home. Start adding small resistance band to clamshells.',
+      muscleMap: { glutes: 'strong', 'glutes-l': 'strong', 'glutes-r': 'strong', 'calves-l': 'working', 'calves-r': 'working', adductors: 'working', core: 'attention', quads: 'strong' },
+    },
+    {
+      id: 'SN-004',
+      clientId: c(3).id, clientName: `${c(3).firstName || 'Diana'} ${c(3).lastName || 'Chen'}`,
+      instructorId: ins(0).id, instructorName: ins(0).name || 'Sarah Chen',
+      date: d(-10), classType: 'Mat Pilates', duration: 45,
+      status: 'complete',
+      observations: 'Diana is working through diastasis recti recovery (confirmed 2 finger separation). Modified all flexion work — no traditional crunches or full roll-ups. Transverse abdominis activation is improving. Breathing coordination with movement is excellent.',
+      areasOfFocus: ['Diastasis recti recovery', 'Transverse abdominis', 'Pelvic floor integration'],
+      springSettings: {},
+      exercisesCompleted: ['Pelvic tilt series', 'Heel slides', 'Dead bug (modified)', 'Bird-dog', 'Side plank preparation', 'Bridge variations', 'Cat-cow breathing', 'Clam shells'],
+      flexibility: { forwardFold: 7, hipRotation: 6, shoulderMobility: 7 },
+      strengthBenchmarks: { coreHold: 25, springResistance: 'N/A (mat)', legPress: 'N/A (mat)' },
+      discomfortNotes: 'None. Checked for doming — none observed during exercises.',
+      goals: 'Close diastasis to 1 finger. Progress to full roll-up in 8 weeks.',
+      instructorRecommendations: 'Continue avoiding loaded spinal flexion. Add standing core work at wall next session.',
+      muscleMap: { core: 'working', 'lower-back': 'working', 'glutes-l': 'working', 'glutes-r': 'working', 'mid-back': 'working' },
+    },
+    {
+      id: 'SN-005',
+      clientId: c(4).id, clientName: `${c(4).firstName || 'Alex'} ${c(4).lastName || 'Morgan'}`,
+      instructorId: ins(3).id, instructorName: ins(3).name || 'Riley Nakamura',
+      date: d(-14), classType: 'Tower', duration: 55,
+      status: 'complete',
+      observations: 'Tower work is Alex\'s favorite — strong upper body allows for advanced push through and pull through variations. Noticed lateral hip drop in standing tower exercises, cued alignment repeatedly. Roll-down bar control was excellent with 4 yellow springs.',
+      areasOfFocus: ['Lateral hip stability', 'Upper body strength', 'Tower fundamentals'],
+      springSettings: { rollDownBar: '4 yellow', legSprings: '2 blue', armSprings: '1 red' },
+      exercisesCompleted: ['Roll-down bar series', 'Push through bar', 'Arm springs (standing)', 'Leg springs supine', 'Monkey', 'Tower kneeling cat', 'Standing roll-down with bar'],
+      flexibility: { forwardFold: 8, hipRotation: 7, shoulderMobility: 9 },
+      strengthBenchmarks: { coreHold: 55, springResistance: '2 red + 1 blue', legPress: 'N/A (tower)' },
+      discomfortNotes: 'None.',
+      goals: 'Eliminate lateral hip drop during standing tower work. Progress to advanced push-through variations.',
+      instructorRecommendations: 'Single-leg standing exercises to improve lateral hip stability before next tower session.',
+      muscleMap: { core: 'strong', 'upper-back': 'strong', 'lats-l': 'strong', 'lats-r': 'strong', 'hip-l': 'attention', 'hip-r': 'attention', shoulders: 'strong' },
+    },
+    {
+      id: 'SN-006',
+      clientId: c(5).id, clientName: `${c(5).firstName || 'James'} ${c(5).lastName || 'Wilson'}`,
+      instructorId: ins(2).id, instructorName: ins(2).name || 'Mia Torres',
+      date: d(-18), classType: 'Reformer', duration: 55,
+      status: 'complete',
+      observations: 'James has been coming for 6 months and the progress is remarkable. Completed full advanced short box series including round back and flat back with control. Elephant balance held for 5 breaths. Ready to introduce side splits on reformer.',
+      areasOfFocus: ['Advanced short box', 'Single-leg balance', 'Side splits preparation'],
+      springSettings: { footwork: '4 red', shortBox: 'no springs', elephant: '2 red', sideWork: '3 red' },
+      exercisesCompleted: ['Footwork series', 'Hundred', 'Coordination', 'Short box (round + flat + side to side + tree)', 'Elephant (balance variation)', 'Long stretch series', 'Kneeling side splits (intro)', 'Mermaid'],
+      flexibility: { forwardFold: 10, hipRotation: 9, shoulderMobility: 8 },
+      strengthBenchmarks: { coreHold: 70, springResistance: '3 red', legPress: '4 red + 1 blue' },
+      discomfortNotes: 'None.',
+      goals: 'Full side splits on reformer. Begin advanced kneeling series.',
+      instructorRecommendations: 'Cleared for advanced group reformer classes. Introduce Wunda chair work.',
+      muscleMap: { core: 'strong', 'upper-back': 'strong', 'lower-back': 'strong', 'glutes-l': 'strong', 'glutes-r': 'strong', adductors: 'working', 'hamstrings-l': 'strong', 'hamstrings-r': 'strong' },
+    },
+    {
+      id: 'SN-007',
+      clientId: c(6).id, clientName: `${c(6).firstName || 'Ruth'} ${c(6).lastName || 'Martinez'}`,
+      instructorId: ins(1).id, instructorName: ins(1).name || 'Jordan Kim',
+      date: d(-21), classType: 'Pilates for Seniors', duration: 45,
+      status: 'complete',
+      observations: 'Ruth (age 74) is making wonderful progress in balance and joint mobility. Hip flexor range has increased noticeably over the past month. Seated reformer work is preferred — standing with support only. Great engagement and enthusiasm.',
+      areasOfFocus: ['Balance', 'Joint mobility', 'Gentle strength'],
+      springSettings: { footwork: '2 red', seatWork: '1 red' },
+      exercisesCompleted: ['Seated footwork (low springs)', 'Seated arm series', 'Supine leg circles', 'Hip flexor stretch on reformer', 'Seated mermaid', 'Standing balance at bar', 'Seated spine twist'],
+      flexibility: { forwardFold: 5, hipRotation: 5, shoulderMobility: 6 },
+      strengthBenchmarks: { coreHold: 15, springResistance: '1 red', legPress: '2 red' },
+      discomfortNotes: 'Mild left knee stiffness at start — warm-up helped significantly.',
+      goals: 'Maintain current range of motion. Work toward unsupported standing balance for 5 counts.',
+      instructorRecommendations: 'Continue twice-weekly sessions. Add simple hand weights for seated arm work.',
+      muscleMap: { 'hip-l': 'working', 'hip-r': 'working', core: 'working', 'glutes-l': 'working', 'glutes-r': 'working', 'calves-l': 'attention', 'calves-r': 'working' },
+    },
+    {
+      id: 'SN-008',
+      clientId: c(7).id, clientName: `${c(7).firstName || 'Priya'} ${c(7).lastName || 'Kapoor'}`,
+      instructorId: ins(3).id, instructorName: ins(3).name || 'Riley Nakamura',
+      date: d(-25), classType: 'Prenatal Pilates', duration: 50,
+      status: 'complete',
+      observations: 'Priya is 22 weeks pregnant, second child. Excellent body awareness and prior Pilates experience. Modified all supine work past 20 min to side-lying. Pelvic floor exercises well-cued and executed. Reported improved back comfort since starting prenatal sessions.',
+      areasOfFocus: ['Pelvic floor', 'Spinal support', 'Breathing coordination'],
+      springSettings: { seated: '1 red', sidelyingWork: '1 blue' },
+      exercisesCompleted: ['Seated breathing', 'Seated arm series (1 red)', 'Modified cat-cow on hands/knees', 'Side-lying leg series', 'Side-lying clam shells', 'Pelvic floor activation sequence', 'Standing wall series', 'Modified mermaid'],
+      flexibility: { forwardFold: 7, hipRotation: 6, shoulderMobility: 7 },
+      strengthBenchmarks: { coreHold: 20, springResistance: '1 red', legPress: 'N/A (prenatal)' },
+      discomfortNotes: 'None. No round ligament discomfort noted this session.',
+      goals: 'Maintain core and pelvic floor strength through pregnancy. Prepare for postpartum recovery.',
+      instructorRecommendations: 'Schedule postnatal intro session for 8 weeks postpartum. Continue twice-weekly sessions.',
+      muscleMap: { core: 'working', 'lower-back': 'working', 'glutes-l': 'working', 'glutes-r': 'working', adductors: 'working' },
+    },
+  ];
 }
 
-// ── Zone Annotation Popover (structured form) ────────────────────────────────
+// ── Body Map SVG ─────────────────────────────────────────────────────────────
 
-function ZoneAnnotationPopover({ zoneId, zoneLabel, currentValue, onSave, onClose, s, mapType }) {
-  const injectables = getEquipmentInventory();
-
-  // Parse existing value to pre-populate form
-  const parseInitial = () => {
-    if (!currentValue) return { product: '', productId: '', dose: '', unit: 'units', lotNumber: '', notes: '' };
-    if (isStructuredAnnotation(currentValue)) {
-      return {
-        product: currentValue.product || '',
-        productId: currentValue.productId || '',
-        dose: currentValue.dose != null ? String(currentValue.dose) : '',
-        unit: currentValue.unit || 'units',
-        lotNumber: currentValue.lotNumber || '',
-        notes: currentValue.notes || '',
-      };
-    }
-    // Legacy string — put it in notes
-    return { product: '', productId: '', dose: '', unit: 'units', lotNumber: '', notes: String(currentValue) };
-  };
-
-  const [fields, setFields] = useState(parseInitial);
-
-  const handleProductChange = (e) => {
-    const id = e.target.value;
-    if (!id) {
-      setFields(f => ({ ...f, product: '', productId: '', lotNumber: '' }));
-      return;
-    }
-    const item = injectables.find(i => i.id === id);
-    setFields(f => ({
-      ...f,
-      productId: id,
-      product: item ? item.name : '',
-      lotNumber: item?.lotNumber || f.lotNumber,
-    }));
-  };
-
-  const handleSave = () => {
-    const dose = fields.dose !== '' ? parseFloat(fields.dose) : null;
-    if (!fields.product && dose === null && !fields.notes.trim()) {
-      onClose();
-      return;
-    }
-    onSave({
-      product: fields.product,
-      productId: fields.productId,
-      dose: dose,
-      unit: fields.unit,
-      lotNumber: fields.lotNumber,
-      notes: fields.notes,
-    });
-  };
-
-  const handleClear = () => {
-    onSave(null);
-  };
+function BodyMapSVG({ side, muscleMap, onToggle, s }) {
+  const muscles = side === 'front' ? MUSCLE_GROUPS_FRONT : MUSCLE_GROUPS_BACK;
 
   return (
-    <div
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 400 }}
-      onClick={onClose}
-    >
-      <div
-        style={{ background: '#fff', borderRadius: 14, padding: 24, width: 340, boxShadow: s.shadowLg }}
-        onClick={e => e.stopPropagation()}
-      >
-        <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 16 }}>{zoneLabel}</div>
-
-        {/* Product dropdown */}
-        <div style={{ marginBottom: 12 }}>
-          <label style={{ ...s.label, fontSize: 11 }}>Product</label>
-          <select
-            value={fields.productId}
-            onChange={handleProductChange}
-            style={{ ...s.input, cursor: 'pointer' }}
-          >
-            <option value="">Select injectable...</option>
-            {injectables.map(item => (
-              <option key={item.id} value={item.id}>{item.name}</option>
-            ))}
-            {injectables.length === 0 && <option disabled>No injectables in inventory</option>}
-          </select>
-        </div>
-
-        {/* Dose + Unit row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
-          <div>
-            <label style={{ ...s.label, fontSize: 11 }}>Dose</label>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={fields.dose}
-              onChange={e => setFields(f => ({ ...f, dose: e.target.value }))}
-              style={s.input}
-              placeholder="e.g., 12"
-            />
-          </div>
-          <div>
-            <label style={{ ...s.label, fontSize: 11 }}>Unit</label>
-            <select
-              value={fields.unit}
-              onChange={e => setFields(f => ({ ...f, unit: e.target.value }))}
-              style={{ ...s.input, cursor: 'pointer' }}
-            >
-              <option value="units">units</option>
-              <option value="mL">mL</option>
-              <option value="cc">cc</option>
-              <option value="syringes">syringes</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Lot # */}
-        <div style={{ marginBottom: 12 }}>
-          <label style={{ ...s.label, fontSize: 11 }}>Lot #</label>
-          <input
-            value={fields.lotNumber}
-            onChange={e => setFields(f => ({ ...f, lotNumber: e.target.value }))}
-            style={s.input}
-            placeholder="Auto-filled from product"
-          />
-        </div>
-
-        {/* Notes */}
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ ...s.label, fontSize: 11 }}>Notes (optional)</label>
-          <input
-            value={fields.notes}
-            onChange={e => setFields(f => ({ ...f, notes: e.target.value }))}
-            style={s.input}
-            placeholder="Additional details..."
-          />
-        </div>
-
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={handleClear} style={{ ...s.pillGhost, padding: '6px 12px', fontSize: 11, color: s.danger, flex: 'none' }}>Clear</button>
-          <button onClick={onClose} style={{ ...s.pillGhost, padding: '6px 12px', fontSize: 12, flex: 1 }}>Cancel</button>
-          <button onClick={handleSave} style={{ ...s.pillAccent, padding: '6px 16px', fontSize: 12, flex: 1 }}>Save</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Treatment Summary ────────────────────────────────────────────────────────
-
-function TreatmentSummary({ injectionMap, zones, s }) {
-  const annotated = Object.entries(injectionMap).filter(([, v]) => v);
-  if (annotated.length === 0) return null;
-
-  // Compute totals per product (only structured annotations)
-  const productTotals = {};
-  annotated.forEach(([, val]) => {
-    if (isStructuredAnnotation(val) && val.product && val.dose != null) {
-      const key = `${val.product}|||${val.unit}`;
-      productTotals[key] = (productTotals[key] || 0) + Number(val.dose);
-    }
-  });
-
-  return (
-    <div style={{ marginTop: 16, borderTop: '1px solid #E5E5E5', paddingTop: 14 }}>
-      <div style={{ font: `600 12px ${s.FONT}`, color: s.text, marginBottom: 10 }}>Treatment Summary</div>
-
-      {/* Zone table */}
-      <div style={{ background: '#FAFAFA', borderRadius: 10, border: '1px solid #E5E5E5', overflow: 'hidden', marginBottom: 10 }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', font: `400 11px ${s.FONT}` }}>
-          <thead>
-            <tr style={{ background: '#F0F0F0' }}>
-              <th style={{ textAlign: 'left', padding: '6px 10px', color: s.text2, fontWeight: 600, fontSize: 10 }}>Zone</th>
-              <th style={{ textAlign: 'left', padding: '6px 10px', color: s.text2, fontWeight: 600, fontSize: 10 }}>Product</th>
-              <th style={{ textAlign: 'right', padding: '6px 10px', color: s.text2, fontWeight: 600, fontSize: 10 }}>Dose</th>
-              <th style={{ textAlign: 'left', padding: '6px 10px', color: s.text2, fontWeight: 600, fontSize: 10 }}>Lot #</th>
-            </tr>
-          </thead>
-          <tbody>
-            {annotated.map(([zoneId, val]) => {
-              const zone = zones.find(z => z.id === zoneId);
-              if (isStructuredAnnotation(val)) {
-                return (
-                  <tr key={zoneId} style={{ borderTop: '1px solid #E8E8E8' }}>
-                    <td style={{ padding: '5px 10px', color: s.text }}>{zone?.label || zoneId}</td>
-                    <td style={{ padding: '5px 10px', color: s.text }}>{val.product || '—'}</td>
-                    <td style={{ padding: '5px 10px', color: s.accent, textAlign: 'right', fontFamily: s.MONO }}>
-                      {val.dose != null ? `${val.dose} ${val.unit || ''}` : '—'}
-                    </td>
-                    <td style={{ padding: '5px 10px', color: s.text2, fontFamily: s.MONO, fontSize: 10 }}>{val.lotNumber || '—'}</td>
-                  </tr>
-                );
-              }
-              // Legacy string row
-              return (
-                <tr key={zoneId} style={{ borderTop: '1px solid #E8E8E8' }}>
-                  <td style={{ padding: '5px 10px', color: s.text }}>{zone?.label || zoneId}</td>
-                  <td colSpan={3} style={{ padding: '5px 10px', color: s.text2, fontFamily: s.MONO, fontSize: 10 }}>{String(val)}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Totals per product */}
-      {Object.keys(productTotals).length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {Object.entries(productTotals).map(([key, total]) => {
-            const [product, unit] = key.split('|||');
-            return (
-              <span key={key} style={{
-                padding: '3px 10px', borderRadius: 100, background: '#EEF6FF',
-                font: `500 10px ${s.MONO}`, color: s.accent,
-                border: '1px solid #DBEAFE',
-              }}>
-                {product}: {total} {unit} total
-              </span>
-            );
-          })}
-        </div>
+    <svg viewBox="0 0 100 100" style={{ width: '100%', maxWidth: 200, height: 'auto' }}>
+      {/* Simple body outline */}
+      {side === 'front' ? (
+        <>
+          {/* Head */}
+          <ellipse cx="50" cy="8" rx="8" ry="9" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.8" />
+          {/* Neck */}
+          <rect x="46" y="16" width="8" height="5" rx="2" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+          {/* Torso */}
+          <path d="M32 21 Q28 30 29 42 Q29 50 34 55 Q42 58 50 58 Q58 58 66 55 Q71 50 71 42 Q72 30 68 21 Q59 18 50 18 Q41 18 32 21Z"
+            fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.8" />
+          {/* Left arm */}
+          <path d="M32 21 Q24 28 22 40 Q21 46 24 50 L27 38 Q28 30 32 21Z" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+          {/* Right arm */}
+          <path d="M68 21 Q76 28 78 40 Q79 46 76 50 L73 38 Q72 30 68 21Z" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+          {/* Left leg */}
+          <path d="M34 55 Q31 65 31 75 Q31 84 34 88 Q37 92 40 88 Q42 82 42 72 Q43 62 42 55Z" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+          {/* Right leg */}
+          <path d="M66 55 Q69 65 69 75 Q69 84 66 88 Q63 92 60 88 Q58 82 58 72 Q57 62 58 55Z" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+        </>
+      ) : (
+        <>
+          {/* Head back */}
+          <ellipse cx="50" cy="8" rx="8" ry="9" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.8" />
+          {/* Neck */}
+          <rect x="46" y="16" width="8" height="5" rx="2" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+          {/* Torso back */}
+          <path d="M32 21 Q28 30 29 42 Q29 50 34 55 Q42 58 50 58 Q58 58 66 55 Q71 50 71 42 Q72 30 68 21 Q59 18 50 18 Q41 18 32 21Z"
+            fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.8" />
+          {/* Spine line */}
+          <line x1="50" y1="21" x2="50" y2="55" stroke="#D1D5DB" strokeWidth="0.5" strokeDasharray="1.5,1" />
+          {/* Arms */}
+          <path d="M32 21 Q24 28 22 40 Q21 46 24 50 L27 38 Q28 30 32 21Z" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+          <path d="M68 21 Q76 28 78 40 Q79 46 76 50 L73 38 Q72 30 68 21Z" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+          {/* Legs */}
+          <path d="M34 55 Q31 65 31 75 Q31 84 34 88 Q37 92 40 88 Q42 82 42 72 Q43 62 42 55Z" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+          <path d="M66 55 Q69 65 69 75 Q69 84 66 88 Q63 92 60 88 Q58 82 58 72 Q57 62 58 55Z" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="0.5" />
+        </>
       )}
-    </div>
+
+      {/* Muscle group dots */}
+      {muscles.map(m => {
+        const status = muscleMap?.[m.id];
+        const col = status ? MUSCLE_STATUS[status] : null;
+        return (
+          <g key={m.id} onClick={() => onToggle && onToggle(m.id, side)} style={{ cursor: onToggle ? 'pointer' : 'default' }}>
+            <circle
+              cx={m.x} cy={m.y} r={onToggle ? 4.5 : 4}
+              fill={col ? col.bg : 'rgba(255,255,255,0.7)'}
+              stroke={col ? col.color : '#9CA3AF'}
+              strokeWidth={status ? 1.2 : 0.8}
+              style={{ transition: 'all 0.2s' }}
+            />
+            {status && (
+              <circle cx={m.x} cy={m.y} r={2}
+                fill={MUSCLE_STATUS[status].color}
+              />
+            )}
+          </g>
+        );
+      })}
+    </svg>
   );
 }
 
-// ── Co-Sign Modal ─────────────────────────────────────────────────────────────
+// ── Legend ────────────────────────────────────────────────────────────────────
 
-function CoSignModal({ onConfirm, onClose, s, providers }) {
-  const mdProviders = providers.filter(p => {
-    const title = (p.title || '').toLowerCase();
-    return title.includes('head instructor') || title.includes('lead instructor') || title.includes('senior instructor') || title.includes('director') || title.includes('owner');
-  });
-
-  const [reviewerId, setReviewerId] = useState(mdProviders[0]?.id || '');
-  const [reviewNotes, setReviewNotes] = useState('');
-
-  const handleConfirm = () => {
-    const reviewer = providers.find(p => p.id === reviewerId);
-    if (!reviewer) return;
-    onConfirm({
-      reviewedBy: reviewerId,
-      reviewedByName: reviewer.name,
-      reviewedAt: new Date().toISOString(),
-      reviewNotes,
-    });
-  };
-
+function BodyMapLegend({ s }) {
   return (
-    <div
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 500 }}
-      onClick={onClose}
-    >
-      <div
-        style={{ background: '#fff', borderRadius: 14, padding: 28, width: 380, boxShadow: s.shadowLg }}
-        onClick={e => e.stopPropagation()}
-      >
-        <div style={{ font: `600 16px ${s.FONT}`, color: s.text, marginBottom: 6 }}>Instructor Review</div>
-        <div style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>
-          Flag and review this chart on behalf of the head instructor.
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 8 }}>
+      {Object.entries(MUSCLE_STATUS).map(([key, val]) => (
+        <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: val.color }} />
+          <span style={{ font: `400 11px ${s.FONT}`, color: s.text2 }}>{val.label}</span>
         </div>
-
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ ...s.label, fontSize: 11 }}>Reviewing Instructor</label>
-          <select
-            value={reviewerId}
-            onChange={e => setReviewerId(e.target.value)}
-            style={{ ...s.input, cursor: 'pointer' }}
-          >
-            {mdProviders.map(p => (
-              <option key={p.id} value={p.id}>{p.name} — {p.title}</option>
-            ))}
-            {mdProviders.length === 0 && <option disabled>No senior instructors found</option>}
-          </select>
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ ...s.label, fontSize: 11 }}>Review Notes (optional)</label>
-          <textarea
-            value={reviewNotes}
-            onChange={e => setReviewNotes(e.target.value)}
-            rows={3}
-            style={{ ...s.input, resize: 'vertical', lineHeight: 1.6 }}
-            placeholder="Instructor notes, recommendations, or observations..."
-          />
-        </div>
-
-        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-          <button onClick={onClose} style={s.pillGhost}>Cancel</button>
-          <button
-            onClick={handleConfirm}
-            disabled={!reviewerId || mdProviders.length === 0}
-            style={{ ...s.pillAccent, opacity: (!reviewerId || mdProviders.length === 0) ? 0.5 : 1 }}
-          >
-            Approve & Flag Reviewed
-          </button>
-        </div>
+      ))}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'white', border: '1px solid #9CA3AF' }} />
+        <span style={{ font: `400 11px ${s.FONT}`, color: s.text2 }}>Not marked</span>
       </div>
     </div>
   );
 }
 
-// ── Status badge helpers ──────────────────────────────────────────────────────
+// ── Status Badge ──────────────────────────────────────────────────────────────
+
+const STATUS_STYLES = {
+  complete: { bg: '#F0FDF4', color: '#16A34A', label: 'Complete' },
+  draft:    { bg: '#FFF7ED', color: '#CA8A04', label: 'Draft' },
+  pending:  { bg: '#EFF6FF', color: '#2563EB', label: 'Pending Review' },
+};
 
 function StatusBadge({ status, s }) {
-  const config = {
-    draft:          { bg: '#FFF7ED', color: '#D97706', label: 'Draft' },
-    pending_review: { bg: '#EFF6FF', color: '#2563EB', label: 'Pending Review' },
-    signed:         { bg: '#F0FDF4', color: '#16A34A', label: 'Signed' },
-    co_signed:      { bg: '#F0FDF4', color: '#16A34A', label: 'Co-Signed' },
-  };
-  const c = config[status] || config.draft;
+  const st = STATUS_STYLES[status] || STATUS_STYLES.draft;
   return (
-    <span style={{
-      padding: '3px 10px', borderRadius: 100, font: `500 10px ${s.FONT}`, textTransform: 'uppercase',
-      background: c.bg, color: c.color, display: 'inline-flex', alignItems: 'center', gap: 4,
-    }}>
-      {status === 'co_signed' && <span style={{ fontSize: 10 }}>✦</span>}
-      {c.label}
+    <span style={{ padding: '3px 10px', borderRadius: 100, font: `500 10px ${s.FONT}`, textTransform: 'uppercase', letterSpacing: 0.5, background: st.bg, color: st.color }}>
+      {st.label}
     </span>
   );
 }
 
-function avatarBg(status) {
-  if (status === 'signed' || status === 'co_signed') return '#F0FDF4';
-  if (status === 'pending_review') return '#EFF6FF';
-  return '#FFF7ED';
+// ── Progress Sparkline ────────────────────────────────────────────────────────
+
+function MiniSparkline({ values, color }) {
+  if (!values || values.length < 2) return null;
+  const max = Math.max(...values, 1);
+  const min = Math.min(...values, 0);
+  const range = max - min || 1;
+  const w = 80, h = 28;
+  const pts = values.map((v, i) => {
+    const x = (i / (values.length - 1)) * w;
+    const y = h - ((v - min) / range) * (h - 4) - 2;
+    return `${x},${y}`;
+  }).join(' ');
+  return (
+    <svg width={w} height={h} style={{ display: 'block' }}>
+      <polyline points={pts} fill="none" stroke={color} strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
+      <circle cx={pts.split(' ').slice(-1)[0].split(',')[0]} cy={pts.split(' ').slice(-1)[0].split(',')[1]} r="2.5" fill={color} />
+    </svg>
+  );
 }
 
-function avatarColor(status, s) {
-  if (status === 'signed' || status === 'co_signed') return s.success;
-  if (status === 'pending_review') return '#2563EB';
-  return s.warning;
-}
-
-// ── Seed data ─────────────────────────────────────────────────────────────────
-
-function initCharts() {
-  // Reseed if empty, old format (no mapType), or insufficient charts
-  const existing = getCharts();
-  const hasNewFormat = existing.length > 0 && existing[0].mapType;
-  if (existing.length >= 8 && hasNewFormat) return;
-  localStorage.removeItem('rp_charts_init');
-  saveCharts([
-    {
-      id: 'CHT-1', clientId: 'CLT-1000', clientName: 'Emma Johnson', providerId: 'INS-1',
-      date: '2026-03-10', serviceId: 'SVC-1', serviceName: 'Reformer',
-      mapType: 'none',
-      subjective: 'Client presents for weekly reformer session. Reports lower back felt tight after last session but resolved within 24 hours. No new injuries. Sleeping better and noticing improved posture at work. Motivated to increase spring resistance.',
-      objective: 'Posture assessment shows notable improvement in thoracic extension compared to intake. Hip flexor tension reduced bilaterally. Core engagement consistent through footwork series. Hamstring flexibility: right 68°, left 71° straight leg raise (up from 58°/62° at intake).',
-      assessment: 'Strong progress across 6 weeks. Lower back tightness likely due to increased spring resistance last session — monitor. Core stabilization improving steadily. Ready to progress footwork to red spring.',
-      plan: 'Advance footwork from blue to red spring for lower body series. Introduce short box series. Continue long stretch progression. Add side-lying hip series for glute activation. Cue neutral pelvis throughout. Follow up next week; reassess lower back response to increased resistance.',
-      injectionMap: {},
-      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Flexibility score: 7/10 (up from 5/10 at intake). Core strength rating: 6/10. Posture alignment: improved thoracic extension, reduced forward head. Spring resistance: progressing blue → red footwork.' },
-      vitals: { bp: '', pulse: '', temp: '' },
-      medications: 'None',
-      status: 'signed',
-      reviewRequired: false,
-      createdAt: '2026-03-10T10:30:00Z',
-    },
-    {
-      id: 'CHT-2', clientId: 'CLT-1001', clientName: 'Olivia Williams', providerId: 'INS-1',
-      date: '2026-03-11', serviceId: 'SVC-2', serviceName: 'Barre',
-      mapType: 'none',
-      subjective: 'Client attended 3rd barre class this week. Reports significant muscle soreness in glutes and inner thighs after Tuesday class — expected DOMS. Soreness resolved by Thursday. Energy level good. Noticing less shaking at the barre compared to first two weeks.',
-      objective: 'Observed improved turnout stability. Plié depth has increased — client now achieving parallel thighs in grand plié without heel lift. Core engagement noticeably more consistent through seat work. Balance on single leg improved from roughly 3 seconds to 8+ seconds at barre.',
-      assessment: 'Rapid adaptation in first month. Glute and inner thigh fatigue is normal for this stage. Balance and stability improving week over week. Ready to add ankle weights for seat series.',
-      plan: 'Introduce 1lb ankle weights for donkey kick and fire hydrant series. Cue shoulder blade depression throughout upper body work. Add standing arabesque balance challenge (away from barre) for last 5 minutes. Client to continue 3x/week schedule for optimal adaptation.',
-      injectionMap: {},
-      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Single-leg balance: 8 seconds (up from 3 seconds at first class). Grand plié depth: full range without heel lift. Core engagement consistency: 8/10 in class observation.' },
-      vitals: { bp: '', pulse: '', temp: '' },
-      medications: 'None',
-      status: 'signed',
-      reviewRequired: false,
-      createdAt: '2026-03-11T11:00:00Z',
-    },
-    {
-      id: 'CHT-3', clientId: 'CLT-1003', clientName: 'Ava Jones', providerId: 'INS-2',
-      date: '2026-03-12', serviceId: 'SVC-6', serviceName: 'Private Reformer',
-      mapType: 'none',
-      subjective: 'Month 2 private session. Client reports significant reduction in chronic lower back pain — "down from a 6/10 to a 2/10 most days." Physician cleared her to continue Pilates and discontinue physical therapy. Feeling stronger and more confident in movement.',
-      objective: 'Great form on roll-up today — full articulation achieved for first time. Core engagement holding through complete series without instructor cueing. Shoulder alignment on reformer corrected; no longer protracted during arm series. Spinal rotation symmetrical bilaterally.',
-      assessment: 'Excellent progress. Client reports reduced lower back pain after 6 weeks consistent with expected outcomes for core stabilization work. Roll-up milestone achieved. Ready to progress to intermediate repertoire.',
-      plan: 'Introduce short spine stretch on reformer. Add teaser prep series. Begin elephant footwork. Progress to red spring on arm series. Set 3-month reassessment to formally document flexibility and strength gains. Recommend increasing to 3 sessions/week.',
-      injectionMap: {},
-      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Lower back pain self-report: 2/10 (down from 6/10 at intake). Roll-up: full articulation achieved. Shoulder alignment corrected on reformer. Spinal rotation: symmetrical.' },
-      vitals: { bp: '', pulse: '', temp: '' },
-      medications: 'None reported',
-      status: 'signed',
-      reviewRequired: false,
-      createdAt: '2026-03-12T14:00:00Z',
-    },
-    {
-      id: 'CHT-4', clientId: 'CLT-1002', clientName: 'Sophia Brown', providerId: 'INS-3',
-      date: '2026-03-13', serviceId: 'SVC-28', serviceName: 'Mat Pilates',
-      mapType: 'none',
-      subjective: 'Session 4 of 8-week beginner mat series. Client recovering from C-section 6 months ago, cleared by OB for low-impact exercise. Experiencing diastasis recti (2-finger separation noted at intake). Reports less "disconnected" feeling in core. No pain during class.',
-      objective: 'Diastasis recti reassessment: 1.5-finger separation (down from 2 fingers at intake). Core activation pattern improving — client now initiating transverse abdominis engagement before movement. Imprint position maintained throughout supine series. No breath holding observed.',
-      assessment: 'Good healing progress. Diastasis closing as expected with proper cueing and load management. Ready to introduce gentle rotation within safe range. Continue to avoid full flexion exercises until separation reaches 1 finger or less.',
-      plan: 'Maintain current load — no increase in difficulty yet. Introduce gentle spine twist in seated position. Add clamshell series for hip stability. Continue to cue 3D breathing throughout. Recheck diastasis at session 6. Educate client on daily core activation habits at home.',
-      injectionMap: {},
-      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Diastasis recti: 1.5-finger separation (down from 2 at intake). Core activation pattern: transverse abdominis engaging before movement. No breath holding during session.' },
-      vitals: { bp: '', pulse: '', temp: '' },
-      medications: 'None',
-      status: 'signed',
-      reviewRequired: false,
-      createdAt: '2026-03-13T09:00:00Z',
-    },
-    {
-      id: 'CHT-5', clientId: 'CLT-1004', clientName: 'Isabella Martinez', providerId: 'INS-1',
-      date: '2026-03-14', serviceId: 'SVC-4', serviceName: 'Stretch & Recovery',
-      mapType: 'none',
-      subjective: 'Client is a competitive cyclist presenting for weekly stretch and recovery session. Reports right hip flexor tightness and left IT band tension following a 60-mile ride on Saturday. Requesting focus on hip flexors, hamstrings, and thoracic mobility.',
-      objective: 'Hip flexor flexibility: right 12cm Thomas test (tight), left 8cm. IT band: left Ober test positive. Thoracic rotation: 42° right, 38° left. Hamstring flexibility: 62° bilateral straight leg raise. Breathing pattern shallow and chest-dominant.',
-      assessment: 'Acute post-ride tightness in right hip flexor and left IT band as reported. Thoracic mobility restriction likely contributing to neck and shoulder tension on long rides. Diaphragmatic breathing will support recovery and nervous system downregulation.',
-      plan: 'Hip flexor contract-relax PNF stretching bilateral, emphasis right side. IT band and TFL release with sustained holds. Thoracic rotation and extension mobility work over foam roller. Diaphragmatic breathing practice — 5 minutes at session end. Home routine: hip flexor stretch 2x daily, thoracic rotation 5 min pre-ride.',
-      injectionMap: {},
-      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Right hip flexor Thomas test: 12cm (tight). Left Ober test: positive. Thoracic rotation: 42° R / 38° L. Hamstring flexibility: 62° bilateral. Goal: hip flexor to 6cm by month end.' },
-      vitals: { bp: '', pulse: '', temp: '' },
-      medications: 'None',
-      status: 'pending_review',
-      reviewRequired: true,
-      createdAt: '2026-03-14T13:00:00Z',
-    },
-    {
-      id: 'CHT-6', clientId: 'CLT-1007', clientName: 'Amelia Thompson', providerId: 'INS-4',
-      date: '2026-03-14', serviceId: 'SVC-15', serviceName: 'Reformer — Intermediate',
-      mapType: 'none',
-      subjective: 'Session 10 of ongoing intermediate reformer program. Client training for a spring hiking trip — goal is leg strength and stamina on descents. Reports feeling significantly stronger in legs. No new soreness or discomfort.',
-      objective: 'Increased spring resistance from blue to red for lower body series — client demonstrated solid form throughout. Single-leg footwork stable and symmetrical. Prone swan extension strong with no lower back compression. Long stretch holds 30 seconds with neutral spine.',
-      assessment: 'Excellent adaptation to increased resistance. Leg strength and endurance tracking well for hiking goal. Spinal control in prone work notably improved. Ready to introduce jump board for plyometric training component.',
-      plan: 'Introduce jump board — single leg press, bilateral jumps, lateral jumps. Add side split platform work. Continue red spring footwork. Progress long stretch to down stretch. Recommend adding one outdoor hike before spring trip to test conditioning. Reassess at session 12.',
-      injectionMap: {},
-      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Spring resistance: advanced to red (from blue) lower body series. Single-leg footwork: symmetrical and stable. Long stretch hold: 30 seconds neutral spine. Jump board: introducing this session.' },
-      vitals: { bp: '', pulse: '', temp: '' },
-      medications: 'None',
-      status: 'co_signed',
-      reviewRequired: true,
-      reviewedBy: 'INS-1',
-      reviewedByName: 'Sarah Mitchell',
-      reviewedAt: '2026-03-14T10:00:00Z',
-      reviewNotes: 'Program progression reviewed. Instructor cues appropriate. Approved for jump board introduction.',
-      createdAt: '2026-03-14T08:00:00Z',
-    },
-    {
-      id: 'CHT-7', clientId: 'CLT-1005', clientName: 'Mia Garcia', providerId: 'INS-1',
-      date: '2026-03-15', serviceId: 'SVC-11', serviceName: 'Private Training',
-      mapType: 'none',
-      subjective: 'Week 8 of private training program. Client\'s primary goal is postural correction and building confidence in movement after years of sedentary desk work. Reports standing taller and receiving compliments on posture from coworkers. No pain or discomfort.',
-      objective: 'Posture reassessment at 8-week mark: forward head reduced by approximately 1.5cm from wall. Thoracic kyphosis visibly improved. Hip alignment symmetrical. Roll-up: smooth articulation to seated position. Teaser prep: legs to 45° with neutral lumbar, 10-second hold.',
-      assessment: 'Significant postural improvement at 8 weeks. Client building genuine body awareness — self-corrects alignment without cueing during most exercises. Teaser prep milestone demonstrates strong core stability. Ready to begin intermediate program cycle.',
-      plan: 'Transition to intermediate program: introduce full teaser, open leg rocker, and saw on reformer. Begin standing balance series. Set 12-week photo assessment with client consent. Discuss 3-session/week schedule to support continued progress. Client to continue daily posture reset habit (2-minute wall stand).',
-      injectionMap: {},
-      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Posture: forward head reduced ~1.5cm from wall. Thoracic kyphosis: visibly improved. Flexibility score: 8/10 (up from 4/10 at intake). Core strength: 7/10. Teaser prep: 45°, 10-second hold achieved.' },
-      vitals: { bp: '', pulse: '', temp: '' },
-      medications: 'None',
-      status: 'signed',
-      reviewRequired: false,
-      createdAt: '2026-03-15T10:00:00Z',
-    },
-    {
-      id: 'CHT-8', clientId: 'CLT-1010', clientName: 'Lily Lee', providerId: 'INS-2',
-      date: '2026-03-15', serviceId: 'SVC-2', serviceName: 'Barre',
-      mapType: 'none',
-      subjective: 'First barre class after 3-week absence (vacation). Client reports feeling "rusty" but energized. Prior to absence had completed 6 consecutive weeks. Expects some return of muscle soreness. No injuries during time off.',
-      objective: 'Technique maintained well despite 3-week break — muscle memory evident. Balance slightly reduced from pre-break level but recovers quickly within class. Core engagement cueing needed more frequently than before break. Turnout consistent.',
-      assessment: 'Expected detraining effect after 3-week break is minimal — client retains most technique adaptations. Muscle endurance will return within 1-2 weeks of consistent attendance. No modification needed.',
-      plan: 'Resume normal class participation at prior level. Remind client that some soreness is expected this week. Encourage 2-3 classes this week to rebuild consistency. No new progressions until full endurance is re-established (approximately 1 week). Reconnect on goals at next session.',
-      injectionMap: {},
-      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Post-break detraining: minimal technique loss, some endurance reduction. Balance: slightly reduced from pre-break. Muscle memory: intact. Estimated return to pre-break fitness: 1-2 weeks.' },
-      vitals: { bp: '', pulse: '', temp: '' },
-      medications: 'None',
-      status: 'draft',
-      reviewRequired: false,
-      createdAt: '2026-03-15T14:00:00Z',
-    },
-  ]);
-  localStorage.setItem('rp_charts_init', 'true');
-}
-
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Main Component ────────────────────────────────────────────────────────────
 
 export default function Charts() {
   const s = useStyles();
   const [, setTick] = useState(0);
   useEffect(() => subscribe(() => setTick(t => t + 1)), []);
-  useEffect(() => { initCharts(); setTick(t => t + 1); }, []);
-
-  const [charts, setCharts] = useState(getCharts);
-  const [activeId, setActiveId] = useState(null);
-  const [showNew, setShowNew] = useState(false);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [editingZone, setEditingZone] = useState(null);
-  const [showCoSign, setShowCoSign] = useState(false);
-  const [coSignTargetId, setCoSignTargetId] = useState(null);
-
-  const emptyForm = {
-    clientId: '', serviceId: '', providerId: '',
-    subjective: '', objective: '', assessment: '', plan: '',
-    injectionMap: {}, vitals: { bp: '', pulse: '', temp: '' },
-    medications: '', status: 'draft', mapType: 'face',
-    measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: '' },
-    reviewRequired: false,
-  };
-  const [form, setForm] = useState(emptyForm);
 
   const clients = getPatients();
   const services = getServices();
-  const providers = getProviders();
+  const instructors = getProviders();
 
-  const refresh = () => { setCharts(getCharts()); };
-  const active = charts.find(c => c.id === activeId);
+  const [notes, setNotes] = useState(() => {
+    const stored = getNotes();
+    if (stored.length > 0) return stored;
+    const seed = buildSeedNotes(clients, instructors);
+    saveNotes(seed);
+    return seed;
+  });
 
-  // Derive current map type from selected service
-  const currentMapType = getMapType(form.serviceId, services);
-  const currentZones = getZonesForType(currentMapType);
-  const currentMapLabel = getMapLabel(currentMapType);
+  const [search, setSearch] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterType, setFilterType] = useState('all');
+  const [view, setView] = useState('list'); // 'list' | 'detail' | 'form'
+  const [selected, setSelected] = useState(null);
+  const [bodyMapTab, setBodyMapTab] = useState('front');
 
-  // Selected client for allergy/contraindication warning
-  const selectedPatient = clients.find(p => p.id === form.clientId);
+  // ── Form state ──
+  const blankForm = {
+    clientId: '', instructorId: '', date: new Date().toISOString().slice(0, 10),
+    classType: '', duration: 55, status: 'draft',
+    observations: '', areasOfFocus: [], springSettings: {},
+    exercisesCompleted: [], flexibility: { forwardFold: '', hipRotation: '', shoulderMobility: '' },
+    strengthBenchmarks: { coreHold: '', springResistance: '', legPress: '' },
+    discomfortNotes: '', goals: '', instructorRecommendations: '', muscleMap: {},
+  };
+  const [form, setForm] = useState(blankForm);
+  const [areaInput, setAreaInput] = useState('');
+  const [exerciseInput, setExerciseInput] = useState('');
+  const [springKey, setSpringKey] = useState('');
+  const [springVal, setSpringVal] = useState('');
+  const [muscleMapTabForm, setMuscleMapTabForm] = useState('front');
 
-  const filtered = charts.filter(c => {
-    if (search) {
-      const q = search.toLowerCase();
-      if (!c.clientName?.toLowerCase().includes(q) && !c.serviceName?.toLowerCase().includes(q)) return false;
-    }
-    if (statusFilter !== 'all' && c.status !== statusFilter) return false;
-    return true;
-  }).sort((a, b) => b.date.localeCompare(a.date));
+  const refresh = useCallback((updated) => {
+    setNotes(updated);
+    saveNotes(updated);
+  }, []);
 
   const openNew = () => {
-    setActiveId(null);
-    setForm(emptyForm);
-    setShowNew(true);
+    setForm({ ...blankForm });
+    setView('form');
+    setSelected(null);
   };
 
-  const openChart = (chart) => {
-    setActiveId(chart.id);
-    setForm({
-      clientId: chart.clientId, serviceId: chart.serviceId, providerId: chart.providerId,
-      subjective: chart.subjective, objective: chart.objective, assessment: chart.assessment, plan: chart.plan,
-      injectionMap: chart.injectionMap || {}, vitals: chart.vitals || { bp: '', pulse: '', temp: '' },
-      medications: chart.medications || '', status: chart.status,
-      mapType: chart.mapType || getMapType(chart.serviceId, services),
-      measurements: chart.measurements || { weight: '', bmi: '', waistCircumference: '', measurementNotes: '' },
-      reviewRequired: chart.reviewRequired || false,
-    });
-    setShowNew(true);
+  const openEdit = (note) => {
+    setForm({ ...note });
+    setSelected(note);
+    setView('form');
   };
 
-  const handleSave = (action = 'draft') => {
-    // action: 'draft' | 'sign' | 'submit_review'
-    const pat = clients.find(p => p.id === form.clientId);
-    const svc = services.find(sv => sv.id === form.serviceId);
-    const mapType = getMapType(form.serviceId, services);
+  const openDetail = (note) => {
+    setSelected(note);
+    setView('detail');
+  };
 
-    let newStatus = 'draft';
-    if (action === 'sign') newStatus = 'signed';
-    else if (action === 'submit_review') newStatus = 'pending_review';
+  const handleDelete = (id) => {
+    if (!confirm('Delete this session note?')) return;
+    const updated = notes.filter(n => n.id !== id);
+    refresh(updated);
+    if (selected?.id === id) { setSelected(null); setView('list'); }
+  };
 
-    const data = {
+  const handleSave = () => {
+    const client = clients.find(p => p.id === form.clientId);
+    const instructor = instructors.find(p => p.id === form.instructorId);
+    const noteData = {
       ...form,
-      mapType,
-      clientName: pat ? `${pat.firstName} ${pat.lastName}` : 'Unknown',
-      serviceName: svc?.name || 'Service',
-      date: new Date().toISOString().slice(0, 10),
-      status: newStatus,
+      clientName: client ? `${client.firstName} ${client.lastName}` : form.clientName,
+      instructorName: instructor ? instructor.name : form.instructorName,
     };
-
-    const all = getCharts();
-    if (activeId) {
-      const idx = all.findIndex(c => c.id === activeId);
-      if (idx >= 0) all[idx] = { ...all[idx], ...data };
+    let updated;
+    if (selected) {
+      updated = notes.map(n => n.id === selected.id ? { ...n, ...noteData } : n);
     } else {
-      data.id = `CHT-${Date.now()}`;
-      data.createdAt = new Date().toISOString();
-      all.unshift(data);
+      updated = [{ ...noteData, id: `SN-${Date.now()}` }, ...notes];
     }
-    saveCharts(all);
-    refresh();
-    setShowNew(false);
+    refresh(updated);
+    setView('list');
+    setSelected(null);
   };
 
-  const handleCoSign = (chartId, coSignData) => {
-    const all = getCharts();
-    const idx = all.findIndex(c => c.id === chartId);
-    if (idx >= 0) {
-      all[idx] = { ...all[idx], status: 'co_signed', ...coSignData };
+  const toggleMuscle = (muscleId, side) => {
+    const current = form.muscleMap?.[muscleId];
+    const states = [null, 'strong', 'working', 'attention'];
+    const idx = states.indexOf(current);
+    const next = states[(idx + 1) % states.length];
+    const newMap = { ...form.muscleMap };
+    if (next === null) delete newMap[muscleId]; else newMap[muscleId] = next;
+    setForm({ ...form, muscleMap: newMap });
+  };
+
+  const toggleMuscleDetail = (muscleId, side) => {
+    const current = selected?.muscleMap?.[muscleId];
+    const states = [null, 'strong', 'working', 'attention'];
+    const idx = states.indexOf(current);
+    const next = states[(idx + 1) % states.length];
+    const newMap = { ...selected.muscleMap };
+    if (next === null) delete newMap[muscleId]; else newMap[muscleId] = next;
+    const updated = notes.map(n => n.id === selected.id ? { ...n, muscleMap: newMap } : n);
+    setSelected({ ...selected, muscleMap: newMap });
+    refresh(updated);
+  };
+
+  const addArea = () => {
+    if (!areaInput.trim()) return;
+    setForm({ ...form, areasOfFocus: [...(form.areasOfFocus || []), areaInput.trim()] });
+    setAreaInput('');
+  };
+
+  const addExercise = () => {
+    if (!exerciseInput.trim()) return;
+    setForm({ ...form, exercisesCompleted: [...(form.exercisesCompleted || []), exerciseInput.trim()] });
+    setExerciseInput('');
+  };
+
+  const addSpring = () => {
+    if (!springKey.trim() || !springVal) return;
+    setForm({ ...form, springSettings: { ...form.springSettings, [springKey.trim()]: springVal } });
+    setSpringKey('');
+    setSpringVal('');
+  };
+
+  // ── Filtered notes ──
+  const filtered = notes.filter(n => {
+    if (filterStatus !== 'all' && n.status !== filterStatus) return false;
+    if (filterType !== 'all' && n.classType !== filterType) return false;
+    if (search) {
+      const q = search.toLowerCase();
+      return (n.clientName || '').toLowerCase().includes(q) ||
+        (n.classType || '').toLowerCase().includes(q) ||
+        (n.instructorName || '').toLowerCase().includes(q);
     }
-    saveCharts(all);
-    refresh();
-    setShowCoSign(false);
-    setCoSignTargetId(null);
+    return true;
+  });
+
+  // ── KPIs ──
+  const total = notes.length;
+  const thisMonth = notes.filter(n => n.date?.startsWith(new Date().toISOString().slice(0, 7))).length;
+  const uniqueClients = new Set(notes.map(n => n.clientId)).size;
+  const classTypeCounts = notes.reduce((acc, n) => { acc[n.classType] = (acc[n.classType] || 0) + 1; return acc; }, {});
+  const topClass = Object.entries(classTypeCounts).sort(([, a], [, b]) => b - a)[0];
+
+  // ── Progress chart data (flexibility over time for selected client) ──
+  const clientNotesByDate = (clientId) =>
+    notes.filter(n => n.clientId === clientId && n.date)
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .slice(-8);
+
+  const flexTrend = selected?.clientId
+    ? clientNotesByDate(selected.clientId).map(n => Number(n.flexibility?.forwardFold) || 0).filter(v => v > 0)
+    : [];
+
+  const strengthTrend = selected?.clientId
+    ? clientNotesByDate(selected.clientId).map(n => Number(n.strengthBenchmarks?.coreHold) || 0).filter(v => v > 0)
+    : [];
+
+  // ── Styles ──
+  const card = { ...s.cardStyle, padding: 20, marginBottom: 0 };
+  const inp = { ...s.input };
+  const label = { ...s.label };
+
+  const fmtDate = (d) => {
+    if (!d) return '';
+    return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  const addInjectionPoint = (zoneId) => {
-    setEditingZone(zoneId);
-  };
+  // ══════════════════════════════════════════════════════════════════
+  // ── FORM VIEW ──
+  // ══════════════════════════════════════════════════════════════════
+  if (view === 'form') {
+    return (
+      <div>
+        <style>{`
+          @media (max-width: 768px) {
+            .sn-form-grid { grid-template-columns: 1fr !important; }
+            .sn-measure-grid { grid-template-columns: 1fr !important; }
+            .sn-body-tabs { flex-direction: row !important; }
+          }
+        `}</style>
 
-  const saveZone = (zoneId, value) => {
-    const map = { ...form.injectionMap };
-    if (value !== null) {
-      // value is either a structured object or null
-      if (isStructuredAnnotation(value) && !value.product && value.dose === null && !value.notes) {
-        delete map[zoneId];
-      } else if (value !== null) {
-        map[zoneId] = value;
-      }
-    } else {
-      delete map[zoneId];
-    }
-    setForm({ ...form, injectionMap: map });
-    setEditingZone(null);
-  };
-
-  // Get the zone for the editing popover
-  const getEditingZone = () => {
-    if (!editingZone) return null;
-    const allZones = [...FACE_ZONES, ...BODY_ZONES, ...SCALP_ZONES];
-    return allZones.find(z => z.id === editingZone) || { id: editingZone, label: editingZone };
-  };
-
-  // Summary line for chart list cards
-  const getChartZoneSummary = (chart) => {
-    const count = Object.keys(chart.injectionMap || {}).length;
-    const mt = chart.mapType || getMapType(chart.serviceId, services);
-    if (mt === 'none' && chart.measurements?.weight) return 'vitals recorded';
-    if (count === 0) return null;
-    if (mt === 'body') return `${count} body zones`;
-    if (mt === 'scalp') return `${count} scalp zones`;
-    return `${count} focus areas`;
-  };
-
-  const editingZoneObj = getEditingZone();
-
-  // Determine primary action button label + action
-  const primaryActionLabel = form.reviewRequired ? 'Submit for Review' : 'Sign & Lock';
-  const primaryAction = form.reviewRequired ? 'submit_review' : 'sign';
-
-  return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
-        <div>
-          <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Progress Tracking</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>SOAP notes, body mapping, and session documentation</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
+          <button onClick={() => { setView('list'); setSelected(null); }} style={{ ...s.pillGhost, padding: '6px 14px', fontSize: 13 }}>← Back</button>
+          <h1 style={{ font: `600 24px ${s.FONT}`, color: s.text }}>
+            {selected ? 'Edit Session Note' : 'New Session Note'}
+          </h1>
         </div>
-        <button onClick={openNew} style={s.pillAccent}>+ New Chart</button>
-      </div>
 
-      {/* Filters */}
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search client or service..." style={{ ...s.input, maxWidth: 260 }} />
-        <div style={{ display: 'flex', gap: 6 }}>
-          {[
-            ['all', 'All'],
-            ['draft', 'Drafts'],
-            ['pending_review', 'Pending Review'],
-            ['signed', 'Signed'],
-            ['co_signed', 'Co-Signed'],
-          ].map(([id, label]) => (
-            <button key={id} onClick={() => setStatusFilter(id)} style={{
-              ...s.pill, padding: '7px 14px', fontSize: 12,
-              background: statusFilter === id ? s.accent : 'transparent',
-              color: statusFilter === id ? s.accentText : s.text2,
-              border: statusFilter === id ? `1px solid ${s.accent}` : '1px solid #E5E5E5',
-            }}>{label}</button>
-          ))}
-        </div>
-      </div>
+        <div style={{ display: 'grid', gap: 20, maxWidth: 900 }}>
 
-      {/* Charts List */}
-      <div style={{ display: 'grid', gap: 10 }}>
-        {filtered.map(chart => {
-          const prov = providers.find(p => p.id === chart.providerId);
-          const zoneSummary = getChartZoneSummary(chart);
-          return (
-            <div key={chart.id} style={{
-              ...s.cardStyle, padding: '18px 22px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              transition: 'all 0.15s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.boxShadow = s.shadowMd}
-            onMouseLeave={e => e.currentTarget.style.boxShadow = s.shadow}
-            >
-              <div
-                style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1 }}
-                onClick={() => openChart(chart)}
-              >
-                <div style={{ width: 42, height: 42, borderRadius: '50%', background: avatarBg(chart.status), display: 'flex', alignItems: 'center', justifyContent: 'center', font: `500 12px ${s.FONT}`, color: avatarColor(chart.status, s), flexShrink: 0 }}>
-                  {chart.clientName?.split(' ').map(n => n[0]).join('')}
-                </div>
-                <div>
-                  <div style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{chart.clientName} — {chart.serviceName}</div>
-                  <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>
-                    {prov?.name?.split(',')[0] || 'Instructor'} · {chart.date}
-                    {chart.status === 'co_signed' && chart.reviewedByName && (
-                      <span style={{ color: '#16A34A', marginLeft: 6 }}>· Co-signed by {chart.reviewedByName}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                {zoneSummary && <span style={{ padding: '3px 8px', borderRadius: 100, background: '#F5F5F5', font: `400 10px ${s.MONO}`, color: s.text2 }}>{zoneSummary}</span>}
-                <StatusBadge status={chart.status} s={s} />
-                {chart.status === 'pending_review' && (
-                  <button
-                    onClick={e => { e.stopPropagation(); setCoSignTargetId(chart.id); setShowCoSign(true); }}
-                    style={{ ...s.pillAccent, padding: '5px 12px', fontSize: 11, flexShrink: 0 }}
-                  >
-                    Co-Sign
-                  </button>
-                )}
-              </div>
-            </div>
-          );
-        })}
-        {filtered.length === 0 && (
-          <div style={{ ...s.cardStyle, padding: 48, textAlign: 'center', font: `400 14px ${s.FONT}`, color: s.text3 }}>No charts found</div>
-        )}
-      </div>
-
-      {/* Chart Editor Modal */}
-      {showNew && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowNew(false)}>
-          <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 900, width: '95%', boxShadow: s.shadowLg, maxHeight: '92vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ font: `600 22px ${s.FONT}`, color: s.text, marginBottom: 20 }}>{activeId ? 'Edit Chart' : 'New Session Chart'}</h2>
-
-            {/* Allergy warning banner */}
-            {selectedPatient?.allergies && (
-              <div style={{
-                background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 10,
-                padding: '12px 16px', marginBottom: 20,
-                display: 'flex', alignItems: 'flex-start', gap: 10,
-              }}>
-                <span style={{ fontSize: 18, flexShrink: 0 }}>⚠</span>
-                <div>
-                  <div style={{ font: `600 13px ${s.FONT}`, color: '#B91C1C', marginBottom: 2 }}>Known Allergies</div>
-                  <div style={{ font: `400 13px ${s.FONT}`, color: '#DC2626' }}>{selectedPatient.allergies}</div>
-                </div>
-              </div>
-            )}
-
-            {/* Client / Service / Instructor */}
-            <div className="charts-meta-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
-              <div>
-                <label style={s.label}>Client</label>
-                <select value={form.clientId} onChange={e => setForm({ ...form, clientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option value="">Select...</option>
+          {/* ── Basic Info ── */}
+          <div style={card}>
+            <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 16 }}>Session Details</div>
+            <div className="sn-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={label}>Client</label>
+                <select value={form.clientId} onChange={e => setForm({ ...form, clientId: e.target.value })} style={{ ...inp, cursor: 'pointer' }}>
+                  <option value="">Select client...</option>
                   {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>
               <div>
-                <label style={s.label}>Service</label>
-                <select value={form.serviceId} onChange={e => setForm({ ...form, serviceId: e.target.value, injectionMap: {} })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option value="">Select...</option>
-                  {services.map(sv => <option key={sv.id} value={sv.id}>{sv.name}</option>)}
+                <label style={label}>Instructor</label>
+                <select value={form.instructorId} onChange={e => setForm({ ...form, instructorId: e.target.value })} style={{ ...inp, cursor: 'pointer' }}>
+                  <option value="">Select instructor...</option>
+                  {instructors.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>
               </div>
               <div>
-                <label style={s.label}>Instructor</label>
-                <select value={form.providerId} onChange={e => setForm({ ...form, providerId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option value="">Select...</option>
-                  {providers.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                <label style={label}>Date</label>
+                <input type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} style={inp} />
+              </div>
+              <div>
+                <label style={label}>Class Type</label>
+                <select value={form.classType} onChange={e => setForm({ ...form, classType: e.target.value })} style={{ ...inp, cursor: 'pointer' }}>
+                  <option value="">Select class type...</option>
+                  {CLASS_TYPES.map(ct => <option key={ct} value={ct}>{ct}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={label}>Duration (minutes)</label>
+                <input type="number" value={form.duration} onChange={e => setForm({ ...form, duration: parseInt(e.target.value) || 55 })} style={inp} min={15} max={120} />
+              </div>
+              <div>
+                <label style={label}>Status</label>
+                <select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })} style={{ ...inp, cursor: 'pointer' }}>
+                  <option value="draft">Draft</option>
+                  <option value="complete">Complete</option>
+                  <option value="pending">Pending Review</option>
                 </select>
               </div>
             </div>
+          </div>
 
-            {/* Vitals */}
-            <div className="charts-vitals-row" style={{ display: 'flex', gap: 14, marginBottom: 20 }}>
-              {[['bp', 'Blood Pressure'], ['pulse', 'Pulse'], ['temp', 'Temp (F)']].map(([key, label]) => (
-                <div key={key} style={{ flex: 1 }}>
-                  <label style={s.label}>{label}</label>
-                  <input value={form.vitals[key] || ''} onChange={e => setForm({ ...form, vitals: { ...form.vitals, [key]: e.target.value } })} style={s.input} placeholder={key === 'bp' ? '120/80' : key === 'pulse' ? '72' : '98.6'} />
-                </div>
-              ))}
-              <div style={{ flex: 2 }}>
-                <label style={s.label}>Current Medications</label>
-                <input value={form.medications} onChange={e => setForm({ ...form, medications: e.target.value })} style={s.input} placeholder="List medications" />
+          {/* ── Session Notes ── */}
+          <div style={card}>
+            <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 16 }}>Session Notes</div>
+            <div style={{ display: 'grid', gap: 14 }}>
+              <div>
+                <label style={label}>Observations</label>
+                <textarea value={form.observations} onChange={e => setForm({ ...form, observations: e.target.value })} rows={4} style={{ ...inp, resize: 'vertical' }} placeholder="Form quality, alignment cues, notable moments, technique observations..." />
+              </div>
+              <div>
+                <label style={label}>Discomfort / Pain Notes</label>
+                <textarea value={form.discomfortNotes} onChange={e => setForm({ ...form, discomfortNotes: e.target.value })} rows={2} style={{ ...inp, resize: 'vertical' }} placeholder="e.g. Reported mild lower back tightness during extension — resolved with spring reduction" />
+              </div>
+              <div>
+                <label style={label}>Client Goals</label>
+                <textarea value={form.goals} onChange={e => setForm({ ...form, goals: e.target.value })} rows={2} style={{ ...inp, resize: 'vertical' }} placeholder="Client's stated goals and progress toward them..." />
+              </div>
+              <div>
+                <label style={label}>Instructor Recommendations for Next Session</label>
+                <textarea value={form.instructorRecommendations} onChange={e => setForm({ ...form, instructorRecommendations: e.target.value })} rows={2} style={{ ...inp, resize: 'vertical' }} placeholder="Focus areas, progression suggestions, modifications to try..." />
               </div>
             </div>
+          </div>
 
-            <div className="charts-editor-grid" style={{ display: 'grid', gridTemplateColumns: currentMapType === 'none' ? '1fr 320px' : '1fr 320px', gap: 20 }}>
-              {/* SOAP Notes */}
-              <div>
-                {[
-                  { key: 'subjective', label: 'S — Subjective', placeholder: 'Client-reported feedback, goals, areas of focus, concerns...' },
-                  { key: 'objective', label: 'O — Objective', placeholder: 'Physical observations, posture assessment, range of motion, measurements...' },
-                  { key: 'assessment', label: 'A — Assessment', placeholder: 'Instructor assessment, progress evaluation, session readiness...' },
-                  { key: 'plan', label: 'P — Plan', placeholder: 'Exercises performed, modifications used, home practice assigned, follow-up...' },
-                ].map(field => (
-                  <div key={field.key} style={{ marginBottom: 14 }}>
-                    <label style={{ ...s.label, color: s.accent }}>{field.label}</label>
-                    <textarea value={form[field.key]} onChange={e => setForm({ ...form, [field.key]: e.target.value })} rows={3} style={{ ...s.input, resize: 'vertical', lineHeight: 1.6 }} placeholder={field.placeholder} />
+          {/* ── Areas of Focus + Exercises ── */}
+          <div className="sn-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            <div style={card}>
+              <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 12 }}>Areas of Focus</div>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+                <input value={areaInput} onChange={e => setAreaInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && addArea()} style={{ ...inp, flex: 1 }} placeholder="e.g. Core, Hip mobility..." />
+                <button onClick={addArea} style={s.pillAccent}>Add</button>
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {(form.areasOfFocus || []).map((area, i) => (
+                  <span key={i} style={{ padding: '4px 10px', borderRadius: 100, background: s.accentLight, color: s.accent, font: `500 12px ${s.FONT}`, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    {area}
+                    <button onClick={() => setForm({ ...form, areasOfFocus: form.areasOfFocus.filter((_, j) => j !== i) })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: s.accent, padding: 0, fontSize: 14, lineHeight: 1 }}>×</button>
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div style={card}>
+              <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 12 }}>Exercises Completed</div>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+                <input value={exerciseInput} onChange={e => setExerciseInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && addExercise()} style={{ ...inp, flex: 1 }} placeholder="e.g. Hundred, Roll-up..." />
+                <button onClick={addExercise} style={s.pillAccent}>Add</button>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxHeight: 160, overflowY: 'auto' }}>
+                {(form.exercisesCompleted || []).map((ex, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 8px', background: '#F9F9F9', borderRadius: 6 }}>
+                    <span style={{ font: `400 12px ${s.FONT}`, color: s.text }}>{ex}</span>
+                    <button onClick={() => setForm({ ...form, exercisesCompleted: form.exercisesCompleted.filter((_, j) => j !== i) })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: s.text3, fontSize: 14 }}>×</button>
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
 
-              {/* Right panel: Map or Vitals based on service type */}
+          {/* ── Spring Settings ── */}
+          <div style={card}>
+            <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 12 }}>Spring Settings Used</div>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+              <input value={springKey} onChange={e => setSpringKey(e.target.value)} style={{ ...inp, flex: 1 }} placeholder="Exercise name (e.g. Footwork)" />
+              <select value={springVal} onChange={e => setSpringVal(e.target.value)} style={{ ...inp, width: 160, cursor: 'pointer' }}>
+                <option value="">Spring setting...</option>
+                {SPRING_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+              <button onClick={addSpring} style={s.pillAccent}>Add</button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8 }}>
+              {Object.entries(form.springSettings || {}).map(([k, v]) => (
+                <div key={k} style={{ padding: '8px 12px', background: '#F9F9F9', borderRadius: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ font: `500 12px ${s.FONT}`, color: s.text }}>{k}</div>
+                    <div style={{ font: `400 11px ${s.MONO}`, color: s.accent }}>{v}</div>
+                  </div>
+                  <button onClick={() => { const m = { ...form.springSettings }; delete m[k]; setForm({ ...form, springSettings: m }); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: s.text3 }}>×</button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Measurements ── */}
+          <div style={card}>
+            <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 16 }}>Flexibility & Strength Measurements</div>
+            <div className="sn-measure-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
               <div>
-                {currentMapType === 'none' ? (
-                  <VitalsPanel form={form} setForm={setForm} s={s} />
+                <div style={{ font: `500 12px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Flexibility (1-10 scale)</div>
+                <div style={{ display: 'grid', gap: 10 }}>
+                  {[['forwardFold', 'Forward Fold Reach'], ['hipRotation', 'Hip Rotation'], ['shoulderMobility', 'Shoulder Mobility']].map(([key, lbl]) => (
+                    <div key={key}>
+                      <label style={label}>{lbl}</label>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <input type="range" min={1} max={10} value={form.flexibility?.[key] || 5}
+                          onChange={e => setForm({ ...form, flexibility: { ...form.flexibility, [key]: parseInt(e.target.value) } })}
+                          style={{ flex: 1, accentColor: s.accent }} />
+                        <span style={{ font: `600 14px ${s.MONO}`, color: s.accent, minWidth: 24, textAlign: 'right' }}>
+                          {form.flexibility?.[key] || 5}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div style={{ font: `500 12px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Strength Benchmarks</div>
+                <div style={{ display: 'grid', gap: 10 }}>
+                  <div>
+                    <label style={label}>Core Hold Time (seconds)</label>
+                    <input type="number" value={form.strengthBenchmarks?.coreHold || ''} onChange={e => setForm({ ...form, strengthBenchmarks: { ...form.strengthBenchmarks, coreHold: e.target.value } })} style={inp} placeholder="e.g. 45" />
+                  </div>
+                  <div>
+                    <label style={label}>Max Spring Resistance</label>
+                    <select value={form.strengthBenchmarks?.springResistance || ''} onChange={e => setForm({ ...form, strengthBenchmarks: { ...form.strengthBenchmarks, springResistance: e.target.value } })} style={{ ...inp, cursor: 'pointer' }}>
+                      <option value="">Select...</option>
+                      {SPRING_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label style={label}>Leg Press Load</label>
+                    <select value={form.strengthBenchmarks?.legPress || ''} onChange={e => setForm({ ...form, strengthBenchmarks: { ...form.strengthBenchmarks, legPress: e.target.value } })} style={{ ...inp, cursor: 'pointer' }}>
+                      <option value="">Select...</option>
+                      {SPRING_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Body Map ── */}
+          <div style={card}>
+            <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 8 }}>Muscle Groups Worked</div>
+            <div style={{ font: `400 12px ${s.FONT}`, color: s.text2, marginBottom: 12 }}>Click dots to cycle through: strong (green) → working (yellow) → needs attention (red) → clear</div>
+            <BodyMapLegend s={s} />
+            <div className="sn-body-tabs" style={{ display: 'flex', gap: 8, marginTop: 16, marginBottom: 12 }}>
+              {['front', 'back'].map(side => (
+                <button key={side} onClick={() => setMuscleMapTabForm(side)} style={{
+                  padding: '6px 16px', borderRadius: 100, border: `1px solid ${muscleMapTabForm === side ? s.accent : '#E5E5E5'}`,
+                  background: muscleMapTabForm === side ? s.accentLight : 'transparent',
+                  color: muscleMapTabForm === side ? s.accent : s.text2,
+                  font: `500 12px ${s.FONT}`, cursor: 'pointer',
+                }}>{side.charAt(0).toUpperCase() + side.slice(1)}</button>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+              <div style={{ flex: '0 0 160px' }}>
+                <BodyMapSVG side={muscleMapTabForm} muscleMap={form.muscleMap} onToggle={toggleMuscle} s={s} />
+              </div>
+              <div style={{ flex: 1, minWidth: 200 }}>
+                <div style={{ font: `500 11px ${s.MONO}`, color: s.text3, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Marked Muscles</div>
+                {Object.keys(form.muscleMap || {}).length === 0 ? (
+                  <div style={{ font: `400 13px ${s.FONT}`, color: s.text3 }}>Click the body map to mark muscle groups</div>
                 ) : (
-                  <>
-                    <label style={{ ...s.label, marginBottom: 12 }}>{currentMapLabel}</label>
-                    <div style={{
-                      position: 'relative', width: '100%',
-                      aspectRatio: currentMapType === 'body' ? '0.625' : '0.75',
-                      background: '#FAFAFA', borderRadius: 12, border: '1px solid #E5E5E5', overflow: 'hidden',
-                    }}>
-                      {/* SVG outline */}
-                      {currentMapType === 'face' && <FaceSVG />}
-                      {currentMapType === 'body' && <BodySVG />}
-                      {currentMapType === 'scalp' && <ScalpSVG />}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {Object.entries(form.muscleMap || {}).map(([id, status]) => {
+                      const muscle = ALL_MUSCLES.find(m => m.id === id);
+                      const st = MUSCLE_STATUS[status];
+                      return (
+                        <span key={id} style={{ padding: '4px 10px', borderRadius: 100, background: st?.bg, color: st?.color, font: `500 11px ${s.FONT}` }}>
+                          {muscle?.label || id}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
-                      {/* Zone points */}
-                      {currentZones.map(zone => {
-                        const val = form.injectionMap[zone.id];
-                        const hasValue = Boolean(val);
-                        const pillText = hasValue ? formatAnnotationPill(val) : '';
-                        return (
-                          <div key={zone.id} onClick={() => addInjectionPoint(zone.id)} style={{
-                            position: 'absolute', left: `${zone.x}%`, top: `${zone.y}%`,
-                            transform: 'translate(-50%, -50%)', cursor: 'pointer', zIndex: 10,
-                          }}>
-                            <div style={{
-                              width: hasValue ? 'auto' : 14,
-                              minWidth: hasValue ? 24 : 14,
-                              height: hasValue ? 20 : 14,
-                              borderRadius: hasValue ? 100 : '50%',
-                              background: hasValue ? s.accent : 'rgba(0,0,0,0.08)',
-                              border: hasValue ? 'none' : '1.5px dashed #CCC',
-                              display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              padding: hasValue ? '0 5px' : 0,
-                              font: `600 7px ${s.MONO}`, color: s.accentText,
-                              transition: 'all 0.15s',
-                              whiteSpace: 'nowrap',
-                            }}>
-                              {hasValue && pillText}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div style={{ font: `400 10px ${s.FONT}`, color: s.text3, marginTop: 6, textAlign: 'center' }}>
-                      {currentMapType === 'face' && 'Click points to add focus area details'}
-                      {currentMapType === 'body' && 'Click zones to add session details'}
-                      {currentMapType === 'scalp' && 'Click zones to add session details'}
-                    </div>
+          {/* ── Actions ── */}
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', paddingBottom: 40 }}>
+            <button onClick={() => { setView('list'); setSelected(null); }} style={s.pillGhost}>Cancel</button>
+            <button onClick={handleSave} style={s.pillAccent}>{selected ? 'Save Changes' : 'Create Note'}</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-                    {/* Treatment summary (edit mode) */}
-                    <TreatmentSummary
-                      injectionMap={form.injectionMap}
-                      zones={currentZones}
-                      s={s}
-                    />
-                  </>
+  // ══════════════════════════════════════════════════════════════════
+  // ── DETAIL VIEW ──
+  // ══════════════════════════════════════════════════════════════════
+  if (view === 'detail' && selected) {
+    const clientHistory = clientNotesByDate(selected.clientId);
+
+    return (
+      <div>
+        <style>{`
+          @media (max-width: 768px) {
+            .sn-detail-grid { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
+          <button onClick={() => { setView('list'); setSelected(null); }} style={{ ...s.pillGhost, padding: '6px 14px', fontSize: 13 }}>← Back</button>
+          <div style={{ flex: 1 }}>
+            <h1 style={{ font: `600 22px ${s.FONT}`, color: s.text, margin: 0 }}>{selected.clientName}</h1>
+            <div style={{ font: `400 13px ${s.FONT}`, color: s.text2 }}>{selected.classType} · {fmtDate(selected.date)}</div>
+          </div>
+          <StatusBadge status={selected.status} s={s} />
+          <button onClick={() => openEdit(selected)} style={{ ...s.pillOutline, fontSize: 12 }}>Edit</button>
+          <button onClick={() => handleDelete(selected.id)} style={{ ...s.pillGhost, fontSize: 12, color: s.danger }}>Delete</button>
+        </div>
+
+        <div className="sn-detail-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 20 }}>
+
+          {/* Left column */}
+          <div style={{ display: 'grid', gap: 16 }}>
+
+            {/* Instructor + session info */}
+            <div style={{ ...card, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+              {[
+                ['Instructor', selected.instructorName || '—'],
+                ['Duration', `${selected.duration || '—'} min`],
+                ['Class Type', selected.classType || '—'],
+              ].map(([l, v]) => (
+                <div key={l}>
+                  <div style={{ font: `400 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: s.text3, marginBottom: 4 }}>{l}</div>
+                  <div style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{v}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Observations */}
+            {selected.observations && (
+              <div style={card}>
+                <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Observations</div>
+                <p style={{ font: `400 14px ${s.FONT}`, color: s.text, lineHeight: 1.7, margin: 0 }}>{selected.observations}</p>
+              </div>
+            )}
+
+            {/* Exercises */}
+            {selected.exercisesCompleted?.length > 0 && (
+              <div style={card}>
+                <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>
+                  Exercises Completed ({selected.exercisesCompleted.length})
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {selected.exercisesCompleted.map((ex, i) => (
+                    <span key={i} style={{ padding: '4px 10px', borderRadius: 100, background: '#F5F5F5', font: `400 12px ${s.FONT}`, color: s.text }}>{ex}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Spring settings */}
+            {Object.keys(selected.springSettings || {}).length > 0 && (
+              <div style={card}>
+                <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>Spring Settings</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 }}>
+                  {Object.entries(selected.springSettings).map(([k, v]) => (
+                    <div key={k} style={{ padding: '8px 12px', background: '#F9F9F9', borderRadius: 8 }}>
+                      <div style={{ font: `400 11px ${s.FONT}`, color: s.text3, marginBottom: 2 }}>{k}</div>
+                      <div style={{ font: `600 13px ${s.MONO}`, color: s.accent }}>{v}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Discomfort notes */}
+            {selected.discomfortNotes && (
+              <div style={{ ...card, borderLeft: `3px solid ${selected.discomfortNotes.toLowerCase().includes('none') ? s.success : '#F59E0B'}`, paddingLeft: 16 }}>
+                <div style={{ font: `500 11px ${s.MONO}`, color: selected.discomfortNotes.toLowerCase().includes('none') ? s.success : '#D97706', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>
+                  Discomfort / Pain Notes
+                </div>
+                <p style={{ font: `400 13px ${s.FONT}`, color: s.text, lineHeight: 1.6, margin: 0 }}>{selected.discomfortNotes}</p>
+              </div>
+            )}
+
+            {/* Goals + Recommendations */}
+            <div className="sn-detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              {selected.goals && (
+                <div style={card}>
+                  <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Client Goals</div>
+                  <p style={{ font: `400 13px ${s.FONT}`, color: s.text, lineHeight: 1.6, margin: 0 }}>{selected.goals}</p>
+                </div>
+              )}
+              {selected.instructorRecommendations && (
+                <div style={card}>
+                  <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Next Session Plan</div>
+                  <p style={{ font: `400 13px ${s.FONT}`, color: s.text, lineHeight: 1.6, margin: 0 }}>{selected.instructorRecommendations}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Progress trends */}
+            {(flexTrend.length >= 2 || strengthTrend.length >= 2) && (
+              <div style={card}>
+                <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 14 }}>Progress Over Time</div>
+                <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+                  {flexTrend.length >= 2 && (
+                    <div>
+                      <div style={{ font: `400 11px ${s.FONT}`, color: s.text3, marginBottom: 4 }}>Flexibility Score</div>
+                      <MiniSparkline values={flexTrend} color={s.accent} />
+                      <div style={{ font: `600 16px ${s.MONO}`, color: s.accent, marginTop: 4 }}>{flexTrend[flexTrend.length - 1]}<span style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>/10</span></div>
+                    </div>
+                  )}
+                  {strengthTrend.length >= 2 && (
+                    <div>
+                      <div style={{ font: `400 11px ${s.FONT}`, color: s.text3, marginBottom: 4 }}>Core Hold (sec)</div>
+                      <MiniSparkline values={strengthTrend} color={s.success} />
+                      <div style={{ font: `600 16px ${s.MONO}`, color: s.success, marginTop: 4 }}>{strengthTrend[strengthTrend.length - 1]}s</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right column */}
+          <div style={{ display: 'grid', gap: 16, alignContent: 'start' }}>
+
+            {/* Measurements */}
+            <div style={card}>
+              <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Measurements</div>
+              <div style={{ display: 'grid', gap: 10 }}>
+                {selected.flexibility && Object.entries(selected.flexibility).map(([k, v]) => {
+                  if (!v) return null;
+                  const labels = { forwardFold: 'Forward Fold', hipRotation: 'Hip Rotation', shoulderMobility: 'Shoulder Mobility' };
+                  const val = Number(v);
+                  return (
+                    <div key={k}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                        <span style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{labels[k] || k}</span>
+                        <span style={{ font: `600 12px ${s.MONO}`, color: s.accent }}>{val}/10</span>
+                      </div>
+                      <div style={{ height: 6, background: '#F0F0F0', borderRadius: 3, overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: `${val * 10}%`, background: val >= 7 ? s.success : val >= 4 ? '#F59E0B' : '#EF4444', borderRadius: 3, transition: 'width 0.4s' }} />
+                      </div>
+                    </div>
+                  );
+                })}
+                {selected.strengthBenchmarks?.coreHold && (
+                  <div style={{ paddingTop: 8, borderTop: '1px solid #F0F0F0' }}>
+                    <div style={{ font: `400 11px ${s.FONT}`, color: s.text3, marginBottom: 2 }}>Core Hold</div>
+                    <div style={{ font: `600 18px ${s.MONO}`, color: s.text }}>{selected.strengthBenchmarks.coreHold}s</div>
+                  </div>
+                )}
+                {selected.strengthBenchmarks?.springResistance && selected.strengthBenchmarks.springResistance !== 'N/A (mat)' && (
+                  <div>
+                    <div style={{ font: `400 11px ${s.FONT}`, color: s.text3, marginBottom: 2 }}>Max Spring Resistance</div>
+                    <div style={{ font: `600 13px ${s.MONO}`, color: s.accent }}>{selected.strengthBenchmarks.springResistance}</div>
+                  </div>
                 )}
               </div>
             </div>
 
-            {/* MD Review checkbox */}
-            <div style={{ marginTop: 20, padding: '14px 16px', background: '#FAFAFA', borderRadius: 10, border: '1px solid #E5E5E5' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', font: `400 13px ${s.FONT}`, color: s.text }}>
-                <input
-                  type="checkbox"
-                  checked={form.reviewRequired}
-                  onChange={e => setForm({ ...form, reviewRequired: e.target.checked })}
-                  style={{ width: 16, height: 16, cursor: 'pointer', accentColor: s.accent }}
-                />
-                <span>Flagged for head instructor review</span>
-                {form.reviewRequired && (
-                  <span style={{ padding: '2px 8px', borderRadius: 100, background: '#EFF6FF', font: `500 10px ${s.FONT}`, color: '#2563EB', border: '1px solid #BFDBFE' }}>
-                    Will submit for instructor review
-                  </span>
-                )}
-              </label>
+            {/* Areas of focus */}
+            {selected.areasOfFocus?.length > 0 && (
+              <div style={card}>
+                <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>Focus Areas</div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {selected.areasOfFocus.map((a, i) => (
+                    <span key={i} style={{ padding: '4px 10px', borderRadius: 100, background: s.accentLight, color: s.accent, font: `500 11px ${s.FONT}` }}>{a}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Body Map */}
+            <div style={card}>
+              <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Muscle Groups</div>
+              <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
+                {['front', 'back'].map(side => (
+                  <button key={side} onClick={() => setBodyMapTab(side)} style={{
+                    padding: '4px 12px', borderRadius: 100, border: `1px solid ${bodyMapTab === side ? s.accent : '#E5E5E5'}`,
+                    background: bodyMapTab === side ? s.accentLight : 'transparent',
+                    color: bodyMapTab === side ? s.accent : s.text3,
+                    font: `500 11px ${s.FONT}`, cursor: 'pointer',
+                  }}>{side}</button>
+                ))}
+              </div>
+              <BodyMapSVG side={bodyMapTab} muscleMap={selected.muscleMap} onToggle={toggleMuscleDetail} s={s} />
+              <BodyMapLegend s={s} />
+              <div style={{ font: `400 10px ${s.FONT}`, color: s.text3, marginTop: 8 }}>Click to update muscle status</div>
             </div>
 
-            {/* Actions */}
-            <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>
-              <button onClick={() => setShowNew(false)} style={s.pillGhost}>Cancel</button>
-              <button onClick={() => handleSave('draft')} style={s.pillOutline}>Save Draft</button>
-              <button onClick={() => handleSave(primaryAction)} style={s.pillAccent}>{primaryActionLabel}</button>
-            </div>
+            {/* Past sessions (mini list) */}
+            {clientHistory.length > 1 && (
+              <div style={card}>
+                <div style={{ font: `500 11px ${s.MONO}`, color: s.accent, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 10 }}>Previous Sessions</div>
+                {clientHistory.filter(n => n.id !== selected.id).slice(-5).map(n => (
+                  <div key={n.id} onClick={() => { setSelected(n); setView('detail'); }} style={{ padding: '8px 0', borderBottom: '1px solid #F5F5F5', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <div style={{ font: `500 12px ${s.FONT}`, color: s.text }}>{n.classType}</div>
+                      <div style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>{fmtDate(n.date)}</div>
+                    </div>
+                    <StatusBadge status={n.status} s={s} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      )}
+      </div>
+    );
+  }
 
+  // ══════════════════════════════════════════════════════════════════
+  // ── LIST VIEW (default) ──
+  // ══════════════════════════════════════════════════════════════════
+  return (
+    <div>
       <style>{`
         @media (max-width: 768px) {
-          .charts-editor-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .charts-meta-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .charts-vitals-row {
-            flex-wrap: wrap !important;
-          }
+          .sn-kpi-grid { grid-template-columns: 1fr 1fr !important; }
+          .sn-table { display: none !important; }
+          .sn-cards { display: grid !important; }
+        }
+        @media (min-width: 769px) {
+          .sn-cards { display: none !important; }
         }
       `}</style>
 
-      {/* Zone Annotation Popover (structured form) */}
-      {editingZone && editingZoneObj && (
-        <ZoneAnnotationPopover
-          key={editingZone}
-          zoneId={editingZone}
-          zoneLabel={editingZoneObj.label}
-          currentValue={form.injectionMap[editingZone]}
-          onSave={(val) => saveZone(editingZone, val)}
-          onClose={() => setEditingZone(null)}
-          s={s}
-          mapType={currentMapType}
-        />
-      )}
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
+        <div>
+          <h1 style={{ font: `600 28px ${s.FONT}`, color: s.text, marginBottom: 6, letterSpacing: '-0.3px' }}>Session Notes</h1>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Progress tracking, body mapping, and session documentation</p>
+        </div>
+        <button onClick={openNew} style={s.pillAccent}>+ New Session Note</button>
+      </div>
 
-      {/* Co-Sign Modal */}
-      {showCoSign && coSignTargetId && (
-        <CoSignModal
-          providers={providers}
-          onConfirm={(data) => handleCoSign(coSignTargetId, data)}
-          onClose={() => { setShowCoSign(false); setCoSignTargetId(null); }}
-          s={s}
-        />
-      )}
+      {/* KPIs */}
+      <div className="sn-kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 }}>
+        {[
+          { label: 'Total Notes', value: total },
+          { label: 'This Month', value: thisMonth, color: s.accent },
+          { label: 'Clients Documented', value: uniqueClients, color: s.text },
+          { label: 'Top Class', value: topClass?.[0] || '—', sub: topClass ? `${topClass[1]} sessions` : '', color: s.text },
+        ].map(k => (
+          <div key={k.label} style={{ ...s.cardStyle, padding: '16px 18px' }}>
+            <div style={{ font: `400 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: s.text3, marginBottom: 4 }}>{k.label}</div>
+            <div style={{ font: `600 22px ${s.FONT}`, color: k.color || s.text, lineHeight: 1.2 }}>{k.value}</div>
+            {k.sub && <div style={{ font: `400 11px ${s.FONT}`, color: s.text3, marginTop: 2 }}>{k.sub}</div>}
+          </div>
+        ))}
+      </div>
+
+      {/* Filters */}
+      <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search client, class, or instructor..." style={{ ...s.input, maxWidth: 280 }} />
+        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ ...s.input, width: 'auto', cursor: 'pointer' }}>
+          <option value="all">All Statuses</option>
+          <option value="complete">Complete</option>
+          <option value="draft">Draft</option>
+          <option value="pending">Pending Review</option>
+        </select>
+        <select value={filterType} onChange={e => setFilterType(e.target.value)} style={{ ...s.input, width: 'auto', cursor: 'pointer' }}>
+          <option value="all">All Classes</option>
+          {CLASS_TYPES.map(ct => <option key={ct} value={ct}>{ct}</option>)}
+        </select>
+        {(search || filterStatus !== 'all' || filterType !== 'all') && (
+          <button onClick={() => { setSearch(''); setFilterStatus('all'); setFilterType('all'); }} style={{ ...s.pillGhost, fontSize: 12, padding: '6px 12px' }}>Clear</button>
+        )}
+        <span style={{ font: `400 12px ${s.FONT}`, color: s.text3, marginLeft: 'auto' }}>{filtered.length} notes</span>
+      </div>
+
+      {/* Desktop Table */}
+      <div className="sn-table" style={{ ...s.tableWrap }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid #E5E5E5' }}>
+              {['Client', 'Class Type', 'Date', 'Instructor', 'Focus Areas', 'Status', ''].map(h => (
+                <th key={h} style={{ padding: '12px 16px', font: `500 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: s.text3, textAlign: 'left' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map(note => (
+              <tr key={note.id} onClick={() => openDetail(note)} style={{ borderBottom: '1px solid rgba(0,0,0,0.04)', cursor: 'pointer' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#FAFAFA'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                <td style={{ padding: '14px 16px' }}>
+                  <div style={{ font: `500 13px ${s.FONT}`, color: s.text }}>{note.clientName}</div>
+                </td>
+                <td style={{ padding: '14px 16px', font: `400 13px ${s.FONT}`, color: s.text2 }}>{note.classType || '—'}</td>
+                <td style={{ padding: '14px 16px', font: `400 12px ${s.MONO}`, color: s.text2 }}>{fmtDate(note.date)}</td>
+                <td style={{ padding: '14px 16px', font: `400 13px ${s.FONT}`, color: s.text2 }}>{note.instructorName?.split(',')[0] || '—'}</td>
+                <td style={{ padding: '14px 16px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                    {(note.areasOfFocus || []).slice(0, 2).map((a, i) => (
+                      <span key={i} style={{ padding: '2px 8px', borderRadius: 100, background: s.accentLight, color: s.accent, font: `400 10px ${s.FONT}` }}>{a}</span>
+                    ))}
+                    {(note.areasOfFocus?.length || 0) > 2 && (
+                      <span style={{ font: `400 10px ${s.FONT}`, color: s.text3 }}>+{note.areasOfFocus.length - 2}</span>
+                    )}
+                  </div>
+                </td>
+                <td style={{ padding: '14px 16px' }}><StatusBadge status={note.status} s={s} /></td>
+                <td style={{ padding: '14px 16px' }}>
+                  <div style={{ display: 'flex', gap: 6 }} onClick={e => e.stopPropagation()}>
+                    <button onClick={() => openEdit(note)} style={{ ...s.pillGhost, padding: '4px 10px', fontSize: 11 }}>Edit</button>
+                    <button onClick={() => handleDelete(note.id)} style={{ ...s.pillGhost, padding: '4px 10px', fontSize: 11, color: s.danger }}>Delete</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {filtered.length === 0 && (
+          <div style={{ padding: '48px 24px', textAlign: 'center', font: `400 14px ${s.FONT}`, color: s.text3 }}>
+            No session notes found. <button onClick={openNew} style={{ background: 'none', border: 'none', color: s.accent, cursor: 'pointer', font: `500 14px ${s.FONT}` }}>Create the first one →</button>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="sn-cards" style={{ display: 'none', gap: 10 }}>
+        {filtered.map(note => (
+          <div key={note.id} onClick={() => openDetail(note)} style={{ ...s.cardStyle, padding: 16, cursor: 'pointer' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+              <div>
+                <div style={{ font: `600 14px ${s.FONT}`, color: s.text }}>{note.clientName}</div>
+                <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>{note.classType} · {fmtDate(note.date)}</div>
+              </div>
+              <StatusBadge status={note.status} s={s} />
+            </div>
+            {note.observations && (
+              <p style={{ font: `400 12px ${s.FONT}`, color: s.text2, margin: 0, lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                {note.observations}
+              </p>
+            )}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+              <span style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>{note.instructorName?.split(',')[0]}</span>
+              <div style={{ display: 'flex', gap: 6 }} onClick={e => e.stopPropagation()}>
+                <button onClick={() => openEdit(note)} style={{ ...s.pillGhost, padding: '3px 10px', fontSize: 11 }}>Edit</button>
+                <button onClick={() => handleDelete(note.id)} style={{ ...s.pillGhost, padding: '3px 10px', fontSize: 11, color: s.danger }}>Delete</button>
+              </div>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div style={{ padding: 32, textAlign: 'center', font: `400 14px ${s.FONT}`, color: s.text3 }}>
+            No session notes found.
+          </div>
+        )}
+      </div>
     </div>
   );
 }

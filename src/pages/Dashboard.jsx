@@ -181,10 +181,10 @@ export default function Dashboard() {
   ];
 
   const kpis = [
-    { label: "Classes Today", value: todayAppts.length, sub: `${confirmedToday} confirmed, ${pendingToday} pending`, path: '/schedule' },
-    { label: 'Monthly Revenue', value: fmt(monthRevenue), sub: `${monthAppts.length} sessions completed`, path: '/reports' },
-    { label: 'Active Clients', value: clients.length, sub: `${newPatientsMonth} new this month`, path: '/clients' },
-    { label: 'Client Follow-Ups', value: pendingAlerts.length, sub: pendingAlerts.length > 0 ? `${pendingAlerts.filter(a => a.priority === 'high').length} high priority` : 'All caught up', path: '/retention' },
+    { label: "Classes Today", value: todayAppts.length, sub: `${confirmedToday} confirmed, ${pendingToday} pending`, path: '/admin/schedule' },
+    { label: 'Monthly Revenue', value: fmt(monthRevenue), sub: `${monthAppts.length} sessions completed`, path: '/admin/reports' },
+    { label: 'Active Clients', value: clients.length, sub: `${newPatientsMonth} new this month`, path: '/admin/clients' },
+    { label: 'Client Follow-Ups', value: pendingAlerts.length, sub: pendingAlerts.length > 0 ? `${pendingAlerts.filter(a => a.priority === 'high').length} high priority` : 'All caught up', path: '/admin/retention' },
   ];
 
   return (
@@ -265,7 +265,7 @@ export default function Dashboard() {
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           }}>
             <span style={{ font: `600 15px ${s.FONT}`, color: s.text }}>Upcoming Classes</span>
-            <button onClick={() => nav('/schedule')} style={{ ...s.pillGhost, padding: '5px 14px', fontSize: 11 }}>View All</button>
+            <button onClick={() => nav('/admin/schedule')} style={{ ...s.pillGhost, padding: '5px 14px', fontSize: 11 }}>View All</button>
           </div>
           <div>
             {upcoming.map((a, idx) => {
@@ -281,7 +281,7 @@ export default function Dashboard() {
                   display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer',
                   animation: `dashFadeInUp 0.4s cubic-bezier(0.16,1,0.3,1) ${500 + idx * 50}ms backwards`,
                   transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
-                }} onClick={() => nav('/schedule')}>
+                }} onClick={() => nav('/admin/schedule')}>
                   {/* Date tile */}
                   <div style={{
                     width: 48, height: 48, borderRadius: 12,
@@ -360,7 +360,7 @@ export default function Dashboard() {
                   }}>{lowStock.length}</span>
                 )}
               </div>
-              <button onClick={() => nav('/inventory')} style={{ ...s.pillGhost, padding: '5px 12px', fontSize: 11 }}>Inventory</button>
+              <button onClick={() => nav('/admin/inventory')} style={{ ...s.pillGhost, padding: '5px 12px', fontSize: 11 }}>Inventory</button>
             </div>
             {lowStock.length === 0 ? (
               <div style={{ padding: 28, textAlign: 'center', font: `400 13px ${s.FONT}`, color: s.text3 }}>All stock levels healthy</div>
@@ -392,24 +392,24 @@ export default function Dashboard() {
             <div style={{ font: `600 14px ${s.FONT}`, color: s.text, marginBottom: 14 }}>Quick Actions</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               {[
-                { label: 'New Client', path: '/clients', icon: (
+                { label: 'Add Client', path: '/admin/clients', icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="8.5" cy="7" r="4" /><line x1="20" y1="8" x2="20" y2="14" /><line x1="23" y1="11" x2="17" y2="11" />
                   </svg>
                 )},
-                { label: 'Schedule Class', path: '/schedule', icon: (
+                { label: 'Book a Class', path: '/admin/schedule', icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                     <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
                   </svg>
                 )},
-                { label: 'Send Email', path: '/email', icon: (
+                { label: 'Check In', path: '/admin/checkin', icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" />
+                    <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                   </svg>
                 )},
-                { label: 'Text Blast', path: '/texts', icon: (
+                { label: 'View Reports', path: '/admin/reports', icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
                   </svg>
                 )},
               ].map(a => (

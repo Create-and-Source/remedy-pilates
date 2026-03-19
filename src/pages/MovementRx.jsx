@@ -429,7 +429,7 @@ export default function MovementRx() {
                   <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
                     {rx.insights?.length > 0 && (
                       <div style={{ marginBottom: 16, padding: 14, borderRadius: 10, background: '#FEF3C7', border: '1px solid #FDE68A' }}>
-                        <div style={{ font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: '#92400E', marginBottom: 6 }}>Clinical Notes</div>
+                        <div style={{ font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: '#92400E', marginBottom: 6 }}>Instructor Notes</div>
                         {rx.insights.map((ins, i) => (
                           <div key={i} style={{ font: `300 12px ${s.FONT}`, color: '#92400E', lineHeight: 1.5, marginBottom: 2 }}>- {ins}</div>
                         ))}
@@ -610,12 +610,12 @@ export default function MovementRx() {
           </div>
         )}
 
-        {/* Clinical insights */}
+        {/* Instructor insights */}
         {plan.insights.length > 0 && (
           <div style={{
             padding: 16, borderRadius: 12, background: '#FEF3C7', border: '1px solid #FDE68A', marginBottom: 24,
           }}>
-            <div style={{ font: `500 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: '#92400E', marginBottom: 8 }}>Clinical Notes</div>
+            <div style={{ font: `500 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: '#92400E', marginBottom: 8 }}>Instructor Notes</div>
             {plan.insights.map((ins, i) => (
               <div key={i} style={{ font: `300 13px ${s.FONT}`, color: '#92400E', lineHeight: 1.6, marginBottom: 4 }}>- {ins}</div>
             ))}

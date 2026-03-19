@@ -450,7 +450,7 @@ export default function BookOnline() {
             letterSpacing: 1.5, color: s.text3, fontWeight: 500,
           }}>
             {step === 1 && 'Choose Your Service'}
-            {step === 2 && 'Select Provider & Time'}
+            {step === 2 && 'Select Instructor & Time'}
             {step === 3 && 'Confirm Your Booking'}
           </div>
         )}
@@ -679,7 +679,7 @@ export default function BookOnline() {
 
             {/* Provider selection */}
             <div style={{ marginBottom: 24 }}>
-              <div style={{ ...s.label, marginBottom: 12 }}>Choose Provider</div>
+              <div style={{ ...s.label, marginBottom: 12 }}>Choose Instructor</div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 {displayProviders.map(prov => {
                   const sel = selectedProvider?.id === prov.id;
@@ -901,7 +901,7 @@ export default function BookOnline() {
                 </div>
                 <div style={{ height: 1, background: 'rgba(0,0,0,0.04)' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 13, color: s.text3 }}>Provider</span>
+                  <span style={{ fontSize: 13, color: s.text3 }}>Instructor</span>
                   <span style={{ fontSize: 14, fontWeight: 500, color: s.text }}>{selectedProvider?.name}</span>
                 </div>
                 <div style={{ height: 1, background: 'rgba(0,0,0,0.04)' }} />
@@ -1095,7 +1095,7 @@ export default function BookOnline() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 {[
                   ['Service', selectedService?.name],
-                  ['Provider', selectedProvider?.name],
+                  ['Instructor', selectedProvider?.name],
                   ['Date', fmtDateLong(booked.date)],
                   ['Time', formatTime(booked.time)],
                   ['Duration', `${selectedService?.duration || 30} minutes`],

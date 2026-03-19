@@ -30,11 +30,11 @@ const PAGES = [
 ];
 
 const QUICK_ACTIONS = [
-  { id: 'action-new-client', label: 'New Client', subtitle: 'Add a new patient record', path: '/admin/clients', icon: 'user-plus' },
+  { id: 'action-new-client', label: 'New Client', subtitle: 'Add a new client record', path: '/admin/clients', icon: 'user-plus' },
   { id: 'action-book-apt', label: 'Book Appointment', subtitle: 'Schedule a new appointment', path: '/admin/schedule', icon: 'calendar-plus' },
   { id: 'action-send-email', label: 'Send Email', subtitle: 'Compose a marketing email', path: '/admin/email', icon: 'mail' },
   { id: 'action-send-text', label: 'Send Text', subtitle: 'Send SMS to clients', path: '/admin/texts', icon: 'message' },
-  { id: 'action-new-chart', label: 'New Chart', subtitle: 'Start a clinical chart', path: '/admin/charts', icon: 'clipboard' },
+  { id: 'action-new-chart', label: 'New Session Note', subtitle: 'Start a session note', path: '/admin/charts', icon: 'clipboard' },
 ];
 
 // ── SVG Icons ──

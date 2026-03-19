@@ -66,7 +66,7 @@ function initWallet() {
     { id: 'WL-1012', type: 'loyalty', patientId: clients[4]?.id, patientName: `${clients[4]?.firstName} ${clients[4]?.lastName}`, points: 5200, lifetimePoints: 6500, createdAt: d(-120), transactions: [
       { type: 'earn', points: 2500, date: d(-120), note: 'Reformer sessions package - $2,500 spent' },
       { type: 'earn', points: 1400, date: d(-80), note: 'Reformer session - $1,400 spent' },
-      { type: 'earn', points: 2600, date: d(-40), note: 'Body Contouring - $2,600 spent' },
+      { type: 'earn', points: 2600, date: d(-40), note: 'Body Sculpt package - $2,600 spent' },
       { type: 'redeem', points: -1300, date: d(-20), note: 'Redeemed for Reformer discount' },
     ]},
     { id: 'WL-1013', type: 'loyalty', patientId: clients[9]?.id, patientName: `${clients[9]?.firstName} ${clients[9]?.lastName}`, points: 800, lifetimePoints: 800, createdAt: d(-25), transactions: [

@@ -26,7 +26,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-microneedling', service: 'Private Session', messages: [
+    id: 'tmpl-private-session', service: 'Private Session', messages: [
       { delay: 0, label: 'Immediate', subject: 'Post-Private Session Instructions', body: 'Great one-on-one session today! Take note of the exercises and cues your instructor focused on. Drink water and do some gentle stretching this evening to support recovery.' },
       { delay: 1, label: '24 Hours', subject: 'Day-After Check-In', body: 'How are you feeling after your private session? Some muscle awareness or mild soreness is normal. The personalized work from yesterday is doing its job!' },
       { delay: 7, label: '1 Week', subject: 'How Is Your Progress?', body: 'You may be noticing improved alignment, core engagement, or ease of movement from your private session. Try incorporating those instructor cues into your group classes this week.' },
@@ -34,7 +34,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-ipl', service: 'TRX', messages: [
+    id: 'tmpl-trx', service: 'TRX', messages: [
       { delay: 0, label: 'Immediate', subject: 'Post-TRX Session Instructions', body: 'Excellent TRX session today! Your core and stabilizers worked hard. Hydrate well and keep moving with light activity. Avoid intense training for the next 24 hours.' },
       { delay: 2, label: '48 Hours', subject: 'TRX Recovery Update', body: 'Muscle soreness from TRX suspension training is normal, especially in the core, shoulders, and glutes. Gentle movement and hydration will help speed recovery.' },
       { delay: 10, label: '10 Days', subject: 'How Are You Progressing?', body: 'You should be feeling stronger and more stable after consistent TRX work. Focus on maintaining proper form — quality over quantity in every rep.' },
@@ -42,7 +42,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-peel', service: 'Group Reformer', messages: [
+    id: 'tmpl-group-reformer', service: 'Group Reformer', messages: [
       { delay: 0, label: 'Immediate', subject: 'Post-Group Reformer Instructions', body: 'Great group class today! You worked alongside some amazing people. Hydrate, stretch gently, and give your muscles time to recover. Light walking later today is encouraged.' },
       { delay: 2, label: '48 Hours', subject: '48-Hour Check-In', body: 'How is your body feeling two days after your Group Reformer class? Some muscle soreness is normal, especially in the core and legs. Keep moving to help recovery.' },
       { delay: 7, label: '1 Week', subject: 'One-Week Check-In', body: 'Great work this week! Consistent Group Reformer attendance builds strength, flexibility, and community. Try to keep your regular class schedule going — consistency is where the results happen.' },
@@ -50,7 +50,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-laser-hair', service: 'Pilates for Seniors', messages: [
+    id: 'tmpl-seniors', service: 'Pilates for Seniors', messages: [
       { delay: 0, label: 'Immediate', subject: 'After Your Pilates for Seniors Class', body: 'Wonderful session today! Pilates for Seniors focuses on balance, joint mobility, and gentle strength — exactly what keeps you moving and independent. Rest well tonight and stay hydrated.' },
       { delay: 2, label: '48 Hours', subject: 'Recovery Check-In', body: 'How are you feeling after your class? Any muscle awareness is a sign the right muscles are being activated. If anything felt uncomfortable, let your instructor know at your next session.' },
       { delay: 10, label: '10 Days', subject: 'Building Your Practice', body: 'You should be noticing improved ease of movement and balance in daily activities. Pilates for Seniors works best with regular attendance — even twice a week makes a measurable difference.' },
@@ -58,7 +58,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-weight-loss', service: 'Mat Pilates', messages: [
+    id: 'tmpl-mat-pilates', service: 'Mat Pilates', messages: [
       { delay: 0, label: 'Day 1', subject: 'Welcome to Mat Pilates!', body: 'Welcome to your Mat Pilates practice! Your first session is all about learning the fundamentals — breath, neutral spine, and core activation. Be patient with yourself as you build the mind-body connection.' },
       { delay: 7, label: 'Week 1', subject: 'How Are You Feeling?', body: 'Checking in on your first week! Mat Pilates challenges muscles you may not be used to activating. Focus on quality of movement over quantity. If anything felt unclear, let your instructor know.' },
       { delay: 28, label: 'Month 1', subject: 'One Month Check-In', body: 'Congratulations on your first month of Mat Pilates! Clients typically notice improved core strength, posture, and flexibility by now. How are you feeling? Book your next session to keep the momentum going.' },
@@ -66,7 +66,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-lipo', service: 'Cardio Pilates', messages: [
+    id: 'tmpl-cardio-pilates', service: 'Cardio Pilates', messages: [
       { delay: 0, label: 'Immediate', subject: 'Post-Cardio Pilates Instructions', body: 'Great high-energy session! Cardio Pilates gets your heart rate up while building strength — the best of both worlds. Hydrate well and eat a balanced meal within an hour of your session.' },
       { delay: 1, label: 'Day 1', subject: 'Day After Check-In', body: 'How are you feeling after your Cardio Pilates class? Expect some whole-body muscle fatigue — that is a sign the session was effective. Keep moving today with light stretching or a walk.' },
       { delay: 7, label: 'Week 1', subject: 'One Week Update', body: 'You should be recovering faster and feeling more energized as your body adapts to Cardio Pilates. Aim for 2-3 sessions per week for best cardiovascular and strength results.' },
@@ -75,7 +75,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-body-contouring', service: 'Body Sculpt', messages: [
+    id: 'tmpl-body-sculpt', service: 'Body Sculpt', messages: [
       { delay: 0, label: 'Immediate', subject: 'After Your Body Sculpt Session', body: 'Excellent work in Body Sculpt today! You targeted key muscle groups with precision Pilates exercises. Stay hydrated and give your muscles time to recover — avoid intense training for 24 hours.' },
       { delay: 3, label: 'Day 3', subject: 'Recovery Update', body: 'Muscle soreness from Body Sculpt is normal and a sign of effective training. Light movement and stretching will help. Keep hydrating and prioritize sleep for optimal recovery.' },
       { delay: 14, label: 'Week 2', subject: 'Progress Check', body: 'You may start noticing subtle changes in muscle tone and body composition. Remember — visible results from Pilates typically become noticeable after 4-6 consistent weeks. Stay the course!' },
@@ -83,7 +83,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-hrt', service: 'Prenatal Pilates', messages: [
+    id: 'tmpl-prenatal', service: 'Prenatal Pilates', messages: [
       { delay: 0, label: 'Day 1', subject: 'Welcome to Prenatal Pilates!', body: 'Welcome to your Prenatal Pilates journey! This is a wonderful way to stay active, reduce back pain, and prepare your body for birth. Always listen to your body and let your instructor know how you are feeling each session.' },
       { delay: 14, label: 'Week 2', subject: 'How Are You Feeling?', body: 'You are building a great foundation! Prenatal Pilates helps strengthen the pelvic floor and deep core muscles, which are essential for a healthy pregnancy and recovery. Keep up the great work.' },
       { delay: 60, label: 'Month 2', subject: 'Continuing Strong!', body: 'Two months in — your body is adapting beautifully. As you progress through your pregnancy, your instructor will modify exercises to keep you comfortable and safe. Communicate any new discomfort right away.' },
@@ -91,7 +91,7 @@ const TEMPLATES = [
     ],
   },
   {
-    id: 'tmpl-hair-restoration', service: 'Pilates for Rehabilitation', messages: [
+    id: 'tmpl-rehab-pilates', service: 'Pilates for Rehabilitation', messages: [
       { delay: 0, label: 'Immediate', subject: 'After Your Rehab Pilates Session', body: 'Great session today! Pilates-based rehabilitation works gently and precisely to retrain movement patterns. Do not push through pain — mild muscle awareness is normal, but sharp pain is not. Contact us with any concerns.' },
       { delay: 14, label: 'Week 2', subject: 'Progress Check', body: 'You may notice improved ease of movement or reduced discomfort in daily activities — that is the rehab work taking effect. Consistency between sessions matters; try to practice the exercises your instructor gave you at home.' },
       { delay: 60, label: 'Month 2', subject: 'Building Strength', body: 'Two months of rehab Pilates represents real progress. Your body is relearning how to move safely and efficiently. This is a great time to discuss your goals with your instructor and adjust your program as you advance.' },
@@ -118,7 +118,7 @@ function initRecoveryTips() {
       { index: 0, sentAt: d(-2), status: 'sent' },
       { index: 1, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1003', patientId: clients[2]?.id, patientName: `${clients[2]?.firstName} ${clients[2]?.lastName}`, templateId: 'tmpl-microneedling', service: 'Private Session', startedAt: d(-8), status: 'active', messagesSent: [
+    { id: 'AC-1003', patientId: clients[2]?.id, patientName: `${clients[2]?.firstName} ${clients[2]?.lastName}`, templateId: 'tmpl-private-session', service: 'Private Session', startedAt: d(-8), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-8), status: 'sent' },
       { index: 1, sentAt: d(-7), status: 'sent' },
       { index: 2, sentAt: d(-1), status: 'sent' },
@@ -127,10 +127,10 @@ function initRecoveryTips() {
       { index: 0, sentAt: d(-3), status: 'sent' },
       { index: 1, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1005', patientId: clients[5]?.id, patientName: `${clients[5]?.firstName} ${clients[5]?.lastName}`, templateId: 'tmpl-peel', service: 'Group Reformer', startedAt: d(-1), status: 'active', messagesSent: [
+    { id: 'AC-1005', patientId: clients[5]?.id, patientName: `${clients[5]?.firstName} ${clients[5]?.lastName}`, templateId: 'tmpl-group-reformer', service: 'Group Reformer', startedAt: d(-1), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1006', patientId: clients[7]?.id, patientName: `${clients[7]?.firstName} ${clients[7]?.lastName}`, templateId: 'tmpl-laser-hair', service: 'Pilates for Seniors', startedAt: d(0), status: 'active', messagesSent: [
+    { id: 'AC-1006', patientId: clients[7]?.id, patientName: `${clients[7]?.firstName} ${clients[7]?.lastName}`, templateId: 'tmpl-seniors', service: 'Pilates for Seniors', startedAt: d(0), status: 'active', messagesSent: [
       { index: 0, sentAt: d(0), status: 'sent' },
     ]},
     { id: 'AC-1007', patientId: clients[9]?.id, patientName: `${clients[9]?.firstName} ${clients[9]?.lastName}`, templateId: 'tmpl-reformer', service: 'Reformer', startedAt: d(-90), status: 'completed', messagesSent: [
@@ -541,7 +541,7 @@ export default function RecoveryTips() {
               </select>
             </div>
             <div style={{ marginBottom: 24 }}>
-              <label style={s.label}>Treatment Template</label>
+              <label style={s.label}>Session Template</label>
               <select value={triggerTemplate} onChange={e => setTriggerTemplate(e.target.value)} style={{ ...s.input, cursor: 'pointer' }}>
                 <option value="">Select a template...</option>
                 {TEMPLATES.map(t => <option key={t.id} value={t.id}>{t.service} ({t.messages.length} messages)</option>)}

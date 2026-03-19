@@ -25,8 +25,8 @@ const KNOWLEDGE = [
     suggestions: ['How does progress tracking work?', 'Tell me about photos', 'What about clients?'],
   },
   {
-    keywords: ['progress chart', 'progress charts', 'soap', 'charting', 'chart', 'notes', 'progress tracking'],
-    response: "Progress Tracking is where you document everything. Create SOAP notes (Subjective, Objective, Assessment, Plan) for each visit. There are interactive body maps where you can mark session areas and observations. Everything saves to the client's history.",
+    keywords: ['progress chart', 'progress charts', 'session notes', 'charting', 'chart', 'notes', 'progress tracking'],
+    response: "Progress Tracking is where you document everything. Create session notes for each visit — covering observations, spring settings, areas of focus, and client goals. There are interactive body maps where you can highlight muscle groups worked. Everything saves to the client's history.",
     suggestions: ['How do photos work?', 'What about waivers?', 'Tell me about class packages'],
   },
   {
@@ -307,7 +307,7 @@ export default function HelpChat() {
 
   return (
     <>
-      {/* Keyframes */}
+      {/* Keyframes + mobile overrides */}
       <style>{`
         @keyframes helpChatPulse {
           0%, 100% { box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.3); }
@@ -329,11 +329,32 @@ export default function HelpChat() {
           from { opacity: 0; transform: translateY(6px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @media (max-width: 767px) {
+          .help-chat-panel {
+            width: min(360px, 90vw) !important;
+            height: min(500px, 70vh) !important;
+            max-height: calc(100dvh - 96px) !important;
+            right: 12px !important;
+            bottom: 84px !important;
+          }
+          .help-chat-fab {
+            bottom: 20px !important;
+            right: 16px !important;
+            width: 52px !important;
+            height: 52px !important;
+          }
+          .help-chat-close-btn {
+            width: 44px !important;
+            height: 44px !important;
+            min-width: 44px !important;
+          }
+        }
       `}</style>
 
       {/* Floating Button */}
       {!open && (
         <button
+          className="help-chat-fab"
           onClick={handleOpen}
           aria-label="Open help chat"
           style={{
@@ -354,18 +375,20 @@ export default function HelpChat() {
 
       {/* Chat Panel */}
       {open && (
-        <div style={{
-          position: 'fixed', bottom: 24, right: 24, zIndex: 1000,
-          width: 360, height: 500, maxHeight: 'calc(100vh - 48px)',
-          display: 'flex', flexDirection: 'column',
-          background: 'rgba(255,255,255,0.85)',
-          backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
-          border: '1px solid rgba(255,255,255,0.7)',
-          borderRadius: 20,
-          boxShadow: '0 20px 60px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.06)',
-          overflow: 'hidden',
-          animation: panelAnim ? 'helpChatSlideUp 0.35s cubic-bezier(0.16,1,0.3,1) forwards' : 'helpChatSlideDown 0.25s ease forwards',
-        }}>
+        <div
+          className="help-chat-panel"
+          style={{
+            position: 'fixed', bottom: 24, right: 24, zIndex: 1000,
+            width: 360, height: 500, maxHeight: 'calc(100vh - 48px)',
+            display: 'flex', flexDirection: 'column',
+            background: 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
+            border: '1px solid rgba(255,255,255,0.7)',
+            borderRadius: 20,
+            boxShadow: '0 20px 60px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.06)',
+            overflow: 'hidden',
+            animation: panelAnim ? 'helpChatSlideUp 0.35s cubic-bezier(0.16,1,0.3,1) forwards' : 'helpChatSlideDown 0.25s ease forwards',
+          }}>
 
           {/* Header */}
           <div style={{
@@ -390,11 +413,15 @@ export default function HelpChat() {
                 </div>
               </div>
             </div>
-            <button onClick={handleClose} style={{
-              background: 'rgba(0,0,0,0.04)', border: 'none', borderRadius: '50%',
-              width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', color: '#666', transition: 'background 0.15s',
-            }}
+            <button
+              className="help-chat-close-btn"
+              onClick={handleClose}
+              aria-label="Close help chat"
+              style={{
+                background: 'rgba(0,0,0,0.04)', border: 'none', borderRadius: '50%',
+                width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', color: '#666', transition: 'background 0.15s', flexShrink: 0,
+              }}
               onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.08)'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.04)'; }}
             >

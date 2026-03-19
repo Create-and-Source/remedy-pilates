@@ -184,7 +184,7 @@ export default function Schedule() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #E5E5E5' }}>
-                {['Time', 'Patient', 'Service', 'Provider', 'Status', 'Actions'].map(h => (
+                {['Time', 'Client', 'Service', 'Instructor', 'Status', 'Actions'].map(h => (
                   <th key={h} style={{ padding: '12px 16px', font: `500 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: s.text3, textAlign: 'left' }}>{h}</th>
                 ))}
               </tr>
@@ -253,9 +253,9 @@ export default function Schedule() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: '1 / -1' }}>
-                <label style={s.label}>Patient</label>
+                <label style={s.label}>Client</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option value="">Select patient...</option>
+                  <option value="">Select client...</option>
                   {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>
@@ -267,7 +267,7 @@ export default function Schedule() {
                 </select>
               </div>
               <div>
-                <label style={s.label}>Provider</label>
+                <label style={s.label}>Instructor</label>
                 <select value={form.providerId} onChange={e => setForm({ ...form, providerId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select...</option>
                   {(() => {

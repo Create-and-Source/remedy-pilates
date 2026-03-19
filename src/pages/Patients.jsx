@@ -4,7 +4,7 @@ import { getPatients, addPatient, updatePatient, deletePatient, getAppointments,
 
 const fmt = (cents) => `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0 })}`;
 
-/* --- inject patient page keyframes once --- */
+/* --- inject clients page keyframes once --- */
 const PAT_ANIM_ID = 'clients-premium-anims';
 if (!document.getElementById(PAT_ANIM_ID)) {
   const sheet = document.createElement('style');
@@ -99,7 +99,7 @@ export default function Patients() {
   };
 
   const handleDelete = (id) => {
-    if (confirm('Delete this patient?')) {
+    if (confirm('Delete this client?')) {
       deletePatient(id);
       if (selected?.id === id) { setSelected(null); setShowForm(false); }
       if (detail?.id === id) setDetail(null);
@@ -319,7 +319,7 @@ export default function Patients() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                    {['Patient', 'Contact', 'Membership', 'Visits', 'Total Spent', 'Last Visit', ''].map(h => (
+                    {['Client', 'Contact', 'Membership', 'Visits', 'Total Spent', 'Last Visit', ''].map(h => (
                       <th key={h} style={{ padding: '14px 18px', font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.2, color: s.text3, textAlign: 'left' }}>{h}</th>
                     ))}
                   </tr>
@@ -528,7 +528,7 @@ export default function Patients() {
             boxShadow: s.shadowLg, maxHeight: '90vh', overflowY: 'auto',
             animation: 'patFadeInUp 0.35s cubic-bezier(0.16,1,0.3,1) both',
           }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 24 }}>{selected ? 'Edit Patient' : 'New Client'}</h2>
+            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 24 }}>{selected ? 'Edit Client' : 'New Client'}</h2>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {[
@@ -568,7 +568,7 @@ export default function Patients() {
 
             <div style={{ display: 'flex', gap: 12, marginTop: 24, justifyContent: 'flex-end' }}>
               <button onClick={() => setShowForm(false)} style={s.pillGhost}>Cancel</button>
-              <button onClick={handleSave} style={s.pillAccent}>{selected ? 'Save Changes' : 'Add Patient'}</button>
+              <button onClick={handleSave} style={s.pillAccent}>{selected ? 'Save Changes' : 'Add Client'}</button>
             </div>
           </div>
         </div>

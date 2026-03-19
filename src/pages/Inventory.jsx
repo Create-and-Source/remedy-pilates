@@ -92,7 +92,7 @@ export default function Inventory() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Inventory</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{inventory.length} items — Track injectables, products, and supplies</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{inventory.length} items — Track equipment, retail products, and studio supplies</p>
         </div>
         <button onClick={() => { setEditItem(null); setForm({ name: '', category: 'Equipment', sku: '', lotNumber: '', ndc: '', quantity: 0, reorderAt: 5, unitCost: 0, location: 'LOC-1', expirationDate: '' }); setShowForm(true); }} style={s.pillAccent}>
           + Add Item

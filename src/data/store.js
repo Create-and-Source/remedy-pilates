@@ -41,7 +41,7 @@ export function addAppointment(a) { const all = getAppointments(); a.id = `APT-$
 export function updateAppointment(id, updates) { set('rp_appointments', getAppointments().map(a => a.id === id ? { ...a, ...updates } : a)); apiPut(`/api/appointments/${id}`, updates); }
 export function deleteAppointment(id) { set('rp_appointments', getAppointments().filter(a => a.id !== id)); apiDel(`/api/appointments/${id}`); }
 
-// ── Class Packages (Treatment Plans) ──
+// ── Class Packages ──
 export function getTreatmentPlans() { return get('rp_class_packages', []); }
 export function addTreatmentPlan(t) { const all = getTreatmentPlans(); t.id = `PKG-${Date.now()}`; t.createdAt = new Date().toISOString(); all.unshift(t); set('rp_class_packages', all); apiPost('/api/packages', t); return t; }
 export function updateTreatmentPlan(id, updates) { set('rp_class_packages', getTreatmentPlans().map(t => t.id === id ? { ...t, ...updates } : t)); apiPut(`/api/packages/${id}`, updates); }
@@ -280,7 +280,7 @@ export async function initStore() {
   }
   set('rp_appointments', appts);
 
-  // Class Packages (Treatment Plans)
+  // Class Packages
   set('rp_class_packages', [
     { id: 'PKG-1', patientId: 'CLT-1000', patientName: 'Emma Johnson', name: 'New Client Starter Package', sessions: [
       { serviceId: 'SVC-14', name: 'Intro to Reformer', status: 'completed', date: d(-60), notes: 'Great first session — learned spring settings' },

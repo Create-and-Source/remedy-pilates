@@ -127,10 +127,10 @@ export default function TextMessages() {
               </div>
             )}
 
-            {/* Patient picker (individual mode) */}
+            {/* Client picker (individual mode) */}
             {sendMode === 'individual' && (
               <div style={{ marginBottom: 20 }}>
-                <label style={s.label}>Select Patients ({selectedPatients.length} selected)</label>
+                <label style={s.label}>Select Clients ({selectedPatients.length} selected)</label>
                 <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name or phone..." style={{ ...s.input, marginBottom: 10 }} />
                 <div style={{ ...s.cardStyle, maxHeight: 200, overflowY: 'auto' }}>
                   {filteredPatients.slice(0, 20).map(p => (

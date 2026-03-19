@@ -76,7 +76,7 @@ export const updateProvider = (id, changes) => put(`/api/instructors/${id}`, cha
 export const getLocations = () => get('/api/locations');
 export const addLocation = (data) => post('/api/locations', data);
 
-// ── Class Packages (was "Treatment Plans") ─────────────────────────────────
+// ── Class Packages ─────────────────────────────────────────────────────────
 export const getTreatmentPlans = () => get('/api/packages');
 export const addTreatmentPlan = (data) => post('/api/packages', data);
 export const updateTreatmentPlan = (id, changes) => put(`/api/packages/${id}`, changes);

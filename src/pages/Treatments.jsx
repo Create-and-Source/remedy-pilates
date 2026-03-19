@@ -135,7 +135,7 @@ export default function Treatments() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 28px ${s.FONT}`, color: s.text, marginBottom: 6, letterSpacing: '-0.3px' }}>Class Packages</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text3 }}>Multi-session patient pathways — track every step of the journey</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text3 }}>Multi-session client pathways — track every step of the journey</p>
         </div>
         <button onClick={openNew} style={s.pillAccent}>+ New Plan</button>
       </div>
@@ -158,7 +158,7 @@ export default function Treatments() {
       {/* Controls */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patient or plan..." style={{ ...s.input, maxWidth: 240 }} />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search client or plan..." style={{ ...s.input, maxWidth: 240 }} />
           <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ ...s.input, width: 'auto', cursor: 'pointer' }}>
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -215,7 +215,7 @@ export default function Treatments() {
                         }}>{planStatus}</span>
                       </div>
                       <div style={{ font: `400 13px ${s.FONT}`, color: s.text2 }}>
-                        {plan.patientName} — {prov?.name?.split(',')[0] || 'Provider'}
+                        {plan.patientName} — {prov?.name?.split(',')[0] || 'Instructor'}
                         {nextSession?.date && <span style={{ color: s.text3 }}> — Next: {new Date(nextSession.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>}
                       </div>
                     </div>
@@ -374,13 +374,13 @@ export default function Treatments() {
       {showForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowForm(false)}>
           <div style={{ background: '#fff', borderRadius: 20, padding: 32, maxWidth: 600, width: '90%', boxShadow: s.shadowLg, maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 24 }}>{editPlan ? 'Edit Treatment Plan' : 'New Treatment Plan'}</h2>
+            <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 24 }}>{editPlan ? 'Edit Class Package' : 'New Class Package'}</h2>
 
             <div className="tx-modal-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
               <div style={{ gridColumn: '1 / -1' }}>
-                <label style={s.label}>Patient</label>
+                <label style={s.label}>Client</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option value="">Select patient...</option>
+                  <option value="">Select client...</option>
                   {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>
@@ -389,7 +389,7 @@ export default function Treatments() {
                 <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={s.input} placeholder="e.g., Anti-Aging Protocol" />
               </div>
               <div>
-                <label style={s.label}>Provider</label>
+                <label style={s.label}>Instructor</label>
                 <select value={form.providerId} onChange={e => setForm({ ...form, providerId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select...</option>
                   {providers.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}

@@ -4,6 +4,74 @@ import { useStyles, useTheme } from '../theme';
 import { getAssessments, addAssessment, deleteAssessment } from '../data/store';
 import { FilesetResolver, PoseLandmarker } from '@mediapipe/tasks-vision';
 
+// ── Mobile-responsive CSS ──
+const POSTURE_MOBILE_CSS = `
+  @media (max-width: 768px) {
+    /* How it works: 3-col → 1-col */
+    .posture-how-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* New Assessment card: row → column */
+    .posture-new-assessment {
+      flex-direction: column !important;
+      align-items: stretch !important;
+    }
+    .posture-new-actions {
+      flex-direction: column !important;
+      width: 100% !important;
+    }
+    .posture-new-actions button {
+      width: 100% !important;
+    }
+    .posture-client-input {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Compare view: 2-col → 1-col */
+    .posture-compare-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Assessment expanded mini-metrics: 3-col → 2-col */
+    .posture-metric-mini-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Results: overall score card wrap naturally */
+    .posture-score-card {
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+    }
+
+    /* Results: photos 2-col → 1-col */
+    .posture-photos-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Results: metric cards 3-col → 2-col */
+    .posture-metrics-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    /* Metric cards 2-col → 1-col on very small screens */
+    .posture-metrics-grid {
+      grid-template-columns: 1fr !important;
+    }
+    /* Mini-metrics also 1-col on very small screens */
+    .posture-metric-mini-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+    /* Score card: truly stack when narrow */
+    .posture-score-card {
+      flex-direction: column !important;
+    }
+  }
+`;
+
 // ── Guidelines shown when camera opens ──
 const GUIDELINES = [
   { icon: 'T', title: 'Form-fitting clothing', desc: 'Tank top and leggings — baggy clothes shift landmark detection by inches' },
@@ -653,12 +721,12 @@ export default function PostureAI() {
   // ── Intro Screen ──
   if (step === 'intro') return (
     <div style={{ minHeight: '100vh', background: '#fafaf8' }}>
-      <div style={{ padding: '32px 32px 0', borderBottom: '1px solid #eee' }}>
+      <div style={{ padding: 'clamp(16px, 4vw, 32px)', paddingBottom: 0, borderBottom: '1px solid #eee' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 3, color: theme.accent, marginBottom: 8 }}>
             Body Intelligence
           </div>
-          <h1 style={{ font: `400 32px ${s.DISPLAY}`, color: '#1a1a1a', marginBottom: 6 }}>
+          <h1 style={{ font: `400 clamp(22px, 6vw, 32px) ${s.DISPLAY}`, color: '#1a1a1a', marginBottom: 6 }}>
             Posture Assessment
           </h1>
           <p style={{ font: `300 15px ${s.FONT}`, color: '#888', marginBottom: 24 }}>
@@ -667,9 +735,9 @@ export default function PostureAI() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: 32 }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(16px, 4vw, 32px)' }}>
         {/* How it works */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 40 }}>
+        <div className="posture-how-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 40 }}>
           {[
             { num: '01', title: 'Detect', desc: 'MediaPipe PoseLandmarker maps 33 body landmarks in real-time at 30fps — runs entirely in your browser' },
             { num: '02', title: 'Analyze', desc: 'Calculates shoulder tilt, spinal deviation, pelvic tilt, hip level, and knee tracking from landmark geometry' },
@@ -686,18 +754,20 @@ export default function PostureAI() {
         </div>
 
         {/* New Assessment */}
-        <div style={{
-          padding: 32, borderRadius: 20, background: '#fff', border: '1px solid #eee',
+        <div className="posture-new-assessment" style={{
+          padding: 'clamp(20px, 4vw, 32px)', borderRadius: 20, background: '#fff', border: '1px solid #eee',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32,
+          gap: 16,
         }}>
-          <div>
+          <div style={{ minWidth: 0, flex: 1 }}>
             <div style={{ font: `600 18px ${s.FONT}`, color: '#1a1a1a', marginBottom: 4 }}>New Assessment</div>
             <div style={{ font: `300 14px ${s.FONT}`, color: '#888' }}>Takes about 2 minutes — front and side photos with live pose tracking</div>
           </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div className="posture-new-actions" style={{ display: 'flex', gap: 12, alignItems: 'center', flexShrink: 0 }}>
             <input
               value={clientName} onChange={e => setClientName(e.target.value)}
               placeholder="Client name (optional)"
+              className="posture-client-input"
               style={{
                 padding: '10px 16px', borderRadius: 10, border: '1px solid #ddd',
                 font: `400 14px ${s.FONT}`, width: 200, outline: 'none',
@@ -744,7 +814,7 @@ export default function PostureAI() {
                     background: 'none', border: 'none', color: '#aaa', cursor: 'pointer', font: `400 20px ${s.FONT}`,
                   }}>x</button>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                <div className="posture-compare-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                   {[compareB, compareA].map((a, i) => (
                     <div key={a.id}>
                       <div style={{ font: `500 11px ${s.MONO}`, color: i === 0 ? '#999' : theme.accent, textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 8 }}>
@@ -820,7 +890,7 @@ export default function PostureAI() {
                   </div>
                   {selectedAssessment?.id === a.id && (
                     <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
+                      <div className="posture-metric-mini-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
                         {METRICS.map(m => {
                           const sc = a.scores[m.key];
                           return sc ? (
@@ -858,6 +928,7 @@ export default function PostureAI() {
           </div>
         )}
       </div>
+      <style>{POSTURE_MOBILE_CSS}</style>
     </div>
   );
 
@@ -1202,21 +1273,21 @@ export default function PostureAI() {
   // ── Results Screen ──
   if (step === 'results' && analysis) return (
     <div style={{ minHeight: '100vh', background: '#fafaf8' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: 32 }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: 'clamp(16px, 4vw, 32px)' }}>
         <div style={{ marginBottom: 32 }}>
           <div style={{ font: `500 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 3, color: theme.accent, marginBottom: 8 }}>
             Assessment Complete
           </div>
-          <h1 style={{ font: `400 32px ${s.DISPLAY}`, color: '#1a1a1a', marginBottom: 8 }}>
+          <h1 style={{ font: `400 clamp(22px, 6vw, 32px) ${s.DISPLAY}`, color: '#1a1a1a', marginBottom: 8 }}>
             {clientName || 'Walk-in'} — Posture Analysis
           </h1>
         </div>
 
         {/* Overall score */}
-        <div style={{
-          padding: 32, borderRadius: 20, marginBottom: 24,
+        <div className="posture-score-card" style={{
+          padding: 'clamp(20px, 4vw, 32px)', borderRadius: 20, marginBottom: 24,
           background: '#fff', border: '1px solid #eee',
-          display: 'flex', alignItems: 'center', gap: 32,
+          display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap',
         }}>
           <div style={{
             width: 100, height: 100, borderRadius: '50%', flexShrink: 0,
@@ -1244,7 +1315,7 @@ export default function PostureAI() {
         </div>
 
         {/* Photos */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+        <div className="posture-photos-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
           {[
             { photo: frontPhoto, label: 'Front View — with skeleton', hasOverlay: true },
             { photo: sidePhoto, label: 'Side View' },
@@ -1275,7 +1346,7 @@ export default function PostureAI() {
         </div>
 
         {/* Metric cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
+        <div className="posture-metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
           {METRICS.map(m => {
             const sc = analysis.scores[m.key];
             return (
@@ -1335,6 +1406,7 @@ export default function PostureAI() {
           }}>Save Assessment</button>
         </div>
       </div>
+      <style>{POSTURE_MOBILE_CSS}</style>
     </div>
   );
 

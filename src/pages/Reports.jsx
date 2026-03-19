@@ -48,14 +48,14 @@ export default function Reports() {
   const topServices = Object.entries(serviceCounts).sort(([, a], [, b]) => b - a).slice(0, 8);
   const maxServiceCount = topServices.length > 0 ? topServices[0][1] : 1;
 
-  // Provider performance
+  // Instructor performance
   const providerStats = providers.map(p => {
     const provAppts = completedAppts.filter(a => a.providerId === p.id);
     const rev = calcRevenue(provAppts);
     return { ...p, appointments: provAppts.length, revenue: rev };
   }).sort((a, b) => b.revenue - a.revenue);
 
-  // Patient retention
+  // Client retention
   const activePatients = clients.filter(p => {
     if (!p.lastVisit) return false;
     const days = (today - new Date(p.lastVisit)) / (1000 * 60 * 60 * 24);
@@ -93,13 +93,13 @@ export default function Reports() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Reports</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Revenue, services, providers, and patient analytics</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Revenue, services, instructors, and client analytics</p>
         </div>
         <button onClick={() => exportCSV(
           completedAppts.map(a => {
             const svc = services.find(sv => sv.id === a.serviceId);
             const prov = providers.find(p => p.id === a.providerId);
-            return { date: a.date, patient: a.patientName, service: svc?.name, provider: prov?.name, revenue: fmt(svc?.price || 0) };
+            return { date: a.date, client: a.patientName, service: svc?.name, instructor: prov?.name, revenue: fmt(svc?.price || 0) };
           }),
           `studio-report-${today.toISOString().slice(0, 10)}.csv`
         )} style={s.pillOutline}>Export CSV</button>
@@ -109,9 +109,9 @@ export default function Reports() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 14, marginBottom: 28 }}>
         {[
           { label: 'Monthly Revenue', value: fmt(thisMonthRev), sub: revChange >= 0 ? `+${revChange}% vs last month` : `${revChange}% vs last month`, subColor: revChange >= 0 ? s.success : s.danger },
-          { label: 'Treatments This Month', value: thisMonthAppts.length, sub: `${lastMonthAppts.length} last month` },
+          { label: 'Sessions This Month', value: thisMonthAppts.length, sub: `${lastMonthAppts.length} last month` },
           { label: 'Retention Rate', value: `${retentionRate}%`, sub: `${activePatients} active of ${clients.length}`, subColor: retentionRate > 70 ? s.success : s.warning },
-          { label: 'Avg Patient Spend', value: fmt(avgSpend), sub: `${newPatientsThisMonth} new this month` },
+          { label: 'Avg Client Spend', value: fmt(avgSpend), sub: `${newPatientsThisMonth} new this month` },
         ].map(k => (
           <div key={k.label} style={{ ...s.cardStyle, padding: '20px' }}>
             <div style={{ font: `400 10px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: s.text3, marginBottom: 8 }}>{k.label}</div>
@@ -143,10 +143,10 @@ export default function Reports() {
           </div>
         </div>
 
-        {/* Provider Performance */}
+        {/* Instructor Performance */}
         <div style={{ ...s.cardStyle, overflow: 'hidden' }}>
           <div style={{ padding: '18px 20px', borderBottom: '1px solid #F0F0F0' }}>
-            <span style={{ font: `600 14px ${s.FONT}`, color: s.text }}>Provider Performance</span>
+            <span style={{ font: `600 14px ${s.FONT}`, color: s.text }}>Instructor Performance</span>
           </div>
           <div>
             {providerStats.map(p => (

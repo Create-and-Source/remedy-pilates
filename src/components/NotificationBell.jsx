@@ -191,7 +191,7 @@ function generateNotifications() {
       id: 'notif-waitlist',
       type: 'waitlist',
       icon: 'waitlist',
-      text: `${waiting.length} patient${waiting.length !== 1 ? 's' : ''} on waitlist`,
+      text: `${waiting.length} client${waiting.length !== 1 ? 's' : ''} on waitlist`,
       link: '/admin/waitlist',
       time: now,
       color: '#7C3AED',

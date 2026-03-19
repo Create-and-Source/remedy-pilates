@@ -383,10 +383,10 @@ export default function Portal() {
             )}
           </Card>
 
-          {/* Treatment plan progress */}
+          {/* Class package progress */}
           <Card hover className="portal-fadeInUp portal-stagger-3" style={{ padding: '24px 22px', cursor: 'pointer' }}
             onClick={() => setSection('session')}>
-            <SectionLabel>Treatment Plan</SectionLabel>
+            <SectionLabel>Class Package</SectionLabel>
             {firstPlan ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                 <ProgressRing value={planCompleted} max={planTotal} />
@@ -535,7 +535,7 @@ export default function Portal() {
 
   const renderTreatmentPlan = () => (
     <div>
-      <SectionTitle sub="Your personalized session journey">My Treatment Plan</SectionTitle>
+      <SectionTitle sub="Your personalized session journey">My Class Package</SectionTitle>
       {sessionPlans.length === 0 ? (
         <Card className="portal-fadeInUp" style={{ padding: '48px 32px', textAlign: 'center' }}>
           <div style={{ font: `300 20px ${s.FONT}`, color: s.text, marginBottom: 10 }}>No active class package</div>

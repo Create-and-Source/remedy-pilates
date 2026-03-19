@@ -10,7 +10,7 @@ import { getProviders } from '../data/store';
 const VOICE_STYLES = [
   { id: 'calm', label: 'Calm & Centered', desc: 'Soothing tone, slower pace — perfect for Stretch & Restore' },
   { id: 'energetic', label: 'Energetic & Upbeat', desc: 'High energy, faster tempo — great for Barre Burn' },
-  { id: 'precise', label: 'Precise & Clinical', desc: 'Clear articulation, measured pace — ideal for Reformer technique' },
+  { id: 'precise', label: 'Precise & Technical', desc: 'Clear articulation, measured pace — ideal for Reformer technique' },
   { id: 'warm', label: 'Warm & Encouraging', desc: 'Supportive, motivational — good for beginners and prenatal' },
 ];
 

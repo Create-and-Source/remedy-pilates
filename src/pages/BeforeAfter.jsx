@@ -132,7 +132,7 @@ export default function BeforeAfter() {
 
       {/* Filters */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by patient or service..." style={{ ...s.input, maxWidth: 280 }} />
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by client or session type..." style={{ ...s.input, maxWidth: 280 }} />
         <select value={serviceFilter} onChange={e => setServiceFilter(e.target.value)} style={{ ...s.input, width: 'auto', cursor: 'pointer' }}>
           <option value="All">All Services</option>
           {serviceNames.map(sn => <option key={sn} value={sn}>{sn}</option>)}
@@ -210,7 +210,7 @@ export default function BeforeAfter() {
 
             <div className="ba-upload-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ gridColumn: '1 / -1' }}>
-                <label style={s.label}>Patient</label>
+                <label style={s.label}>Client</label>
                 <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select patient...</option>
                   {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}

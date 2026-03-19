@@ -118,14 +118,14 @@ function generatePlan(form, providers, services) {
 
   // Pick instructors: first 2 available from store, fallback to placeholders
   const allProviders = Array.isArray(providers) && providers.length ? providers : [
-    { name: 'Sarah M.', specialty: 'Rehab & Clinical' },
+    { name: 'Sarah M.', specialty: 'Rehab & Functional Movement' },
     { name: 'Jordan K.', specialty: 'Athletic Performance' },
     { name: 'Mia R.', specialty: 'Pre/Postnatal' },
   ];
   const instructor1 = hasPrenatal
     ? (allProviders.find(p => /natal|prenatal|women/i.test(p.specialty || '')) || allProviders[0])
     : hasRehab || hasPain
-      ? (allProviders.find(p => /rehab|clinical|therapy/i.test(p.specialty || '')) || allProviders[0])
+      ? (allProviders.find(p => /rehab|functional|therapy/i.test(p.specialty || '')) || allProviders[0])
       : allProviders[0];
   const instructor2 = allProviders.find(p => p !== instructor1) || allProviders[0];
 
@@ -653,9 +653,9 @@ export default function AIIntake() {
           )}
         </div>
 
-        {/* Clinical assessment */}
+        {/* Movement assessment */}
         <div style={{ ...card, borderLeft: `4px solid ${s.accent}` }}>
-          <div style={{ fontFamily: s.MONO, fontSize: 10, color: s.accent, textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 12 }}>Clinical Assessment</div>
+          <div style={{ fontFamily: s.MONO, fontSize: 10, color: s.accent, textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 12 }}>Movement Assessment</div>
           <p style={{ fontFamily: s.FONT, fontSize: 15, color: s.text, lineHeight: 1.7, margin: 0 }}>{plan.assessment}</p>
         </div>
 

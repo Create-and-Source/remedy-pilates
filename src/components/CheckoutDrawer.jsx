@@ -1,4 +1,4 @@
-// Checkout Drawer — slides in from the right when a patient visit is complete
+// Checkout Drawer — slides in from the right when a client visit is complete
 // Handles line items, discounts (membership/gift card/credit), tax, tips, payment
 
 import { useState, useEffect, useCallback } from 'react';

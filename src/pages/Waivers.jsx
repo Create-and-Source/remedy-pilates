@@ -40,37 +40,34 @@ Client Signature: _________________________
 Date: ____________
 Instructor/Witness: _________________________` },
 
-  { id: 'hipaa', name: 'Privacy Policy', category: 'Required', content: `ACKNOWLEDGMENT OF RECEIPT OF NOTICE OF PRIVACY PRACTICES
+  { id: 'hipaa', name: 'Privacy Policy', category: 'Required', content: `PRIVACY POLICY ACKNOWLEDGMENT
 
-HIPAA PRIVACY NOTICE — [Business Name]
+PRIVACY NOTICE — [Business Name]
 
-I acknowledge that I have been provided with a copy of [Business Name]'s Notice of Privacy Practices, which describes how my protected health information (PHI) may be used and disclosed.
+I acknowledge that I have been provided with a copy of [Business Name]'s Privacy Policy, which describes how my personal information may be used.
 
 I understand that:
 
-1. [Business Name] may use and disclose my PHI for session, payment, and healthcare operations purposes.
+1. [Business Name] may use my personal information to schedule sessions, process payments, and communicate about my membership or class packages.
 
-2. [Business Name] has the right to change its privacy practices and that I may obtain a revised notice by requesting one.
+2. [Business Name] has the right to update its privacy practices and I may obtain a revised notice by requesting one.
 
 3. I have the right to:
-   - Request restrictions on certain uses and disclosures of my PHI
-   - Receive confidential communications by alternative means or at alternative locations
-   - Inspect and copy my PHI
-   - Request amendments to my PHI
-   - Receive an accounting of disclosures of my PHI
-   - File a complaint if I believe my privacy rights have been violated
+   - Request that my personal data not be used for marketing purposes
+   - Receive communications via my preferred contact method
+   - Review and request corrections to my personal information
+   - Request deletion of my account and associated data
 
-4. [Business Name] is required by law to maintain the privacy of my PHI and to provide me with notice of its legal duties and privacy practices.
+4. My personal information will not be sold to third parties without my written authorization.
 
-5. My PHI will not be used for marketing purposes or sold without my written authorization.
+5. Session notes and progress records are kept confidential and accessible only to studio instructors and management.
 
-Patient Signature: _________________________
-Date: ____________
-If unable to obtain signature, state reason: _________________________` },
+Client Signature: _________________________
+Date: ____________` },
 
-  { id: 'medical-history', name: 'Medical History Form', category: 'Required', content: `PATIENT MEDICAL HISTORY AND HEALTH QUESTIONNAIRE
+  { id: 'medical-history', name: 'Health History Form', category: 'Required', content: `CLIENT HEALTH HISTORY AND QUESTIONNAIRE
 
-[Business Name] — Confidential Medical Information
+[Business Name] — Confidential Health Information
 
 PERSONAL INFORMATION
 Full Name: _________________________
@@ -125,7 +122,7 @@ Do you have any balance or coordination concerns? [ ] Yes [ ] No
 
 I certify that the above information is true, accurate, and complete to the best of my knowledge. I will inform [Business Name] of any changes to my health status.
 
-Patient Signature: _________________________
+Client Signature: _________________________ 
 Date: ____________` },
 
   // ═══ CLASS & TRAINING WAIVERS ═══
@@ -467,7 +464,7 @@ NATURE OF ACTIVITY: Prenatal Pilates is a modified Pilates practice specifically
 
 PHYSICIAN CLEARANCE: I confirm that I have received clearance from my obstetrician, midwife, or healthcare provider to participate in prenatal exercise. I understand that clearance should be re-confirmed if any complications arise during my pregnancy.
 
-Attending Provider: _________________________
+Attending OB/Midwife: _________________________
 Estimated Due Date: _________________________
 Current Week of Pregnancy: _________
 
@@ -555,7 +552,7 @@ PACKAGES AND MEMBERSHIPS:
 
 I have read and understand [Business Name]'s cancellation and no-show policy.
 
-Patient Signature: _________________________
+Client Signature: _________________________ 
 Date: ____________` },
 
   { id: 'financial', name: 'Financial Responsibility', category: 'Policy', content: `FINANCIAL RESPONSIBILITY AND PAYMENT POLICY
@@ -590,7 +587,7 @@ COLLECTIONS:
 
 I have read and agree to [Business Name]'s financial policies.
 
-Patient Signature: _________________________
+Client Signature: _________________________ 
 Date: ____________` },
 ];
 
@@ -724,7 +721,7 @@ export default function Waivers() {
 
       {/* Tabs */}
       <div style={{ display: 'flex', gap: 0, marginBottom: 20, background: '#F0F0F0', borderRadius: 8, overflow: 'hidden', width: 'fit-content' }}>
-        {[['waivers', 'Patient Waivers'], ['templates', 'Templates']].map(([k, l]) => (
+        {[['waivers', 'Client Waivers'], ['templates', 'Templates']].map(([k, l]) => (
           <button key={k} onClick={() => setTab(k)} style={{
             padding: '9px 20px', background: tab === k ? '#fff' : 'transparent', border: 'none',
             font: `500 13px ${s.FONT}`, color: tab === k ? s.text : s.text3, cursor: 'pointer',
@@ -736,7 +733,7 @@ export default function Waivers() {
       {tab === 'waivers' && (
         <>
           <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patient..." style={{ ...s.input, maxWidth: 240 }} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search client..." style={{ ...s.input, maxWidth: 240 }} />
             <div style={{ display: 'flex', gap: 6 }}>
               {[['all', 'All'], ['signed', 'Signed'], ['pending', 'Pending']].map(([id, label]) => (
                 <button key={id} onClick={() => setStatusFilter(id)} style={{
@@ -753,7 +750,7 @@ export default function Waivers() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #E5E5E5' }}>
-                  {['Patient', 'Form', 'Status', 'Signed', 'Expires', 'Actions'].map(h => (
+                  {['Client', 'Form', 'Status', 'Signed', 'Expires', 'Actions'].map(h => (
                     <th key={h} style={{ padding: '12px 14px', font: `500 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: s.text3, textAlign: 'left' }}>{h}</th>
                   ))}
                 </tr>
@@ -821,9 +818,9 @@ export default function Waivers() {
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 520, width: '90%', boxShadow: s.shadowLg, maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 20 }}>Send Consent Forms</h2>
             <div style={{ marginBottom: 16 }}>
-              <label style={s.label}>Patient</label>
+              <label style={s.label}>Client</label>
               <select value={sendForm.clientId} onChange={e => setSendForm({ ...sendForm, clientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                <option value="">Select patient...</option>
+                <option value="">Select client...</option>
                 {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
               </select>
             </div>

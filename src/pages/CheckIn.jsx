@@ -1,4 +1,4 @@
-// Patient Check-In — front desk flow: arrival → verify info → sign waivers → ready for provider
+// Client Check-In — front desk flow: arrival → verify info → sign waivers → ready for instructor
 import { useState, useEffect } from 'react';
 import { useStyles } from '../theme';
 import { getAppointments, updateAppointment, getPatients, getServices, getProviders, getSettings, subscribe } from '../data/store';
@@ -86,7 +86,7 @@ export default function CheckIn() {
     const ck = getCheckin(appt.id);
     if (!ck) return { label: 'Not Arrived', color: s.text3, bg: '#F5F5F5' };
     if (ck.status === 'checked-in') return { label: 'Waiting', color: s.warning, bg: '#FFF7ED' };
-    if (ck.status === 'in-class') return { label: 'With Provider', color: s.accent, bg: s.accentLight };
+    if (ck.status === 'in-class') return { label: 'In Class', color: s.accent, bg: s.accentLight };
     if (ck.status === 'complete') return { label: 'Complete', color: s.success, bg: '#F0FDF4' };
     return { label: ck.status, color: s.text3, bg: '#F5F5F5' };
   };
@@ -124,7 +124,7 @@ export default function CheckIn() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Check-In</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Today's patient flow — {todayAppts.length} appointments, {checkedInCount} checked in</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Today's client flow — {todayAppts.length} appointments, {checkedInCount} checked in</p>
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export default function CheckIn() {
         ))}
       </div>
 
-      <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patient..." style={{ ...s.input, maxWidth: 300, marginBottom: 16 }} />
+      <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search client..." style={{ ...s.input, maxWidth: 300, marginBottom: 16 }} />
 
       {/* Appointment Cards */}
       <div style={{ display: 'grid', gap: 10 }}>
@@ -165,10 +165,10 @@ export default function CheckIn() {
                 <div style={{ font: `400 10px ${s.FONT}`, color: s.text3 }}>{appt.duration}min</div>
               </div>
 
-              {/* Patient Info */}
+              {/* Client Info */}
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ font: `500 15px ${s.FONT}`, color: s.text, marginBottom: 2 }}>{appt.patientName}</div>
-                <div style={{ font: `400 13px ${s.FONT}`, color: s.text2 }}>{svc?.name || 'Service'} — {prov?.name?.split(',')[0] || 'Provider'}</div>
+                <div style={{ font: `400 13px ${s.FONT}`, color: s.text2 }}>{svc?.name || 'Service'} — {prov?.name?.split(',')[0] || 'Instructor'}</div>
                 {appt.room && <div style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>{appt.room}</div>}
               </div>
 
@@ -186,7 +186,7 @@ export default function CheckIn() {
                   <button onClick={() => startCheckin(appt)} style={s.pillAccent}>Check In</button>
                 )}
                 {ck?.status === 'checked-in' && (
-                  <button onClick={() => updateStatus(appt.id, 'in-class')} style={{ ...s.pillOutline, fontSize: 12 }}>Send to Provider</button>
+                  <button onClick={() => updateStatus(appt.id, 'in-class')} style={{ ...s.pillOutline, fontSize: 12 }}>Send to Instructor</button>
                 )}
                 {ck?.status === 'in-class' && (
                   <button onClick={() => updateStatus(appt.id, 'complete')} style={{ ...s.pillAccent, background: s.success, fontSize: 12 }}>Complete</button>
@@ -208,7 +208,7 @@ export default function CheckIn() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowVerify(null)}>
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 500, width: '90%', boxShadow: s.shadowLg }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 8 }}>Check In: {showVerify.patientName}</h2>
-            <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Verify patient information before checking in.</p>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Verify client information before checking in.</p>
 
             <div className="ci-modal-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
               <div>
@@ -239,11 +239,11 @@ export default function CheckIn() {
                 <>
                   <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 16, cursor: 'pointer' }}>
                     <input type="checkbox" checked={verifyForm.pregnant} onChange={e => setVerifyForm({ ...verifyForm, pregnant: e.target.checked })} style={{ accentColor: s.danger, width: 18, height: 18 }} />
-                    <span style={{ font: `400 13px ${s.FONT}`, color: s.text }}>Patient is or may be pregnant</span>
+                    <span style={{ font: `400 13px ${s.FONT}`, color: s.text }}>Client is or may be pregnant</span>
                   </label>
                   {verifyForm.pregnant && (
                     <div style={{ padding: '10px 14px', background: '#FEF2F2', borderRadius: 8, marginTop: 8, font: `500 12px ${s.FONT}`, color: s.danger }}>
-                      ALERT: {svc?.name} may be contraindicated during pregnancy. Confirm session safety with provider before proceeding.
+                      ALERT: {svc?.name} may be contraindicated during pregnancy. Confirm session safety with instructor before proceeding.
                     </div>
                   )}
                 </>

@@ -437,12 +437,12 @@ export default function Settings() {
         </div>
       )}
 
-      {/* Providers */}
+      {/* Instructors */}
       {tab === 'providers' && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <span style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{providers.length} providers</span>
-            <button onClick={() => { setEditProv(null); setProvForm({ name: '', title: '', specialties: '', color: '#111' }); setShowProvForm(true); }} style={s.pillAccent}>+ Add Provider</button>
+            <span style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{providers.length} instructors</span>
+            <button onClick={() => { setEditProv(null); setProvForm({ name: '', title: '', specialties: '', color: '#111' }); setShowProvForm(true); }} style={s.pillAccent}>+ Add Instructor</button>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
             {providers.map(p => (
@@ -537,7 +537,7 @@ export default function Settings() {
       {showProvForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowProvForm(false)}>
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 480, width: '90%', boxShadow: s.shadowLg }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ font: `600 18px ${s.FONT}`, color: s.text, marginBottom: 20 }}>{editProv ? 'Edit Provider' : 'Add Provider'}</h2>
+            <h2 style={{ font: `600 18px ${s.FONT}`, color: s.text, marginBottom: 20 }}>{editProv ? 'Edit Instructor' : 'Add Instructor'}</h2>
             <div style={{ display: 'grid', gap: 14 }}>
               <div>
                 <label style={s.label}>Full Name</label>
