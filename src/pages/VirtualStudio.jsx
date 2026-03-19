@@ -18,14 +18,14 @@ const VIRTUAL_CLASSES = [
 ];
 
 const ON_DEMAND_LIBRARY = [
-  { id: 'OD-1', title: 'Reformer Foundations', instructor: 'Kelly Snailum', duration: 35, level: 'Beginner', views: 1240, rating: 4.9, category: 'Reformer' },
-  { id: 'OD-2', title: 'Power Reformer Flow', instructor: 'Megan Torres', duration: 55, level: 'Advanced', views: 890, rating: 4.8, category: 'Reformer' },
-  { id: 'OD-3', title: 'Classical Mat — Full Order', instructor: 'Jordan Reeves', duration: 50, level: 'Intermediate', views: 2100, rating: 4.9, category: 'Mat' },
-  { id: 'OD-4', title: 'Barre Sculpt Express', instructor: 'Danielle Park', duration: 30, level: 'All Levels', views: 3200, rating: 4.7, category: 'Barre' },
-  { id: 'OD-5', title: 'Prenatal Safe Flow', instructor: 'Megan Torres', duration: 40, level: 'Prenatal', views: 560, rating: 5.0, category: 'Prenatal' },
-  { id: 'OD-6', title: 'Deep Stretch & Release', instructor: 'Rachel Kim', duration: 25, level: 'All Levels', views: 4500, rating: 4.9, category: 'Recovery' },
-  { id: 'OD-7', title: 'Core Rehab Series Ep.1', instructor: 'Kelly Snailum', duration: 20, level: 'Beginner', views: 780, rating: 4.8, category: 'Rehab' },
-  { id: 'OD-8', title: 'TRX Total Body', instructor: 'Danielle Park', duration: 45, level: 'Intermediate', views: 670, rating: 4.6, category: 'TRX' },
+  { id: 'OD-1', title: 'Reformer Foundations', instructor: 'Alex Morgan', duration: 35, level: 'Beginner', views: 1240, rating: 4.9, category: 'Reformer' },
+  { id: 'OD-2', title: 'Power Reformer Flow', instructor: 'Sam Rivera', duration: 55, level: 'Advanced', views: 890, rating: 4.8, category: 'Reformer' },
+  { id: 'OD-3', title: 'Classical Mat — Full Order', instructor: 'Taylor Brooks', duration: 50, level: 'Intermediate', views: 2100, rating: 4.9, category: 'Mat' },
+  { id: 'OD-4', title: 'Barre Sculpt Express', instructor: 'Jordan Chen', duration: 30, level: 'All Levels', views: 3200, rating: 4.7, category: 'Barre' },
+  { id: 'OD-5', title: 'Prenatal Safe Flow', instructor: 'Sam Rivera', duration: 40, level: 'Prenatal', views: 560, rating: 5.0, category: 'Prenatal' },
+  { id: 'OD-6', title: 'Deep Stretch & Release', instructor: 'Riley Kim', duration: 25, level: 'All Levels', views: 4500, rating: 4.9, category: 'Recovery' },
+  { id: 'OD-7', title: 'Core Rehab Series Ep.1', instructor: 'Alex Morgan', duration: 20, level: 'Beginner', views: 780, rating: 4.8, category: 'Rehab' },
+  { id: 'OD-8', title: 'TRX Total Body', instructor: 'Jordan Chen', duration: 45, level: 'Intermediate', views: 670, rating: 4.6, category: 'TRX' },
 ];
 
 export default function VirtualStudio() {

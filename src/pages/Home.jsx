@@ -49,7 +49,8 @@ export default function Home() {
       {/* Nav — warm glass */}
       <nav style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '16px 32px', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        paddingTop: 'env(safe-area-inset-top)', paddingBottom: '16px', paddingLeft: '32px', paddingRight: '32px',
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         background: 'rgba(250,246,241,0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(0,0,0,0.06)',
       }}>
@@ -59,7 +60,7 @@ export default function Home() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             font: `700 14px ${s.FONT}`, color: theme.accentText,
           }}>
-            R
+            {(settings.businessName || 'Pilates')[0]}
           </div>
           <span style={{ font: `600 16px ${s.FONT}`, color: '#2D2A26' }}>{name}</span>
         </div>

@@ -3,9 +3,9 @@ import { useStyles } from '../theme';
 import { getPatients, getAppointments, getServices, getProviders } from '../data/store';
 
 const LOCATIONS = [
-  { id: 'scottsdale', name: 'Scottsdale', address: '6949 E Shea Blvd', color: null, shortName: 'SCO' },
-  { id: 'arcadia', name: 'Arcadia', address: '3629 E Indian School Rd', color: '#3B82F6', shortName: 'ARC' },
-  { id: 'north_central', name: 'North Central', address: '5555 N 7th St', color: '#10B981', shortName: 'NCN' },
+  { id: 'downtown', name: 'Downtown Studio', address: '123 Main St', color: null, shortName: 'DWN' },
+  { id: 'westside', name: 'Westside Studio', address: '456 West Ave', color: '#3B82F6', shortName: 'WST' },
+  { id: 'north', name: 'North Studio', address: '789 North Blvd', color: '#10B981', shortName: 'NTH' },
 ];
 
 const CLASSES = [

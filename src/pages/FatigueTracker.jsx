@@ -40,13 +40,13 @@ function getDefaultBookings() {
     return dt.toISOString();
   };
   return [
-    { id: 'BK-demo-1', clientName: 'Sarah Martinez', classType: 'reformer-power', date: d(0, 9), instructor: 'Kelly' },
-    { id: 'BK-demo-2', clientName: 'Sarah Martinez', classType: 'barre-sculpt', date: d(1, 10), instructor: 'Megan' },
-    { id: 'BK-demo-3', clientName: 'Sarah Martinez', classType: 'reformer-foundations', date: d(2, 9), instructor: 'Kelly' },
+    { id: 'BK-demo-1', clientName: 'Sarah Martinez', classType: 'reformer-power', date: d(0, 9), instructor: 'Alex' },
+    { id: 'BK-demo-2', clientName: 'Sarah Martinez', classType: 'barre-sculpt', date: d(1, 10), instructor: 'Sam' },
+    { id: 'BK-demo-3', clientName: 'Sarah Martinez', classType: 'reformer-foundations', date: d(2, 9), instructor: 'Alex' },
     { id: 'BK-demo-4', clientName: 'Sarah Martinez', classType: 'mat-pilates', date: d(4, 11), instructor: 'Emily' },
-    { id: 'BK-demo-5', clientName: 'Mike Chen', classType: 'reformer-power', date: d(0, 11), instructor: 'Kelly' },
+    { id: 'BK-demo-5', clientName: 'Mike Chen', classType: 'reformer-power', date: d(0, 11), instructor: 'Alex' },
     { id: 'BK-demo-6', clientName: 'Mike Chen', classType: 'reformer-power', date: d(2, 11), instructor: 'Tovah' },
-    { id: 'BK-demo-7', clientName: 'Mike Chen', classType: 'stretch-release', date: d(3, 10), instructor: 'Megan' },
+    { id: 'BK-demo-7', clientName: 'Mike Chen', classType: 'stretch-release', date: d(3, 10), instructor: 'Sam' },
     { id: 'BK-demo-8', clientName: 'Jessica Lee', classType: 'barre-sculpt', date: d(0, 10), instructor: 'Emily' },
     { id: 'BK-demo-9', clientName: 'Jessica Lee', classType: 'barre-sculpt', date: d(1, 10), instructor: 'Emily' },
     { id: 'BK-demo-10', clientName: 'Jessica Lee', classType: 'barre-sculpt', date: d(2, 10), instructor: 'Emily' },

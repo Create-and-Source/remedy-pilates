@@ -20,15 +20,15 @@ function getPatients() {
 }
 
 const TIERS = {
-  Silver: { price: 99, color: '#94A3B8', bg: '#F8FAFC', allocations: [{ service: 'Mat Pilates', units: 1, unit: 'session' }, { service: 'Chemical Peel', units: 1, unit: 'session' }] },
-  Gold: { price: 199, color: '#A68A4C', bg: '#FAF7F2', allocations: [{ service: 'Reformer', units: 20, unit: 'units' }, { service: 'Mat Pilates', units: 1, unit: 'session' }, { service: 'Chemical Peel', units: 1, unit: 'session' }] },
-  Platinum: { price: 349, color: '#7C3AED', bg: '#F5F3FF', allocations: [{ service: 'Reformer', units: 40, unit: 'units' }, { service: 'Juvederm Barre', units: 1, unit: 'syringe' }, { service: 'Mat Pilates', units: 2, unit: 'sessions' }, { service: 'RF Private Session', units: 1, unit: 'session' }, { service: 'IV Therapy', units: 1, unit: 'session' }] },
+  Silver: { price: 99, color: '#94A3B8', bg: '#F8FAFC', allocations: [{ service: 'Mat Pilates', units: 1, unit: 'session' }, { service: 'Barre', units: 2, unit: 'sessions' }] },
+  Gold: { price: 199, color: '#A68A4C', bg: '#FAF7F2', allocations: [{ service: 'Reformer', units: 20, unit: 'units' }, { service: 'Mat Pilates', units: 1, unit: 'session' }, { service: 'Barre', units: 2, unit: 'sessions' }] },
+  Platinum: { price: 349, color: '#7C3AED', bg: '#F5F3FF', allocations: [{ service: 'Reformer', units: 40, unit: 'units' }, { service: 'Barre', units: 4, unit: 'sessions' }, { service: 'Mat Pilates', units: 2, unit: 'sessions' }, { service: 'Private Session', units: 1, unit: 'session' }, { service: 'Body Sculpt', units: 1, unit: 'session' }] },
 };
 
 const TIER_FEATURES = {
-  Silver: ['1 Mat Pilates per month', '1 Chemical Peel per month', '10% off retail products', 'Priority booking access'],
-  Gold: ['20 Reformer units per month', '1 Mat Pilates per month', '1 Chemical Peel per month', '15% off retail products', 'Priority booking access', 'Free consultations'],
-  Platinum: ['40 Reformer units per month', '1 Juvederm syringe per month', '2 Mat Pilatess per month', '1 RF Private Session session', '1 IV Therapy session', '20% off retail products', 'VIP priority booking', 'Free consultations', 'Exclusive member events'],
+  Silver: ['1 Mat Pilates session per month', '2 Barre sessions per month', '10% off retail products', 'Priority booking access'],
+  Gold: ['20 Reformer units per month', '1 Mat Pilates session per month', '2 Barre sessions per month', '15% off retail products', 'Priority booking access', 'Free consultations'],
+  Platinum: ['40 Reformer units per month', '4 Barre sessions per month', '2 Mat Pilates sessions per month', '1 Private Session per month', '1 Body Sculpt session', '20% off retail products', 'VIP priority booking', 'Free consultations', 'Exclusive member events'],
 };
 
 function seedMemberships() {
@@ -40,24 +40,24 @@ function seedMemberships() {
   const d = (offset) => { const dt = new Date(now); dt.setDate(dt.getDate() + offset); return dt.toISOString().slice(0, 10); };
 
   const memberships = [
-    { id: 'MEM-1', patientId: clients[0].id, patientName: `${clients[0].firstName} ${clients[0].lastName}`, tier: 'Gold', startDate: d(-60), nextBilling: d(0), credits: 25, status: 'active', wallet: [{ service: 'Reformer', remaining: 5, total: 20 }, { service: 'Mat Pilates', remaining: 0, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
-    { id: 'MEM-2', patientId: clients[1].id, patientName: `${clients[1].firstName} ${clients[1].lastName}`, tier: 'Platinum', startDate: d(-90), nextBilling: d(5), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 28, total: 40 }, { service: 'Juvederm Barre', remaining: 1, total: 1 }, { service: 'Mat Pilates', remaining: 2, total: 2 }, { service: 'RF Private Session', remaining: 1, total: 1 }, { service: 'IV Therapy', remaining: 0, total: 1 }] },
-    { id: 'MEM-3', patientId: clients[2].id, patientName: `${clients[2].firstName} ${clients[2].lastName}`, tier: 'Silver', startDate: d(-30), nextBilling: d(1), credits: 50, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 0, total: 1 }] },
-    { id: 'MEM-4', patientId: clients[3].id, patientName: `${clients[3].firstName} ${clients[3].lastName}`, tier: 'Gold', startDate: d(-120), nextBilling: d(10), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 20, total: 20 }, { service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
-    { id: 'MEM-5', patientId: clients[4].id, patientName: `${clients[4].firstName} ${clients[4].lastName}`, tier: 'Platinum', startDate: d(-45), nextBilling: d(15), credits: 100, status: 'active', wallet: [{ service: 'Reformer', remaining: 12, total: 40 }, { service: 'Juvederm Barre', remaining: 0, total: 1 }, { service: 'Mat Pilates', remaining: 1, total: 2 }, { service: 'RF Private Session', remaining: 0, total: 1 }, { service: 'IV Therapy', remaining: 1, total: 1 }] },
-    { id: 'MEM-6', patientId: clients[5].id, patientName: `${clients[5].firstName} ${clients[5].lastName}`, tier: 'Silver', startDate: d(-15), nextBilling: d(15), credits: 0, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
-    { id: 'MEM-7', patientId: clients[6].id, patientName: `${clients[6].firstName} ${clients[6].lastName}`, tier: 'Gold', startDate: d(-75), nextBilling: d(14), credits: 75, status: 'active', wallet: [{ service: 'Reformer', remaining: 8, total: 20 }, { service: 'Mat Pilates', remaining: 0, total: 1 }, { service: 'Chemical Peel', remaining: 0, total: 1 }] },
-    { id: 'MEM-8', patientId: clients[7].id, patientName: `${clients[7].firstName} ${clients[7].lastName}`, tier: 'Platinum', startDate: d(-180), nextBilling: d(3), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 35, total: 40 }, { service: 'Juvederm Barre', remaining: 1, total: 1 }, { service: 'Mat Pilates', remaining: 2, total: 2 }, { service: 'RF Private Session', remaining: 1, total: 1 }, { service: 'IV Therapy', remaining: 1, total: 1 }] },
-    { id: 'MEM-9', patientId: clients[8].id, patientName: `${clients[8].firstName} ${clients[8].lastName}`, tier: 'Gold', startDate: d(-200), nextBilling: d(-5), credits: 0, status: 'paused', wallet: [{ service: 'Reformer', remaining: 14, total: 20 }, { service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
-    { id: 'MEM-10', patientId: clients[9].id, patientName: `${clients[9].firstName} ${clients[9].lastName}`, tier: 'Silver', startDate: d(-10), nextBilling: d(20), credits: 0, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Chemical Peel', remaining: 1, total: 1 }] },
+    { id: 'MEM-1', patientId: clients[0].id, patientName: `${clients[0].firstName} ${clients[0].lastName}`, tier: 'Gold', startDate: d(-60), nextBilling: d(0), credits: 25, status: 'active', wallet: [{ service: 'Reformer', remaining: 5, total: 20 }, { service: 'Mat Pilates', remaining: 0, total: 1 }, { service: 'Barre', remaining: 2, total: 2 }] },
+    { id: 'MEM-2', patientId: clients[1].id, patientName: `${clients[1].firstName} ${clients[1].lastName}`, tier: 'Platinum', startDate: d(-90), nextBilling: d(5), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 28, total: 40 }, { service: 'Barre', remaining: 4, total: 4 }, { service: 'Mat Pilates', remaining: 2, total: 2 }, { service: 'Private Session', remaining: 1, total: 1 }, { service: 'Body Sculpt', remaining: 0, total: 1 }] },
+    { id: 'MEM-3', patientId: clients[2].id, patientName: `${clients[2].firstName} ${clients[2].lastName}`, tier: 'Silver', startDate: d(-30), nextBilling: d(1), credits: 50, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Barre', remaining: 0, total: 1 }] },
+    { id: 'MEM-4', patientId: clients[3].id, patientName: `${clients[3].firstName} ${clients[3].lastName}`, tier: 'Gold', startDate: d(-120), nextBilling: d(10), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 20, total: 20 }, { service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Barre', remaining: 1, total: 1 }] },
+    { id: 'MEM-5', patientId: clients[4].id, patientName: `${clients[4].firstName} ${clients[4].lastName}`, tier: 'Platinum', startDate: d(-45), nextBilling: d(15), credits: 100, status: 'active', wallet: [{ service: 'Reformer', remaining: 12, total: 40 }, { service: 'Barre', remaining: 0, total: 4 }, { service: 'Mat Pilates', remaining: 1, total: 2 }, { service: 'Private Session', remaining: 0, total: 1 }, { service: 'Body Sculpt', remaining: 1, total: 1 }] },
+    { id: 'MEM-6', patientId: clients[5].id, patientName: `${clients[5].firstName} ${clients[5].lastName}`, tier: 'Silver', startDate: d(-15), nextBilling: d(15), credits: 0, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Barre', remaining: 1, total: 1 }] },
+    { id: 'MEM-7', patientId: clients[6].id, patientName: `${clients[6].firstName} ${clients[6].lastName}`, tier: 'Gold', startDate: d(-75), nextBilling: d(14), credits: 75, status: 'active', wallet: [{ service: 'Reformer', remaining: 8, total: 20 }, { service: 'Mat Pilates', remaining: 0, total: 1 }, { service: 'Barre', remaining: 0, total: 1 }] },
+    { id: 'MEM-8', patientId: clients[7].id, patientName: `${clients[7].firstName} ${clients[7].lastName}`, tier: 'Platinum', startDate: d(-180), nextBilling: d(3), credits: 0, status: 'active', wallet: [{ service: 'Reformer', remaining: 35, total: 40 }, { service: 'Barre', remaining: 4, total: 4 }, { service: 'Mat Pilates', remaining: 2, total: 2 }, { service: 'Private Session', remaining: 1, total: 1 }, { service: 'Body Sculpt', remaining: 1, total: 1 }] },
+    { id: 'MEM-9', patientId: clients[8].id, patientName: `${clients[8].firstName} ${clients[8].lastName}`, tier: 'Gold', startDate: d(-200), nextBilling: d(-5), credits: 0, status: 'paused', wallet: [{ service: 'Reformer', remaining: 14, total: 20 }, { service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Barre', remaining: 1, total: 1 }] },
+    { id: 'MEM-10', patientId: clients[9].id, patientName: `${clients[9].firstName} ${clients[9].lastName}`, tier: 'Silver', startDate: d(-10), nextBilling: d(20), credits: 0, status: 'active', wallet: [{ service: 'Mat Pilates', remaining: 1, total: 1 }, { service: 'Barre', remaining: 1, total: 1 }] },
   ];
 
   const packages = [
-    { id: 'PKG-1', patientId: clients[0].id, patientName: `${clients[0].firstName} ${clients[0].lastName}`, name: '3 TRX Sessions', service: 'TRX Photofacial', totalSessions: 3, usedSessions: 2, purchaseDate: d(-45), expiresDate: d(45), status: 'active' },
-    { id: 'PKG-2', patientId: clients[2].id, patientName: `${clients[2].firstName} ${clients[2].lastName}`, name: '6 Laser Hair Removal', service: 'Laser Hair Removal', totalSessions: 6, usedSessions: 3, purchaseDate: d(-90), expiresDate: d(90), status: 'active' },
-    { id: 'PKG-3', patientId: clients[4].id, patientName: `${clients[4].firstName} ${clients[4].lastName}`, name: '3 RF Private Session', service: 'RF Private Session', totalSessions: 3, usedSessions: 1, purchaseDate: d(-30), expiresDate: d(60), status: 'active' },
-    { id: 'PKG-4', patientId: clients[7].id, patientName: `${clients[7].firstName} ${clients[7].lastName}`, name: '4 Chemical Peels', service: 'Chemical Peel', totalSessions: 4, usedSessions: 4, purchaseDate: d(-120), expiresDate: d(-10), status: 'completed' },
-    { id: 'PKG-5', patientId: clients[10].id, patientName: `${clients[10].firstName} ${clients[10].lastName}`, name: '3 TRX Sessions', service: 'TRX Photofacial', totalSessions: 3, usedSessions: 0, purchaseDate: d(-5), expiresDate: d(85), status: 'active' },
+    { id: 'PKG-1', patientId: clients[0].id, patientName: `${clients[0].firstName} ${clients[0].lastName}`, name: '3 TRX Sessions', service: 'TRX', totalSessions: 3, usedSessions: 2, purchaseDate: d(-45), expiresDate: d(45), status: 'active' },
+    { id: 'PKG-2', patientId: clients[2].id, patientName: `${clients[2].firstName} ${clients[2].lastName}`, name: '6 Group Reformer Sessions', service: 'Group Reformer', totalSessions: 6, usedSessions: 3, purchaseDate: d(-90), expiresDate: d(90), status: 'active' },
+    { id: 'PKG-3', patientId: clients[4].id, patientName: `${clients[4].firstName} ${clients[4].lastName}`, name: '3 Private Sessions', service: 'Private Session', totalSessions: 3, usedSessions: 1, purchaseDate: d(-30), expiresDate: d(60), status: 'active' },
+    { id: 'PKG-4', patientId: clients[7].id, patientName: `${clients[7].firstName} ${clients[7].lastName}`, name: '4 Barre Sessions', service: 'Barre', totalSessions: 4, usedSessions: 4, purchaseDate: d(-120), expiresDate: d(-10), status: 'completed' },
+    { id: 'PKG-5', patientId: clients[10].id, patientName: `${clients[10].firstName} ${clients[10].lastName}`, name: '3 TRX Sessions', service: 'TRX', totalSessions: 3, usedSessions: 0, purchaseDate: d(-5), expiresDate: d(85), status: 'active' },
     { id: 'PKG-6', patientId: clients[3].id, patientName: `${clients[3].firstName} ${clients[3].lastName}`, name: '6 Mat Pilates', service: 'Mat Pilates', totalSessions: 6, usedSessions: 5, purchaseDate: d(-150), expiresDate: d(14), status: 'active' },
   ];
 
@@ -728,7 +728,7 @@ export default function Memberships() {
           <table style={{ width: '100%', borderCollapse: 'collapse', font: `400 13px ${s.FONT}` }}>
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                {['Patient', 'Tier', 'Status', 'Next Billing', 'Credits', 'Wallet Summary', ''].map(h => (
+                {['Client', 'Tier', 'Status', 'Next Billing', 'Credits', 'Wallet Summary', ''].map(h => (
                   <th key={h} style={{
                     padding: '14px 18px', textAlign: 'left',
                     font: `500 9px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5,
@@ -947,7 +947,7 @@ export default function Memberships() {
           <table style={{ width: '100%', borderCollapse: 'collapse', font: `400 13px ${s.FONT}` }}>
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                {['Patient', 'Package', 'Service', 'Progress', 'Expires', 'Status', ''].map(h => (
+                {['Client', 'Package', 'Service', 'Progress', 'Expires', 'Status', ''].map(h => (
                   <th key={h} style={{
                     padding: '14px 18px', textAlign: 'left',
                     font: `500 9px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1.5,

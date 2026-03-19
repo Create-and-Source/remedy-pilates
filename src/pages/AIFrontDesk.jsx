@@ -11,7 +11,7 @@ const QUICK_ACTIONS = [
   { label: 'Look up a client', prompt: 'Look up client Emma Johnson' },
   { label: 'Studio hours', prompt: 'What are the studio hours?' },
   { label: 'Class prices', prompt: 'How much is a reformer class?' },
-  { label: 'Instructor info', prompt: 'Tell me about Kelly Snailum' },
+  { label: 'Instructor info', prompt: 'Tell me about Alex Morgan' },
   { label: 'Cancel policy', prompt: 'What is the cancellation policy?' },
 ];
 
@@ -129,15 +129,15 @@ function processQuery(query) {
     return {
       text: `**${settings.businessName || 'Pilates & Barre'}**`,
       details: [
-        '📍 **Scottsdale** — 6949 E Shea Blvd, Scottsdale, AZ 85254',
-        '📍 **Arcadia** — 3629 E Indian School Rd, Phoenix, AZ 85018',
-        '📍 **North Central** — 5555 N 7th St, Suite 120, Phoenix, AZ 85014',
+        '📍 **Downtown Studio** — 123 Main St, Suite 100',
+        '📍 **Westside Studio** — 456 West Ave, Suite 200',
+        '📍 **North Studio** — 789 North Blvd, Suite 120',
         '',
         '🕐 Mon–Fri: 6am – 8pm',
         '🕐 Sat: 7am – 1pm',
         '🕐 Sun: 8am – 12pm',
         '',
-        `📞 ${settings.phone || '(480) 699-8160'}`,
+        `📞 ${settings.phone || '(555) 699-8160'}`,
         `📧 ${settings.email || 'info@pilatesstudio.com'}`,
       ],
       type: 'info',
@@ -202,7 +202,7 @@ function processQuery(query) {
       '• **Class availability** — "What classes are available tomorrow?"',
       '• **Client lookup** — "Look up Emma Johnson"',
       '• **Pricing** — "How much is reformer?"',
-      '• **Instructors** — "Tell me about Kelly"',
+      '• **Instructors** — "Tell me about Alex"',
       '• **Hours & locations** — "Where are you located?"',
       '• **Policies** — "Cancellation policy"',
       '• **Memberships** — "What membership plans do you have?"',

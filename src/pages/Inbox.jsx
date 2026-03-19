@@ -111,88 +111,88 @@ function initInbox() {
   const ago = (min) => new Date(now - min * 60000).toISOString();
 
   saveConversations([
-    { id: 'DM-1', handle: '@emma.glow', name: 'Emma Johnson', avatar: 'EJ', patientId: 'PAT-1000', platform: 'instagram', unread: 2, lastActivity: ago(5), avgResponseTime: 3, messages: [
-      { id: 'm1', from: 'them', text: 'Hi! I saw your Reformer post. How much is it per unit?', time: ago(120), read: true },
-      { id: 'm2', from: 'us', text: 'Hi Emma! Reformer is $14/unit. Most clients need 20-40 units depending on the area. Would you like to book a free consultation?', time: ago(90), read: true, sentBy: 'PRV-2' },
-      { id: 'm3', from: 'them', text: 'That sounds great! What areas do most people treat?', time: ago(85), read: true },
-      { id: 'm4', from: 'us', text: 'Forehead lines, crow\'s feet, and the "11" lines between brows are the top 3! We can go over everything at your consult.', time: ago(82), read: true, sentBy: 'PRV-2' },
-      { id: 'm5', from: 'them', text: 'Yes! Do you have anything this week?', time: ago(30), read: false },
-      { id: 'm6', from: 'them', text: 'Also do you do lip filler?', time: ago(5), read: false },
+    { id: 'DM-1', handle: '@emma.reformer', name: 'Emma Johnson', avatar: 'EJ', patientId: 'PAT-1000', platform: 'instagram', unread: 2, lastActivity: ago(5), avgResponseTime: 3, messages: [
+      { id: 'm1', from: 'them', text: 'Hi! I saw your Reformer class post. I am totally new to Pilates — is there a beginner level I should start with?', time: ago(120), read: true },
+      { id: 'm2', from: 'us', text: 'Hi Emma! Absolutely — we have Reformer Level 1 classes designed specifically for beginners. No experience needed at all. Would you like to book a free intro session to try it out?', time: ago(90), read: true, sentBy: 'PRV-2' },
+      { id: 'm3', from: 'them', text: 'That sounds perfect! How long are the classes?', time: ago(85), read: true },
+      { id: 'm4', from: 'us', text: 'Level 1 classes are 50 minutes. Small group, max 6 people, so you get lots of individual attention from the instructor!', time: ago(82), read: true, sentBy: 'PRV-2' },
+      { id: 'm5', from: 'them', text: 'Love that! Do you have anything this week?', time: ago(30), read: false },
+      { id: 'm6', from: 'them', text: 'Also do you offer any beginner class packs?', time: ago(5), read: false },
     ]},
-    { id: 'DM-2', handle: '@sophias_skincare', name: 'Sophia Brown', avatar: 'SB', patientId: 'PAT-1002', platform: 'instagram', unread: 1, lastActivity: ago(15), avgResponseTime: 8, messages: [
-      { id: 'm7', from: 'them', text: 'I had microneedling yesterday and my face is really red. Is that normal?', time: ago(180), read: true },
-      { id: 'm8', from: 'us', text: 'Hi Sophia! Yes, redness for 24-48 hours is completely normal after RF microneedling. Keep your skin hydrated and avoid direct sun. If it persists past 48 hours, give us a call!', time: ago(150), read: true, sentBy: 'PRV-3' },
-      { id: 'm9', from: 'them', text: 'Ok great! What moisturizer should I use?', time: ago(140), read: true },
-      { id: 'm10', from: 'us', text: 'We recommend the EltaMD Barrier Renewal Complex or plain CeraVe. Avoid actives like retinol or vitamin C for at least 5 days!', time: ago(132), read: true, sentBy: 'PRV-3' },
-      { id: 'm11', from: 'them', text: 'Thank you! Its already calming down. When should I book my next session?', time: ago(15), read: false },
+    { id: 'DM-2', handle: '@sophias_pilates', name: 'Sophia Brown', avatar: 'SB', patientId: 'PAT-1002', platform: 'instagram', unread: 1, lastActivity: ago(15), avgResponseTime: 8, messages: [
+      { id: 'm7', from: 'them', text: 'I took my first Reformer class yesterday and I am SO sore. Is that normal?', time: ago(180), read: true },
+      { id: 'm8', from: 'us', text: 'Hi Sophia! Yes, totally normal after your first Reformer class — you are waking up muscles you never knew you had! Keep moving gently, stay hydrated, and it will ease up within a day or two.', time: ago(150), read: true, sentBy: 'PRV-3' },
+      { id: 'm9', from: 'them', text: 'Good to know! Should I still come to my class tomorrow?', time: ago(140), read: true },
+      { id: 'm10', from: 'us', text: 'Yes, definitely! Light movement actually helps recovery. Just let your instructor know you are sore and they will modify where needed.', time: ago(132), read: true, sentBy: 'PRV-3' },
+      { id: 'm11', from: 'them', text: 'Amazing, thank you! When should I move up to Level 2?', time: ago(15), read: false },
     ]},
-    { id: 'DM-3', handle: '@ava.jones.az', name: 'Ava Jones', avatar: 'AJ', patientId: 'PAT-1003', platform: 'instagram', unread: 0, lastActivity: ago(60), avgResponseTime: 18, messages: [
-      { id: 'm12', from: 'them', text: 'Do you offer payment plans for PDO threads?', time: ago(300), read: true },
-      { id: 'm13', from: 'us', text: 'Hi Ava! Yes we do — we offer CareCredit and Cherry financing with 0% APR options. PDO thread lifts start at $2,500. Want me to send you more details?', time: ago(240), read: true, sentBy: 'PRV-1' },
-      { id: 'm14', from: 'them', text: 'That would be great, thanks!', time: ago(200), read: true },
-      { id: 'm15', from: 'us', text: 'Sent! Let me know if you have questions. We can also do a virtual consultation if youd like to see if threads are right for your goals.', time: ago(60), read: true, sentBy: 'PRV-1' },
+    { id: 'DM-3', handle: '@ava.active.az', name: 'Ava Jones', avatar: 'AJ', patientId: 'PAT-1003', platform: 'instagram', unread: 0, lastActivity: ago(60), avgResponseTime: 18, messages: [
+      { id: 'm12', from: 'them', text: 'Hi! I am interested in private training sessions. Do you have packages and what is the pricing?', time: ago(300), read: true },
+      { id: 'm13', from: 'us', text: 'Hi Ava! Our private training packages start at $95/session for a single session. We also offer a 5-pack for $440 and a 10-pack for $820 — that is the best value. Want me to send you the full details?', time: ago(240), read: true, sentBy: 'PRV-1' },
+      { id: 'm14', from: 'them', text: 'Yes please! The 10-pack sounds great.', time: ago(200), read: true },
+      { id: 'm15', from: 'us', text: 'Sent! Packages never expire so you can use them at your own pace. We can also do a complimentary movement assessment before your first session if you would like.', time: ago(60), read: true, sentBy: 'PRV-1' },
     ]},
-    { id: 'DM-4', handle: '@beauty.by.charlotte', name: 'Charlotte Davis', avatar: 'CD', patientId: null, platform: 'instagram', unread: 1, lastActivity: ago(8), avgResponseTime: null, messages: [
-      { id: 'm16', from: 'them', text: 'Omg I love your before and afters! How do I book a consultation?', time: ago(8), read: false },
+    { id: 'DM-4', handle: '@charlotte.moves', name: 'Charlotte Davis', avatar: 'CD', patientId: null, platform: 'instagram', unread: 1, lastActivity: ago(8), avgResponseTime: null, messages: [
+      { id: 'm16', from: 'them', text: 'Omg I love your studio! Your reels always make me want to start Pilates. How do I sign up for a class?', time: ago(8), read: false },
     ]},
-    { id: 'DM-5', handle: '@isabella_m', name: 'Isabella Martinez', avatar: 'IM', patientId: 'PAT-1004', platform: 'instagram', unread: 0, lastActivity: ago(1440), avgResponseTime: 4, messages: [
-      { id: 'm17', from: 'them', text: 'When is my next appointment?', time: ago(2880), read: true },
-      { id: 'm18', from: 'us', text: 'Hi Isabella! Your next Mat Pilates is scheduled for next Thursday at 2pm. See you then!', time: ago(1440), read: true, sentBy: 'PRV-2' },
+    { id: 'DM-5', handle: '@isabella_fitness', name: 'Isabella Martinez', avatar: 'IM', patientId: 'PAT-1004', platform: 'instagram', unread: 0, lastActivity: ago(1440), avgResponseTime: 4, messages: [
+      { id: 'm17', from: 'them', text: 'When is my next class?', time: ago(2880), read: true },
+      { id: 'm18', from: 'us', text: 'Hi Isabella! Your next Reformer Level 2 is scheduled for Thursday at 10am. See you then!', time: ago(1440), read: true, sentBy: 'PRV-2' },
     ]},
-    { id: 'DM-6', handle: '@mia.skinlove', name: 'Mia Garcia', avatar: 'MG', patientId: 'PAT-1005', platform: 'instagram', unread: 3, lastActivity: ago(2), avgResponseTime: null, messages: [
-      { id: 'm19', from: 'them', text: 'I need to reschedule my appointment for tomorrow', time: ago(45), read: false },
+    { id: 'DM-6', handle: '@mia.pilates.life', name: 'Mia Garcia', avatar: 'MG', patientId: 'PAT-1005', platform: 'instagram', unread: 3, lastActivity: ago(2), avgResponseTime: null, messages: [
+      { id: 'm19', from: 'them', text: 'I need to reschedule my class for tomorrow', time: ago(45), read: false },
       { id: 'm20', from: 'them', text: 'Can I move it to Friday instead?', time: ago(30), read: false },
       { id: 'm21', from: 'them', text: 'Hello?? Anyone there?', time: ago(2), read: false },
     ]},
-    { id: 'DM-7', handle: '@scottsdale.harper', name: 'Harper Anderson', avatar: 'HA', patientId: null, platform: 'facebook', unread: 1, lastActivity: ago(20), avgResponseTime: null, messages: [
-      { id: 'm22', from: 'them', text: 'Hi, I saw your ad on Facebook. Do you accept insurance for any sessions?', time: ago(20), read: false },
+    { id: 'DM-7', handle: '@harper.wellness', name: 'Harper Anderson', avatar: 'HA', patientId: null, platform: 'facebook', unread: 1, lastActivity: ago(20), avgResponseTime: null, messages: [
+      { id: 'm22', from: 'them', text: 'Hi, I saw your ad on Facebook. Do you offer any classes for people recovering from a back injury?', time: ago(20), read: false },
     ]},
-    { id: 'DM-8', handle: '@grace.skinjourney', name: 'Grace Taylor', avatar: 'GT', patientId: null, platform: 'tiktok', unread: 2, lastActivity: ago(3), avgResponseTime: null, messages: [
-      { id: 'm23', from: 'them', text: 'OMG I just saw your Reformer reel!! How old do you have to be to get it? Im 24', time: ago(10), read: false },
-      { id: 'm24', from: 'them', text: 'also is baby botox a thing?? My friend said you guys do it', time: ago(3), read: false },
+    { id: 'DM-8', handle: '@grace.reformer', name: 'Grace Taylor', avatar: 'GT', patientId: null, platform: 'tiktok', unread: 2, lastActivity: ago(3), avgResponseTime: null, messages: [
+      { id: 'm23', from: 'them', text: 'OMG I just saw your Reformer reel!! I have never done Pilates before — can total beginners join or do I need to take a class first?', time: ago(10), read: false },
+      { id: 'm24', from: 'them', text: 'also do you do classes for teens?? My daughter wants to try it', time: ago(3), read: false },
     ]},
-    { id: 'DM-9', handle: '@chloe.wellness', name: 'Chloe Martinez', avatar: 'CM', patientId: 'PAT-1014', platform: 'tiktok', unread: 1, lastActivity: ago(12), avgResponseTime: 12, messages: [
-      { id: 'm25', from: 'them', text: 'I saw your weight loss transformation video. Is that semaglutide? How much is it per month?', time: ago(45), read: true },
-      { id: 'm26', from: 'us', text: 'Hi Chloe! Yes, we offer both semaglutide and tirzepatide programs starting at $500/month. Includes weekly injections, provider check-ins, and nutrition guidance. Want to book a free consult?', time: ago(30), read: true, sentBy: 'PRV-1' },
-      { id: 'm27', from: 'them', text: 'yes please! do you have anything next week?', time: ago(12), read: false },
+    { id: 'DM-9', handle: '@chloe.prenatal', name: 'Chloe Martinez', avatar: 'CM', patientId: 'PAT-1014', platform: 'tiktok', unread: 1, lastActivity: ago(12), avgResponseTime: 12, messages: [
+      { id: 'm25', from: 'them', text: 'I saw your prenatal Pilates video! I am 14 weeks pregnant. Is it safe for me to start Pilates now and do you have prenatal-specific classes?', time: ago(45), read: true },
+      { id: 'm26', from: 'us', text: 'Hi Chloe! Congratulations! Yes, Pilates is wonderful during pregnancy and 14 weeks is a great time to start. We have a dedicated Prenatal Reformer class on Tuesdays and Thursdays. Just bring your OB clearance and we will take great care of you!', time: ago(30), read: true, sentBy: 'PRV-1' },
+      { id: 'm27', from: 'them', text: 'That is amazing! Do you have anything next week?', time: ago(12), read: false },
     ]},
-    { id: 'DM-10', handle: '@riley.az', name: 'Riley Thompson', avatar: 'RT', patientId: null, platform: 'facebook', unread: 1, lastActivity: ago(35), avgResponseTime: null, messages: [
+    { id: 'DM-10', handle: '@riley.active', name: 'Riley Thompson', avatar: 'RT', patientId: null, platform: 'facebook', unread: 1, lastActivity: ago(35), avgResponseTime: null, messages: [
       { id: 'm28', from: 'them', text: 'Hi! I want to get my mom a gift card for her birthday. Do you sell them online?', time: ago(35), read: false },
     ]},
-    { id: 'DM-11', handle: '@scottsdale.aria', name: 'Aria Hernandez', avatar: 'AH', patientId: 'PAT-1017', platform: 'instagram', unread: 0, lastActivity: ago(180), avgResponseTime: 6, messages: [
-      { id: 'm29', from: 'them', text: 'Just wanted to say THANK YOU! My skin has never looked better after the TRX series. Everyone keeps asking what I did', time: ago(240), read: true },
-      { id: 'm30', from: 'us', text: 'Aria that makes our day!! Your skin really does look amazing. Would you be open to us sharing your before/after on our page? We would tag you of course!', time: ago(180), read: true, sentBy: 'PRV-3' },
+    { id: 'DM-11', handle: '@aria.pilates.az', name: 'Aria Hernandez', avatar: 'AH', patientId: 'PAT-1017', platform: 'instagram', unread: 0, lastActivity: ago(180), avgResponseTime: 6, messages: [
+      { id: 'm29', from: 'them', text: 'Just wanted to say THANK YOU! My core has never been stronger and my back pain is completely gone after 2 months of Reformer. My physical therapist is amazed!', time: ago(240), read: true },
+      { id: 'm30', from: 'us', text: 'Aria that absolutely makes our day!! We are so happy to hear about your back — that is exactly why we do this. Would you be open to sharing a little testimonial on our page? We would love to feature your story!', time: ago(180), read: true, sentBy: 'PRV-3' },
     ]},
     // New conversations for more volume
-    { id: 'DM-12', handle: '@luna.aesthetics', name: 'Luna Chen', avatar: 'LC', patientId: 'PAT-1020', platform: 'instagram', unread: 0, lastActivity: ago(90), avgResponseTime: 2, messages: [
-      { id: 'm31', from: 'them', text: 'Hi! I just moved to Scottsdale and Im looking for a new injector. Do you have availability for a new patient consult?', time: ago(150), read: true },
-      { id: 'm32', from: 'us', text: 'Welcome to Scottsdale, Luna! We would love to have you. We have openings this Thursday and Friday for new patient consults. Which works better?', time: ago(148), read: true, sentBy: 'PRV-2' },
+    { id: 'DM-12', handle: '@luna.pilates', name: 'Luna Chen', avatar: 'LC', patientId: 'PAT-1020', platform: 'instagram', unread: 0, lastActivity: ago(90), avgResponseTime: 2, messages: [
+      { id: 'm31', from: 'them', text: 'Hi! I just moved to the area and I am looking for a new Pilates studio. Do you have availability for a new client intro session this week?', time: ago(150), read: true },
+      { id: 'm32', from: 'us', text: 'Welcome to the neighborhood, Luna! We would love to have you. We have intro slots open Thursday and Friday morning. Which works better for you?', time: ago(148), read: true, sentBy: 'PRV-2' },
       { id: 'm33', from: 'them', text: 'Thursday at 11am would be perfect!', time: ago(140), read: true },
-      { id: 'm34', from: 'us', text: 'You are all set for Thursday at 11am! I will send you the new patient forms via email. See you then!', time: ago(138), read: true, sentBy: 'PRV-2' },
+      { id: 'm34', from: 'us', text: 'You are all set for Thursday at 11am! I will send you the new client intake form via email. See you then!', time: ago(138), read: true, sentBy: 'PRV-2' },
       { id: 'm35', from: 'them', text: 'Thank you so much! Can not wait!', time: ago(90), read: true },
     ]},
-    { id: 'DM-13', handle: '@desert.glow.zoe', name: 'Zoe Williams', avatar: 'ZW', patientId: 'PAT-1021', platform: 'tiktok', unread: 1, lastActivity: ago(7), avgResponseTime: 5, messages: [
-      { id: 'm36', from: 'them', text: 'Hey! I saw the lip filler video you posted. How much is 1 syringe?', time: ago(60), read: true },
-      { id: 'm37', from: 'us', text: 'Hi Zoe! One syringe of Juvederm Ultra is $650, and Volbella is $700. Most first-timers start with 1 syringe. Want to come in for a consult?', time: ago(55), read: true, sentBy: 'PRV-2' },
-      { id: 'm38', from: 'them', text: 'Yesss! Also do you have a loyalty program?', time: ago(50), read: true },
-      { id: 'm39', from: 'us', text: 'We do! We have Alle rewards (Allergan) and Aspire (Galderma) plus our in-house VIP program. You earn points on every session!', time: ago(47), read: true, sentBy: 'PRV-2' },
-      { id: 'm40', from: 'them', text: 'Amazing!! Booking now. One more q — do you do dissolving if I dont like it?', time: ago(7), read: false },
+    { id: 'DM-13', handle: '@zoe.moves.daily', name: 'Zoe Williams', avatar: 'ZW', patientId: 'PAT-1021', platform: 'tiktok', unread: 1, lastActivity: ago(7), avgResponseTime: 5, messages: [
+      { id: 'm36', from: 'them', text: 'Hey! I saw your class pack video. How much is a 10-class pack?', time: ago(60), read: true },
+      { id: 'm37', from: 'us', text: 'Hi Zoe! A 10-class pack is $280 and a 20-class pack is $520 — the 20-pack is definitely the best deal per class. Both can be used for any group Reformer or Mat class!', time: ago(55), read: true, sentBy: 'PRV-2' },
+      { id: 'm38', from: 'them', text: 'Love that! Do the packs expire?', time: ago(50), read: true },
+      { id: 'm39', from: 'us', text: 'The 10-class pack is valid for 6 months and the 20-class pack is valid for 12 months. Plenty of time to use them up!', time: ago(47), read: true, sentBy: 'PRV-2' },
+      { id: 'm40', from: 'them', text: 'Perfect!! Getting the 20-pack. One more q — can I use them for both group and private sessions?', time: ago(7), read: false },
     ]},
-    { id: 'DM-14', handle: '@nadia.beauty.az', name: 'Nadia Patel', avatar: 'NP', patientId: 'PAT-1022', platform: 'facebook', unread: 0, lastActivity: ago(200), avgResponseTime: 10, messages: [
-      { id: 'm41', from: 'them', text: 'I had Reformer with you guys 3 months ago and I think it\'s wearing off already. Is that normal?', time: ago(260), read: true },
-      { id: 'm42', from: 'us', text: 'Hi Nadia! For some clients, Reformer can wear off a bit faster the first time. The good news is that with consistent sessions, it tends to last longer each time. Would you like to come in for a touch-up?', time: ago(250), read: true, sentBy: 'PRV-1' },
-      { id: 'm43', from: 'them', text: 'Yes please! Also interested in trying Dysport this time', time: ago(245), read: true },
-      { id: 'm44', from: 'us', text: 'Great choice! Dysport can work really well for some clients who metabolize Reformer quickly. I will have the front desk reach out to schedule you this week.', time: ago(200), read: true, sentBy: 'PRV-1' },
+    { id: 'DM-14', handle: '@nadia.recovery.az', name: 'Nadia Patel', avatar: 'NP', patientId: 'PAT-1022', platform: 'facebook', unread: 0, lastActivity: ago(200), avgResponseTime: 10, messages: [
+      { id: 'm41', from: 'them', text: 'I had knee surgery 8 weeks ago and my PT suggested trying Pilates for rehab. Is that something you can help with?', time: ago(260), read: true },
+      { id: 'm42', from: 'us', text: 'Hi Nadia! Yes, absolutely — Pilates is excellent for post-surgical rehab and we work with clients after knee surgery all the time. We would start with private sessions so your instructor can tailor everything to your recovery stage. Do you have clearance from your PT to start?', time: ago(250), read: true, sentBy: 'PRV-1' },
+      { id: 'm43', from: 'them', text: 'Yes, she actually gave me a referral! She said low-impact Pilates is perfect for where I am right now', time: ago(245), read: true },
+      { id: 'm44', from: 'us', text: 'That is wonderful — what a great PT! Let us get you set up with an initial private session and we will build a plan from there. I will have our front desk reach out to schedule you this week.', time: ago(200), read: true, sentBy: 'PRV-1' },
     ]},
-    { id: 'DM-15', handle: '@skincare.sam', name: 'Samantha Reed', avatar: 'SR', patientId: null, platform: 'instagram', unread: 2, lastActivity: ago(1), avgResponseTime: null, messages: [
-      { id: 'm45', from: 'them', text: 'Hi!! Your clinic looks so beautiful. I have a big event in 3 weeks — what can I do to look my best?', time: ago(4), read: false },
-      { id: 'm46', from: 'them', text: 'I have never had any cosmetic sessions before btw!', time: ago(1), read: false },
+    { id: 'DM-15', handle: '@sam.studio.fit', name: 'Samantha Reed', avatar: 'SR', patientId: null, platform: 'instagram', unread: 2, lastActivity: ago(1), avgResponseTime: null, messages: [
+      { id: 'm45', from: 'them', text: 'Hi!! Your studio looks amazing! I have been wanting to try Pilates forever. Do you offer memberships or is it just class packs?', time: ago(4), read: false },
+      { id: 'm46', from: 'them', text: 'Also I have never done Pilates before, just so you know!', time: ago(1), read: false },
     ]},
-    { id: 'DM-16', handle: '@taylor.tempe', name: 'Taylor Brooks', avatar: 'TB', patientId: 'PAT-1025', platform: 'instagram', unread: 0, lastActivity: ago(500), avgResponseTime: 7, messages: [
-      { id: 'm47', from: 'them', text: 'Can I get a copy of my session records? I need them for my dermatologist', time: ago(550), read: true },
-      { id: 'm48', from: 'us', text: 'Of course, Taylor! I will have our records department email those over to you today. What email should we use?', time: ago(543), read: true, sentBy: 'PRV-3' },
-      { id: 'm49', from: 'them', text: 'taylor.b@email.com please. Thank you!', time: ago(540), read: true },
-      { id: 'm50', from: 'us', text: 'Done! You should receive them within the hour. Let us know if you need anything else!', time: ago(500), read: true, sentBy: 'PRV-3' },
+    { id: 'DM-16', handle: '@taylor.pilates', name: 'Taylor Brooks', avatar: 'TB', patientId: 'PAT-1025', platform: 'instagram', unread: 0, lastActivity: ago(500), avgResponseTime: 7, messages: [
+      { id: 'm47', from: 'them', text: 'Hi! I am interested in the unlimited monthly membership. What is included and how much is it?', time: ago(550), read: true },
+      { id: 'm48', from: 'us', text: 'Hi Taylor! We offer monthly unlimited memberships starting at $199/month. That covers unlimited group Reformer and Mat classes — no cap! You can also add private session credits at a discounted member rate. Want me to send you the full membership breakdown?', time: ago(543), read: true, sentBy: 'PRV-3' },
+      { id: 'm49', from: 'them', text: 'Yes please! taylor.b@email.com. This sounds perfect for me.', time: ago(540), read: true },
+      { id: 'm50', from: 'us', text: 'Sent! Let us know if you have any questions — we would love to have you as a member!', time: ago(500), read: true, sentBy: 'PRV-3' },
     ]},
   ]);
 

@@ -25,9 +25,9 @@ function lsGet(key, fallback = []) {
 const WAIVER_TEMPLATES = {
   general: 'General Liability Waiver',
   hipaa: 'Privacy Policy',
-  botox: 'Reformer / Neurotoxin Consent',
-  filler: 'Dermal Barre Consent',
-  laser: 'Laser / TRX Consent',
+  reformer: 'Reformer Class Waiver',
+  barre: 'Barre Class Waiver',
+  private: 'Private Training Waiver',
   photo: 'Photo / Marketing Consent',
   financial: 'Financial Responsibility',
   micro: 'Private Session Consent',
@@ -540,7 +540,7 @@ export default function Portal() {
         <Card className="portal-fadeInUp" style={{ padding: '48px 32px', textAlign: 'center' }}>
           <div style={{ font: `300 20px ${s.FONT}`, color: s.text, marginBottom: 10 }}>No active class package</div>
           <div style={{ font: `400 14px ${s.FONT}`, color: s.text3, maxWidth: 340, margin: '0 auto' }}>
-            Ask your provider about a personalized class package at your next visit.
+            Ask your instructor about a personalized class package at your next visit.
           </div>
         </Card>
       ) : sessionPlans.map((plan, pi) => {
@@ -857,7 +857,7 @@ export default function Portal() {
                           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                         }}>
                           <div style={{ font: `500 12px ${s.FONT}`, color: s.text3, marginBottom: 4 }}>
-                            Clinical Photo
+                            Progress Photo
                           </div>
                           <div style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>{fmtDate(photo.date)}</div>
                           {photo.notes && (

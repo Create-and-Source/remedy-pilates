@@ -1,12 +1,12 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 
 const INSTRUCTORS = [
-  { id: "INS-1", name: "Kelly Snailum", title: "Owner & Master Trainer", color: "#C4704B", specialties: ["Reformer", "Mat", "Barre", "Private", "Teacher Training", "TRX"] },
-  { id: "INS-2", name: "Megan Torres", title: "Lead Reformer Instructor", color: "#6B8F71", specialties: ["Reformer", "Reformer + Cardio", "Private", "Prenatal"] },
-  { id: "INS-3", name: "Danielle Park", title: "Barre & TRX Specialist", color: "#8B6B94", specialties: ["Barre", "TRX Fusion", "Barre Burn", "Group Apparatus"] },
-  { id: "INS-4", name: "Rachel Kim", title: "Pilates Instructor", color: "#5B7B8F", specialties: ["Mat", "Reformer", "Stretch & Restore", "Youth"] },
-  { id: "INS-5", name: "Ava Mitchell", title: "Pilates Instructor", color: "#A68B6B", specialties: ["Reformer", "Mat", "Barre", "Private"] },
-  { id: "INS-6", name: "Jordan Reeves", title: "Teacher Training Lead", color: "#B85C38", specialties: ["Teacher Training", "Reformer", "Group Apparatus", "Mat"] },
+  { id: "INS-1", name: "Alex Morgan", title: "Owner & Master Trainer", color: "#C4704B", specialties: ["Reformer", "Mat", "Barre", "Private", "Teacher Training", "TRX"] },
+  { id: "INS-2", name: "Sam Rivera", title: "Lead Reformer Instructor", color: "#6B8F71", specialties: ["Reformer", "Reformer + Cardio", "Private", "Prenatal"] },
+  { id: "INS-3", name: "Jordan Chen", title: "Barre & TRX Specialist", color: "#8B6B94", specialties: ["Barre", "TRX Fusion", "Barre Burn", "Group Apparatus"] },
+  { id: "INS-4", name: "Riley Kim", title: "Pilates Instructor", color: "#5B7B8F", specialties: ["Mat", "Reformer", "Stretch & Restore", "Youth"] },
+  { id: "INS-5", name: "Casey Williams", title: "Pilates Instructor", color: "#A68B6B", specialties: ["Reformer", "Mat", "Barre", "Private"] },
+  { id: "INS-6", name: "Taylor Brooks", title: "Teacher Training Lead", color: "#B85C38", specialties: ["Teacher Training", "Reformer", "Group Apparatus", "Mat"] },
 ];
 
 const CLASS_TYPES = ["Reformer", "Mat", "Barre", "TRX Fusion", "Barre Burn", "Stretch & Restore", "Reformer + Cardio", "Group Apparatus"];
@@ -27,7 +27,7 @@ function generateClasses() {
     { name: "Barre Burn Express", type: "Barre Burn", dur: 20, level: "All Levels", focus: "Lower Body", equip: "Barre", ins: "INS-3" },
     { name: "Core Foundations", type: "Mat", dur: 30, level: "Beginner", focus: "Core", equip: "Mat Only", ins: "INS-5" },
     { name: "Reformer Basics 101", type: "Reformer", dur: 45, level: "Beginner", focus: "Full Body", equip: "Reformer", ins: "INS-5" },
-    { name: "Kelly's Signature Flow", type: "Reformer", dur: 60, level: "Advanced", focus: "Strength", equip: "Reformer", ins: "INS-1" },
+    { name: "Alex's Signature Flow", type: "Reformer", dur: 60, level: "Advanced", focus: "Strength", equip: "Reformer", ins: "INS-1" },
     { name: "Upper Body Sculpt", type: "Mat", dur: 30, level: "Intermediate", focus: "Upper Body", equip: "Resistance Band", ins: "INS-6" },
     { name: "Balance & Stability", type: "Mat", dur: 30, level: "All Levels", focus: "Balance", equip: "Magic Circle", ins: "INS-4" },
     { name: "Group Apparatus Intro", type: "Group Apparatus", dur: 45, level: "Beginner", focus: "Full Body", equip: "Reformer", ins: "INS-6" },
@@ -51,7 +51,7 @@ const COLLECTIONS = [
   { id: "COL-1", name: "30-Day Reformer Challenge", description: "Progressive reformer series from foundations to advanced flows", classIds: ["VOD-001", "VOD-011", "VOD-005", "VOD-012"], icon: "\u{1F525}", color: "#C4704B" },
   { id: "COL-2", name: "Post-Pregnancy Recovery", description: "Gentle return to movement with prenatal-certified instruction", classIds: ["VOD-007", "VOD-004", "VOD-010", "VOD-016"], icon: "\u{1F338}", color: "#C47B8E" },
   { id: "COL-3", name: "Lunch Break Express", description: "15-30 minute classes perfect for midday movement breaks", classIds: ["VOD-019", "VOD-024", "VOD-020", "VOD-009"], icon: "\u26A1", color: "#5B7B8F" },
-  { id: "COL-4", name: "Kelly's Favorites", description: "Hand-picked by our founder for the ultimate Pilates experience", classIds: ["VOD-001", "VOD-012", "VOD-005", "VOD-019"], icon: "\u2B50", color: "#A68B6B" },
+  { id: "COL-4", name: "Alex's Favorites", description: "Hand-picked by our founder for the ultimate Pilates experience", classIds: ["VOD-001", "VOD-012", "VOD-005", "VOD-019"], icon: "\u2B50", color: "#A68B6B" },
 ];
 
 const PLANS = [
@@ -143,7 +143,7 @@ function VideoPlayerView({ classData, instructor, onBack, allClasses }) {
             </div>
             {activeTab === "overview" && (<div><p style={{ fontFamily: FONT, fontSize: 14, color: "#555", lineHeight: 1.7, margin: "0 0 16px" }}>{classData.description}</p><div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>{[{ label: "Level", value: classData.level },{ label: "Focus", value: classData.focusArea },{ label: "Equipment", value: classData.equipment },{ label: "Est. Calories", value: `~${classData.calories} kcal` }].map(item => (<div key={item.label} style={{ padding: 12, background: "rgba(0,0,0,0.02)", borderRadius: 10 }}><div style={s.label}>{item.label}</div><div style={{ fontFamily: FONT, fontSize: 14, fontWeight: 600, color: "#111", marginTop: 4 }}>{item.value}</div></div>))}</div></div>)}
             {activeTab === "exercises" && (<div style={{ fontFamily: FONT, fontSize: 14, color: "#555" }}><div style={{ display: "flex", flexDirection: "column", gap: 8 }}>{["Warm-Up: Breathing & Pelvic Tilts", "Cat-Cow Flow (8 reps)", "Footwork Series (3 positions)", "Leg Circles (8 each direction)", "Short Box: Round Back", "Short Box: Flat Back + Twist", "Long Stretch Series", "Knee Stretches (Round + Arched)", "Cool-Down: Mermaid Stretch", "Final: Roll-Down & Centering"].map((ex, i) => (<div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", background: i % 2 === 0 ? "rgba(0,0,0,0.02)" : "transparent", borderRadius: 8 }}><span style={{ fontFamily: MONO, fontSize: 11, color: "#999", width: 20 }}>{String(i + 1).padStart(2, "0")}</span><span>{ex}</span></div>))}</div></div>)}
-            {activeTab === "reviews" && (<div style={{ fontFamily: FONT, fontSize: 14, color: "#555" }}>{[{ name: "Sarah M.", rating: 5, text: "Kelly's cueing is incredible. I felt every muscle engage.", date: "2 days ago" },{ name: "Jennifer L.", rating: 5, text: "Perfect for mornings when I can't make it to the studio.", date: "1 week ago" },{ name: "Michael R.", rating: 4, text: "Great flow and pacing. Would love more advanced spring options.", date: "2 weeks ago" }].map((r, i) => (<div key={i} style={{ padding: "14px 0", borderBottom: i < 2 ? "1px solid rgba(0,0,0,0.06)" : "none" }}><div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}><strong style={{ color: "#111" }}>{r.name}</strong><span style={{ display: "flex", gap: 2 }}>{Array.from({ length: r.rating }).map((_, j) => <StarIcon key={j} size={12} />)}</span><span style={{ color: "#999", fontSize: 12 }}>{r.date}</span></div><p style={{ margin: 0, lineHeight: 1.6 }}>{r.text}</p></div>))}</div>)}
+            {activeTab === "reviews" && (<div style={{ fontFamily: FONT, fontSize: 14, color: "#555" }}>{[{ name: "Sarah M.", rating: 5, text: "Alex's cueing is incredible. I felt every muscle engage.", date: "2 days ago" },{ name: "Jennifer L.", rating: 5, text: "Perfect for mornings when I can't make it to the studio.", date: "1 week ago" },{ name: "Michael R.", rating: 4, text: "Great flow and pacing. Would love more advanced spring options.", date: "2 weeks ago" }].map((r, i) => (<div key={i} style={{ padding: "14px 0", borderBottom: i < 2 ? "1px solid rgba(0,0,0,0.06)" : "none" }}><div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}><strong style={{ color: "#111" }}>{r.name}</strong><span style={{ display: "flex", gap: 2 }}>{Array.from({ length: r.rating }).map((_, j) => <StarIcon key={j} size={12} />)}</span><span style={{ color: "#999", fontSize: 12 }}>{r.date}</span></div><p style={{ margin: 0, lineHeight: 1.6 }}>{r.text}</p></div>))}</div>)}
           </div>
         </div>
         <div className="odl-player-sidebar">

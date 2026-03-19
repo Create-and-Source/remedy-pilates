@@ -16,17 +16,17 @@ function seedWaitlist() {
 
   const entries = [
     { name: 'Sophia Brown', patientId: 'PAT-1002', service: 'Reformer', preferredDays: ['Monday', 'Wednesday'], preferredTimes: 'Morning', status: 'waiting' },
-    { name: 'Ava Jones', patientId: 'PAT-1003', service: 'Juvederm Barre', preferredDays: ['Tuesday', 'Thursday'], preferredTimes: 'Afternoon', status: 'notified' },
-    { name: 'Mia Miller', patientId: 'PAT-1005', service: 'RF Private Session', preferredDays: ['Friday'], preferredTimes: 'Morning', status: 'waiting' },
-    { name: 'Charlotte Davis', patientId: 'PAT-1006', service: 'TRX Photofacial', preferredDays: ['Monday', 'Tuesday'], preferredTimes: 'Any', status: 'confirmed' },
-    { name: 'Amelia Thompson', patientId: 'PAT-1007', service: 'Chemical Peel', preferredDays: ['Wednesday', 'Friday'], preferredTimes: 'Morning', status: 'booked' },
+    { name: 'Ava Jones', patientId: 'PAT-1003', service: 'Barre', preferredDays: ['Tuesday', 'Thursday'], preferredTimes: 'Afternoon', status: 'notified' },
+    { name: 'Mia Miller', patientId: 'PAT-1005', service: 'Private Session', preferredDays: ['Friday'], preferredTimes: 'Morning', status: 'waiting' },
+    { name: 'Charlotte Davis', patientId: 'PAT-1006', service: 'TRX', preferredDays: ['Monday', 'Tuesday'], preferredTimes: 'Any', status: 'confirmed' },
+    { name: 'Amelia Thompson', patientId: 'PAT-1007', service: 'Mat Pilates', preferredDays: ['Wednesday', 'Friday'], preferredTimes: 'Morning', status: 'booked' },
     { name: 'Harper White', patientId: 'PAT-1008', service: 'Reformer', preferredDays: ['Thursday'], preferredTimes: 'Afternoon', status: 'waiting' },
-    { name: 'Evelyn Lopez', patientId: 'PAT-1009', service: 'Mat Pilates', preferredDays: ['Monday', 'Wednesday', 'Friday'], preferredTimes: 'Morning', status: 'expired' },
-    { name: 'Abigail Taylor', patientId: 'PAT-1010', service: 'Sculptra', preferredDays: ['Tuesday'], preferredTimes: 'Afternoon', status: 'notified' },
-    { name: 'Ella Thomas', patientId: 'PAT-1011', service: 'Laser Hair Removal', preferredDays: ['Monday', 'Thursday'], preferredTimes: 'Any', status: 'waiting' },
-    { name: 'Scarlett Hernandez', patientId: 'PAT-1012', service: 'RF Private Session', preferredDays: ['Wednesday'], preferredTimes: 'Morning', status: 'booked' },
+    { name: 'Evelyn Lopez', patientId: 'PAT-1009', service: 'Cardio Pilates', preferredDays: ['Monday', 'Wednesday', 'Friday'], preferredTimes: 'Morning', status: 'expired' },
+    { name: 'Abigail Taylor', patientId: 'PAT-1010', service: 'Body Sculpt', preferredDays: ['Tuesday'], preferredTimes: 'Afternoon', status: 'notified' },
+    { name: 'Ella Thomas', patientId: 'PAT-1011', service: 'Group Reformer', preferredDays: ['Monday', 'Thursday'], preferredTimes: 'Any', status: 'waiting' },
+    { name: 'Scarlett Hernandez', patientId: 'PAT-1012', service: 'Private Session', preferredDays: ['Wednesday'], preferredTimes: 'Morning', status: 'booked' },
     { name: 'Grace Moore', patientId: 'PAT-1013', service: 'Reformer', preferredDays: ['Friday'], preferredTimes: 'Afternoon', status: 'waiting' },
-    { name: 'Chloe Martin', patientId: 'PAT-1014', service: 'Juvederm Barre', preferredDays: ['Tuesday', 'Thursday'], preferredTimes: 'Morning', status: 'confirmed' },
+    { name: 'Chloe Martin', patientId: 'PAT-1014', service: 'Barre', preferredDays: ['Tuesday', 'Thursday'], preferredTimes: 'Morning', status: 'confirmed' },
   ];
 
   const seed = entries.map((e, i) => ({

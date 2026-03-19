@@ -20,25 +20,25 @@ function seedReviews() {
     'Abigail Taylor', 'Ella Thomas', 'Scarlett Hernandez', 'Grace Moore', 'Chloe Martin',
     'Victoria Jackson', 'Riley Clark', 'Aria Lewis',
   ];
-  const services = ['Reformer', 'Juvederm Barre', 'Mat Pilates', 'TRX Photofacial', 'Chemical Peel', 'RF Private Session', 'Laser Hair Removal', 'Sculptra'];
+  const services = ['Reformer', 'Barre', 'Mat Pilates', 'TRX', 'Private Session', 'RF Session', 'Group Reformer', 'Body Sculpt'];
   const platforms = ['Google', 'Google', 'Google', 'Yelp', 'Google', 'Yelp'];
   const statuses = ['completed', 'completed', 'completed', 'completed', 'pending', 'pending', 'completed', 'completed', 'completed', 'pending'];
   const comments = [
-    'Amazing results! Dr. Mitchell is incredible.',
-    'Best studio in Scottsdale. My skin has never looked better.',
+    'Amazing classes! The instructors are incredible.',
+    'Best Pilates studio in the area. My posture has never been better.',
     'Super professional team. Love the results.',
     'Great experience from start to finish. Highly recommend!',
-    'The staff made me feel so comfortable. Will definitely be back.',
+    'The instructors made me feel so comfortable. Will definitely be back.',
     'Incredible transformation. Worth every penny.',
-    'Jessica is so talented. Natural-looking results every time.',
+    'Jessica is so talented. My core strength has improved so much!',
     'Five stars is not enough. Absolutely love this place!',
-    'Clean facility, friendly staff, amazing outcomes.',
-    'I was nervous but the team put me at ease. Love my results!',
+    'Clean studio, friendly staff, amazing classes.',
+    'I was nervous but the team put me at ease. Love my progress!',
     'Been coming here for 2 years and always leave happy.',
-    'The Mat Pilates was life-changing for my skin.',
+    'The Mat Pilates classes are life-changing for my back pain.',
     'Professional, knowledgeable, and the results speak for themselves.',
-    'My friends keep asking what I did differently. Thank you!',
-    'Top-notch care and beautiful results.',
+    'My friends keep asking what I have been doing differently. Thank you!',
+    'Top-notch instruction and a beautiful studio.',
   ];
 
   const seed = names.map((name, i) => {
@@ -115,10 +115,10 @@ export default function Reviews() {
   const simulateComplete = (id) => {
     const rating = [4, 5, 5, 5, 4][Math.floor(Math.random() * 5)];
     const comments = [
-      'Great experience! Highly recommend.',
-      'Love my results. The staff is amazing!',
+      'Great classes! Highly recommend.',
+      'Love the results. The instructors are amazing!',
       'Professional and caring team. Will be back!',
-      'Best studio I have ever been to.',
+      'Best Pilates studio I have ever been to.',
     ];
     const all = getReviews().map(r => r.id === id ? {
       ...r,

@@ -154,9 +154,9 @@ export default function Settings() {
           <div style={{ ...s.cardStyle, padding: 24 }}>
             {[
               { key: 'businessName', label: 'Business Name', placeholder: 'Pilates & Barre' },
-              { key: 'tagline', label: 'Tagline', placeholder: 'Where Science Meets Beauty' },
+              { key: 'tagline', label: 'Tagline', placeholder: 'Move Better. Feel Better.' },
               { key: 'email', label: 'Email', placeholder: 'info@pilatesstudio.com' },
-              { key: 'phone', label: 'Phone', placeholder: '(480) 555-0100' },
+              { key: 'phone', label: 'Phone', placeholder: '(555) 555-0100' },
               { key: 'website', label: 'Website', placeholder: 'pilatesstudio.com' },
             ].map(f => (
               <div key={f.key} style={{ marginBottom: 16 }}>
@@ -236,7 +236,7 @@ export default function Settings() {
             </p>
             <div style={{ display: 'grid', gap: 12 }}>
               {[
-                { id: 'square', name: 'Square', desc: 'POS terminals, card readers, invoicing', fee: '2.6% + $0.10 in-person', color: '#006AFF', badge: 'HIPAA Compliant' },
+                { id: 'square', name: 'Square', desc: 'POS terminals, card readers, invoicing', fee: '2.6% + $0.10 in-person', color: '#006AFF', badge: null },
                 { id: 'stripe', name: 'Stripe', desc: 'Online payments, subscriptions, invoicing', fee: '2.7% + $0.05 in-person', color: '#635BFF', badge: null },
                 { id: 'clover', name: 'Clover', desc: 'POS system, card terminals, reporting', fee: '2.3% + $0.10 in-person', color: '#43B02A', badge: null },
               ].map(p => (
@@ -267,15 +267,15 @@ export default function Settings() {
           </div>
 
           <div style={{ ...s.cardStyle, padding: 24 }}>
-            <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Patient Financing</div>
+            <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Payment Options</div>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text3, marginBottom: 20 }}>
-              Let clients pay over time. You get paid in full upfront.
+              Offer flexible pricing structures for your clients.
             </p>
             <div style={{ display: 'grid', gap: 12 }}>
               {[
-                { id: 'cherry', name: 'Cherry', desc: 'Patient financing up to $50K. 0% APR options. You get paid in 2-3 days.', color: '#FF385C' },
-                { id: 'carecredit', name: 'CareCredit', desc: 'Healthcare credit card. Special financing on $200+. Widely recognized.', color: '#00A0DF' },
-                { id: 'alphaeon', name: 'Alphaeon Credit', desc: 'Aesthetic-focused credit line. Revolving credit for repeat clients.', color: '#1A1A2E' },
+                { id: 'class_packs', name: 'Class Packs', desc: 'Pre-purchase bundles of 5, 10, or 20 sessions at a discounted rate.', color: '#7C3AED' },
+                { id: 'monthly', name: 'Monthly Memberships', desc: 'Recurring monthly billing with unlimited or capped class access.', color: '#0284C7' },
+                { id: 'annual', name: 'Annual Memberships', desc: 'Full-year commitment at the best per-class rate. Auto-renews yearly.', color: '#059669' },
               ].map(p => (
                 <div key={p.id} style={{ ...s.cardStyle, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 16 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: `${p.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -505,7 +505,7 @@ export default function Settings() {
               <div>
                 <label style={s.label}>Category</label>
                 <select value={svcForm.category} onChange={e => setSvcForm({ ...svcForm, category: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option>Equipment</option><option>Skin</option><option>Laser</option><option>Lifting</option><option>Wellness</option><option>Body</option>
+                  <option>Equipment</option><option>Reformer</option><option>Barre</option><option>Mat</option><option>Wellness</option><option>Private</option>
                 </select>
               </div>
               <div>
@@ -541,15 +541,15 @@ export default function Settings() {
             <div style={{ display: 'grid', gap: 14 }}>
               <div>
                 <label style={s.label}>Full Name</label>
-                <input value={provForm.name} onChange={e => setProvForm({ ...provForm, name: e.target.value })} style={s.input} placeholder="Dr. Jane Smith" />
+                <input value={provForm.name} onChange={e => setProvForm({ ...provForm, name: e.target.value })} style={s.input} placeholder="Jane Smith" />
               </div>
               <div>
                 <label style={s.label}>Title</label>
-                <input value={provForm.title} onChange={e => setProvForm({ ...provForm, title: e.target.value })} style={s.input} placeholder="Medical Director" />
+                <input value={provForm.title} onChange={e => setProvForm({ ...provForm, title: e.target.value })} style={s.input} placeholder="Head Instructor" />
               </div>
               <div>
                 <label style={s.label}>Specialties (comma separated)</label>
-                <input value={provForm.specialties} onChange={e => setProvForm({ ...provForm, specialties: e.target.value })} style={s.input} placeholder="Reformer, Barres, PDO Threads" />
+                <input value={provForm.specialties} onChange={e => setProvForm({ ...provForm, specialties: e.target.value })} style={s.input} placeholder="Reformer, Barre, Mat Pilates" />
               </div>
             </div>
             <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>

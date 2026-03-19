@@ -6,7 +6,7 @@ import { getTrainees, getProviders } from '../data/store';
 const MOCK_TRAINEES = [
   {
     id: 't1', firstName: 'Maya', lastName: 'Chen', email: 'maya@email.com',
-    program: 'Comprehensive', startDate: '2025-11-01', mentor: 'Kelly',
+    program: 'Comprehensive', startDate: '2025-11-01', mentor: 'Alex',
     hoursCompleted: 340, hoursRequired: 500,
     modules: [
       { name: 'Mat Fundamentals', status: 'completed', score: 94, date: '2025-12-10', hours: 40, exam: 'both' },
@@ -32,7 +32,7 @@ const MOCK_TRAINEES = [
   },
   {
     id: 't3', firstName: 'Remi', lastName: 'Torres', email: 'remi@email.com',
-    program: 'Comprehensive', startDate: '2026-01-06', mentor: 'Kelly',
+    program: 'Comprehensive', startDate: '2026-01-06', mentor: 'Alex',
     hoursCompleted: 95, hoursRequired: 500,
     modules: [
       { name: 'Mat Fundamentals', status: 'in-progress', score: null, date: null, hours: 40, exam: 'both' },
@@ -61,12 +61,12 @@ const MOCK_TRAINEES = [
 ];
 
 const MOCK_HOURS_LOG = [
-  { date: '2026-03-15', type: 'teaching', hours: 2, location: 'Studio A', verifiedBy: 'Kelly', notes: 'Beginner reformer class, great cueing on footwork' },
-  { date: '2026-03-13', type: 'observation', hours: 1.5, location: 'Studio B', verifiedBy: 'Kelly', notes: 'Observed advanced mat class' },
-  { date: '2026-03-10', type: 'workshop', hours: 3, location: 'Main Floor', verifiedBy: 'Kelly', notes: 'Pelvic floor integration workshop' },
-  { date: '2026-03-08', type: 'teaching', hours: 1, location: 'Studio A', verifiedBy: 'Kelly', notes: 'Private session — hip mobility focus' },
+  { date: '2026-03-15', type: 'teaching', hours: 2, location: 'Studio A', verifiedBy: 'Alex', notes: 'Beginner reformer class, great cueing on footwork' },
+  { date: '2026-03-13', type: 'observation', hours: 1.5, location: 'Studio B', verifiedBy: 'Alex', notes: 'Observed advanced mat class' },
+  { date: '2026-03-10', type: 'workshop', hours: 3, location: 'Main Floor', verifiedBy: 'Alex', notes: 'Pelvic floor integration workshop' },
+  { date: '2026-03-08', type: 'teaching', hours: 1, location: 'Studio A', verifiedBy: 'Alex', notes: 'Private session — hip mobility focus' },
   { date: '2026-03-05', type: 'self-practice', hours: 1, location: 'Studio C', verifiedBy: null, notes: 'Independent practice — cadillac sequence' },
-  { date: '2026-03-01', type: 'observation', hours: 2, location: 'Studio B', verifiedBy: 'Kelly', notes: 'Prenatal reformer observation' },
+  { date: '2026-03-01', type: 'observation', hours: 2, location: 'Studio B', verifiedBy: 'Alex', notes: 'Prenatal reformer observation' },
 ];
 
 const MILESTONES = [
@@ -170,7 +170,7 @@ export default function TraineePortal() {
   }, [pct]);
 
   const mentorProvider = providers.find(p => p.name?.toLowerCase().includes(trainee.mentor?.toLowerCase()))
-    || { name: trainee.mentor || 'Kelly M.', initials: (trainee.mentor || 'K').charAt(0) };
+    || { name: trainee.mentor || 'Alex M.', initials: (trainee.mentor || 'A').charAt(0) };
 
   function handleLogSubmit(e) {
     e.preventDefault();

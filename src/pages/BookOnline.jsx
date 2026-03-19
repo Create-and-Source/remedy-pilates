@@ -973,7 +973,7 @@ export default function BookOnline() {
                     type="tel"
                     value={form.phone}
                     onChange={e => setForm({ ...form, phone: e.target.value })}
-                    placeholder="(480) 555-0100"
+                    placeholder="(555) 555-0100"
                     style={{
                       ...s.input,
                       borderColor: formErrors.phone ? '#DC2626' : undefined,

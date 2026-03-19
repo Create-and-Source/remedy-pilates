@@ -5,8 +5,8 @@ import { signIn as cognitoSignIn, signInDemo } from '../api/auth';
 const API = import.meta.env.VITE_API_URL || '';
 
 const DEMO_ROLES = [
-  { name: 'Kelly Snailum', role: 'owner', title: 'Owner & Master Trainer', color: '#C4704B', initials: 'KS' },
-  { name: 'Megan Torres', role: 'instructor', title: 'Lead Reformer Instructor', color: '#6B8F71', initials: 'MT' },
+  { name: 'Alex Morgan', role: 'owner', title: 'Owner & Master Trainer', color: '#C4704B', initials: 'AM' },
+  { name: 'Sam Rivera', role: 'instructor', title: 'Lead Reformer Instructor', color: '#6B8F71', initials: 'SR' },
   { name: 'Front Desk', role: 'front_desk', title: 'Front Desk Staff', color: '#5B7B8F', initials: 'FD' },
   { name: 'Client Portal', role: 'client', title: 'Client View', color: '#8B6B94', initials: 'CP' },
 ];

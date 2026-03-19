@@ -403,7 +403,7 @@ export default function RetentionBrain() {
                       { label: 'Total Visits', value: client.visitCount },
                       { label: 'Total Spent', value: `$${((client.totalSpent || 0) / 100).toLocaleString()}` },
                       { label: 'Member Since', value: client.createdAt ? new Date(client.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—' },
-                      { label: 'Location', value: client.location === 'LOC-1' ? 'Scottsdale' : client.location === 'LOC-2' ? 'Arcadia' : 'North Central' },
+                      { label: 'Location', value: client.location === 'LOC-1' ? 'Downtown Studio' : client.location === 'LOC-2' ? 'Westside Studio' : 'North Studio' },
                     ].map(stat => (
                       <div key={stat.label} style={{ padding: '8px 14px', background: 'rgba(0,0,0,0.02)', borderRadius: 8 }}>
                         <div style={{ font: `600 14px ${s.FONT}`, color: s.text }}>{stat.value}</div>

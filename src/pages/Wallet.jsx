@@ -22,29 +22,29 @@ function initWallet() {
     // Gift cards
     { id: 'WL-1001', type: 'gift_card', patientId: clients[0]?.id, patientName: `${clients[0]?.firstName} ${clients[0]?.lastName}`, amount: 25000, balance: 17500, purchasedBy: 'Michael Johnson', recipientMessage: 'Happy Birthday! Treat yourself!', createdAt: d(-30), transactions: [
       { type: 'purchase', amount: 25000, date: d(-30), note: 'Gift card purchased' },
-      { type: 'redeem', amount: -7500, date: d(-12), note: 'Applied to Reformer session' },
+      { type: 'redeem', amount: -7500, date: d(-12), note: 'Applied to Reformer class pack' },
     ]},
     { id: 'WL-1002', type: 'gift_card', patientId: clients[3]?.id, patientName: `${clients[3]?.firstName} ${clients[3]?.lastName}`, amount: 50000, balance: 50000, purchasedBy: 'James Jones', recipientMessage: 'Merry Christmas!', createdAt: d(-15), transactions: [
       { type: 'purchase', amount: 50000, date: d(-15), note: 'Gift card purchased' },
     ]},
     { id: 'WL-1003', type: 'gift_card', patientId: clients[8]?.id, patientName: `${clients[8]?.firstName} ${clients[8]?.lastName}`, amount: 10000, balance: 0, purchasedBy: 'Lisa Harper', recipientMessage: '', createdAt: d(-60), transactions: [
       { type: 'purchase', amount: 10000, date: d(-60), note: 'Gift card purchased' },
-      { type: 'redeem', amount: -10000, date: d(-20), note: 'Applied to Mat Pilates' },
+      { type: 'redeem', amount: -10000, date: d(-20), note: 'Applied to Mat Pilates session pack' },
     ]},
-    { id: 'WL-1004', type: 'gift_card', patientId: clients[14]?.id, patientName: `${clients[14]?.firstName} ${clients[14]?.lastName}`, amount: 20000, balance: 12500, purchasedBy: 'Online Purchase', recipientMessage: 'Enjoy your spa day!', createdAt: d(-7), transactions: [
+    { id: 'WL-1004', type: 'gift_card', patientId: clients[14]?.id, patientName: `${clients[14]?.firstName} ${clients[14]?.lastName}`, amount: 20000, balance: 12500, purchasedBy: 'Online Purchase', recipientMessage: 'Enjoy your classes!', createdAt: d(-7), transactions: [
       { type: 'purchase', amount: 20000, date: d(-7), note: 'Gift card purchased' },
-      { type: 'redeem', amount: -7500, date: d(-2), note: 'Applied to Chemical Peel' },
+      { type: 'redeem', amount: -7500, date: d(-2), note: 'Applied to Barre class pack' },
     ]},
     // Account credits
     { id: 'WL-1005', type: 'credit', patientId: clients[1]?.id, patientName: `${clients[1]?.firstName} ${clients[1]?.lastName}`, amount: 5000, balance: 5000, reason: 'Referral bonus', createdAt: d(-20), transactions: [
-      { type: 'credit', amount: 5000, date: d(-20), note: 'Referral: brought in new patient Ava Jones' },
+      { type: 'credit', amount: 5000, date: d(-20), note: 'Referral: brought in new client Ava Jones' },
     ]},
     { id: 'WL-1006', type: 'credit', patientId: clients[5]?.id, patientName: `${clients[5]?.firstName} ${clients[5]?.lastName}`, amount: 7500, balance: 7500, reason: 'Service adjustment', createdAt: d(-10), transactions: [
       { type: 'credit', amount: 7500, date: d(-10), note: 'Credit for service rescheduling inconvenience' },
     ]},
     { id: 'WL-1007', type: 'credit', patientId: clients[2]?.id, patientName: `${clients[2]?.firstName} ${clients[2]?.lastName}`, amount: 10000, balance: 2500, reason: 'Promotion', createdAt: d(-45), transactions: [
       { type: 'credit', amount: 10000, date: d(-45), note: 'Summer promotion credit' },
-      { type: 'redeem', amount: -7500, date: d(-25), note: 'Applied to RF Private Session' },
+      { type: 'redeem', amount: -7500, date: d(-25), note: 'Applied to Private Session pack' },
     ]},
     { id: 'WL-1008', type: 'credit', patientId: clients[10]?.id, patientName: `${clients[10]?.firstName} ${clients[10]?.lastName}`, amount: 5000, balance: 5000, reason: 'Referral bonus', createdAt: d(-5), transactions: [
       { type: 'credit', amount: 5000, date: d(-5), note: 'Referral bonus: referred Charlotte Clark' },
@@ -60,20 +60,20 @@ function initWallet() {
       { type: 'redeem', points: -750, date: d(-15), note: 'Redeemed for Mat Pilates discount' },
     ]},
     { id: 'WL-1011', type: 'loyalty', patientId: clients[1]?.id, patientName: `${clients[1]?.firstName} ${clients[1]?.lastName}`, points: 1850, lifetimePoints: 1850, createdAt: d(-60), transactions: [
-      { type: 'earn', points: 950, date: d(-60), note: 'TRX Photofacial - $950 spent' },
-      { type: 'earn', points: 900, date: d(-30), note: 'Chemical Peel + products - $900 spent' },
+      { type: 'earn', points: 950, date: d(-60), note: 'TRX session pack - $950 spent' },
+      { type: 'earn', points: 900, date: d(-30), note: 'Barre classes + retail products - $900 spent' },
     ]},
     { id: 'WL-1012', type: 'loyalty', patientId: clients[4]?.id, patientName: `${clients[4]?.firstName} ${clients[4]?.lastName}`, points: 5200, lifetimePoints: 6500, createdAt: d(-120), transactions: [
-      { type: 'earn', points: 2500, date: d(-120), note: 'PDO Threads - $2,500 spent' },
+      { type: 'earn', points: 2500, date: d(-120), note: 'Reformer sessions package - $2,500 spent' },
       { type: 'earn', points: 1400, date: d(-80), note: 'Reformer session - $1,400 spent' },
       { type: 'earn', points: 2600, date: d(-40), note: 'Body Contouring - $2,600 spent' },
       { type: 'redeem', points: -1300, date: d(-20), note: 'Redeemed for Reformer discount' },
     ]},
     { id: 'WL-1013', type: 'loyalty', patientId: clients[9]?.id, patientName: `${clients[9]?.firstName} ${clients[9]?.lastName}`, points: 800, lifetimePoints: 800, createdAt: d(-25), transactions: [
-      { type: 'earn', points: 800, date: d(-25), note: 'RF Private Session - $800 spent' },
+      { type: 'earn', points: 800, date: d(-25), note: 'Private Session - $800 spent' },
     ]},
     { id: 'WL-1014', type: 'loyalty', patientId: clients[12]?.id, patientName: `${clients[12]?.firstName} ${clients[12]?.lastName}`, points: 3100, lifetimePoints: 3100, createdAt: d(-70), transactions: [
-      { type: 'earn', points: 1500, date: d(-70), note: 'Sculptra session - $1,500 spent' },
+      { type: 'earn', points: 1500, date: d(-70), note: 'Reformer session pack - $1,500 spent' },
       { type: 'earn', points: 1600, date: d(-35), note: 'Barre + Reformer combo - $1,600 spent' },
     ]},
   ];
@@ -216,7 +216,7 @@ export default function Wallet() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Wallet</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Gift cards, credits, and loyalty points — unified patient balances</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Gift cards, credits, and loyalty points — unified client balances</p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={() => setShowApplyCredit(true)} style={s.pillOutline}>Apply Credit</button>
@@ -304,7 +304,7 @@ export default function Wallet() {
             )}
           </div>
 
-          {/* Expanded patient transaction history */}
+          {/* Expanded client transaction history */}
           {selectedEntry && patientWallets[selectedEntry] && (
             <div style={{ ...s.cardStyle, marginTop: 8, padding: '20px', animation: 'fadeIn 0.2s' }}>
               <div style={{ font: `600 15px ${s.FONT}`, color: s.text, marginBottom: 16 }}>Transaction History — {patientWallets[selectedEntry].patientName}</div>
@@ -350,7 +350,7 @@ export default function Wallet() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid #E5E5E5' }}>
-                    {['Patient', 'Type', 'Original', 'Balance / Points', 'Details', 'Created'].map(h => (
+                    {['Client', 'Type', 'Original', 'Balance / Points', 'Details', 'Created'].map(h => (
                       <th key={h} style={{ padding: '12px 14px', font: `500 11px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 1, color: s.text3, textAlign: 'left' }}>{h}</th>
                     ))}
                   </tr>
@@ -405,12 +405,12 @@ export default function Wallet() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowAddGiftCard(false)}>
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 480, width: '90%', boxShadow: s.shadowLg }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Add Gift Card</h2>
-            <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Create a new gift card and assign it to a patient</p>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Create a new gift card and assign it to a client</p>
             <div style={{ display: 'grid', gap: 16 }}>
               <div>
                 <label style={s.label}>Recipient</label>
                 <select value={gcForm.recipientId} onChange={e => setGcForm({ ...gcForm, recipientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option value="">Select a patient...</option>
+                  <option value="">Select a client...</option>
                   {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>
@@ -443,9 +443,9 @@ export default function Wallet() {
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Add account credit to a client's wallet</p>
             <div style={{ display: 'grid', gap: 16 }}>
               <div>
-                <label style={s.label}>Patient</label>
+                <label style={s.label}>Client</label>
                 <select value={crForm.patientId} onChange={e => setCrForm({ ...crForm, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
-                  <option value="">Select a patient...</option>
+                  <option value="">Select a client...</option>
                   {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
               </div>

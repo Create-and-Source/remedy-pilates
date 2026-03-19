@@ -198,7 +198,7 @@ export default function SmartInventory() {
                 font: `400 12px ${s.FONT}`,
                 color: a.prediction.urgency === 'critical' ? '#DC2626' : '#D97706',
               }}>
-                {a.name} @ {a.location === 'LOC-1' ? 'Scottsdale' : a.location === 'LOC-2' ? 'Arcadia' : 'North Central'}
+                {a.name} @ {a.location === 'LOC-1' ? 'Downtown Studio' : a.location === 'LOC-2' ? 'Westside Studio' : 'North Studio'}
               </span>
             ))}
           </div>
@@ -237,7 +237,7 @@ export default function SmartInventory() {
                 <div style={{ flex: '1 1 160px', minWidth: 120 }}>
                   <div style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{item.name}</div>
                   <div style={{ font: `400 11px ${s.MONO}`, color: s.text3 }}>
-                    {item.category} · {item.sku} · {item.location === 'LOC-1' ? 'Scottsdale' : item.location === 'LOC-2' ? 'Arcadia' : 'North Central'}
+                    {item.category} · {item.sku} · {item.location === 'LOC-1' ? 'Downtown Studio' : item.location === 'LOC-2' ? 'Westside Studio' : 'North Studio'}
                   </div>
                 </div>
                 {/* Prediction summary */}

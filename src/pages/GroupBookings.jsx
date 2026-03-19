@@ -137,7 +137,7 @@ const EVENT_TYPES = [
   },
 ];
 
-const LOCATIONS = ["Scottsdale", "Arcadia", "North Central"];
+const LOCATIONS = ["Downtown Studio", "Westside Studio", "North Studio"];
 
 const ADDONS = [
   { id: "photo",       label: "Photo Package",      price: 150,  unit: "flat" },
@@ -154,7 +154,7 @@ const SEEDED_BOOKINGS = [
     id:       1,
     name:     "Sarah's 30th Birthday",
     type:     "Birthday",
-    location: "Scottsdale",
+    location: "Downtown Studio",
     date:     "Mar 22",
     guests:   8,
     total:    520,
@@ -164,7 +164,7 @@ const SEEDED_BOOKINGS = [
     id:       2,
     name:     "TechCorp Team Day",
     type:     "Corporate",
-    location: "North Central",
+    location: "North Studio",
     date:     "Mar 28",
     guests:   15,
     total:    875,
@@ -174,7 +174,7 @@ const SEEDED_BOOKINGS = [
     id:       3,
     name:     "Jessica's Bachelorette",
     type:     "Bachelorette",
-    location: "Arcadia",
+    location: "Westside Studio",
     date:     "Apr 5",
     guests:   10,
     total:    680,
@@ -184,7 +184,7 @@ const SEEDED_BOOKINGS = [
     id:       4,
     name:     "Spring Wedding Shower",
     type:     "Bridal",
-    location: "Scottsdale",
+    location: "Downtown Studio",
     date:     "Apr 12",
     guests:   8,
     total:    550,
@@ -437,7 +437,7 @@ function InquiryModal({ quoteDetails, onClose }) {
                 <input
                   type="tel"
                   style={inp}
-                  placeholder="(480) 555-0100"
+                  placeholder="(555) 555-0100"
                   value={form.phone}
                   onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
                 />

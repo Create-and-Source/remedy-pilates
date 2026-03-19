@@ -101,7 +101,7 @@ function buildScript(providers, services) {
     },
     {
       role: 'ai',
-      text: `I see openings this Thursday at 9:00 AM and 5:30 PM at our Scottsdale location. Would either of those work for you?`,
+      text: `I see openings this Thursday at 9:00 AM and 5:30 PM at our Downtown Studio location. Would either of those work for you?`,
       intent: 'booking_inquiry',
       confidence: 0.97,
     },
@@ -113,7 +113,7 @@ function buildScript(providers, services) {
     },
     {
       role: 'ai',
-      text: `Perfect! I've reserved a spot for you in the 5:30 PM ${introService.name} at Scottsdale with ${instructor}. You'll receive a text confirmation shortly. Is there anything else I can help with?`,
+      text: `Perfect! I've reserved a spot for you in the 5:30 PM ${introService.name} at the Downtown Studio with ${instructor}. You'll receive a text confirmation shortly. Is there anything else I can help with?`,
       intent: 'booking_confirmed',
       confidence: 0.99,
     },
@@ -125,7 +125,7 @@ function buildScript(providers, services) {
     },
     {
       role: 'ai',
-      text: `Wear form-fitting, comfortable clothing — think leggings and a fitted top. Grip socks are recommended but we have them available for purchase. Plan to arrive 10 minutes early to fill out a quick health form. We're located at 6949 E Shea Blvd, Scottsdale.`,
+      text: `Wear form-fitting, comfortable clothing — think leggings and a fitted top. Grip socks are recommended but we have them available for purchase. Plan to arrive 10 minutes early to fill out a quick health form. We're located at our Downtown Studio — address details will be in your confirmation text.`,
       intent: 'class_info',
       confidence: 0.94,
     },
@@ -371,7 +371,7 @@ export default function VoiceAI() {
               Pilates Studio AI
             </div>
             <div style={{ color: '#6B6B80', fontSize: 13, marginTop: 3, fontFamily: s.MONO }}>
-              (480) 699-8160
+              (555) 699-8160
             </div>
 
             {/* Status line */}
@@ -780,7 +780,7 @@ export default function VoiceAI() {
                   Connected Number
                 </div>
                 <div style={{ fontSize: 16, fontWeight: 700, color: s.text, fontFamily: s.MONO }}>
-                  (480) 699-8160
+                  (555) 699-8160
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ADE80' }} />

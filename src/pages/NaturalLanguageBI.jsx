@@ -138,7 +138,7 @@ function processQuery(query, patients, appointments, services, providers) {
   // ── location / performance query ──
   if (q.includes('how did') || q.includes('performance') || q.includes('location') ||
       (q.includes('revenue') && !q.includes('trend') && !q.includes('quarter'))) {
-    const loc = q.match(/scottsdale|phoenix|tempe|chandler|mesa/i)?.[0] || null;
+    const loc = q.match(/downtown|westside|north studio/i)?.[0] || null;
     const subset = loc
       ? completed.filter(a => (a.location || '').toLowerCase().includes(loc.toLowerCase()))
       : completed;
@@ -471,7 +471,7 @@ function AnswerCard({ result, s }) {
 // ── main component ──────────────────────────────────────────────────────────
 
 const SUGGESTED = [
-  'How did Scottsdale do last month?',
+  'How did the Downtown Studio do last month?',
   'Who are my top 5 most active clients?',
   'Which classes have the highest fill rate?',
   "What's my revenue trend this quarter?",

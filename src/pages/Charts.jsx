@@ -1,4 +1,4 @@
-// Progress Tracking — SOAP notes, injection maps, session documentation
+// Progress Tracking — SOAP notes, body maps, session documentation
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useStyles } from '../theme';
 import { getPatients, getServices, getProviders, subscribe } from '../data/store';
@@ -76,13 +76,13 @@ function getMapType(serviceId, services) {
 
   const cat = (svc.category || '').toLowerCase();
 
-  // Face-oriented services
-  if (['injectables', 'injectable', 'skin', 'lifting', 'laser'].includes(cat)) return 'face';
+  // Focus-area services (posture, alignment, face/neck)
+  if (['reformer', 'barre', 'mat', 'private'].includes(cat)) return 'face';
 
-  // Body services
-  if (['body', 'surgical'].includes(cat)) return 'body';
+  // Full-body services
+  if (['body', 'equipment'].includes(cat)) return 'body';
 
-  // No-map services: Wellness (IV, HRT, Weight Loss), Consultation, Packages
+  // No-map services: Wellness, Consultation, Packages
   if (['wellness', 'consultation', 'packages'].includes(cat)) return 'none';
 
   return 'face';
@@ -483,9 +483,8 @@ function TreatmentSummary({ injectionMap, zones, s }) {
 
 function CoSignModal({ onConfirm, onClose, s, providers }) {
   const mdProviders = providers.filter(p => {
-    const name = (p.name || '').toLowerCase();
     const title = (p.title || '').toLowerCase();
-    return name.includes('dr.') || title.includes('md') || title.includes('medical director') || title.includes('surgeon') || title.includes('physician');
+    return title.includes('head instructor') || title.includes('lead instructor') || title.includes('senior instructor') || title.includes('director') || title.includes('owner');
   });
 
   const [reviewerId, setReviewerId] = useState(mdProviders[0]?.id || '');
@@ -511,9 +510,9 @@ function CoSignModal({ onConfirm, onClose, s, providers }) {
         style={{ background: '#fff', borderRadius: 14, padding: 28, width: 380, boxShadow: s.shadowLg }}
         onClick={e => e.stopPropagation()}
       >
-        <div style={{ font: `600 16px ${s.FONT}`, color: s.text, marginBottom: 6 }}>Medical Director Co-Sign</div>
+        <div style={{ font: `600 16px ${s.FONT}`, color: s.text, marginBottom: 6 }}>Instructor Review</div>
         <div style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>
-          Review and co-sign this chart on behalf of the Medical Director.
+          Flag and review this chart on behalf of the head instructor.
         </div>
 
         <div style={{ marginBottom: 14 }}>
@@ -537,7 +536,7 @@ function CoSignModal({ onConfirm, onClose, s, providers }) {
             onChange={e => setReviewNotes(e.target.value)}
             rows={3}
             style={{ ...s.input, resize: 'vertical', lineHeight: 1.6 }}
-            placeholder="Clinical comments, recommendations, or observations..."
+            placeholder="Instructor notes, recommendations, or observations..."
           />
         </div>
 
@@ -548,7 +547,7 @@ function CoSignModal({ onConfirm, onClose, s, providers }) {
             disabled={!reviewerId || mdProviders.length === 0}
             style={{ ...s.pillAccent, opacity: (!reviewerId || mdProviders.length === 0) ? 0.5 : 1 }}
           >
-            Co-Sign & Approve
+            Approve & Flag Reviewed
           </button>
         </div>
       </div>
@@ -599,7 +598,7 @@ function initCharts() {
   localStorage.removeItem('rp_charts_init');
   saveCharts([
     {
-      id: 'CHT-1', clientId: 'CLT-1000', patientName: 'Emma Johnson', providerId: 'INS-1',
+      id: 'CHT-1', clientId: 'CLT-1000', clientName: 'Emma Johnson', providerId: 'INS-1',
       date: '2026-03-10', serviceId: 'SVC-1', serviceName: 'Reformer',
       mapType: 'none',
       subjective: 'Client presents for weekly reformer session. Reports lower back felt tight after last session but resolved within 24 hours. No new injuries. Sleeping better and noticing improved posture at work. Motivated to increase spring resistance.',
@@ -615,7 +614,7 @@ function initCharts() {
       createdAt: '2026-03-10T10:30:00Z',
     },
     {
-      id: 'CHT-2', clientId: 'CLT-1001', patientName: 'Olivia Williams', providerId: 'INS-1',
+      id: 'CHT-2', clientId: 'CLT-1001', clientName: 'Olivia Williams', providerId: 'INS-1',
       date: '2026-03-11', serviceId: 'SVC-2', serviceName: 'Barre',
       mapType: 'none',
       subjective: 'Client attended 3rd barre class this week. Reports significant muscle soreness in glutes and inner thighs after Tuesday class — expected DOMS. Soreness resolved by Thursday. Energy level good. Noticing less shaking at the barre compared to first two weeks.',
@@ -631,7 +630,7 @@ function initCharts() {
       createdAt: '2026-03-11T11:00:00Z',
     },
     {
-      id: 'CHT-3', clientId: 'CLT-1003', patientName: 'Ava Jones', providerId: 'INS-2',
+      id: 'CHT-3', clientId: 'CLT-1003', clientName: 'Ava Jones', providerId: 'INS-2',
       date: '2026-03-12', serviceId: 'SVC-6', serviceName: 'Private Reformer',
       mapType: 'none',
       subjective: 'Month 2 private session. Client reports significant reduction in chronic lower back pain — "down from a 6/10 to a 2/10 most days." Physician cleared her to continue Pilates and discontinue physical therapy. Feeling stronger and more confident in movement.',
@@ -647,7 +646,7 @@ function initCharts() {
       createdAt: '2026-03-12T14:00:00Z',
     },
     {
-      id: 'CHT-4', clientId: 'CLT-1002', patientName: 'Sophia Brown', providerId: 'INS-3',
+      id: 'CHT-4', clientId: 'CLT-1002', clientName: 'Sophia Brown', providerId: 'INS-3',
       date: '2026-03-13', serviceId: 'SVC-28', serviceName: 'Mat Pilates',
       mapType: 'none',
       subjective: 'Session 4 of 8-week beginner mat series. Client recovering from C-section 6 months ago, cleared by OB for low-impact exercise. Experiencing diastasis recti (2-finger separation noted at intake). Reports less "disconnected" feeling in core. No pain during class.',
@@ -663,7 +662,7 @@ function initCharts() {
       createdAt: '2026-03-13T09:00:00Z',
     },
     {
-      id: 'CHT-5', clientId: 'CLT-1004', patientName: 'Isabella Martinez', providerId: 'INS-1',
+      id: 'CHT-5', clientId: 'CLT-1004', clientName: 'Isabella Martinez', providerId: 'INS-1',
       date: '2026-03-14', serviceId: 'SVC-4', serviceName: 'Stretch & Recovery',
       mapType: 'none',
       subjective: 'Client is a competitive cyclist presenting for weekly stretch and recovery session. Reports right hip flexor tightness and left IT band tension following a 60-mile ride on Saturday. Requesting focus on hip flexors, hamstrings, and thoracic mobility.',
@@ -679,7 +678,7 @@ function initCharts() {
       createdAt: '2026-03-14T13:00:00Z',
     },
     {
-      id: 'CHT-6', clientId: 'CLT-1007', patientName: 'Amelia Thompson', providerId: 'INS-4',
+      id: 'CHT-6', clientId: 'CLT-1007', clientName: 'Amelia Thompson', providerId: 'INS-4',
       date: '2026-03-14', serviceId: 'SVC-15', serviceName: 'Reformer — Intermediate',
       mapType: 'none',
       subjective: 'Session 10 of ongoing intermediate reformer program. Client training for a spring hiking trip — goal is leg strength and stamina on descents. Reports feeling significantly stronger in legs. No new soreness or discomfort.',
@@ -699,7 +698,7 @@ function initCharts() {
       createdAt: '2026-03-14T08:00:00Z',
     },
     {
-      id: 'CHT-7', clientId: 'CLT-1005', patientName: 'Mia Garcia', providerId: 'INS-1',
+      id: 'CHT-7', clientId: 'CLT-1005', clientName: 'Mia Garcia', providerId: 'INS-1',
       date: '2026-03-15', serviceId: 'SVC-11', serviceName: 'Private Training',
       mapType: 'none',
       subjective: 'Week 8 of private training program. Client\'s primary goal is postural correction and building confidence in movement after years of sedentary desk work. Reports standing taller and receiving compliments on posture from coworkers. No pain or discomfort.',
@@ -715,7 +714,7 @@ function initCharts() {
       createdAt: '2026-03-15T10:00:00Z',
     },
     {
-      id: 'CHT-8', clientId: 'CLT-1010', patientName: 'Lily Lee', providerId: 'INS-2',
+      id: 'CHT-8', clientId: 'CLT-1010', clientName: 'Lily Lee', providerId: 'INS-2',
       date: '2026-03-15', serviceId: 'SVC-2', serviceName: 'Barre',
       mapType: 'none',
       subjective: 'First barre class after 3-week absence (vacation). Client reports feeling "rusty" but energized. Prior to absence had completed 6 consecutive weeks. Expects some return of muscle soreness. No injuries during time off.',
@@ -773,13 +772,13 @@ export default function Charts() {
   const currentZones = getZonesForType(currentMapType);
   const currentMapLabel = getMapLabel(currentMapType);
 
-  // Selected patient for allergy warning
+  // Selected client for allergy/contraindication warning
   const selectedPatient = clients.find(p => p.id === form.clientId);
 
   const filtered = charts.filter(c => {
     if (search) {
       const q = search.toLowerCase();
-      if (!c.patientName?.toLowerCase().includes(q) && !c.serviceName?.toLowerCase().includes(q)) return false;
+      if (!c.clientName?.toLowerCase().includes(q) && !c.serviceName?.toLowerCase().includes(q)) return false;
     }
     if (statusFilter !== 'all' && c.status !== statusFilter) return false;
     return true;
@@ -818,7 +817,7 @@ export default function Charts() {
     const data = {
       ...form,
       mapType,
-      patientName: pat ? `${pat.firstName} ${pat.lastName}` : 'Unknown',
+      clientName: pat ? `${pat.firstName} ${pat.lastName}` : 'Unknown',
       serviceName: svc?.name || 'Service',
       date: new Date().toISOString().slice(0, 10),
       status: newStatus,
@@ -885,7 +884,7 @@ export default function Charts() {
     if (count === 0) return null;
     if (mt === 'body') return `${count} body zones`;
     if (mt === 'scalp') return `${count} scalp zones`;
-    return `${count} injection sites`;
+    return `${count} focus areas`;
   };
 
   const editingZoneObj = getEditingZone();
@@ -899,14 +898,14 @@ export default function Charts() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Progress Tracking</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>SOAP notes, injection mapping, and session documentation</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>SOAP notes, body mapping, and session documentation</p>
         </div>
         <button onClick={openNew} style={s.pillAccent}>+ New Chart</button>
       </div>
 
       {/* Filters */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patient or service..." style={{ ...s.input, maxWidth: 260 }} />
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search client or service..." style={{ ...s.input, maxWidth: 260 }} />
         <div style={{ display: 'flex', gap: 6 }}>
           {[
             ['all', 'All'],
@@ -943,10 +942,10 @@ export default function Charts() {
                 onClick={() => openChart(chart)}
               >
                 <div style={{ width: 42, height: 42, borderRadius: '50%', background: avatarBg(chart.status), display: 'flex', alignItems: 'center', justifyContent: 'center', font: `500 12px ${s.FONT}`, color: avatarColor(chart.status, s), flexShrink: 0 }}>
-                  {chart.patientName?.split(' ').map(n => n[0]).join('')}
+                  {chart.clientName?.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>
-                  <div style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{chart.patientName} — {chart.serviceName}</div>
+                  <div style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{chart.clientName} — {chart.serviceName}</div>
                   <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>
                     {prov?.name?.split(',')[0] || 'Instructor'} · {chart.date}
                     {chart.status === 'co_signed' && chart.reviewedByName && (
@@ -979,7 +978,7 @@ export default function Charts() {
       {showNew && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowNew(false)}>
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 900, width: '95%', boxShadow: s.shadowLg, maxHeight: '92vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ font: `600 22px ${s.FONT}`, color: s.text, marginBottom: 20 }}>{activeId ? 'Edit Chart' : 'New Clinical Chart'}</h2>
+            <h2 style={{ font: `600 22px ${s.FONT}`, color: s.text, marginBottom: 20 }}>{activeId ? 'Edit Chart' : 'New Session Chart'}</h2>
 
             {/* Allergy warning banner */}
             {selectedPatient?.allergies && (
@@ -999,7 +998,7 @@ export default function Charts() {
             {/* Client / Service / Instructor */}
             <div className="charts-meta-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
               <div>
-                <label style={s.label}>Patient</label>
+                <label style={s.label}>Client</label>
                 <select value={form.clientId} onChange={e => setForm({ ...form, clientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select...</option>
                   {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
@@ -1039,10 +1038,10 @@ export default function Charts() {
               {/* SOAP Notes */}
               <div>
                 {[
-                  { key: 'subjective', label: 'S — Subjective', placeholder: 'Chief complaint, patient history, symptoms, concerns...' },
-                  { key: 'objective', label: 'O — Objective', placeholder: 'Physical findings, observations, measurements...' },
-                  { key: 'assessment', label: 'A — Assessment', placeholder: 'Clinical assessment, diagnosis, session candidacy...' },
-                  { key: 'plan', label: 'P — Plan', placeholder: 'Treatment performed, products/units used, post-care instructions, follow-up...' },
+                  { key: 'subjective', label: 'S — Subjective', placeholder: 'Client-reported feedback, goals, areas of focus, concerns...' },
+                  { key: 'objective', label: 'O — Objective', placeholder: 'Physical observations, posture assessment, range of motion, measurements...' },
+                  { key: 'assessment', label: 'A — Assessment', placeholder: 'Instructor assessment, progress evaluation, session readiness...' },
+                  { key: 'plan', label: 'P — Plan', placeholder: 'Exercises performed, modifications used, home practice assigned, follow-up...' },
                 ].map(field => (
                   <div key={field.key} style={{ marginBottom: 14 }}>
                     <label style={{ ...s.label, color: s.accent }}>{field.label}</label>
@@ -1098,7 +1097,7 @@ export default function Charts() {
                       })}
                     </div>
                     <div style={{ font: `400 10px ${s.FONT}`, color: s.text3, marginTop: 6, textAlign: 'center' }}>
-                      {currentMapType === 'face' && 'Click points to add injection details'}
+                      {currentMapType === 'face' && 'Click points to add focus area details'}
                       {currentMapType === 'body' && 'Click zones to add session details'}
                       {currentMapType === 'scalp' && 'Click zones to add session details'}
                     </div>
@@ -1123,10 +1122,10 @@ export default function Charts() {
                   onChange={e => setForm({ ...form, reviewRequired: e.target.checked })}
                   style={{ width: 16, height: 16, cursor: 'pointer', accentColor: s.accent }}
                 />
-                <span>Requires Medical Director review</span>
+                <span>Flagged for head instructor review</span>
                 {form.reviewRequired && (
                   <span style={{ padding: '2px 8px', borderRadius: 100, background: '#EFF6FF', font: `500 10px ${s.FONT}`, color: '#2563EB', border: '1px solid #BFDBFE' }}>
-                    Will submit for MD co-sign
+                    Will submit for instructor review
                   </span>
                 )}
               </label>

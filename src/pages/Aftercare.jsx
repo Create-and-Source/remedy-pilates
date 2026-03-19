@@ -10,92 +10,92 @@ function save(data) { localStorage.setItem(KEY, JSON.stringify(data)); }
 // ── Recovery Tips Templates ──
 const TEMPLATES = [
   {
-    id: 'tmpl-botox', service: 'Reformer', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Reformer Instructions', body: "Don't lay down for 4 hours, no exercise for 24 hours, avoid rubbing the treated area. Mild bruising or redness is normal and should resolve within a few hours." },
-      { delay: 2, label: '48 Hours', subject: '48-Hour Check-In', body: 'How are you feeling? Any bruising or tenderness? This is completely normal. Avoid heat exposure and strenuous activity for the next 24 hours.' },
-      { delay: 14, label: '2 Weeks', subject: 'Results Check', body: 'Your Reformer should be fully settled! Love your results? If you notice any asymmetry or areas that need a touch-up, let us know within the next week.' },
-      { delay: 84, label: '12 Weeks', subject: 'Time for a Touch-Up!', body: 'Time for a touch-up! Book your next Reformer appointment to maintain your smooth, refreshed look. Early re-session can help results last longer over time.' },
+    id: 'tmpl-reformer', service: 'Reformer', messages: [
+      { delay: 0, label: 'Immediate', subject: 'Post-Reformer Instructions', body: "Great session today! Drink plenty of water to help your muscles recover. Light stretching is encouraged. Avoid high-impact activity for the rest of the day to let your body integrate the work." },
+      { delay: 2, label: '48 Hours', subject: '48-Hour Check-In', body: 'How are you feeling? Some muscle soreness in the first 24-48 hours is completely normal, especially after your first few sessions. Stay hydrated and keep moving gently.' },
+      { delay: 14, label: '2 Weeks', subject: 'Progress Check-In', body: 'You have been at it for two weeks — great work! Many clients start noticing improved posture, core strength, and flexibility around this point. Keep it up!' },
+      { delay: 84, label: '12 Weeks', subject: 'Stay on Track!', body: 'Consistency is key to seeing lasting results with Pilates. If it has been a while since your last session, now is a great time to get back on the Reformer and reconnect with your practice.' },
     ],
   },
   {
-    id: 'tmpl-filler', service: 'Barre', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Barre Care', body: 'Avoid touching or massaging the treated area for 6 hours. Sleep face-up tonight. Mild swelling and bruising are expected and will subside within 3-5 days.' },
-      { delay: 1, label: '24 Hours', subject: '24-Hour Follow-Up', body: 'How is the swelling? Apply a cold compress gently if needed. Avoid alcohol, strenuous exercise, and extreme heat for the next 48 hours.' },
-      { delay: 7, label: '1 Week', subject: 'One Week Check-In', body: 'Your filler should be settling in beautifully! Swelling should be mostly resolved. If you have any concerns about shape or symmetry, we are here to help.' },
-      { delay: 180, label: '6 Months', subject: 'Maintenance Reminder', body: 'It has been 6 months since your filler appointment. Many clients choose to refresh around this time. Book your next session to maintain your look!' },
+    id: 'tmpl-barre', service: 'Barre', messages: [
+      { delay: 0, label: 'Immediate', subject: 'Post-Barre Care', body: 'Fantastic Barre class today! Your muscles worked hard — stay hydrated and eat a protein-rich snack to support recovery. Expect some muscle fatigue in your legs and glutes over the next day or two.' },
+      { delay: 1, label: '24 Hours', subject: '24-Hour Follow-Up', body: 'How are your legs feeling? DOMS (delayed onset muscle soreness) after Barre is a great sign that the small stabilizing muscles are being activated. Light walking or stretching can help.' },
+      { delay: 7, label: '1 Week', subject: 'One Week Check-In', body: 'One week in — you are building a great habit! Aim for at least 2-3 Barre sessions per week for best results. Your balance and posture will improve noticeably over the next month.' },
+      { delay: 30, label: '1 Month', subject: 'Monthly Check-In', body: 'One month of Barre — you should be seeing real changes in strength, stability, and body composition. Keep going and let us know how you are feeling!' },
     ],
   },
   {
     id: 'tmpl-microneedling', service: 'Private Session', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Private Session Instructions', body: 'Your skin will be red and feel warm — like a sunburn. Avoid makeup, retinols, and active ingredients for 24 hours. Use only gentle cleanser and the recovery balm provided.' },
-      { delay: 1, label: '24 Hours', subject: 'Day-After Care', body: 'Redness should be fading. Keep skin hydrated with a gentle moisturizer. Avoid direct sun exposure and apply SPF 30+ before going outside.' },
-      { delay: 7, label: '1 Week', subject: 'How Is Your Skin?', body: 'You may start noticing improved texture and glow! Continue using SPF daily. Avoid exfoliants for another week. Your skin is regenerating beautifully.' },
-      { delay: 28, label: '4 Weeks', subject: 'Ready for Your Next Session?', body: 'For optimal results, we recommend a series of 3-4 sessions spaced 4-6 weeks apart. Ready to book your next microneedling session?' },
+      { delay: 0, label: 'Immediate', subject: 'Post-Private Session Instructions', body: 'Great one-on-one session today! Take note of the exercises and cues your instructor focused on. Drink water and do some gentle stretching this evening to support recovery.' },
+      { delay: 1, label: '24 Hours', subject: 'Day-After Check-In', body: 'How are you feeling after your private session? Some muscle awareness or mild soreness is normal. The personalized work from yesterday is doing its job!' },
+      { delay: 7, label: '1 Week', subject: 'How Is Your Progress?', body: 'You may be noticing improved alignment, core engagement, or ease of movement from your private session. Try incorporating those instructor cues into your group classes this week.' },
+      { delay: 28, label: '4 Weeks', subject: 'Ready for Your Next Private Session?', body: 'Private sessions are a great way to accelerate your progress. Consider booking another one-on-one to keep building on your gains and address any areas you want to focus on.' },
     ],
   },
   {
     id: 'tmpl-ipl', service: 'TRX', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-TRX Care Instructions', body: 'Treated areas may appear slightly red or feel warm. Dark spots will darken before they flake off — this is normal! Avoid sun exposure and use SPF 50 religiously.' },
-      { delay: 2, label: '48 Hours', subject: 'TRX Recovery Update', body: 'Darkened spots are part of the healing process and will begin to flake off within 5-7 days. Do not pick at them. Keep the area moisturized.' },
-      { delay: 10, label: '10 Days', subject: 'How Are Your Results?', body: 'Your skin should be looking clearer as those dark spots have shed. Full results continue to improve over the next 2-4 weeks as collagen remodels.' },
-      { delay: 28, label: '4 Weeks', subject: 'Next TRX Session', body: 'For best results, most clients benefit from a series of 3-5 TRX sessions. Ready to schedule your next photofacial? Each session builds on the last.' },
+      { delay: 0, label: 'Immediate', subject: 'Post-TRX Session Instructions', body: 'Excellent TRX session today! Your core and stabilizers worked hard. Hydrate well and keep moving with light activity. Avoid intense training for the next 24 hours.' },
+      { delay: 2, label: '48 Hours', subject: 'TRX Recovery Update', body: 'Muscle soreness from TRX suspension training is normal, especially in the core, shoulders, and glutes. Gentle movement and hydration will help speed recovery.' },
+      { delay: 10, label: '10 Days', subject: 'How Are You Progressing?', body: 'You should be feeling stronger and more stable after consistent TRX work. Focus on maintaining proper form — quality over quantity in every rep.' },
+      { delay: 28, label: '4 Weeks', subject: 'Next TRX Session', body: 'Ready to level up? TRX training progresses beautifully over time. Let us know which muscle groups you want to target in your next session and we will tailor it for you.' },
     ],
   },
   {
-    id: 'tmpl-peel', service: 'Chemical Peel', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Peel Instructions', body: 'Your skin may feel tight and slightly red. Do not wash your face for 6 hours. Avoid retinols, AHAs, and active skincare for 5-7 days. Gentle cleanser and moisturizer only.' },
-      { delay: 2, label: '48 Hours', subject: 'Peeling Update', body: 'Peeling typically starts around day 2-3. Do not pick or pull at flaking skin — let it shed naturally. Keep skin moisturized and protected with SPF.' },
-      { delay: 7, label: '1 Week', subject: 'One-Week Check-In', body: 'Most peeling should be complete. Your fresh, new skin is delicate — continue with SPF and gentle products. You should be seeing a brighter, more even complexion!' },
-      { delay: 42, label: '6 Weeks', subject: 'Time for Another Peel?', body: 'Chemical peels work best in a series. Schedule your next peel to continue building on your results. We recommend every 4-6 weeks for maintenance.' },
+    id: 'tmpl-peel', service: 'Group Reformer', messages: [
+      { delay: 0, label: 'Immediate', subject: 'Post-Group Reformer Instructions', body: 'Great group class today! You worked alongside some amazing people. Hydrate, stretch gently, and give your muscles time to recover. Light walking later today is encouraged.' },
+      { delay: 2, label: '48 Hours', subject: '48-Hour Check-In', body: 'How is your body feeling two days after your Group Reformer class? Some muscle soreness is normal, especially in the core and legs. Keep moving to help recovery.' },
+      { delay: 7, label: '1 Week', subject: 'One-Week Check-In', body: 'Great work this week! Consistent Group Reformer attendance builds strength, flexibility, and community. Try to keep your regular class schedule going — consistency is where the results happen.' },
+      { delay: 42, label: '6 Weeks', subject: 'Keep the Momentum!', body: 'Six weeks of Group Reformer — your body has adapted significantly. This is a great time to challenge yourself with a new class time or add a private session to keep advancing.' },
     ],
   },
   {
-    id: 'tmpl-laser-hair', service: 'Laser Hair Removal', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Laser Hair Removal Care', body: 'Mild redness and bumps are normal. Apply aloe vera or a cool compress. Avoid hot showers, saunas, and exercise for 24 hours. Do not shave the area for 48 hours.' },
-      { delay: 2, label: '48 Hours', subject: 'Recovery Check-In', body: 'Redness should be subsiding. You can resume shaving if needed but avoid waxing or plucking — these remove the hair root we are targeting.' },
-      { delay: 10, label: '10 Days', subject: 'Shedding Phase', body: 'You may notice treated hairs shedding or "pushing out" — this means the session is working! Gently exfoliate in the shower to help the process.' },
-      { delay: 42, label: '6 Weeks', subject: 'Next Laser Session', body: 'Time for your next laser hair removal session! Treatments are spaced 4-6 weeks apart to catch hair in the active growth phase. Book now to stay on track.' },
+    id: 'tmpl-laser-hair', service: 'Pilates for Seniors', messages: [
+      { delay: 0, label: 'Immediate', subject: 'After Your Pilates for Seniors Class', body: 'Wonderful session today! Pilates for Seniors focuses on balance, joint mobility, and gentle strength — exactly what keeps you moving and independent. Rest well tonight and stay hydrated.' },
+      { delay: 2, label: '48 Hours', subject: 'Recovery Check-In', body: 'How are you feeling after your class? Any muscle awareness is a sign the right muscles are being activated. If anything felt uncomfortable, let your instructor know at your next session.' },
+      { delay: 10, label: '10 Days', subject: 'Building Your Practice', body: 'You should be noticing improved ease of movement and balance in daily activities. Pilates for Seniors works best with regular attendance — even twice a week makes a measurable difference.' },
+      { delay: 42, label: '6 Weeks', subject: 'Your Progress Matters!', body: 'Six weeks of consistent Pilates for Seniors — this is where real, lasting changes in mobility, strength, and confidence take hold. We are so proud of your commitment. See you in class!' },
     ],
   },
   {
-    id: 'tmpl-weight-loss', service: 'Medical Weight Loss', messages: [
-      { delay: 0, label: 'Day 1', subject: 'Welcome to Your Weight Loss Program', body: 'Welcome! Take your first injection as instructed. Common side effects include mild nausea — eat small, protein-rich meals. Stay hydrated (64oz+ water daily). Avoid fatty or greasy foods.' },
-      { delay: 7, label: 'Week 1', subject: 'How Are You Feeling?', body: 'Checking in on your first week! Any nausea should be improving. Focus on 80-100g of protein daily to preserve muscle. Track your meals if possible.' },
-      { delay: 28, label: 'Month 1', subject: 'One Month Check-In', body: 'Congratulations on completing your first month! Time for your follow-up appointment — we will check your weight, adjust your dose, and review how you are feeling. Book your visit.' },
-      { delay: 84, label: '3 Months', subject: 'Lab Work Reminder', body: 'Time for your quarterly labs! We need to check your CMP, lipid panel, and A1C. Schedule your blood work before your next appointment.' },
+    id: 'tmpl-weight-loss', service: 'Mat Pilates', messages: [
+      { delay: 0, label: 'Day 1', subject: 'Welcome to Mat Pilates!', body: 'Welcome to your Mat Pilates practice! Your first session is all about learning the fundamentals — breath, neutral spine, and core activation. Be patient with yourself as you build the mind-body connection.' },
+      { delay: 7, label: 'Week 1', subject: 'How Are You Feeling?', body: 'Checking in on your first week! Mat Pilates challenges muscles you may not be used to activating. Focus on quality of movement over quantity. If anything felt unclear, let your instructor know.' },
+      { delay: 28, label: 'Month 1', subject: 'One Month Check-In', body: 'Congratulations on your first month of Mat Pilates! Clients typically notice improved core strength, posture, and flexibility by now. How are you feeling? Book your next session to keep the momentum going.' },
+      { delay: 84, label: '3 Months', subject: 'Progress Milestone!', body: 'Three months of Mat Pilates is a real achievement! This is where clients often see the most dramatic improvements in body awareness and strength. Consider adding a private session to keep advancing your practice.' },
     ],
   },
   {
-    id: 'tmpl-lipo', service: 'Awake Liposuction', messages: [
-      { delay: 0, label: 'Immediate', subject: 'Post-Liposuction Recovery Instructions', body: 'Wear your compression garment 24/7 (except showering). Take prescribed pain medication as directed. Walk lightly today — movement helps prevent blood clots. Expect drainage from incision sites for 24-48 hours.' },
-      { delay: 1, label: 'Day 1', subject: 'Day After Surgery Check-In', body: 'How are you feeling? Swelling and bruising are completely normal. Continue wearing your compression garment. Take short walks every 2-3 hours. Stay hydrated. Call us immediately if you have fever over 101, severe pain, or signs of infection.' },
-      { delay: 7, label: 'Week 1', subject: 'One Week Post-Op', body: 'You should be feeling better each day. Keep wearing your compression garment. Light activity is okay but no gym or heavy lifting for 4 weeks. Bruising will take 2-3 weeks to fully resolve. Your follow-up appointment is coming up.' },
-      { delay: 21, label: 'Week 3', subject: 'Recovery Progress', body: 'Swelling is reducing but final results take 3-6 months. You can increase activity gradually. Start gentle scar care (silicone sheets or cream) on healed incisions. Maintain a stable weight — the removed fat cells are gone permanently.' },
-      { delay: 90, label: '3 Months', subject: 'Results Check-In', body: 'Your results should be really showing now! Schedule your 3-month follow-up so we can assess your results and take after photos. If you are interested in additional contouring, we can discuss options.' },
+    id: 'tmpl-lipo', service: 'Cardio Pilates', messages: [
+      { delay: 0, label: 'Immediate', subject: 'Post-Cardio Pilates Instructions', body: 'Great high-energy session! Cardio Pilates gets your heart rate up while building strength — the best of both worlds. Hydrate well and eat a balanced meal within an hour of your session.' },
+      { delay: 1, label: 'Day 1', subject: 'Day After Check-In', body: 'How are you feeling after your Cardio Pilates class? Expect some whole-body muscle fatigue — that is a sign the session was effective. Keep moving today with light stretching or a walk.' },
+      { delay: 7, label: 'Week 1', subject: 'One Week Update', body: 'You should be recovering faster and feeling more energized as your body adapts to Cardio Pilates. Aim for 2-3 sessions per week for best cardiovascular and strength results.' },
+      { delay: 21, label: 'Week 3', subject: 'Building Momentum', body: 'Three weeks in — your endurance and coordination are improving. Notice how your transitions between exercises are getting smoother? That is your nervous system and muscles working together.' },
+      { delay: 90, label: '3 Months', subject: '3-Month Milestone!', body: 'Three months of Cardio Pilates — your fitness level has come a long way! This is a great time to reassess your goals and try a more advanced class or consider adding private sessions.' },
     ],
   },
   {
-    id: 'tmpl-body-contouring', service: 'Body Contouring', messages: [
-      { delay: 0, label: 'Immediate', subject: 'After Your Body Contouring Session', body: 'You may feel tingling, numbness, or mild discomfort in the treated area — this is normal. Drink plenty of water to help your body flush the treated fat cells. Light walking is encouraged.' },
-      { delay: 3, label: 'Day 3', subject: 'Swelling Update', body: 'Some swelling is normal and may peak around now. This is temporary. Continue hydrating and staying active with light walks. Avoid alcohol as it slows the elimination process.' },
-      { delay: 14, label: 'Week 2', subject: 'Progress Check', body: 'You may start noticing subtle changes. Remember — full results take 8-12 weeks as your body naturally eliminates the treated fat cells. Stay active and maintain your current weight.' },
-      { delay: 60, label: '8 Weeks', subject: 'Results Are Showing!', body: 'You should be seeing significant improvement! Take comparison photos and let us know how you feel. If you want to enhance your results with an additional session, now is a great time to book.' },
+    id: 'tmpl-body-contouring', service: 'Body Sculpt', messages: [
+      { delay: 0, label: 'Immediate', subject: 'After Your Body Sculpt Session', body: 'Excellent work in Body Sculpt today! You targeted key muscle groups with precision Pilates exercises. Stay hydrated and give your muscles time to recover — avoid intense training for 24 hours.' },
+      { delay: 3, label: 'Day 3', subject: 'Recovery Update', body: 'Muscle soreness from Body Sculpt is normal and a sign of effective training. Light movement and stretching will help. Keep hydrating and prioritize sleep for optimal recovery.' },
+      { delay: 14, label: 'Week 2', subject: 'Progress Check', body: 'You may start noticing subtle changes in muscle tone and body composition. Remember — visible results from Pilates typically become noticeable after 4-6 consistent weeks. Stay the course!' },
+      { delay: 60, label: '8 Weeks', subject: 'Results Are Showing!', body: 'Eight weeks of Body Sculpt — you should be seeing real improvements in muscle definition and posture. Take comparison photos and celebrate your progress. Ready to take it to the next level?' },
     ],
   },
   {
-    id: 'tmpl-hrt', service: 'Hormone Replacement (HRT)', messages: [
-      { delay: 0, label: 'Day 1', subject: 'After Your HRT Treatment', body: 'Your hormone pellets have been inserted. Keep the insertion site clean and dry for 24 hours. Avoid submerging in water (pools, baths) for 5 days. Mild soreness at the site is normal.' },
-      { delay: 14, label: 'Week 2', subject: 'Hormones Adjusting', body: 'Your hormones are starting to optimize. You may notice improved energy, mood, or sleep. Some clients experience a brief adjustment period — this is normal. Report any unusual symptoms.' },
-      { delay: 60, label: 'Month 2', subject: 'How Are You Feeling?', body: 'You should be feeling the full benefits now. Schedule your follow-up labs so we can check your hormone levels and ensure everything is optimized. Book your lab appointment.' },
-      { delay: 90, label: '3 Months', subject: 'Re-Pellet Reminder', body: 'It is almost time for your next pellet insertion. Most clients need re-pelting every 3-4 months for women and 4-6 months for men. Book your appointment to maintain your levels.' },
+    id: 'tmpl-hrt', service: 'Prenatal Pilates', messages: [
+      { delay: 0, label: 'Day 1', subject: 'Welcome to Prenatal Pilates!', body: 'Welcome to your Prenatal Pilates journey! This is a wonderful way to stay active, reduce back pain, and prepare your body for birth. Always listen to your body and let your instructor know how you are feeling each session.' },
+      { delay: 14, label: 'Week 2', subject: 'How Are You Feeling?', body: 'You are building a great foundation! Prenatal Pilates helps strengthen the pelvic floor and deep core muscles, which are essential for a healthy pregnancy and recovery. Keep up the great work.' },
+      { delay: 60, label: 'Month 2', subject: 'Continuing Strong!', body: 'Two months in — your body is adapting beautifully. As you progress through your pregnancy, your instructor will modify exercises to keep you comfortable and safe. Communicate any new discomfort right away.' },
+      { delay: 90, label: '3 Months', subject: 'Check-In', body: 'You are doing amazingly well! Consistent Prenatal Pilates supports better posture, reduced swelling, and improved sleep. We are here for you through every trimester and beyond — postnatal classes are available when you are ready.' },
     ],
   },
   {
-    id: 'tmpl-hair-restoration', service: 'Hair Restoration', messages: [
-      { delay: 0, label: 'Immediate', subject: 'After Your PRP Hair Treatment', body: 'Mild redness and tenderness at injection sites is normal. Avoid washing your hair for 24 hours. No hats or helmets for 48 hours. Avoid strenuous exercise for 24 hours.' },
-      { delay: 14, label: 'Week 2', subject: 'Shedding Phase Starting', body: 'You may notice increased hair shedding — this is actually a GOOD sign. The PRP is pushing old hairs out to make room for new, stronger growth. This phase lasts 2-4 weeks.' },
-      { delay: 60, label: 'Month 2', subject: 'New Growth Beginning', body: 'The shedding phase should be ending and you may start to see baby hairs emerging. Be patient — significant visible results take 3-6 months. Your next PRP session is coming up.' },
-      { delay: 120, label: '4 Months', subject: 'Results Are Growing In!', body: 'You should be seeing noticeable new growth and improved density. Take comparison photos. Book your next session to continue building on your results.' },
+    id: 'tmpl-hair-restoration', service: 'Pilates for Rehabilitation', messages: [
+      { delay: 0, label: 'Immediate', subject: 'After Your Rehab Pilates Session', body: 'Great session today! Pilates-based rehabilitation works gently and precisely to retrain movement patterns. Do not push through pain — mild muscle awareness is normal, but sharp pain is not. Contact us with any concerns.' },
+      { delay: 14, label: 'Week 2', subject: 'Progress Check', body: 'You may notice improved ease of movement or reduced discomfort in daily activities — that is the rehab work taking effect. Consistency between sessions matters; try to practice the exercises your instructor gave you at home.' },
+      { delay: 60, label: 'Month 2', subject: 'Building Strength', body: 'Two months of rehab Pilates represents real progress. Your body is relearning how to move safely and efficiently. This is a great time to discuss your goals with your instructor and adjust your program as you advance.' },
+      { delay: 120, label: '4 Months', subject: 'Milestone Check-In', body: 'You have come a long way! Many clients transition from rehabilitation to general Pilates classes around this stage. Talk to your instructor about whether you are ready to expand your practice.' },
     ],
   },
 ];
@@ -110,11 +110,11 @@ function initRecoveryTips() {
   const d = (offset) => { const dt = new Date(now); dt.setDate(dt.getDate() + offset); return dt.toISOString(); };
 
   const sequences = [
-    { id: 'AC-1001', patientId: clients[0]?.id, patientName: `${clients[0]?.firstName} ${clients[0]?.lastName}`, templateId: 'tmpl-botox', service: 'Reformer', startedAt: d(-5), status: 'active', messagesSent: [
+    { id: 'AC-1001', patientId: clients[0]?.id, patientName: `${clients[0]?.firstName} ${clients[0]?.lastName}`, templateId: 'tmpl-reformer', service: 'Reformer', startedAt: d(-5), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-5), status: 'sent' },
       { index: 1, sentAt: d(-3), status: 'sent' },
     ]},
-    { id: 'AC-1002', patientId: clients[1]?.id, patientName: `${clients[1]?.firstName} ${clients[1]?.lastName}`, templateId: 'tmpl-filler', service: 'Barre', startedAt: d(-2), status: 'active', messagesSent: [
+    { id: 'AC-1002', patientId: clients[1]?.id, patientName: `${clients[1]?.firstName} ${clients[1]?.lastName}`, templateId: 'tmpl-barre', service: 'Barre', startedAt: d(-2), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-2), status: 'sent' },
       { index: 1, sentAt: d(-1), status: 'sent' },
     ]},
@@ -127,24 +127,24 @@ function initRecoveryTips() {
       { index: 0, sentAt: d(-3), status: 'sent' },
       { index: 1, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1005', patientId: clients[5]?.id, patientName: `${clients[5]?.firstName} ${clients[5]?.lastName}`, templateId: 'tmpl-peel', service: 'Chemical Peel', startedAt: d(-1), status: 'active', messagesSent: [
+    { id: 'AC-1005', patientId: clients[5]?.id, patientName: `${clients[5]?.firstName} ${clients[5]?.lastName}`, templateId: 'tmpl-peel', service: 'Group Reformer', startedAt: d(-1), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-1), status: 'sent' },
     ]},
-    { id: 'AC-1006', patientId: clients[7]?.id, patientName: `${clients[7]?.firstName} ${clients[7]?.lastName}`, templateId: 'tmpl-laser-hair', service: 'Laser Hair Removal', startedAt: d(0), status: 'active', messagesSent: [
+    { id: 'AC-1006', patientId: clients[7]?.id, patientName: `${clients[7]?.firstName} ${clients[7]?.lastName}`, templateId: 'tmpl-laser-hair', service: 'Pilates for Seniors', startedAt: d(0), status: 'active', messagesSent: [
       { index: 0, sentAt: d(0), status: 'sent' },
     ]},
-    { id: 'AC-1007', patientId: clients[9]?.id, patientName: `${clients[9]?.firstName} ${clients[9]?.lastName}`, templateId: 'tmpl-botox', service: 'Reformer', startedAt: d(-90), status: 'completed', messagesSent: [
+    { id: 'AC-1007', patientId: clients[9]?.id, patientName: `${clients[9]?.firstName} ${clients[9]?.lastName}`, templateId: 'tmpl-reformer', service: 'Reformer', startedAt: d(-90), status: 'completed', messagesSent: [
       { index: 0, sentAt: d(-90), status: 'sent' },
       { index: 1, sentAt: d(-88), status: 'sent' },
       { index: 2, sentAt: d(-76), status: 'sent' },
       { index: 3, sentAt: d(-6), status: 'sent' },
     ]},
-    { id: 'AC-1008', patientId: clients[12]?.id, patientName: `${clients[12]?.firstName} ${clients[12]?.lastName}`, templateId: 'tmpl-filler', service: 'Barre', startedAt: d(-10), status: 'active', messagesSent: [
+    { id: 'AC-1008', patientId: clients[12]?.id, patientName: `${clients[12]?.firstName} ${clients[12]?.lastName}`, templateId: 'tmpl-barre', service: 'Barre', startedAt: d(-10), status: 'active', messagesSent: [
       { index: 0, sentAt: d(-10), status: 'sent' },
       { index: 1, sentAt: d(-9), status: 'sent' },
       { index: 2, sentAt: d(-3), status: 'sent' },
     ]},
-  ];
+  ]; // seed data uses original template IDs — service names updated in TEMPLATES above
 
   save(sequences);
   localStorage.setItem('rp_recovery_tips_init', 'true');
@@ -278,7 +278,7 @@ export default function RecoveryTips() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Recovery Tips</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Automated post-session care sequences for every patient</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>Automated post-session care sequences for every client</p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={() => setShowTemplates(true)} style={s.pillOutline}>View Templates</button>
@@ -532,11 +532,11 @@ export default function RecoveryTips() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300 }} onClick={() => setShowTrigger(false)}>
           <div style={{ background: '#fff', borderRadius: 16, padding: 32, maxWidth: 480, width: '90%', boxShadow: s.shadowLg }} onClick={e => e.stopPropagation()}>
             <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Start Recovery Tips Sequence</h2>
-            <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Select a patient and session type to begin automated care messages</p>
+            <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, marginBottom: 20 }}>Select a client and session type to begin automated care messages</p>
             <div style={{ marginBottom: 16 }}>
-              <label style={s.label}>Patient</label>
+              <label style={s.label}>Client</label>
               <select value={triggerPatient} onChange={e => setTriggerPatient(e.target.value)} style={{ ...s.input, cursor: 'pointer' }}>
-                <option value="">Select a patient...</option>
+                <option value="">Select a client...</option>
                 {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
               </select>
             </div>

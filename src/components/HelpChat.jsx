@@ -11,42 +11,42 @@ const KNOWLEDGE = [
   },
   {
     keywords: ['client', 'clients', 'add client', 'search client', 'filter'],
-    response: "The Patients page is your full client directory. You can search by name, filter by membership tier or location, and click any patient to see their full profile — visit history, membership status, wallet balance, class packages, and more. To add a new patient, just hit the + button in the top right. 🙌",
+    response: "The Clients page is your full client directory. You can search by name, filter by membership tier or location, and click any client to see their full profile — visit history, membership status, wallet balance, class packages, and more. To add a new client, just hit the + button in the top right. 🙌",
     suggestions: ['How do memberships work?', 'What about class packages?', 'Tell me about the wallet'],
   },
   {
     keywords: ['schedule', 'appointment', 'appointments', 'booking', 'book', 'calendar'],
-    response: "The Schedule page shows all your appointments in Day, Week, or List view. You can book new appointments from here — just pick a patient, service, provider, date, and time. Each appointment card shows the status (pending, confirmed, completed) and you can update it with a click. Drag-and-drop coming soon!",
+    response: "The Schedule page shows all your appointments in Day, Week, or List view. You can book new appointments from here — just pick a client, service, instructor, date, and time. Each appointment card shows the status (pending, confirmed, completed) and you can update it with a click. Drag-and-drop coming soon!",
     suggestions: ['How does check-in work?', 'What about class packages?', 'Tell me about the waitlist'],
   },
   {
     keywords: ['class package', 'class packages', 'multi-session', 'progress'],
-    response: "Class Packages let you map out multi-session protocols for a patient — like a 6-session laser series or a Reformer + filler combo plan. Each session has its own status, date, and notes. You can track progress over time and see everything in a visual timeline. Great for keeping clients on track! ✨",
-    suggestions: ['How do clinical charts work?', 'Tell me about photos', 'What about clients?'],
+    response: "Class Packages let you map out multi-session plans for a client — like a 6-session Reformer series or a Barre + Mat Pilates combo plan. Each session has its own status, date, and notes. You can track progress over time and see everything in a visual timeline. Great for keeping clients on track! ✨",
+    suggestions: ['How does progress tracking work?', 'Tell me about photos', 'What about clients?'],
   },
   {
-    keywords: ['clinical chart', 'clinical charts', 'soap', 'charting', 'chart', 'notes'],
-    response: "Progress Tracking is where you document everything. Create SOAP notes (Subjective, Objective, Assessment, Plan) for each visit. There are interactive face, body, and scalp maps where you can mark injection sites, session areas, and observations. Everything saves to the client's chart history.",
+    keywords: ['progress chart', 'progress charts', 'soap', 'charting', 'chart', 'notes', 'progress tracking'],
+    response: "Progress Tracking is where you document everything. Create SOAP notes (Subjective, Objective, Assessment, Plan) for each visit. There are interactive body maps where you can mark session areas and observations. Everything saves to the client's history.",
     suggestions: ['How do photos work?', 'What about waivers?', 'Tell me about class packages'],
   },
   {
     keywords: ['photo', 'photos', 'before and after', 'before after', 'documentation'],
-    response: "The Transformations page lets you capture and organize photo documentation. Take photos at standard angles for consistency, tag them by session type, and track visual progress over time. Consent for photo usage is tracked per patient so you know what's cleared for marketing. 📸",
-    suggestions: ['How do waivers work?', 'Tell me about social media', 'What about clinical charts?'],
+    response: "The Transformations page lets you capture and organize photo documentation. Take photos at standard angles for consistency, tag them by session type, and track visual progress over time. Consent for photo usage is tracked per client so you know what's cleared for marketing. 📸",
+    suggestions: ['How do waivers work?', 'Tell me about social media', 'What about progress tracking?'],
   },
   {
     keywords: ['waiver', 'waivers', 'consent', 'signature', 'e-sign'],
-    response: "Waivers has 15 built-in templates covering sessions, photo releases, general consent, and more. Patients can e-sign right on a tablet or you can send waivers digitally for them to sign before they arrive. All signed documents are stored in the client's profile.",
+    response: "Waivers has 15 built-in templates covering sessions, photo releases, general consent, and more. Clients can e-sign right on a tablet or you can send waivers digitally for them to sign before they arrive. All signed documents are stored in the client's profile.",
     suggestions: ['How does check-in work?', 'Tell me about recovery tips', 'What about clients?'],
   },
   {
     keywords: ['recovery tips', 'post-care', 'follow up', 'follow-up', 'sequence'],
-    response: "Recovery Tips automates your post-session communication. There are 12 templates for different sessions — Reformer, fillers, laser, peels, and more. When a session is completed, the recovery tips sequence triggers automatically: day-of instructions, 24-hour check-in, 1-week follow-up, and so on. Patients feel taken care of without your team lifting a finger! 💛",
+    response: "Recovery Tips automates your post-session communication. There are 12 templates for different sessions — Reformer, Barre, Private Session, and more. When a session is completed, the recovery tips sequence triggers automatically: day-of instructions, 24-hour check-in, 1-week follow-up, and so on. Clients feel taken care of without your team lifting a finger! 💛",
     suggestions: ['How do text messages work?', 'What about email?', 'Tell me about retention'],
   },
   {
     keywords: ['inventory', 'stock', 'reorder', 'expiration', 'supplies'],
-    response: "Inventory tracks everything you have on hand — injectables, retail products, supplies. Each item shows current quantity, reorder threshold, unit cost, and expiration date. When stock drops below the reorder level, you get an alert. You can adjust stock manually and every change is logged with a reason.",
+    response: "Inventory tracks everything you have on hand — equipment, retail products, studio supplies. Each item shows current quantity, reorder threshold, unit cost, and expiration date. When stock drops below the reorder level, you get an alert. You can adjust stock manually and every change is logged with a reason.",
     suggestions: ['How do reports work?', 'Tell me about settings', 'What about the dashboard?'],
   },
   {
@@ -76,7 +76,7 @@ const KNOWLEDGE = [
   },
   {
     keywords: ['text', 'sms', 'text message', 'text blast'],
-    response: "Text Messages lets you send individual texts or blasts to patient groups. There are templates for reminders, follow-ups, promotions, review requests, and re-engagement. Pick your audience, customize the message, and send. Texts have way higher open rates than email — your clients will actually see these!",
+    response: "Text Messages lets you send individual texts or blasts to client groups. There are templates for reminders, follow-ups, promotions, review requests, and re-engagement. Pick your audience, customize the message, and send. Texts have way higher open rates than email — your clients will actually see these!",
     suggestions: ['How does email work?', 'What about the DM inbox?', 'Tell me about recovery tips'],
   },
   {
@@ -86,42 +86,42 @@ const KNOWLEDGE = [
   },
   {
     keywords: ['membership', 'memberships', 'tier', 'member', 'auto-deduct', 'unit tracking'],
-    response: "Memberships lets you set up tiered membership programs — think Silver, Gold, Platinum. Each tier can include monthly unit allocations (like Reformer units), discounts on services, and wallet credits. Units auto-deduct when sessions are done, and you can track each member's usage and remaining balance.",
+    response: "Memberships lets you set up tiered membership programs — think Silver, Gold, Platinum. Each tier can include monthly class allocations (like Reformer sessions), discounts on services, and wallet credits. Sessions auto-deduct when classes are done, and you can track each member's usage and remaining balance.",
     suggestions: ['How does the wallet work?', 'Tell me about referrals', 'What about clients?'],
   },
   {
-    keywords: ['wallet', 'gift card', 'gift cards', 'credits', 'loyalty', 'points', 'patient wallet'],
-    response: "Client Wallet tracks every client's stored value — gift card balances, loyalty points, membership credits, and prepaid packages. You can add or deduct manually, issue gift cards, and clients can see their balance in the client portal. It's like a personal account for each client.",
+    keywords: ['wallet', 'gift card', 'gift cards', 'credits', 'loyalty', 'points', 'client wallet'],
+    response: "Client Wallet tracks every client's stored value — gift card balances, loyalty points, membership credits, and prepaid class packs. You can add or deduct manually, issue gift cards, and clients can see their balance in the client portal. It's like a personal account for each client.",
     suggestions: ['How do memberships work?', 'Tell me about referrals', 'What about the client portal?'],
   },
   {
     keywords: ['referral', 'referrals', 'refer', 'refer a friend'],
-    response: "Referrals tracks your client-to-patient referral program. Each patient gets a unique referral link they can share (available in the client portal). When a referred friend books, both the referrer and the new patient can receive rewards — credits, discounts, whatever you configure. Word of mouth, tracked and rewarded!",
+    response: "Referrals tracks your client-to-client referral program. Each client gets a unique referral link they can share (available in the client portal). When a referred friend books, both the referrer and the new client can receive rewards — credits, discounts, whatever you configure. Word of mouth, tracked and rewarded!",
     suggestions: ['How does the wallet work?', 'What about the client portal?', 'Tell me about memberships'],
   },
   {
     keywords: ['report', 'reports', 'revenue', 'analytics', 'csv', 'export'],
-    response: "Reports gives you the business insights you need — revenue breakdowns, top services, provider performance, patient acquisition trends, and more. Every report can be filtered by date range and exported to CSV for your accountant or team meetings. Knowledge is power! 📈",
+    response: "Reports gives you the business insights you need — revenue breakdowns, top services, instructor performance, client acquisition trends, and more. Every report can be filtered by date range and exported to CSV for your accountant or team meetings. Knowledge is power! 📈",
     suggestions: ['Tell me about the dashboard', 'What about settings?', 'How do memberships work?'],
   },
   {
     keywords: ['setting', 'settings', 'business info', 'branding', 'payment', 'integration', 'configure'],
-    response: "Settings is where you configure everything — your business name, contact info, tagline, brand colors, payment processing, and integrations. This is also where you manage locations, providers, service menu, and more. If something looks off or you want to customize, Settings is the place to go.",
+    response: "Settings is where you configure everything — your business name, contact info, tagline, brand colors, payment processing, and integrations. This is also where you manage locations, instructors, service menu, and more. If something looks off or you want to customize, Settings is the place to go.",
     suggestions: ['How do I change brand colors?', 'Tell me about the dashboard', 'What about reports?'],
   },
   {
     keywords: ['check-in', 'check in', 'checkin', 'front desk', 'arrival', 'verification', 'pregnancy'],
-    response: "Check-In is your front desk flow. When a patient arrives, find their appointment and start the check-in process. It verifies their contact info, date of birth, allergies, medications, and includes a pregnancy screening question. Once checked in, the patient status updates across the system so providers know who's ready.",
+    response: "Check-In is your front desk flow. When a client arrives, find their appointment and start the check-in process. It verifies their contact info, date of birth, health notes, and any relevant screening questions. Once checked in, the client status updates across the system so instructors know who's ready.",
     suggestions: ['How does the schedule work?', 'Tell me about waivers', 'What about clients?'],
   },
   {
     keywords: ['portal', 'client portal', 'self-service'],
-    response: "The Client Portal lives at /portal and gives your clients self-service access. They can view upcoming appointments, see their wallet balance, check membership status, access recovery tips instructions, sign waivers, and share referral links. It's branded to match your studio's look and feel.",
+    response: "The Client Portal lives at /portal and gives your clients self-service access. They can view upcoming appointments, see their wallet balance, check membership status, access post-session care instructions, sign waivers, and share referral links. It's branded to match your studio's look and feel.",
     suggestions: ['How does online booking work?', 'Tell me about referrals', 'What about waivers?'],
   },
   {
     keywords: ['book online', 'online booking', 'public booking', 'booking page'],
-    response: "Your public booking page at /book lets new and existing clients schedule appointments online. They can browse your service menu, pick a provider and time, and confirm their booking. It's fully branded and mobile-friendly — perfect for linking from your website, Instagram, or Google listing.",
+    response: "Your public booking page at /book lets new and existing clients schedule appointments online. They can browse your service menu, pick an instructor and time, and confirm their booking. It's fully branded and mobile-friendly — perfect for linking from your website, Instagram, or Google listing.",
     suggestions: ['What about the client portal?', 'Tell me about the schedule', 'How does check-in work?'],
   },
   {
@@ -133,7 +133,7 @@ const KNOWLEDGE = [
     keywords: ['help', 'what can you do', 'topics', 'menu'],
     response: [
       "I can help you with pretty much any feature on the platform! Here are some topics you can ask about:",
-      "📋 Dashboard, Patients, Schedule, Class Packages\n🏥 Progress Tracking, Photos, Waivers, Recovery Tips\n📦 Inventory, Retention, Waitlist, Reviews\n💬 DM Inbox, Email, Text Messages, Social Media\n💳 Memberships, Wallet & Gift Cards, Referrals\n📊 Reports, Settings, Check-In, Client Portal\n🎨 Branding & Colors, Online Booking",
+      "📋 Dashboard, Clients, Schedule, Class Packages\n🏃 Progress Tracking, Photos, Waivers, Recovery Tips\n📦 Inventory, Retention, Waitlist, Reviews\n💬 DM Inbox, Email, Text Messages, Social Media\n💳 Memberships, Wallet & Gift Cards, Referrals\n📊 Reports, Settings, Check-In, Client Portal\n🎨 Branding & Colors, Online Booking",
       "Just ask about any of those and I'll walk you through it!"
     ],
     suggestions: ['How does the dashboard work?', 'Tell me about clients', 'What about memberships?'],
@@ -145,7 +145,7 @@ const KNOWLEDGE = [
   },
   {
     keywords: ['how much', 'per month', 'monthly'],
-    response: "The platform is $1,500/month — that includes everything you see here: scheduling, charting, marketing tools, client portal, online booking, memberships, the whole suite. No hidden fees, no per-user charges. One price, full platform.",
+    response: "The platform is $1,500/month — that includes everything you see here: scheduling, progress tracking, marketing tools, client portal, online booking, memberships, the whole suite. No hidden fees, no per-user charges. One price, full platform.",
     suggestions: ['Tell me about settings', 'What can you help with?', 'How does the dashboard work?'],
   },
 ];

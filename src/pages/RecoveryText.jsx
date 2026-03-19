@@ -244,7 +244,7 @@ export default function RecoveryText() {
           Post-Class Recovery SMS
         </h1>
         <p style={{ color: s.text2, fontSize: 15, margin: 0 }}>
-          Personalized movement tips land in clients' phones 20 minutes after they leave class. Kelly's brand touchpoint, automated.
+          Personalized movement tips land in clients' phones 20 minutes after they leave class. Alex's brand touchpoint, automated.
         </p>
       </div>
 
@@ -443,7 +443,7 @@ export default function RecoveryText() {
             {[
               { label: 'Account SID', placeholder: 'ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
               { label: 'Auth Token', placeholder: '••••••••••••••••••••••••••••••••' },
-              { label: 'From Number', placeholder: '+1 (480) 555-0100' },
+              { label: 'From Number', placeholder: '+1 (555) 555-0100' },
             ].map((field) => (
               <div key={field.label}>
                 <div style={{ fontSize: 12, fontWeight: 600, color: s.text2, marginBottom: 4 }}>{field.label}</div>

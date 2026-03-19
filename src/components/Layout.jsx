@@ -226,6 +226,7 @@ export default function Layout({ children }) {
       display: 'flex', flexDirection: 'column',
       transition: 'all 0.3s ease',
       zIndex: mobile ? 200 : 100,
+      paddingTop: 'env(safe-area-inset-top)',
       paddingLeft: 'env(safe-area-inset-left)',
       paddingBottom: 'env(safe-area-inset-bottom)',
       ...(mobile ? { boxShadow: '4px 0 24px rgba(0,0,0,0.2)' } : {}),
@@ -339,7 +340,7 @@ export default function Layout({ children }) {
           background: 'rgba(245,243,240,0.6)',
           backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
           borderBottom: '1px solid rgba(0,0,0,0.04)',
-          padding: '0 32px', height: 56,
+          padding: '0 32px', minHeight: 56,
           paddingTop: 'env(safe-area-inset-top)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }} className="layout-topbar">
@@ -408,7 +409,8 @@ export default function Layout({ children }) {
           }
           .layout-topbar {
             padding: 0 10px !important;
-            height: 46px !important;
+            min-height: 46px !important;
+            height: auto !important;
           }
           .mobile-menu-btn {
             flex-shrink: 0 !important;

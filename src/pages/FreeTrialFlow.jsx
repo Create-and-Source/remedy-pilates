@@ -41,29 +41,29 @@ const s = {
 // ─── Static Data ──────────────────────────────────────────────────────────────
 const LOCATIONS = [
   {
-    id: "scottsdale",
-    name: "Scottsdale",
-    address: "7014 E Camelback Rd, Suite 1234",
-    city: "Scottsdale, AZ 85251",
-    phone: "(480) 555-0101",
+    id: "downtown",
+    name: "Downtown Studio",
+    address: "123 Main St, Suite 100",
+    city: "Downtown",
+    phone: "(555) 555-0101",
     parking: "Free parking in rear lot",
     icon: "🌵",
   },
   {
-    id: "arcadia",
-    name: "Arcadia",
-    address: "3508 E Indian School Rd",
-    city: "Phoenix, AZ 85018",
-    phone: "(480) 555-0102",
+    id: "westside",
+    name: "Westside Studio",
+    address: "456 West Ave, Suite 200",
+    city: "Westside",
+    phone: "(555) 555-0102",
     parking: "Street parking available",
     icon: "🌴",
   },
   {
-    id: "north-central",
-    name: "North Central",
-    address: "5025 N Central Ave",
-    city: "Phoenix, AZ 85012",
-    phone: "(480) 555-0103",
+    id: "north",
+    name: "North Studio",
+    address: "789 North Blvd, Suite 120",
+    city: "North",
+    phone: "(555) 555-0103",
     parking: "Garage parking, Level 2",
     icon: "🏙️",
   },
@@ -117,31 +117,31 @@ const CLASSES = [
 ];
 
 const TIME_SLOTS = [
-  { id: "mon-6am",  day: "Mon", date: "Mar 24", time: "6:00 AM",  instructor: "Kelly S.",    spots: 3, almostFull: true,  lastSpot: false },
-  { id: "mon-930", day: "Mon", date: "Mar 24", time: "9:30 AM",  instructor: "Megan T.",    spots: 5, almostFull: false, lastSpot: false },
-  { id: "tue-12pm", day: "Tue", date: "Mar 25", time: "12:00 PM", instructor: "Rachel K.",   spots: 8, almostFull: false, lastSpot: false },
-  { id: "wed-530", day: "Wed", date: "Mar 26", time: "5:30 PM",  instructor: "Danielle P.", spots: 2, almostFull: true,  lastSpot: false },
-  { id: "thu-7am",  day: "Thu", date: "Mar 27", time: "7:00 AM",  instructor: "Ava M.",      spots: 6, almostFull: false, lastSpot: false },
-  { id: "sat-8am",  day: "Sat", date: "Mar 29", time: "8:00 AM",  instructor: "Kelly S.",    spots: 1, almostFull: false, lastSpot: true  },
+  { id: "mon-6am",  day: "Mon", date: "Mar 24", time: "6:00 AM",  instructor: "Alex M.",    spots: 3, almostFull: true,  lastSpot: false },
+  { id: "mon-930", day: "Mon", date: "Mar 24", time: "9:30 AM",  instructor: "Sam R.",      spots: 5, almostFull: false, lastSpot: false },
+  { id: "tue-12pm", day: "Tue", date: "Mar 25", time: "12:00 PM", instructor: "Riley K.",   spots: 8, almostFull: false, lastSpot: false },
+  { id: "wed-530", day: "Wed", date: "Mar 26", time: "5:30 PM",  instructor: "Jordan C.",   spots: 2, almostFull: true,  lastSpot: false },
+  { id: "thu-7am",  day: "Thu", date: "Mar 27", time: "7:00 AM",  instructor: "Casey W.",    spots: 6, almostFull: false, lastSpot: false },
+  { id: "sat-8am",  day: "Sat", date: "Mar 29", time: "8:00 AM",  instructor: "Alex M.",    spots: 1, almostFull: false, lastSpot: true  },
 ];
 
 const TESTIMONIALS = [
   {
     quote: "I was terrified to try my first class — I had zero Pilates experience. Pilates Studio made me feel completely at home from the second I walked in.",
     name: "Sarah M.",
-    location: "Scottsdale",
+    location: "Downtown Studio",
     months: "Member for 8 months",
   },
   {
     quote: "The instructors remember your name, your goals, your injuries. It feels like a community, not just a gym.",
     name: "Priya L.",
-    location: "Arcadia",
+    location: "Westside Studio",
     months: "Member for 14 months",
   },
   {
     quote: "I went for the free class and never left. That was two years ago. Best decision I've made for my body.",
     name: "Jordan T.",
-    location: "North Central",
+    location: "North Studio",
     months: "Member for 2 years",
   },
 ];
@@ -188,7 +188,7 @@ function TopNav() {
           flexShrink: 0,
         }}
       >
-        R
+        P
       </a>
       <span style={{ fontFamily: FONT, fontWeight: 600, fontSize: 15, color: "#2D2320", letterSpacing: "-0.01em" }}>
         Pilates &amp; Barre
@@ -706,7 +706,7 @@ function StepIntake({ form, setForm }) {
           <input
             style={inputStyle}
             type="tel"
-            placeholder="(480) 555-0000"
+            placeholder="(555) 555-0000"
             value={form.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
           />

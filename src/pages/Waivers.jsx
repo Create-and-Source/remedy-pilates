@@ -95,36 +95,41 @@ _______________________________________________
 SUPPLEMENTS / VITAMINS
 _______________________________________________
 
-ALLERGIES (medications, latex, adhesives, metals, topicals)
+ALLERGIES (medications, latex, topicals, materials)
 _______________________________________________
 
-PREVIOUS COSMETIC PROCEDURES
-_______________________________________________
+PREVIOUS INJURIES OR SURGERIES
+Injury/Surgery: _________________________  Year: ______  Currently affecting me? [ ] Yes [ ] No
+Injury/Surgery: _________________________  Year: ______  Currently affecting me? [ ] Yes [ ] No
+
+CURRENT PHYSICAL ACTIVITY LEVEL
+[ ] Sedentary (little to no regular exercise)
+[ ] Lightly active (1-2 days/week)
+[ ] Moderately active (3-4 days/week)
+[ ] Very active (5+ days/week)
+
+FITNESS GOALS
 _______________________________________________
 
 WOMEN ONLY
 Are you pregnant or possibly pregnant? [ ] Yes [ ] No
 Are you currently breastfeeding? [ ] Yes [ ] No
-Are you taking birth control? [ ] Yes [ ] No
+Have you given birth within the last 6 months? [ ] Yes [ ] No
 
-SKIN HISTORY
-Do you have a history of cold sores / herpes simplex? [ ] Yes [ ] No
-Do you use retinoids (Retin-A, tretinoin, Accutane)? [ ] Yes [ ] No
-Have you had a chemical peel or laser session in the last 6 months? [ ] Yes [ ] No
-Do you tan or use tanning beds? [ ] Yes [ ] No
-Do you use blood thinners (aspirin, ibuprofen, fish oil, vitamin E)? [ ] Yes [ ] No
+JOINT AND PHYSICAL HISTORY
+Do you have chronic pain in any joints? [ ] Yes [ ] No  Location: _______________
+Do you have any diagnosed spinal conditions (disc herniation, scoliosis, stenosis)? [ ] Yes [ ] No
+Have you been advised to avoid certain exercises by a physician or physical therapist? [ ] Yes [ ] No
+Do you experience dizziness, shortness of breath, or chest pain during exercise? [ ] Yes [ ] No
+Do you have any balance or coordination concerns? [ ] Yes [ ] No
 
-DEVICES
-Do you have a pacemaker or defibrillator? [ ] Yes [ ] No
-Do you have any metal implants? [ ] Yes [ ] No
-
-I certify that the above information is true, accurate, and complete to the best of my knowledge. I will inform [Business Name] of any changes to my medical history.
+I certify that the above information is true, accurate, and complete to the best of my knowledge. I will inform [Business Name] of any changes to my health status.
 
 Patient Signature: _________________________
 Date: ____________` },
 
   // ═══ CLASS & TRAINING WAIVERS ═══
-  { id: 'botox', name: 'Reformer Class Waiver', category: 'Equipment', content: `REFORMER PILATES CLASS — PARTICIPATION WAIVER AND RELEASE
+  { id: 'reformer', name: 'Reformer Class Waiver', category: 'Equipment', content: `REFORMER PILATES CLASS — PARTICIPATION WAIVER AND RELEASE
 
 I, [Client Name], wish to participate in Reformer Pilates classes at [Business Name].
 
@@ -158,7 +163,7 @@ Client Signature: _________________________
 Date: ____________
 Instructor/Witness: _________________________` },
 
-  { id: 'filler', name: 'Barre Class Waiver', category: 'Equipment', content: `BARRE CLASS — PARTICIPATION WAIVER AND RELEASE
+  { id: 'barre', name: 'Barre Class Waiver', category: 'Equipment', content: `BARRE CLASS — PARTICIPATION WAIVER AND RELEASE
 
 I, [Client Name], wish to participate in Barre classes at [Business Name].
 
@@ -190,7 +195,7 @@ Client Signature: _________________________
 Date: ____________
 Instructor/Witness: _________________________` },
 
-  { id: 'sculptra', name: 'Private Training Waiver', category: 'Equipment', content: `PRIVATE TRAINING SESSION — PARTICIPATION WAIVER AND RELEASE
+  { id: 'private-session', name: 'Private Training Waiver', category: 'Equipment', content: `PRIVATE TRAINING SESSION — PARTICIPATION WAIVER AND RELEASE
 
 I, [Client Name], wish to participate in private one-on-one training sessions at [Business Name].
 
@@ -221,325 +226,294 @@ Client Signature: _________________________
 Date: ____________
 Instructor: _________________________` },
 
-  // ═══ SKIN TREATMENT CONSENTS ═══
-  { id: 'microneedling', name: 'Private Session / RF Consent', category: 'Skin', content: `INFORMED CONSENT FOR MICRONEEDLING / RF MICRONEEDLING
-(Morpheus8 / SkinPen / Potenza / Vivace)
+  // ═══ SPECIALTY CLASS WAIVERS ═══
+  { id: 'mat-pilates', name: 'Mat Pilates Class Waiver', category: 'Class', content: `MAT PILATES CLASS — PARTICIPATION WAIVER AND RELEASE
 
-DESCRIPTION: Private Session creates controlled micro-injuries to stimulate collagen production and skin renewal. RF (radiofrequency) microneedling adds heat energy for deeper remodeling. Treats fine lines, acne scars, pore size, texture, and skin laxity.
+I, [Client Name], wish to participate in Mat Pilates classes at [Business Name].
 
-EXPECTED RESULTS:
-- Mild improvement after 1 session; optimal results after 3-4 sessions
-- Sessions spaced 4-6 weeks apart
-- Continued improvement for 3-6 months after final session
-- Annual maintenance recommended
+NATURE OF ACTIVITY: Mat Pilates classes involve a series of controlled movements performed on a floor mat. Classes focus on core strength, spinal alignment, flexibility, and mind-body connection. No equipment beyond a mat is required, though props such as resistance bands, small balls, and foam rollers may be used.
 
-RISKS AND SIDE EFFECTS:
-- Redness (like a sunburn) lasting 24-72 hours
-- Swelling, particularly around eyes and forehead (24-48 hours)
-- Pinpoint bleeding during session
-- Skin dryness, flaking, or peeling for 3-7 days
-- Temporary skin sensitivity
-- Bruising
-- Post-inflammatory hyperpigmentation (higher risk in darker skin tones)
-- Infection (rare)
-- Scarring (rare)
-- Burns (RF microneedling — rare)
-- Herpes simplex outbreak if history of cold sores
+PHYSICAL DEMANDS: I understand that Mat Pilates may require:
+- Core engagement throughout the duration of class
+- Spinal flexion, extension, and rotation movements
+- Hip flexor and hamstring flexibility work
+- Upper body weight-bearing in positions such as plank and side-lying
+- Balance challenges
 
-CONTRAINDICATIONS:
-- Active acne, eczema, psoriasis, or rosacea flare at session site
-- Open wounds or active skin infection
-- Accutane use within the last 6 months
-- Pregnancy or breastfeeding
-- Active cold sore outbreak
-- Blood clotting disorders or anticoagulant therapy
-- Skin cancer at session site
-- Pacemaker or metal implants in session area (RF only)
-- Keloid tendency
+RISKS: I understand the following risks associated with Mat Pilates:
+- Muscle soreness, particularly in the core, hip flexors, and lower back
+- Neck strain if head and shoulder lifts are performed with improper form
+- Lower back discomfort if neutral spine alignment is not maintained
+- Wrist strain in weight-bearing positions
+- Aggravation of pre-existing conditions if not modified appropriately
 
-PRE-TREATMENT:
-- Discontinue retinoids 5-7 days prior
-- Discontinue exfoliating acids (AHA/BHA) 3 days prior
-- No sun exposure or tanning for 2 weeks prior
-- Take antiviral medication if prescribed (cold sore history)
-- Arrive with clean skin, no makeup
+MODIFICATIONS AND DISCLOSURE: I agree to:
+- Inform my instructor of any injuries, surgeries, or physical limitations before class
+- Use props and modifications as directed by my instructor
+- Avoid any movement that causes sharp pain or joint discomfort
+- Ask for modification rather than pushing through pain
 
-POST-TREATMENT:
-- Redness and swelling are NORMAL for 24-72 hours
-- Use only gentle cleanser and hyaluronic acid serum for 48 hours
-- Apply SPF 30+ daily — your skin is extra sensitive to UV
-- Avoid makeup for 24 hours
-- Avoid retinoids and active ingredients for 5-7 days
-- Avoid sun exposure, swimming, saunas for 1 week
-- Do NOT pick at flaking skin
+HEALTH DISCLOSURE: I confirm I have consulted a physician if I have any cardiovascular conditions, recent surgeries, pregnancy, spinal conditions, or other circumstances that may affect my ability to safely participate.
 
-Patient Signature: _________________________
-Date: ____________` },
+I voluntarily assume all risks associated with participation in Mat Pilates classes and release [Business Name] and its instructors from liability for injury arising from my participation.
 
-  { id: 'laser', name: 'Laser / TRX Consent', category: 'Laser', content: `INFORMED CONSENT FOR LASER AND INTENSE PULSED LIGHT (TRX) TREATMENT
-
-DESCRIPTION: Laser and TRX sessions use focused light energy to target specific skin concerns including sun damage, pigmentation, redness, broken capillaries, hair removal, skin resurfacing, and tattoo removal.
-
-TREATMENT TYPE (provider will check):
-[ ] TRX Photofacial          [ ] Laser Hair Removal
-[ ] Fractional Laser Resurfacing  [ ] Vascular Laser
-[ ] Tattoo Removal           [ ] Other: _______________
-
-RISKS AND SIDE EFFECTS:
-- Redness, swelling, and warmth (like a sunburn) — 1-7 days
-- Crusting, scabbing, or blistering
-- Temporary darkening (hyperpigmentation) or lightening (hypopigmentation) of skin
-- Permanent pigment changes (rare, higher risk in darker skin tones)
-- Burns
-- Scarring (rare)
-- Eye injury if protective eyewear is removed during session
-- Infection
-- Incomplete results — multiple sessions usually required
-- Reactivation of herpes simplex (cold sores)
-- Paradoxical hair growth (laser hair removal — rare)
-
-CONTRAINDICATIONS:
-- Pregnancy or breastfeeding
-- Active tan or sunburn (session must be postponed)
-- Use of photosensitizing medications (certain antibiotics, retinoids)
-- Accutane use within the last 6 months
-- Active skin infection or open wounds
-- History of keloid scarring
-- Seizure disorders triggered by light
-- Gold thread implants
-
-PRE-TREATMENT REQUIREMENTS:
-- NO sun exposure or tanning for 2 weeks before AND after session
-- Discontinue retinoids 5-7 days prior
-- No self-tanner on session area (must be fully faded)
-- Shave session area 24 hours prior (laser hair removal)
-- Remove all makeup, lotions, and deodorant from session area
-- Take antiviral medication if prescribed
-
-POST-TREATMENT:
-- Apply cool compresses as needed
-- Use gentle cleanser and moisturizer only
-- SPF 30+ daily (reapply every 2 hours if outdoors)
-- Avoid picking at crusts or dark spots — they will flake off naturally
-- Avoid swimming pools, hot tubs, and saunas for 1 week
-- Avoid strenuous exercise for 48 hours
-
-I confirm I have NOT used Accutane in the last 6 months.
-I confirm I do NOT have an active tan.
-
-Patient Signature: _________________________
+Client Signature: _________________________
 Date: ____________
-Provider: _________________________` },
+Instructor/Witness: _________________________` },
 
-  { id: 'chemical-peel', name: 'Chemical Peel Consent', category: 'Skin', content: `INFORMED CONSENT FOR CHEMICAL PEEL
+  { id: 'private', name: 'Barre Class Waiver', category: 'Class', content: `BARRE CLASS — PARTICIPATION WAIVER AND RELEASE
 
-DESCRIPTION: A chemical peel uses a controlled application of acid solution to remove damaged outer layers of skin, revealing smoother, more even-toned skin beneath. Peels range from superficial (lunchtime peels) to deep.
+I, [Client Name], wish to participate in Barre fitness classes at [Business Name].
 
-PEEL TYPE (provider will note):
-[ ] Superficial (glycolic, lactic, salicylic)
-[ ] Medium (TCA 15-35%)
-[ ] Deep (TCA 50%+, phenol)
+NATURE OF ACTIVITY: Barre classes combine elements of ballet, Pilates, and functional fitness using a ballet barre, light handheld weights, resistance bands, and bodyweight exercises. Classes involve high-repetition, small-range movements targeting specific muscle groups, particularly the thighs, glutes, core, and upper body.
 
-RISKS AND SIDE EFFECTS:
-- Redness, stinging, and warmth during and after application
-- Peeling, flaking, and dryness for 3-10 days (varies by depth)
-- Temporary darkening of skin before peeling
-- Post-inflammatory hyperpigmentation (especially in darker skin tones)
-- Hypopigmentation (lightening)
-- Prolonged redness
-- Infection
-- Scarring (rare, more common with deeper peels)
-- Cold sore reactivation
-- Allergic reaction
-- Sun sensitivity for 2-4 weeks
+ACKNOWLEDGMENT OF PHYSICAL EXERTION: I understand that Barre classes require sustained physical effort and may result in:
+- Significant muscle fatigue and soreness, particularly in thighs, glutes, and core
+- Temporary muscle shaking ("the Barre shake") — this is normal and expected
+- Delayed onset muscle soreness (DOMS) 24-72 hours after class
+- Elevated heart rate and cardiovascular exertion
 
-CONTRAINDICATIONS:
-- Pregnancy or breastfeeding
-- Active cold sore outbreak
-- Open wounds, sunburn, or active skin condition at site
-- Accutane use within 6 months (superficial) or 12 months (medium/deep)
-- Recent waxing of session area (within 1 week)
-- Allergy to peel ingredients
+INJURY RISKS: I understand the following risks associated with Barre participation:
+- Muscle strains, particularly in the hip flexors, hamstrings, and calves
+- Knee discomfort from deep turnout, plié, or squat positions
+- Ankle and foot fatigue, especially during relevé work
+- Lower back discomfort if core engagement is insufficient
+- Wrist or shoulder strain during floor work or resistance band exercises
+- Overexertion if modifications are not used appropriately
 
-POST-TREATMENT:
-- DO NOT pick, peel, or scratch flaking skin
-- Use gentle cleanser, hydrating serum, and heavy moisturizer
-- SPF 50 daily — absolutely no sun exposure without protection
-- Avoid retinoids and exfoliants until peeling is complete
-- Avoid sweating/exercise for 24-48 hours
-- Avoid makeup until peeling subsides (typically 3-5 days)
+EQUIPMENT USE: I understand that Barre classes may utilize:
+- Ballet barre (wall-mounted or freestanding) for balance and support
+- Light handheld weights (typically 1–5 lbs)
+- Resistance bands or loops
+- Exercise ball or small props
+I agree to use all equipment as directed by the instructor and to notify the instructor of any discomfort with equipment use.
 
-Patient Signature: _________________________
-Date: ____________` },
+PROPER FORM AND SAFETY:
+- I agree to follow all instructor cues and accept offered modifications
+- I understand that maintaining proper form is essential to prevent injury
+- I will inform my instructor of any injuries, surgeries, or physical limitations before class
+- I will not attempt movements that cause sharp pain or joint discomfort
+- I will ask for modifications rather than forcing range of motion
 
-  // ═══ BODY / SURGICAL CONSENTS ═══
-  { id: 'pdo-threads', name: 'PDO Thread Lift Consent', category: 'Lifting', content: `INFORMED CONSENT FOR PDO (POLYDIOXANONE) THREAD LIFT
+FOOTWEAR: I understand that grip socks are required for all Barre classes. Bare feet are not permitted on the studio floor for safety reasons.
 
-DESCRIPTION: PDO thread lifts use dissolvable sutures inserted beneath the skin to lift sagging tissue and stimulate collagen production. Threads dissolve over 4-6 months; collagen-lifting effect lasts 12-18 months.
+HEALTH DISCLOSURE: I confirm I have consulted a physician if I have any cardiovascular conditions, recent surgeries, pregnancy, chronic joint conditions, or other circumstances that may affect my ability to safely participate.
 
-THREAD TYPES:
-- Smooth threads: Collagen stimulation, skin rejuvenation
-- Barbed/cog threads: Mechanical lifting of tissue
+I voluntarily assume all risks associated with participation in Barre classes and release [Business Name] and its instructors from liability for injury arising from my participation, provided that I have fully disclosed relevant health information.
 
-RISKS AND SIDE EFFECTS:
-- Bruising, swelling, and tenderness (7-14 days)
-- Temporary pulling, tugging, or tightness sensation
-- Dimpling or puckering of skin (usually temporary)
-- Asymmetry
-- Thread migration or protrusion through skin
-- Infection
-- Nerve damage (temporary numbness or tingling)
-- Visible threads beneath skin surface
-- Scarring
-- Need for thread removal
-- Allergic reaction (rare — PDO is the same material used in surgical sutures)
-
-CONTRAINDICATIONS:
-- Pregnancy or breastfeeding
-- Active skin infection
-- Autoimmune conditions
-- Blood clotting disorders
-- Tendency to form keloid scars
-- Current use of blood thinners (must discuss with provider)
-
-POST-TREATMENT:
-- Sleep on your back with head elevated for 1 week
-- Avoid extreme facial expressions for 2 weeks
-- No dental work for 2 weeks
-- Avoid strenuous exercise for 2 weeks
-- Do NOT massage face or apply pressure to treated areas
-- Avoid saunas and excessive heat for 2 weeks
-- Soft food diet for 1-2 days if jaw area was treated
-
-Patient Signature: _________________________
-Date: ____________` },
-
-  { id: 'body-contouring', name: 'Body Contouring Consent', category: 'Body', content: `INFORMED CONSENT FOR NON-SURGICAL BODY CONTOURING
-
-TREATMENT TYPE (provider will note):
-[ ] CoolSculpting / Cryolipolysis    [ ] Radiofrequency Body Tightening
-[ ] Laser Lipolysis                   [ ] Ultrasound Cavitation
-[ ] BodyTite / InMode                 [ ] Other: _______________
-
-DESCRIPTION: Non-surgical body contouring sessions reduce localized fat deposits and/or tighten skin using various energy-based technologies. These are NOT weight loss sessions — they are designed for clients at or near their goal weight with stubborn areas.
-
-RISKS AND SIDE EFFECTS:
-- Redness, swelling, bruising, tenderness at session site
-- Numbness or tingling (may last several weeks)
-- Temporary hardening, firmness, or ridging of session area
-- Skin sensitivity
-- Paradoxical adipose hyperplasia (PAH) — treated area gets larger instead of smaller (rare, CoolSculpting specific)
-- Burns (thermal sessions)
-- Uneven results or asymmetry
-- Multiple sessions typically required for optimal results
-
-IMPORTANT EXPECTATIONS:
-- Results are NOT immediate — fat cell elimination takes 8-12 weeks
-- You must maintain a stable weight and healthy lifestyle
-- This is NOT a substitute for diet, exercise, or liposuction
-- Typical fat reduction: 20-25% per session area per session
-
-Patient Signature: _________________________
-Date: ____________` },
-
-  // ═══ WELLNESS CONSENTS ═══
-  { id: 'weight-loss', name: 'Weight Loss / GLP-1 Consent', category: 'Wellness', content: `INFORMED CONSENT FOR MEDICAL WEIGHT LOSS PROGRAM
-(Semaglutide / Tirzepatide / Compounded GLP-1 Medications)
-
-DESCRIPTION: GLP-1 receptor agonist medications (semaglutide, tirzepatide) are injectable prescription medications that reduce appetite and slow gastric emptying. Originally developed for Type 2 diabetes, they are now FDA-approved (or used off-label) for chronic weight management.
-
-EXPECTED RESULTS:
-- Typical weight loss: 15-25% of body weight over 12-18 months
-- Dose is gradually increased over 8-16 weeks to minimize side effects
-- Weekly subcutaneous injection (self-administered at home)
-- Regular provider check-ins required
-
-COMMON SIDE EFFECTS (especially during dose escalation):
-- Nausea (most common — usually improves over time)
-- Vomiting, diarrhea, or constipation
-- Abdominal pain or bloating
-- Decreased appetite (this is expected/desired)
-- Headache, fatigue, dizziness
-- Injection site reactions
-
-SERIOUS RISKS (rare):
-- Pancreatitis (severe abdominal pain — seek emergency care)
-- Gallbladder disease / gallstones
-- Kidney injury
-- Hypoglycemia (especially if diabetic or on other diabetes medications)
-- Thyroid tumors including medullary thyroid carcinoma (seen in animal studies)
-- Suicidal ideation or changes in mood (report immediately)
-- Severe allergic reaction
-- Gastroparesis (delayed gastric emptying)
-- Muscle loss (protein intake and exercise are critical)
-
-CONTRAINDICATIONS:
-- Personal or family history of medullary thyroid carcinoma or MEN 2 syndrome
-- Pregnancy, breastfeeding, or planning pregnancy within 2 months of stopping
-- History of pancreatitis
-- Severe gastrointestinal disease
-- Type 1 diabetes
-
-PROGRAM REQUIREMENTS:
-- Monthly provider visits for monitoring and dose adjustment
-- Blood work as recommended (baseline and periodic)
-- Adequate protein intake (minimum 60-80g/day) to preserve muscle mass
-- Regular physical activity including resistance training
-- Discontinuation plan — this is not necessarily a lifetime medication
-
-I understand this is an ongoing medical program requiring regular monitoring.
-
-Patient Signature: _________________________
+Client Signature: _________________________
 Date: ____________
-Provider: _________________________` },
+Instructor/Witness: _________________________` },
 
-  { id: 'iv-therapy', name: 'IV Therapy Consent', category: 'Wellness', content: `INFORMED CONSENT FOR INTRAVENOUS (IV) NUTRIENT THERAPY
+  { id: 'group-fitness', name: 'Group Fitness Class Waiver', category: 'Class', content: `GROUP FITNESS CLASS — PARTICIPATION WAIVER AND RELEASE
 
-DESCRIPTION: IV therapy delivers vitamins, minerals, amino acids, and/or fluids directly into the bloodstream for maximum absorption. Common formulations include Myers' Cocktail, NAD+, glutathione, high-dose Vitamin C, and custom blends.
+I, [Client Name], wish to participate in group fitness classes at [Business Name].
 
-FORMULATION (provider will note): _______________
+CLASS TYPES COVERED BY THIS WAIVER:
+[ ] Mat Pilates          [ ] Barre
+[ ] Stretch & Recovery   [ ] Cardio Pilates
+[ ] Yoga Fusion          [ ] Other: _______________
 
-RISKS AND SIDE EFFECTS:
-- Pain, bruising, or swelling at the IV insertion site
-- Infiltration (fluid leaking into surrounding tissue)
-- Phlebitis (vein inflammation)
-- Infection at insertion site
-- Allergic reaction to IV components
-- Lightheadedness or dizziness
-- Nausea
-- Metallic taste in mouth (common with certain vitamins)
-- Headache
-- Vein irritation or hardening with repeated sessions
-- Air embolism (extremely rare)
-- Anaphylaxis (extremely rare)
+NATURE OF ACTIVITY: Group fitness classes involve structured physical exercise led by a certified instructor. Classes vary in intensity and format but all involve movement-based exercise designed to improve strength, flexibility, cardiovascular fitness, or body awareness.
 
-CONTRAINDICATIONS:
-- Kidney disease or renal insufficiency
-- Heart failure or fluid overload conditions
-- Known allergy to any IV components
-- Hemochromatosis (iron overload) — for iron-containing formulas
-- G6PD deficiency — for high-dose Vitamin C
+PHYSICAL RISKS: I understand that group fitness participation carries inherent risks, including but not limited to:
+- Muscle soreness, strains, or sprains
+- Joint discomfort or injury (shoulders, knees, hips, lower back)
+- Falls or loss of balance
+- Cardiovascular exertion
+- Overexertion if modifications are not used appropriately
+- Aggravation of pre-existing injuries or physical conditions
 
-I understand IV therapy is considered complementary/alternative and is not intended to diagnose, treat, or cure any disease.
+INSTRUCTOR GUIDANCE:
+- I agree to follow all instructor cues, corrections, and safety instructions
+- I will accept modifications offered by the instructor
+- I understand that attempting movements beyond my current ability increases injury risk
+- I will ask for modifications rather than forcing movements that cause pain
 
-Patient Signature: _________________________
-Date: ____________` },
+DISCLOSURE OF LIMITATIONS: I agree to inform the instructor before class of any:
+- Recent injuries, surgeries, or physical limitations
+- Pregnancy or postpartum status
+- Chronic pain or joint conditions
+- Medical conditions that may affect my ability to exercise safely
+
+I voluntarily assume all risks associated with participation and release [Business Name] and its instructors from liability for injury arising from my participation.
+
+Client Signature: _________________________
+Date: ____________
+Instructor/Witness: _________________________` },
+
+  // ═══ INDIVIDUAL & SPECIALTY WAIVERS ═══
+  { id: 'private-training', name: 'Private Training — Equipment Consent', category: 'Training', content: `PRIVATE TRAINING SESSION — EQUIPMENT USE AND INFORMED CONSENT WAIVER
+
+I, [Client Name], wish to participate in private one-on-one training sessions at [Business Name].
+
+NATURE OF ACTIVITY: Private training sessions provide individualized instruction in Pilates and/or movement-based fitness. Sessions are customized to the client's specific goals, current fitness level, injury history, and physical limitations.
+
+EQUIPMENT USED IN PRIVATE SESSIONS: Private sessions may utilize any combination of the following equipment:
+- Pilates Reformer (spring-resistance sliding carriage machine)
+- Cadillac / Tower (vertical frame with springs, bars, and straps)
+- Wunda Chair (spring-loaded pedal resistance device)
+- Stability ball, foam roller, resistance bands, and small props
+- Bodyweight and mat-based exercises
+
+I agree to receive instruction on proper equipment use before beginning any exercise and to ask questions when I am unsure of proper form or setup.
+
+RISKS OF ONE-ON-ONE TRAINING: I understand that private training may involve:
+- Progressive physical challenge designed to build strength, flexibility, and body awareness
+- Hands-on instructor cueing and tactile corrections (with my verbal consent prior to each session)
+- Higher-intensity or more technically demanding work than group classes
+- Muscle fatigue, soreness, or exertion beyond my current conditioning level
+
+PERSONALIZED PROGRAMMING AND INJURY DISCLOSURE:
+- I agree to provide complete and honest information about my physical history, including past injuries, surgeries, chronic pain, joint conditions, and medical diagnoses
+- I understand that withholding relevant health information may result in programming that is inappropriate for my condition
+- I agree to communicate openly during all sessions if any exercise causes sharp pain, joint discomfort, dizziness, or concern
+- I will not attempt exercises discussed or described outside our sessions without prior instructor approval
+
+PROGRESSION:
+- I understand that my program will be progressively adjusted as I develop strength and skill
+- I agree to respect my instructor's guidance regarding readiness to advance to more challenging exercises or equipment configurations
+
+CANCELLATION: I understand the studio's cancellation policy and agree that private sessions cancelled with less than 24 hours notice may be subject to a cancellation fee.
+
+I voluntarily assume all risks associated with participation and release [Business Name] and its instructors from liability for injury arising from my participation, provided sessions are conducted in accordance with my fully disclosed health information.
+
+Client Signature: _________________________
+Date: ____________
+Instructor: _________________________` },
+
+  { id: 'stretch-recovery', name: 'Stretch & Recovery Waiver', category: 'Recovery', content: `STRETCH & RECOVERY SESSION — PARTICIPATION WAIVER AND RELEASE
+
+I, [Client Name], wish to participate in Stretch & Recovery sessions at [Business Name].
+
+NATURE OF ACTIVITY: Stretch & Recovery sessions are guided flexibility and recovery-focused sessions that may include assisted stretching, self-guided foam rolling, mobility exercises, and relaxation techniques. These sessions are designed to improve range of motion, reduce muscle tension, and support recovery from physical activity.
+
+SESSION ELEMENTS: Stretch & Recovery sessions may include any combination of:
+- Assisted static and dynamic stretching (instructor-guided, hands-on assistance with prior consent)
+- Foam rolling and self-myofascial release techniques
+- Mobility drills using resistance bands, blocks, or bolsters
+- Guided breathwork and relaxation techniques
+- Flexibility assessment and progress tracking
+
+PHYSICAL RISKS: I understand that stretching and flexibility work carries the following potential risks:
+- Temporary muscle discomfort or soreness following deep stretching
+- Overstretching or strain if range of motion is pushed beyond current limits
+- Joint discomfort, particularly in the hips, shoulders, hamstrings, or lower back
+- Nerve sensitivity or temporary tingling during deep hip or posterior chain stretches
+- Aggravation of pre-existing muscle tightness or joint conditions if contraindications are not disclosed
+
+CONTRAINDICATIONS AND HEALTH DISCLOSURE: I understand that Stretch & Recovery sessions may not be appropriate if I have:
+- Acute muscle tears, sprains, or strains (must be cleared by a physician)
+- Recent surgery or joint replacement (must provide medical clearance)
+- Osteoporosis or bone density conditions that increase fracture risk
+- Hypermobility syndrome or Ehlers-Danlos Syndrome (modifications required)
+- Active inflammation or flare-up of a joint condition
+- Numbness, tingling, or nerve-related symptoms in any limb
+I agree to disclose all relevant conditions before my session and to update my instructor of any changes to my health status.
+
+ASSISTED STRETCHING CONSENT: I understand that assisted stretching involves my instructor applying gentle pressure to guide my body through a stretch. I consent to hands-on assistance and agree to communicate immediately if any stretch causes sharp pain, joint discomfort, or numbness. My instructor will stop and modify at my request at any time.
+
+FOAM ROLLING GUIDANCE: I understand that foam rolling is a self-applied technique and that I am responsible for controlling the pressure and duration applied to any given area. My instructor will provide guidance, but I acknowledge that excessive pressure may cause temporary bruising or discomfort.
+
+I voluntarily assume all risks associated with participation in Stretch & Recovery sessions and release [Business Name] and its instructors from liability for injury arising from my participation, provided that I have fully disclosed relevant health and physical information.
+
+Client Signature: _________________________
+Date: ____________
+Instructor/Witness: _________________________` },
+
+  // ═══ WELLNESS & PROGRAM WAIVERS ═══
+  { id: 'foundations-program', name: 'Pilates Foundations Program Waiver', category: 'Program', content: `PILATES FOUNDATIONS PROGRAM — PARTICIPATION WAIVER AND RELEASE
+
+I, [Client Name], wish to enroll in the Pilates Foundations Program at [Business Name].
+
+PROGRAM DESCRIPTION: The Pilates Foundations Program is a structured multi-week introduction to Pilates principles and practice. The program includes a combination of mat work, introductory reformer instruction, and movement education. Sessions are designed for those new to Pilates or returning after a long break.
+
+PROGRAM SCHEDULE:
+Program length: _______ weeks
+Session frequency: _______ sessions per week
+Instructor assigned: _______________________________
+
+PHYSICAL DEMANDS: I understand the program will progressively build:
+- Core strength and stability
+- Spinal mobility and flexibility
+- Body awareness and movement efficiency
+- Breathing coordination with movement
+
+RISKS: I understand that participation in a progressive Pilates program carries the following potential risks:
+- Muscle soreness, particularly in early weeks as new movement patterns are introduced
+- Temporary joint discomfort if movements are performed with improper alignment
+- Fatigue or overexertion if session frequency or intensity is increased too quickly
+- Aggravation of pre-existing conditions if not properly disclosed and accommodated
+
+PROGRAM PARTICIPATION EXPECTATIONS:
+- I agree to attend sessions consistently and complete the full program for best results
+- I understand that individual results vary based on consistency, effort, and starting fitness level
+- I agree to communicate openly with my instructor about any discomfort, concerns, or life changes that may affect my participation
+- I understand that if I miss sessions, I may need to reschedule to maintain program continuity
+
+HEALTH DISCLOSURE: I confirm that I have fully disclosed all relevant injuries, surgeries, and health conditions on my intake form. I will notify my instructor immediately of any changes to my health status during the program.
+
+I voluntarily assume all risks associated with participation and release [Business Name] and its instructors from liability for injury arising from my participation.
+
+Client Signature: _________________________
+Date: ____________
+Instructor: _________________________` },
+
+  { id: 'prenatal', name: 'Prenatal Pilates Waiver', category: 'Specialty', content: `PRENATAL PILATES — PARTICIPATION WAIVER AND INFORMED CONSENT
+
+I, [Client Name], wish to participate in Prenatal Pilates sessions at [Business Name].
+
+NATURE OF ACTIVITY: Prenatal Pilates is a modified Pilates practice specifically designed for pregnant clients. Sessions focus on maintaining core and pelvic floor strength, improving posture, reducing pregnancy-related discomfort, and preparing the body for labor and postpartum recovery. All exercises are adapted for pregnancy safety.
+
+PHYSICIAN CLEARANCE: I confirm that I have received clearance from my obstetrician, midwife, or healthcare provider to participate in prenatal exercise. I understand that clearance should be re-confirmed if any complications arise during my pregnancy.
+
+Attending Provider: _________________________
+Estimated Due Date: _________________________
+Current Week of Pregnancy: _________
+
+PREGNANCY-SPECIFIC RISKS: I understand that even with modifications, prenatal exercise carries the following considerations:
+- Pelvic girdle pain or symphysis pubis dysfunction can be aggravated by certain movements
+- Round ligament discomfort during transitions or lateral movements
+- Diastasis recti (abdominal separation) risk if inappropriate loading is applied
+- Balance challenges increase as pregnancy progresses and center of gravity shifts
+- Overheating is a concern — I will stay hydrated and rest when needed
+
+MOVEMENTS I WILL AVOID (per prenatal guidelines):
+- Lying flat on my back for extended periods after the first trimester
+- Deep twisting or compressive movements
+- High-impact or jumping movements
+- Heavy abdominal loading or traditional crunches
+- Any movement that causes pain, pressure, or shortness of breath
+
+STOP SIGNS: I agree to stop exercising immediately and contact my healthcare provider if I experience:
+- Vaginal bleeding or fluid leakage
+- Chest pain or difficulty breathing beyond normal exertion
+- Dizziness, faintness, or severe headache
+- Painful uterine contractions
+- Decreased fetal movement
+- Calf pain or swelling
+
+I voluntarily assume all risks associated with prenatal Pilates participation and release [Business Name] and its instructors from liability for injury arising from my participation, provided I have disclosed my pregnancy status and all relevant health information.
+
+Client Signature: _________________________
+Date: ____________
+Instructor: _________________________` },
 
   // ═══ OPTIONAL / POLICY CONSENTS ═══
-  { id: 'photo', name: 'Photo / Marketing Consent', category: 'Optional', content: `CONSENT FOR CLINICAL PHOTOGRAPHY AND MARKETING USE
+  { id: 'photo', name: 'Photo / Marketing Consent', category: 'Optional', content: `CONSENT FOR PHOTOGRAPHY AND MARKETING USE
 
 [Business Name] — Photo Release and Usage Authorization
 
-SECTION 1: CLINICAL PHOTOGRAPHY
-I authorize [Business Name] and its providers to take before, during, and after photographs and/or videos of my session for inclusion in my confidential medical record.
+SECTION 1: SESSION PHOTOGRAPHY
+I authorize [Business Name] and its instructors to take before, during, and after photographs and/or videos of my sessions for use in client progress tracking and my personal client file.
 
-[ ] I CONSENT to clinical photography for my medical record
+[ ] I CONSENT to session photography for my client file
 
 SECTION 2: MARKETING AND EDUCATIONAL USE
 I understand that [Business Name] may wish to use my photographs for educational, marketing, or promotional purposes including but not limited to: social media (Instagram, Facebook, TikTok), website, print materials, presentations, and advertising.
 
 Please select ONE:
-[ ] OPTION A — NO marketing use. Photos are for my medical record ONLY.
+[ ] OPTION A — NO marketing use. Photos are for my client file ONLY.
 [ ] OPTION B — ANONYMOUS use only. Photos may be used but my face will be cropped or obscured so I am NOT identifiable.
 [ ] OPTION C — IDENTIFIABLE use. Photos may be used with my face visible. [Business Name] may tag me on social media with my permission.
 
@@ -548,9 +522,9 @@ SECTION 3: TERMS
 - I may revoke this consent at any time by submitting a written request
 - Revoking consent does not apply to materials already published or distributed
 - [Business Name] will make reasonable efforts to remove content upon revocation
-- My decision regarding marketing use will NOT affect the quality of care I receive
+- My decision regarding marketing use will NOT affect the quality of instruction I receive
 
-Patient Signature: _________________________
+Client Signature: _________________________
 Date: ____________
 Witness: _________________________` },
 
@@ -563,7 +537,7 @@ We value your time and ours. To ensure all clients receive timely care, we maint
 CANCELLATION POLICY:
 - Appointments must be cancelled or rescheduled at least 24 hours in advance
 - Cancellations with less than 24 hours notice will incur a late cancellation fee equal to 50% of the scheduled service cost
-- Some premium sessions (threads, body contouring, surgical procedures) require 48-72 hours notice
+- Some premium sessions (private training, specialty workshops) require 48 hours notice
 
 NO-SHOW POLICY:
 - A "no-show" is defined as failure to arrive within 15 minutes of your scheduled appointment time without prior notice
@@ -590,25 +564,25 @@ Date: ____________` },
 
 PAYMENT:
 - Payment is due in full at the time of service unless prior arrangements have been made
-- We accept: Cash, Credit/Debit Cards, CareCredit, Cherry Financing
+- We accept: Cash, Credit/Debit Cards, Class Packs, Monthly Memberships
 - All prices are subject to change without notice
 - Consultations are complimentary unless otherwise stated
 
-AESTHETIC SERVICES AND INSURANCE:
-- Aesthetic and cosmetic sessions are elective procedures and are NOT covered by health insurance
-- [Business Name] does not bill insurance for aesthetic services
-- It is the client's responsibility to determine if any session may be covered by their insurance
+FITNESS SERVICES AND INSURANCE:
+- Pilates and fitness sessions are not covered by standard health insurance
+- [Business Name] does not bill insurance for fitness or movement sessions
+- Clients with FSA/HSA accounts should consult their plan administrator regarding eligibility
 
 REFUND POLICY:
-- Treatments and services are non-refundable once performed
+- Sessions and services are non-refundable once performed
 - Product purchases may be returned unopened within 14 days with receipt
 - Gift cards and account credits are non-refundable
-- Package and membership payments are non-refundable but may be transferred per our transfer policy
+- Class pack and membership payments are non-refundable but may be transferred per our transfer policy
 
-FINANCING:
-- Third-party financing options are available (CareCredit, Cherry, etc.)
-- [Business Name] is not responsible for the terms, interest, or fees of third-party financing
-- Financing approval is between the patient and the financing company
+CLASS PACKS AND MEMBERSHIPS:
+- Class packs are valid for the duration specified at time of purchase
+- Monthly memberships auto-renew unless cancelled per the membership agreement
+- [Business Name] is not responsible for unused classes if the client does not attend scheduled sessions
 
 COLLECTIONS:
 - Outstanding balances not paid within 30 days may be subject to a late fee
@@ -625,11 +599,11 @@ function initWaivers() {
   const now = new Date();
   const ago = (days) => new Date(now - days * 86400000).toISOString();
   saveWaivers([
-    { id: 'W-1', templateId: 'general', clientId: 'CLT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: 'Jessica Park, NP', status: 'signed', expiresAt: ago(-360) },
-    { id: 'W-2', templateId: 'botox', clientId: 'CLT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: 'Dr. Sarah Mitchell', status: 'signed', expiresAt: ago(-360) },
+    { id: 'W-1', templateId: 'general', clientId: 'CLT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: 'Sarah Chen, CPT', status: 'signed', expiresAt: ago(-360) },
+    { id: 'W-2', templateId: 'reformer', clientId: 'CLT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: 'Jordan Taylor, PMA-CPT', status: 'signed', expiresAt: ago(-360) },
     { id: 'W-3', templateId: 'photo', clientId: 'CLT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: '', status: 'signed', photoConsent: 'identifiable', expiresAt: ago(-360) },
-    { id: 'W-4', templateId: 'general', clientId: 'CLT-1003', patientName: 'Ava Jones', signedAt: ago(30), signatureData: 'Ava Jones', witnessName: 'Emily Chen, RN', status: 'signed', expiresAt: ago(-335) },
-    { id: 'W-5', templateId: 'laser', clientId: 'CLT-1003', patientName: 'Ava Jones', signedAt: ago(30), signatureData: 'Ava Jones', witnessName: 'Jessica Park, NP', status: 'signed', expiresAt: ago(-335) },
+    { id: 'W-4', templateId: 'general', clientId: 'CLT-1003', patientName: 'Ava Jones', signedAt: ago(30), signatureData: 'Ava Jones', witnessName: 'Jordan Taylor, PMA-CPT', status: 'signed', expiresAt: ago(-335) },
+    { id: 'W-5', templateId: 'barre', clientId: 'CLT-1003', patientName: 'Ava Jones', signedAt: ago(30), signatureData: 'Ava Jones', witnessName: 'Sarah Chen, CPT', status: 'signed', expiresAt: ago(-335) },
     { id: 'W-6', templateId: 'general', clientId: 'CLT-1005', patientName: 'Mia Garcia', signedAt: null, signatureData: null, witnessName: '', status: 'pending', expiresAt: null },
     { id: 'W-7', templateId: 'hipaa', clientId: 'CLT-1002', patientName: 'Sophia Brown', signedAt: ago(20), signatureData: 'Sophia Brown', witnessName: '', status: 'signed', expiresAt: ago(-345) },
   ]);

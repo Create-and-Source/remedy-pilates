@@ -1,5 +1,5 @@
-// Transformations Photos — clinical documentation + marketing asset management
-// Standardized angles, patient consent tracking, comparison views
+// Transformations Photos — progress documentation + marketing asset management
+// Standardized angles, client consent tracking, comparison views
 import { useState, useEffect, useRef } from 'react';
 import { useStyles } from '../theme';
 import { getPhotos, addPhoto, deletePhoto, getPatients, getServices, getProviders, subscribe } from '../data/store';
@@ -15,7 +15,7 @@ const getAngles = (serviceId, services) => {
   return FACE_ANGLES;
 };
 const ANGLES = [...new Set([...FACE_ANGLES, ...BODY_ANGLES, ...SCALP_ANGLES])];
-const LIGHTING = ['Clinical (white)', 'Natural', 'Ring Light'];
+const LIGHTING = ['Studio (white)', 'Natural', 'Ring Light'];
 
 function initPhotos() {
   if (localStorage.getItem('rp_photos_init')) return;
@@ -24,14 +24,14 @@ function initPhotos() {
 
   // Seed demo photo sets (no actual images — placeholders)
   const sets = [
-    { id: 'PHT-1', patientId: 'PAT-1000', patientName: 'Emma Johnson', serviceId: 'SVC-1', serviceName: 'Reformer', providerId: 'PRV-1', angle: 'Front', phase: 'before', date: '2025-12-10', notes: 'Forehead lines at rest, crows feet moderate', consent: true, createdAt: '2025-12-10T10:00:00Z' },
-    { id: 'PHT-2', patientId: 'PAT-1000', patientName: 'Emma Johnson', serviceId: 'SVC-1', serviceName: 'Reformer', providerId: 'PRV-1', angle: 'Front', phase: 'after', date: '2025-12-24', notes: '2 weeks post — significant reduction in forehead lines', consent: true, createdAt: '2025-12-24T10:00:00Z' },
-    { id: 'PHT-3', patientId: 'PAT-1003', patientName: 'Ava Jones', serviceId: 'SVC-6', serviceName: 'TRX Photofacial', providerId: 'PRV-2', angle: 'Left 45°', phase: 'before', date: '2026-01-05', notes: 'Sun damage, dark spots on cheekbone', consent: true, createdAt: '2026-01-05T09:00:00Z' },
-    { id: 'PHT-4', patientId: 'PAT-1003', patientName: 'Ava Jones', serviceId: 'SVC-6', serviceName: 'TRX Photofacial', providerId: 'PRV-2', angle: 'Left 45°', phase: 'after', date: '2026-02-15', notes: 'After 3 sessions — 80% clearing of pigmentation', consent: true, createdAt: '2026-02-15T09:00:00Z' },
-    { id: 'PHT-5', patientId: 'PAT-1002', patientName: 'Sophia Brown', serviceId: 'SVC-5', serviceName: 'RF Private Session', providerId: 'PRV-3', angle: 'Front', phase: 'before', date: '2026-01-20', notes: 'Acne scarring, uneven texture', consent: true, createdAt: '2026-01-20T11:00:00Z' },
-    { id: 'PHT-6', patientId: 'PAT-1002', patientName: 'Sophia Brown', serviceId: 'SVC-5', serviceName: 'RF Private Session', providerId: 'PRV-3', angle: 'Front', phase: 'after', date: '2026-03-01', notes: 'After 3 sessions — significant improvement in texture', consent: true, createdAt: '2026-03-01T11:00:00Z' },
-    { id: 'PHT-7', patientId: 'PAT-1001', patientName: 'Olivia Williams', serviceId: 'SVC-2', serviceName: 'Juvederm Barre', providerId: 'PRV-1', angle: 'Front', phase: 'before', date: '2026-02-01', notes: 'Volume loss nasolabial folds', consent: true, createdAt: '2026-02-01T14:00:00Z' },
-    { id: 'PHT-8', patientId: 'PAT-1001', patientName: 'Olivia Williams', serviceId: 'SVC-2', serviceName: 'Juvederm Barre', providerId: 'PRV-1', angle: 'Front', phase: 'after', date: '2026-02-01', notes: 'Immediately post — 1 syringe each side', consent: true, createdAt: '2026-02-01T15:00:00Z' },
+    { id: 'PHT-1', patientId: 'PAT-1000', patientName: 'Emma Johnson', serviceId: 'SVC-1', serviceName: 'Reformer', providerId: 'PRV-1', angle: 'Front', phase: 'before', date: '2025-12-10', notes: 'Posture assessment — forward head, rounded shoulders', consent: true, createdAt: '2025-12-10T10:00:00Z' },
+    { id: 'PHT-2', patientId: 'PAT-1000', patientName: 'Emma Johnson', serviceId: 'SVC-1', serviceName: 'Reformer', providerId: 'PRV-1', angle: 'Front', phase: 'after', date: '2025-12-24', notes: '2 weeks in — improved spinal alignment and shoulder position', consent: true, createdAt: '2025-12-24T10:00:00Z' },
+    { id: 'PHT-3', patientId: 'PAT-1003', patientName: 'Ava Jones', serviceId: 'SVC-6', serviceName: 'TRX', providerId: 'PRV-2', angle: 'Left 45°', phase: 'before', date: '2026-01-05', notes: 'Low core engagement, compensating with lower back', consent: true, createdAt: '2026-01-05T09:00:00Z' },
+    { id: 'PHT-4', patientId: 'PAT-1003', patientName: 'Ava Jones', serviceId: 'SVC-6', serviceName: 'TRX', providerId: 'PRV-2', angle: 'Left 45°', phase: 'after', date: '2026-02-15', notes: 'After 3 sessions — noticeably stronger core activation', consent: true, createdAt: '2026-02-15T09:00:00Z' },
+    { id: 'PHT-5', patientId: 'PAT-1002', patientName: 'Sophia Brown', serviceId: 'SVC-5', serviceName: 'Private Session', providerId: 'PRV-3', angle: 'Front', phase: 'before', date: '2026-01-20', notes: 'Post-partum — diastasis recti, weak pelvic floor', consent: true, createdAt: '2026-01-20T11:00:00Z' },
+    { id: 'PHT-6', patientId: 'PAT-1002', patientName: 'Sophia Brown', serviceId: 'SVC-5', serviceName: 'Private Session', providerId: 'PRV-3', angle: 'Front', phase: 'after', date: '2026-03-01', notes: 'After 3 sessions — core reconnection progressing well', consent: true, createdAt: '2026-03-01T11:00:00Z' },
+    { id: 'PHT-7', patientId: 'PAT-1001', patientName: 'Olivia Williams', serviceId: 'SVC-2', serviceName: 'Barre', providerId: 'PRV-1', angle: 'Front', phase: 'before', date: '2026-02-01', notes: 'Limited hip flexibility, tight hip flexors', consent: true, createdAt: '2026-02-01T14:00:00Z' },
+    { id: 'PHT-8', patientId: 'PAT-1001', patientName: 'Olivia Williams', serviceId: 'SVC-2', serviceName: 'Barre', providerId: 'PRV-1', angle: 'Front', phase: 'after', date: '2026-02-01', notes: 'After 4 weeks — visible improvement in hip mobility and stance', consent: true, createdAt: '2026-02-01T15:00:00Z' },
   ];
   localStorage.setItem('rp_photos', JSON.stringify(sets));
   localStorage.setItem('rp_photos_init', 'true');
@@ -48,7 +48,7 @@ export default function BeforeAfter() {
   const [serviceFilter, setServiceFilter] = useState('All');
   const [showUpload, setShowUpload] = useState(false);
   const [compareSet, setCompareSet] = useState(null);
-  const [form, setForm] = useState({ patientId: '', serviceId: '', angle: 'Front', phase: 'before', lighting: 'Clinical (white)', notes: '', consent: false });
+  const [form, setForm] = useState({ patientId: '', serviceId: '', angle: 'Front', phase: 'before', lighting: 'Studio (white)', notes: '', consent: false });
 
   const photos = getPhotos();
   const clients = getPatients();
@@ -87,7 +87,7 @@ export default function BeforeAfter() {
       imageUrl: null, // placeholder — real images via AWS
     });
     setShowUpload(false);
-    setForm({ patientId: '', serviceId: '', angle: 'Front', phase: 'before', lighting: 'Clinical (white)', notes: '', consent: false });
+    setForm({ patientId: '', serviceId: '', angle: 'Front', phase: 'before', lighting: 'Studio (white)', notes: '', consent: false });
   };
 
   return (
@@ -102,7 +102,7 @@ export default function BeforeAfter() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4 }}>Transformations</h1>
-          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{photos.length} photos across {sets.length} session sets — clinical documentation + marketing</p>
+          <p style={{ font: `400 14px ${s.FONT}`, color: s.text2 }}>{photos.length} photos across {sets.length} session sets — progress documentation + marketing</p>
         </div>
         <button onClick={() => setShowUpload(true)} style={s.pillAccent}>+ Upload Photos</button>
       </div>
@@ -112,7 +112,7 @@ export default function BeforeAfter() {
         {[
           { label: 'Total Photos', value: photos.length },
           { label: 'Complete Sets', value: sets.filter(set => set.before.length > 0 && set.after.length > 0).length },
-          { label: 'Patients Documented', value: new Set(photos.map(p => p.patientId)).size },
+          { label: 'Clients Documented', value: new Set(photos.map(p => p.patientId)).size },
           { label: 'Consented', value: photos.filter(p => p.consent).length },
         ].map(k => (
           <div key={k.label} style={{ ...s.cardStyle, padding: '14px 18px' }}>
@@ -251,13 +251,13 @@ export default function BeforeAfter() {
             </div>
 
             <div style={{ marginTop: 16 }}>
-              <label style={s.label}>Clinical Notes</label>
-              <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={2} style={{ ...s.input, resize: 'vertical' }} placeholder="e.g., Forehead lines at rest, moderate severity" />
+              <label style={s.label}>Session Notes</label>
+              <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={2} style={{ ...s.input, resize: 'vertical' }} placeholder="e.g., Posture assessment — forward head, tight hip flexors" />
             </div>
 
             <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 16, cursor: 'pointer' }}>
               <input type="checkbox" checked={form.consent} onChange={e => setForm({ ...form, consent: e.target.checked })} style={{ accentColor: s.accent, width: 18, height: 18 }} />
-              <span style={{ font: `400 13px ${s.FONT}`, color: s.text }}>Patient has signed photo consent form</span>
+              <span style={{ font: `400 13px ${s.FONT}`, color: s.text }}>Client has signed photo consent form</span>
             </label>
 
             <div style={{ display: 'flex', gap: 12, marginTop: 24, justifyContent: 'flex-end' }}>
