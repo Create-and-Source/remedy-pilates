@@ -759,7 +759,7 @@ function StepIntake({ form, setForm }) {
 
         {/* Fine print */}
         <p style={{ fontFamily: FONT, fontSize: 12, color: "#B0A09A", lineHeight: 1.6, margin: 0 }}>
-          By booking you agree to our cancellation policy: cancel at least 12 hours before class to avoid a late cancel fee. Your first class is completely free — no card required today.
+          By booking you agree to our cancellation policy: cancel at least 24 hours before class to avoid a late cancel fee. Your first class is completely free — no card required today.
         </p>
       </div>
     </div>

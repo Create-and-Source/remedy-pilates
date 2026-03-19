@@ -149,7 +149,7 @@ function processQuery(query) {
     return {
       text: '**Cancellation Policy**',
       details: [
-        '⏰ Cancel or reschedule **12 hours** before class start time',
+        '⏰ Cancel or reschedule **24 hours** before class start time',
         '❌ Late cancellations will be charged the full class rate',
         '🚫 No-shows forfeit the class from your package',
         '💡 First-time late cancel? We\'ll waive the fee — just let us know!',

@@ -135,8 +135,9 @@ export function isAuthenticated() {
 
 // ── Demo mode: skip Cognito, set mock token for local-only use ──
 export function signInDemo(role, name) {
-  // In demo mode (no VITE_API_URL), no real token needed
-  // When API is configured, demo sign-in won't work with JWT-protected routes
   localStorage.setItem('rp_user_name', name);
   localStorage.setItem('rp_user_role', role);
+  // Set a demo token so ProtectedRoute allows access
+  localStorage.setItem(TOKEN_KEY, 'demo');
+  localStorage.setItem(EXPIRES_KEY, String(Date.now() + 24 * 60 * 60 * 1000));
 }
