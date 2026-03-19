@@ -211,12 +211,12 @@ export default function Onboarding() {
     const profile = { goals, level, injuries, classTypes, prefTime, classLength, completedAt: Date.now() };
     localStorage.setItem('rp_onboarding_profile', JSON.stringify(profile));
     localStorage.setItem('rp_onboarded', 'true');
-    nav('/');
+    nav('/signin');
   }
 
   function skip() {
     localStorage.setItem('rp_onboarded', 'true');
-    nav('/');
+    nav('/signin');
   }
 
   function toggleGoal(id) {

@@ -100,11 +100,15 @@ function Loader() {
 }
 
 function HomeGate() {
-  // Check on every render — localStorage is not reactive so we read it fresh
+  // In the mobile app, skip the marketing Home page entirely.
+  // Route users to admin (if signed in) or sign-in (if not).
   if (!localStorage.getItem('rp_onboarded')) {
     return <Navigate to="/onboarding" replace />;
   }
-  return <Home />;
+  if (localStorage.getItem('rp_auth_token')) {
+    return <Navigate to="/admin" replace />;
+  }
+  return <Navigate to="/signin" replace />;
 }
 
 export default function App() {
