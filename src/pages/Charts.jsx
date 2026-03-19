@@ -96,7 +96,7 @@ function getZonesForType(mapType) {
 }
 
 function getMapLabel(mapType) {
-  if (mapType === 'face') return 'Injection Map';
+  if (mapType === 'face') return 'Movement Map';
   if (mapType === 'body') return 'Treatment Zones';
   if (mapType === 'scalp') return 'Scalp Map';
   return null;
@@ -517,7 +517,7 @@ function CoSignModal({ onConfirm, onClose, s, providers }) {
         </div>
 
         <div style={{ marginBottom: 14 }}>
-          <label style={{ ...s.label, fontSize: 11 }}>Reviewing Provider</label>
+          <label style={{ ...s.label, fontSize: 11 }}>Reviewing Instructor</label>
           <select
             value={reviewerId}
             onChange={e => setReviewerId(e.target.value)}
@@ -526,7 +526,7 @@ function CoSignModal({ onConfirm, onClose, s, providers }) {
             {mdProviders.map(p => (
               <option key={p.id} value={p.id}>{p.name} — {p.title}</option>
             ))}
-            {mdProviders.length === 0 && <option disabled>No MD-level providers found</option>}
+            {mdProviders.length === 0 && <option disabled>No senior instructors found</option>}
           </select>
         </div>
 
@@ -599,125 +599,132 @@ function initCharts() {
   localStorage.removeItem('rp_charts_init');
   saveCharts([
     {
-      id: 'CHT-1', patientId: 'PAT-1000', patientName: 'Emma Johnson', providerId: 'PRV-1',
+      id: 'CHT-1', clientId: 'CLT-1000', patientName: 'Emma Johnson', providerId: 'INS-1',
       date: '2026-03-10', serviceId: 'SVC-1', serviceName: 'Reformer',
-      mapType: 'face',
-      subjective: 'Patient presents for routine Reformer. Concerned about forehead lines deepening and early crows feet. No new medications. Denies pregnancy. Last Reformer 4 months ago — satisfied with results but wants slightly heavier dose on forehead this time.',
-      objective: 'Moderate dynamic rhytids across forehead. Moderate glabellar lines (11s). Mild-moderate crows feet bilateral. Mild bunny lines noted. Skin in good condition, well-hydrated.',
-      assessment: 'Excellent candidate for neuromodulator session. Forehead, glabella, lateral canthal lines, and bunny lines.',
-      plan: '38 units Reformer total: 12 units forehead (6 injection sites), 14 units glabella (5 sites), 8 units crows feet (3 sites bilateral), 4 units bunny lines (2 sites). Follow up 2 weeks for assessment. Discuss nasolabial filler at follow-up.',
-      injectionMap: { forehead: '12u BTX', glabella: '14u BTX', 'crow-l': '4u BTX', 'crow-r': '4u BTX', 'brow-l': '2u lift', 'brow-r': '2u lift' },
-      vitals: { bp: '118/76', pulse: '72', temp: '98.6' },
+      mapType: 'none',
+      subjective: 'Client presents for weekly reformer session. Reports lower back felt tight after last session but resolved within 24 hours. No new injuries. Sleeping better and noticing improved posture at work. Motivated to increase spring resistance.',
+      objective: 'Posture assessment shows notable improvement in thoracic extension compared to intake. Hip flexor tension reduced bilaterally. Core engagement consistent through footwork series. Hamstring flexibility: right 68°, left 71° straight leg raise (up from 58°/62° at intake).',
+      assessment: 'Strong progress across 6 weeks. Lower back tightness likely due to increased spring resistance last session — monitor. Core stabilization improving steadily. Ready to progress footwork to red spring.',
+      plan: 'Advance footwork from blue to red spring for lower body series. Introduce short box series. Continue long stretch progression. Add side-lying hip series for glute activation. Cue neutral pelvis throughout. Follow up next week; reassess lower back response to increased resistance.',
+      injectionMap: {},
+      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Flexibility score: 7/10 (up from 5/10 at intake). Core strength rating: 6/10. Posture alignment: improved thoracic extension, reduced forward head. Spring resistance: progressing blue → red footwork.' },
+      vitals: { bp: '', pulse: '', temp: '' },
       medications: 'None',
       status: 'signed',
       reviewRequired: false,
       createdAt: '2026-03-10T10:30:00Z',
     },
     {
-      id: 'CHT-2', patientId: 'PAT-1001', patientName: 'Olivia Williams', providerId: 'PRV-1',
-      date: '2026-03-11', serviceId: 'SVC-2', serviceName: 'Juvederm Barre',
-      mapType: 'face',
-      subjective: 'Patient desires volume restoration to nasolabial folds and cheeks. Reports looking "tired and hollow." No previous filler. No allergies. Not pregnant. Stopped fish oil 7 days ago as instructed.',
-      objective: 'Moderate volume loss bilateral malar region. Deep nasolabial folds. Mild marionette lines. Mild jowling. Skin type II, good elasticity for age.',
-      assessment: 'Candidate for HA filler. Recommend cheek volumization with Voluma followed by Juvederm Ultra for nasolabial folds. Vascular anatomy reviewed — no contraindications.',
-      plan: '2 syringes Juvederm Voluma XC bilateral cheeks (1 per side, deep injection supraperiosteal). 1 syringe Juvederm Ultra XC bilateral nasolabial folds. Aspiration before injection. Ice post-procedure. Return 2 weeks for assessment, may need touch-up. Emergency protocol reviewed with patient (vascular occlusion signs).',
-      injectionMap: { 'cheek-l': '1 syr Voluma', 'cheek-r': '1 syr Voluma', 'naso-l': '0.5 syr Ultra', 'naso-r': '0.5 syr Ultra' },
-      vitals: { bp: '124/80', pulse: '76', temp: '98.4' },
-      medications: 'Lisinopril 10mg daily',
+      id: 'CHT-2', clientId: 'CLT-1001', patientName: 'Olivia Williams', providerId: 'INS-1',
+      date: '2026-03-11', serviceId: 'SVC-2', serviceName: 'Barre',
+      mapType: 'none',
+      subjective: 'Client attended 3rd barre class this week. Reports significant muscle soreness in glutes and inner thighs after Tuesday class — expected DOMS. Soreness resolved by Thursday. Energy level good. Noticing less shaking at the barre compared to first two weeks.',
+      objective: 'Observed improved turnout stability. Plié depth has increased — client now achieving parallel thighs in grand plié without heel lift. Core engagement noticeably more consistent through seat work. Balance on single leg improved from roughly 3 seconds to 8+ seconds at barre.',
+      assessment: 'Rapid adaptation in first month. Glute and inner thigh fatigue is normal for this stage. Balance and stability improving week over week. Ready to add ankle weights for seat series.',
+      plan: 'Introduce 1lb ankle weights for donkey kick and fire hydrant series. Cue shoulder blade depression throughout upper body work. Add standing arabesque balance challenge (away from barre) for last 5 minutes. Client to continue 3x/week schedule for optimal adaptation.',
+      injectionMap: {},
+      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Single-leg balance: 8 seconds (up from 3 seconds at first class). Grand plié depth: full range without heel lift. Core engagement consistency: 8/10 in class observation.' },
+      vitals: { bp: '', pulse: '', temp: '' },
+      medications: 'None',
       status: 'signed',
       reviewRequired: false,
       createdAt: '2026-03-11T11:00:00Z',
     },
     {
-      id: 'CHT-3', patientId: 'PAT-1003', patientName: 'Ava Jones', providerId: 'PRV-2',
-      date: '2026-03-12', serviceId: 'SVC-6', serviceName: 'TRX Photofacial',
-      mapType: 'face',
-      subjective: 'Follow-up TRX session 3 of 3. Reports significant improvement in sun spots after sessions 1 and 2. No adverse reactions. Wearing SPF 50 daily as instructed.',
-      objective: 'Marked improvement in pigmentation bilateral cheeks and nose. Remaining focal hyperpigmentation left cheekbone. Skin texture improved. No scarring or hypopigmentation from prior sessions.',
-      assessment: 'Excellent response to TRX series. Final session of planned protocol. Recommend maintenance every 6 months.',
-      plan: 'TRX session bilateral cheeks, nose, and chin. Settings: 560nm filter, 15J/cm2, 3ms pulse, double pass on residual pigment left cheek. Post-care: SPF 50 daily, avoid sun exposure 2 weeks, gentle cleanser only for 48 hours. Follow up 4 weeks for final assessment. Discuss maintenance schedule.',
-      injectionMap: { 'cheek-l': 'TRX 2x pass', 'cheek-r': 'TRX 1x', chin: 'TRX 1x' },
-      vitals: { bp: '122/78', pulse: '68', temp: '98.4' },
-      medications: 'Tretinoin 0.025% (paused 1 week pre-session)',
+      id: 'CHT-3', clientId: 'CLT-1003', patientName: 'Ava Jones', providerId: 'INS-2',
+      date: '2026-03-12', serviceId: 'SVC-6', serviceName: 'Private Reformer',
+      mapType: 'none',
+      subjective: 'Month 2 private session. Client reports significant reduction in chronic lower back pain — "down from a 6/10 to a 2/10 most days." Physician cleared her to continue Pilates and discontinue physical therapy. Feeling stronger and more confident in movement.',
+      objective: 'Great form on roll-up today — full articulation achieved for first time. Core engagement holding through complete series without instructor cueing. Shoulder alignment on reformer corrected; no longer protracted during arm series. Spinal rotation symmetrical bilaterally.',
+      assessment: 'Excellent progress. Client reports reduced lower back pain after 6 weeks consistent with expected outcomes for core stabilization work. Roll-up milestone achieved. Ready to progress to intermediate repertoire.',
+      plan: 'Introduce short spine stretch on reformer. Add teaser prep series. Begin elephant footwork. Progress to red spring on arm series. Set 3-month reassessment to formally document flexibility and strength gains. Recommend increasing to 3 sessions/week.',
+      injectionMap: {},
+      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Lower back pain self-report: 2/10 (down from 6/10 at intake). Roll-up: full articulation achieved. Shoulder alignment corrected on reformer. Spinal rotation: symmetrical.' },
+      vitals: { bp: '', pulse: '', temp: '' },
+      medications: 'None reported',
       status: 'signed',
       reviewRequired: false,
       createdAt: '2026-03-12T14:00:00Z',
     },
     {
-      id: 'CHT-4', patientId: 'PAT-1002', patientName: 'Sophia Brown', providerId: 'PRV-3',
-      date: '2026-03-13', serviceId: 'SVC-28', serviceName: 'Morpheus8',
-      mapType: 'face',
-      subjective: 'Session 2 of Morpheus8 series for acne scarring. Tolerated first session well with mild redness for 3 days. Reports noticeably smoother texture already. Taking antiviral prophylaxis as prescribed.',
-      objective: 'Healing well from session 1. Ice pick and boxcar scars bilateral cheeks improving. Skin well-hydrated. No post-inflammatory hyperpigmentation.',
-      assessment: 'Excellent response. Continue RF microneedling protocol. Increase depth on deeper scars per patient tolerance.',
-      plan: 'Morpheus8 full face: depth 3.0mm bilateral cheeks (increased from 2.5mm), 2.0mm forehead, 1.5mm perioral. 24 pin tip. RF energy level 5. Topical numbing 45 min prior (BLT 20/6/4). Post-care: HA serum, gentle cleanser, SPF 50. Avoid retinoids, exfoliants, and makeup 5 days. Session 3 in 4 weeks.',
-      injectionMap: { 'cheek-l': '3.0mm depth', 'cheek-r': '3.0mm depth', forehead: '2.0mm', chin: '1.5mm' },
-      vitals: { bp: '110/70', pulse: '74', temp: '98.6' },
-      medications: 'Valacyclovir 500mg BID (prophylaxis)',
+      id: 'CHT-4', clientId: 'CLT-1002', patientName: 'Sophia Brown', providerId: 'INS-3',
+      date: '2026-03-13', serviceId: 'SVC-28', serviceName: 'Mat Pilates',
+      mapType: 'none',
+      subjective: 'Session 4 of 8-week beginner mat series. Client recovering from C-section 6 months ago, cleared by OB for low-impact exercise. Experiencing diastasis recti (2-finger separation noted at intake). Reports less "disconnected" feeling in core. No pain during class.',
+      objective: 'Diastasis recti reassessment: 1.5-finger separation (down from 2 fingers at intake). Core activation pattern improving — client now initiating transverse abdominis engagement before movement. Imprint position maintained throughout supine series. No breath holding observed.',
+      assessment: 'Good healing progress. Diastasis closing as expected with proper cueing and load management. Ready to introduce gentle rotation within safe range. Continue to avoid full flexion exercises until separation reaches 1 finger or less.',
+      plan: 'Maintain current load — no increase in difficulty yet. Introduce gentle spine twist in seated position. Add clamshell series for hip stability. Continue to cue 3D breathing throughout. Recheck diastasis at session 6. Educate client on daily core activation habits at home.',
+      injectionMap: {},
+      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Diastasis recti: 1.5-finger separation (down from 2 at intake). Core activation pattern: transverse abdominis engaging before movement. No breath holding during session.' },
+      vitals: { bp: '', pulse: '', temp: '' },
+      medications: 'None',
       status: 'signed',
       reviewRequired: false,
       createdAt: '2026-03-13T09:00:00Z',
     },
     {
-      id: 'CHT-5', patientId: 'PAT-1004', patientName: 'Isabella Martinez', providerId: 'PRV-1',
-      date: '2026-03-14', serviceId: 'SVC-4', serviceName: 'PDO Threads',
-      mapType: 'face',
-      subjective: 'Patient presents for PDO thread lift consultation and session. Concerns: jowling, loss of jawline definition, mild neck laxity. Desires non-surgical lift. Not ready for facelift. No blood thinners. Stopped supplements 10 days ago.',
-      objective: 'Moderate jowling bilateral. Loss of jawline definition. Mild platysmal banding. Moderate skin laxity lower face. Good skin thickness — appropriate for thread placement. Fitzpatrick III.',
-      assessment: 'Good candidate for PDO cog thread lift bilateral jawline and lower face. Will provide significant lift with collagen stimulation over 3-6 months.',
-      plan: '8 PDO cog threads bilateral jawline (4 per side). 4 smooth threads bilateral marionette area. Entry points: preauricular and temporal. Lidocaine 1% with epi for local anesthesia. Mark vectors with patient upright before reclining. Post-care: sleep on back elevated 1 week, soft diet 2 days, no dental work 2 weeks, no massage or pressure on face. Follow up 1 week then 1 month.',
-      injectionMap: { 'jawline-l': '4 cog threads', 'jawline-r': '4 cog threads', 'marionette-l': '2 smooth', 'marionette-r': '2 smooth', 'temple-l': 'entry point', 'temple-r': 'entry point' },
-      vitals: { bp: '128/82', pulse: '70', temp: '98.6' },
-      medications: 'Levothyroxine 50mcg daily',
+      id: 'CHT-5', clientId: 'CLT-1004', patientName: 'Isabella Martinez', providerId: 'INS-1',
+      date: '2026-03-14', serviceId: 'SVC-4', serviceName: 'Stretch & Recovery',
+      mapType: 'none',
+      subjective: 'Client is a competitive cyclist presenting for weekly stretch and recovery session. Reports right hip flexor tightness and left IT band tension following a 60-mile ride on Saturday. Requesting focus on hip flexors, hamstrings, and thoracic mobility.',
+      objective: 'Hip flexor flexibility: right 12cm Thomas test (tight), left 8cm. IT band: left Ober test positive. Thoracic rotation: 42° right, 38° left. Hamstring flexibility: 62° bilateral straight leg raise. Breathing pattern shallow and chest-dominant.',
+      assessment: 'Acute post-ride tightness in right hip flexor and left IT band as reported. Thoracic mobility restriction likely contributing to neck and shoulder tension on long rides. Diaphragmatic breathing will support recovery and nervous system downregulation.',
+      plan: 'Hip flexor contract-relax PNF stretching bilateral, emphasis right side. IT band and TFL release with sustained holds. Thoracic rotation and extension mobility work over foam roller. Diaphragmatic breathing practice — 5 minutes at session end. Home routine: hip flexor stretch 2x daily, thoracic rotation 5 min pre-ride.',
+      injectionMap: {},
+      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Right hip flexor Thomas test: 12cm (tight). Left Ober test: positive. Thoracic rotation: 42° R / 38° L. Hamstring flexibility: 62° bilateral. Goal: hip flexor to 6cm by month end.' },
+      vitals: { bp: '', pulse: '', temp: '' },
+      medications: 'None',
       status: 'pending_review',
       reviewRequired: true,
       createdAt: '2026-03-14T13:00:00Z',
     },
     {
-      id: 'CHT-6', patientId: 'PAT-1007', patientName: 'Amelia Thompson', providerId: 'PRV-4',
-      date: '2026-03-14', serviceId: 'SVC-15', serviceName: 'Awake Liposuction',
-      mapType: 'body',
-      subjective: 'Pre-operative consultation and procedure for awake liposuction of bilateral flanks and lower abdomen. Patient is 5\'6", 148 lbs, BMI 23.9. Has been stable at this weight for 6+ months. Diet and exercise resistant fat deposits. Non-smoker. No bleeding disorders. Clearance from PCP obtained.',
-      objective: 'Bilateral flank lipodystrophy with moderate pinch test. Lower abdominal adiposity below umbilicus. Good skin elasticity — expect adequate retraction. No hernias palpated. Markings placed with patient standing.',
-      assessment: 'Excellent candidate for tumescent liposuction under local anesthesia. Estimated 1200-1500cc total aspirate. BodyTite RF-assisted for skin tightening adjunct.',
-      plan: 'Tumescent infiltration bilateral flanks and lower abdomen (Klein solution: 1L NS + 50cc 1% lido + 1mg epi per bag). Power-assisted liposuction (PAL) with 3.7mm cannula. BodyTite internal RF probe for skin tightening post-aspiration. Total aspirate: 700cc right flank, 650cc left flank, 450cc lower abdomen. Compression garment 6 weeks. Drain placement bilateral if >500cc per side. Post-op: ambulate same day, light activity 1 week, full activity 4 weeks. Follow up 1 day, 1 week, 1 month, 3 months.',
-      injectionMap: { 'flank-l': '650cc aspirate', 'flank-r': '700cc aspirate', abdomen: '450cc aspirate' },
-      vitals: { bp: '120/74', pulse: '68', temp: '98.6' },
-      medications: 'Oral contraceptive (Yaz)',
+      id: 'CHT-6', clientId: 'CLT-1007', patientName: 'Amelia Thompson', providerId: 'INS-4',
+      date: '2026-03-14', serviceId: 'SVC-15', serviceName: 'Reformer — Intermediate',
+      mapType: 'none',
+      subjective: 'Session 10 of ongoing intermediate reformer program. Client training for a spring hiking trip — goal is leg strength and stamina on descents. Reports feeling significantly stronger in legs. No new soreness or discomfort.',
+      objective: 'Increased spring resistance from blue to red for lower body series — client demonstrated solid form throughout. Single-leg footwork stable and symmetrical. Prone swan extension strong with no lower back compression. Long stretch holds 30 seconds with neutral spine.',
+      assessment: 'Excellent adaptation to increased resistance. Leg strength and endurance tracking well for hiking goal. Spinal control in prone work notably improved. Ready to introduce jump board for plyometric training component.',
+      plan: 'Introduce jump board — single leg press, bilateral jumps, lateral jumps. Add side split platform work. Continue red spring footwork. Progress long stretch to down stretch. Recommend adding one outdoor hike before spring trip to test conditioning. Reassess at session 12.',
+      injectionMap: {},
+      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Spring resistance: advanced to red (from blue) lower body series. Single-leg footwork: symmetrical and stable. Long stretch hold: 30 seconds neutral spine. Jump board: introducing this session.' },
+      vitals: { bp: '', pulse: '', temp: '' },
+      medications: 'None',
       status: 'co_signed',
       reviewRequired: true,
-      reviewedBy: 'PRV-1',
-      reviewedByName: 'Dr. Sarah Mitchell',
+      reviewedBy: 'INS-1',
+      reviewedByName: 'Sarah Mitchell',
       reviewedAt: '2026-03-14T10:00:00Z',
-      reviewNotes: 'Procedure performed per protocol. Aspirate volumes within safe limits. Approved.',
+      reviewNotes: 'Program progression reviewed. Instructor cues appropriate. Approved for jump board introduction.',
       createdAt: '2026-03-14T08:00:00Z',
     },
     {
-      id: 'CHT-7', patientId: 'PAT-1005', patientName: 'Mia Garcia', providerId: 'PRV-1',
-      date: '2026-03-15', serviceId: 'SVC-11', serviceName: 'Medical Weight Loss',
+      id: 'CHT-7', clientId: 'CLT-1005', patientName: 'Mia Garcia', providerId: 'INS-1',
+      date: '2026-03-15', serviceId: 'SVC-11', serviceName: 'Private Training',
       mapType: 'none',
-      subjective: 'Month 2 follow-up for semaglutide weight loss program. Started at 0.25mg weekly, increased to 0.5mg 4 weeks ago. Reports decreased appetite, occasional mild nausea first 2 days after injection (improving). No vomiting or diarrhea. Eating 80-100g protein daily. Walking 30 min 5x/week. Starting weight: 187 lbs. Current: 178 lbs (-9 lbs).',
-      objective: 'Weight 178 lbs (down from 187 lbs at start, 183 lbs last visit). BMI 30.2 → 28.7. Waist circumference 36" (was 38"). Injection site: no erythema or induration. No signs of dehydration.',
-      assessment: 'Excellent response to semaglutide. 4.8% body weight loss in 8 weeks. Tolerating dose increase well. On track for target.',
-      plan: 'Increase to semaglutide 1.0mg weekly starting next injection. Continue protein target 80-100g/day. Add resistance training 2x/week to preserve lean mass. Labs: CMP, lipid panel, A1C at 3-month mark. Continue weekly self-injection — reviewed technique. Return 4 weeks for dose evaluation. Goal: 160 lbs (15% body weight loss).',
+      subjective: 'Week 8 of private training program. Client\'s primary goal is postural correction and building confidence in movement after years of sedentary desk work. Reports standing taller and receiving compliments on posture from coworkers. No pain or discomfort.',
+      objective: 'Posture reassessment at 8-week mark: forward head reduced by approximately 1.5cm from wall. Thoracic kyphosis visibly improved. Hip alignment symmetrical. Roll-up: smooth articulation to seated position. Teaser prep: legs to 45° with neutral lumbar, 10-second hold.',
+      assessment: 'Significant postural improvement at 8 weeks. Client building genuine body awareness — self-corrects alignment without cueing during most exercises. Teaser prep milestone demonstrates strong core stability. Ready to begin intermediate program cycle.',
+      plan: 'Transition to intermediate program: introduce full teaser, open leg rocker, and saw on reformer. Begin standing balance series. Set 12-week photo assessment with client consent. Discuss 3-session/week schedule to support continued progress. Client to continue daily posture reset habit (2-minute wall stand).',
       injectionMap: {},
-      measurements: { weight: '178', bmi: '28.7', waistCircumference: '36', measurementNotes: 'Down 9 lbs from 187 start weight. Waist down 2 inches. Tolerating 0.5mg well, increasing to 1.0mg. Target: 160 lbs.' },
-      vitals: { bp: '126/80', pulse: '76', temp: '98.6' },
-      medications: 'Semaglutide 0.5mg weekly (increasing to 1.0mg), Metformin 500mg BID',
+      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Posture: forward head reduced ~1.5cm from wall. Thoracic kyphosis: visibly improved. Flexibility score: 8/10 (up from 4/10 at intake). Core strength: 7/10. Teaser prep: 45°, 10-second hold achieved.' },
+      vitals: { bp: '', pulse: '', temp: '' },
+      medications: 'None',
       status: 'signed',
       reviewRequired: false,
       createdAt: '2026-03-15T10:00:00Z',
     },
     {
-      id: 'CHT-8', patientId: 'PAT-1010', patientName: 'Lily Lee', providerId: 'PRV-2',
-      date: '2026-03-15', serviceId: 'SVC-2', serviceName: 'Lip Barre',
-      mapType: 'face',
-      subjective: 'Patient presents for lip augmentation. First time filler patient. Desires subtle, natural enhancement — "I want my lips to look like mine but better." Showed reference photos. No allergies. Not pregnant. Stopped ibuprofen 7 days ago.',
-      objective: 'Thin upper lip with mild asymmetry (right side slightly smaller). Adequate vermillion border. Good hydration. No active cold sores. Fitzpatrick II.',
-      assessment: 'Candidate for conservative lip augmentation. Recommend 0.5-1 syringe Juvederm Ultra XC. Discussed that less is more for first session — can always add more.',
-      plan: '0.7 syringe Juvederm Ultra XC: 0.3cc upper lip (focus on cupids bow and right side correction), 0.2cc lower lip (subtle volume), 0.2cc border definition. Dental block bilateral infraorbital nerve. Slow injection with aspiration. Ice pre and post. Post-care: no kissing or straws 24 hours, ice 10 min on/off, sleep elevated tonight. Arnica gel for bruising. Follow up 2 weeks — may add remaining 0.3cc at that time.',
-      injectionMap: { 'lips-upper': '0.3cc JUV', 'lips-lower': '0.2cc JUV' },
-      vitals: { bp: '116/72', pulse: '82', temp: '98.6' },
+      id: 'CHT-8', clientId: 'CLT-1010', patientName: 'Lily Lee', providerId: 'INS-2',
+      date: '2026-03-15', serviceId: 'SVC-2', serviceName: 'Barre',
+      mapType: 'none',
+      subjective: 'First barre class after 3-week absence (vacation). Client reports feeling "rusty" but energized. Prior to absence had completed 6 consecutive weeks. Expects some return of muscle soreness. No injuries during time off.',
+      objective: 'Technique maintained well despite 3-week break — muscle memory evident. Balance slightly reduced from pre-break level but recovers quickly within class. Core engagement cueing needed more frequently than before break. Turnout consistent.',
+      assessment: 'Expected detraining effect after 3-week break is minimal — client retains most technique adaptations. Muscle endurance will return within 1-2 weeks of consistent attendance. No modification needed.',
+      plan: 'Resume normal class participation at prior level. Remind client that some soreness is expected this week. Encourage 2-3 classes this week to rebuild consistency. No new progressions until full endurance is re-established (approximately 1 week). Reconnect on goals at next session.',
+      injectionMap: {},
+      measurements: { weight: '', bmi: '', waistCircumference: '', measurementNotes: 'Post-break detraining: minimal technique loss, some endurance reduction. Balance: slightly reduced from pre-break. Muscle memory: intact. Estimated return to pre-break fitness: 1-2 weeks.' },
+      vitals: { bp: '', pulse: '', temp: '' },
       medications: 'None',
       status: 'draft',
       reviewRequired: false,
@@ -745,7 +752,7 @@ export default function Charts() {
   const [coSignTargetId, setCoSignTargetId] = useState(null);
 
   const emptyForm = {
-    patientId: '', serviceId: '', providerId: '',
+    clientId: '', serviceId: '', providerId: '',
     subjective: '', objective: '', assessment: '', plan: '',
     injectionMap: {}, vitals: { bp: '', pulse: '', temp: '' },
     medications: '', status: 'draft', mapType: 'face',
@@ -767,7 +774,7 @@ export default function Charts() {
   const currentMapLabel = getMapLabel(currentMapType);
 
   // Selected patient for allergy warning
-  const selectedPatient = clients.find(p => p.id === form.patientId);
+  const selectedPatient = clients.find(p => p.id === form.clientId);
 
   const filtered = charts.filter(c => {
     if (search) {
@@ -787,7 +794,7 @@ export default function Charts() {
   const openChart = (chart) => {
     setActiveId(chart.id);
     setForm({
-      patientId: chart.patientId, serviceId: chart.serviceId, providerId: chart.providerId,
+      clientId: chart.clientId, serviceId: chart.serviceId, providerId: chart.providerId,
       subjective: chart.subjective, objective: chart.objective, assessment: chart.assessment, plan: chart.plan,
       injectionMap: chart.injectionMap || {}, vitals: chart.vitals || { bp: '', pulse: '', temp: '' },
       medications: chart.medications || '', status: chart.status,
@@ -800,7 +807,7 @@ export default function Charts() {
 
   const handleSave = (action = 'draft') => {
     // action: 'draft' | 'sign' | 'submit_review'
-    const pat = clients.find(p => p.id === form.patientId);
+    const pat = clients.find(p => p.id === form.clientId);
     const svc = services.find(sv => sv.id === form.serviceId);
     const mapType = getMapType(form.serviceId, services);
 
@@ -941,7 +948,7 @@ export default function Charts() {
                 <div>
                   <div style={{ font: `500 14px ${s.FONT}`, color: s.text }}>{chart.patientName} — {chart.serviceName}</div>
                   <div style={{ font: `400 12px ${s.FONT}`, color: s.text2 }}>
-                    {prov?.name?.split(',')[0] || 'Provider'} · {chart.date}
+                    {prov?.name?.split(',')[0] || 'Instructor'} · {chart.date}
                     {chart.status === 'co_signed' && chart.reviewedByName && (
                       <span style={{ color: '#16A34A', marginLeft: 6 }}>· Co-signed by {chart.reviewedByName}</span>
                     )}
@@ -989,11 +996,11 @@ export default function Charts() {
               </div>
             )}
 
-            {/* Patient / Service / Provider */}
+            {/* Client / Service / Instructor */}
             <div className="charts-meta-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 20 }}>
               <div>
                 <label style={s.label}>Patient</label>
-                <select value={form.patientId} onChange={e => setForm({ ...form, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
+                <select value={form.clientId} onChange={e => setForm({ ...form, clientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select...</option>
                   {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
                 </select>
@@ -1006,7 +1013,7 @@ export default function Charts() {
                 </select>
               </div>
               <div>
-                <label style={s.label}>Provider</label>
+                <label style={s.label}>Instructor</label>
                 <select value={form.providerId} onChange={e => setForm({ ...form, providerId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                   <option value="">Select...</option>
                   {providers.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}

@@ -5,5 +5,20 @@
   "server": {
     "androidScheme": "https",
     "iosScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "backgroundColor": "#FAF6F1",
+      "showSpinner": false,
+      "launchShowDuration": 1500
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#FAF6F1"
+    },
+    "Keyboard": {
+      "resize": "body"
+    }
   }
 }

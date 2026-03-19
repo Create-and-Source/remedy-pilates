@@ -141,13 +141,13 @@ export default function SignIn() {
               fontSize: 18, fontWeight: 500, color: '#2D2A26',
               fontFamily: "'Outfit', sans-serif", marginBottom: 8,
             }}>
-              Demo Sign In
+              Sign In
             </h2>
             <p style={{
               fontSize: 13, color: '#9C9488', marginBottom: 32,
               fontFamily: "'Outfit', sans-serif", lineHeight: 1.5,
             }}>
-              Choose a role to explore the platform
+              Welcome back
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {DEMO_ROLES.map(r => (
@@ -210,7 +210,7 @@ export default function SignIn() {
           fontSize: 11, color: '#C4B5A4', marginTop: 32,
           fontFamily: "'Outfit', sans-serif",
         }}>
-          {showLogin && API ? 'Use your studio email and password' : 'No passwords required — this is a demo environment'}
+          {showLogin && API ? 'Use your studio email and password' : 'Select your account to continue'}
         </p>
       </div>
     </div>

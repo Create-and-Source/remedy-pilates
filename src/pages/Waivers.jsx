@@ -9,38 +9,36 @@ function saveWaivers(w) { localStorage.setItem(WAIVERS_KEY, JSON.stringify(w)); 
 
 const TEMPLATES = [
   // ═══ REQUIRED FOR EVERY PATIENT ═══
-  { id: 'general', name: 'General Liability Waiver', category: 'Required', content: `INFORMED CONSENT FOR AESTHETIC TREATMENT
+  { id: 'general', name: 'General Liability Waiver', category: 'Required', content: `GENERAL LIABILITY WAIVER AND ASSUMPTION OF RISK
 
-I, [Patient Name], voluntarily consent to the following aesthetic session(s) at [Business Name]: [Treatment Name].
+I, [Client Name], voluntarily choose to participate in Pilates and/or fitness classes and sessions at [Business Name].
 
 I understand and acknowledge the following:
 
-1. NATURE OF TREATMENT: The procedure, its expected benefits, and alternative session options have been explained to me by my provider.
+1. NATURE OF ACTIVITY: Pilates and fitness classes involve physical exercise and movement training. My instructor has explained the activities, their expected benefits, and any relevant safety considerations.
 
-2. NO GUARANTEE: Results vary from person to person. No guarantee has been made regarding the outcome of this session. Additional sessions may be necessary to achieve desired results.
+2. NO GUARANTEE OF RESULTS: Individual results from Pilates and fitness training vary. No guarantee has been made regarding specific physical outcomes. Progress depends on consistency, effort, and individual factors.
 
-3. RISKS AND COMPLICATIONS: I understand there are inherent risks with any aesthetic procedure, including but not limited to:
-   - Pain, discomfort, redness, swelling, or bruising at the session site
-   - Infection
-   - Scarring (rare)
-   - Allergic reaction to products or materials used
-   - Unsatisfactory results or asymmetry
-   - Temporary or permanent changes in skin color or sensation
-   - Need for additional corrective session
+3. RISKS AND COMPLICATIONS: I understand there are inherent risks with any physical activity program, including but not limited to:
+   - Muscle soreness, strains, or sprains
+   - Joint discomfort or injury
+   - Falls or loss of balance
+   - Cardiovascular exertion
+   - Aggravation of pre-existing physical conditions
 
-4. MEDICAL DISCLOSURE: I have truthfully disclosed my complete medical history, current medications (including over-the-counter drugs and supplements), known allergies, previous cosmetic procedures, and any current health conditions.
+4. HEALTH DISCLOSURE: I have truthfully disclosed relevant information about my physical health, prior injuries, surgeries, chronic conditions, and any physician restrictions on my activity level.
 
-5. PRE/POST CARE: I agree to follow all pre-session and post-session instructions provided to me. I understand that failure to follow these instructions may affect my results and increase the risk of complications.
+5. INSTRUCTOR GUIDANCE: I agree to follow all instructor cues and safety instructions. I will inform my instructor before class of any new injuries, pain, or health changes that may affect my participation.
 
-6. PHOTOGRAPHY: I authorize clinical photographs to be taken for my medical record.
+6. PHOTOGRAPHY: I authorize [Business Name] to take photographs or video for instructional or promotional purposes, subject to my separate photo consent selection.
 
-7. FINANCIAL RESPONSIBILITY: I understand that aesthetic sessions are elective and not covered by insurance. I am responsible for all fees associated with this session.
+7. FINANCIAL RESPONSIBILITY: I understand that fitness sessions are elective services. I am responsible for all fees associated with my participation.
 
-I have had the opportunity to ask questions, and all my questions have been answered to my satisfaction. I voluntarily consent to this session.
+I have had the opportunity to ask questions, and all my questions have been answered to my satisfaction. I voluntarily choose to participate.
 
-Patient Signature: _________________________
+Client Signature: _________________________
 Date: ____________
-Provider/Witness: _________________________` },
+Instructor/Witness: _________________________` },
 
   { id: 'hipaa', name: 'Privacy Policy', category: 'Required', content: `ACKNOWLEDGMENT OF RECEIPT OF NOTICE OF PRIVACY PRACTICES
 
@@ -125,141 +123,103 @@ I certify that the above information is true, accurate, and complete to the best
 Patient Signature: _________________________
 Date: ____________` },
 
-  // ═══ INJECTABLE CONSENTS ═══
-  { id: 'botox', name: 'Reformer / Neurotoxin Consent', category: 'Equipment', content: `INFORMED CONSENT FOR BOTULINUM TOXIN TYPE A
-(Reformer Cosmetic / Dysport / Xeomin / Jeuveau)
+  // ═══ CLASS & TRAINING WAIVERS ═══
+  { id: 'botox', name: 'Reformer Class Waiver', category: 'Equipment', content: `REFORMER PILATES CLASS — PARTICIPATION WAIVER AND RELEASE
 
-DESCRIPTION: Reformer Pilates is a purified protein that temporarily blocks nerve signals to targeted muscles, reducing the appearance of dynamic wrinkles. Common session areas include the forehead, glabella (frown lines), and crow's feet.
+I, [Client Name], wish to participate in Reformer Pilates classes at [Business Name].
 
-EXPECTED RESULTS:
-- Results typically appear within 3-7 days, with full effect at 10-14 days
-- Duration: 3-4 months on average (varies by individual)
-- Touch-up may be needed 2 weeks after initial session
+NATURE OF ACTIVITY: Reformer Pilates involves physical exercise using a spring-resistance machine (reformer). Sessions include lying, seated, kneeling, and standing movements on a moving carriage. Exercises range from beginner to advanced levels.
 
-RISKS AND SIDE EFFECTS include but are not limited to:
-- Bruising, redness, swelling, or tenderness at injection sites
-- Headache (usually mild, resolves within 24-48 hours)
-- Temporary eyelid or brow drooping (ptosis) — typically resolves in 2-4 weeks
-- Asymmetry or uneven results
-- Flu-like symptoms
-- Allergic reaction (rare)
-- Difficulty swallowing or breathing (extremely rare, seek emergency care)
-- Resistance/immunity to neurotoxin with repeated use (rare)
+ACKNOWLEDGMENT OF PHYSICAL RISKS: I understand that participation in Reformer Pilates carries inherent risks, including but not limited to:
+- Muscle soreness, strains, or sprains
+- Joint discomfort or injury (shoulders, knees, hips, lower back)
+- Falls or loss of balance on the reformer carriage
+- Equipment-related injuries if springs or straps are mishandled
+- Aggravation of pre-existing conditions
+- Cardiovascular exertion
 
-CONTRAINDICATIONS — Do NOT proceed if:
-- You are pregnant, nursing, or planning to become pregnant
-- You have a neuromuscular disorder (myasthenia gravis, Lambert-Eaton, ALS)
-- You are allergic to botulinum toxin, human albumin, or cow's milk protein (Dysport)
-- You have an active skin infection at the session area
-- You are taking aminoglycoside antibiotics
+PROPER FORM AND INSTRUCTOR GUIDANCE:
+- I agree to listen to and follow all instructor cues and corrections
+- I will inform my instructor of any injuries, surgeries, or physical limitations before class
+- I understand that attempting movements beyond my current ability increases injury risk
+- I will ask for modifications rather than forcing movements that cause pain
 
-PRE-TREATMENT INSTRUCTIONS:
-- Avoid blood thinners (aspirin, ibuprofen, fish oil, vitamin E) for 7 days
-- Avoid alcohol for 24 hours before session
-- Arrive with a clean face, no makeup on session areas
+EQUIPMENT SAFETY:
+- I agree to follow all equipment setup and safety instructions
+- I will not adjust spring resistance without instructor guidance
+- I understand proper carriage stop and footbar positioning procedures
+- I will report any equipment concerns to my instructor immediately
 
-POST-TREATMENT INSTRUCTIONS:
-- Do NOT lay down for 4 hours after session
-- Do NOT exercise vigorously for 24 hours
-- Do NOT massage or rub the treated areas
-- Gently contract treated muscles for 1-2 hours (e.g., practice frowning)
-- Avoid saunas, hot tubs, and excessive heat for 24 hours
-- Avoid facials or other facial sessions for 2 weeks
+HEALTH DISCLOSURE: I confirm that I have consulted a physician if I have any cardiovascular conditions, recent surgeries, pregnancy, or other conditions that may affect my ability to safely participate.
 
-I confirm that I am NOT pregnant or breastfeeding.
-I have disclosed all medications, supplements, and medical conditions.
-I understand the risks and consent to session.
+I voluntarily assume all risks associated with participation and release [Business Name] and its instructors from liability for injury arising from my participation.
 
-Patient Signature: _________________________
+Client Signature: _________________________
 Date: ____________
-Provider: _________________________` },
+Instructor/Witness: _________________________` },
 
-  { id: 'filler', name: 'Dermal Barre Consent', category: 'Equipment', content: `INFORMED CONSENT FOR DERMAL FILLER INJECTION
-(Juvederm / Restylane / RHA / Sculptra / Radiesse / Versa)
+  { id: 'filler', name: 'Barre Class Waiver', category: 'Equipment', content: `BARRE CLASS — PARTICIPATION WAIVER AND RELEASE
 
-DESCRIPTION: Dermal fillers are injectable gels used to restore volume, smooth lines and wrinkles, enhance facial contours, and improve symmetry. Hyaluronic acid (HA) fillers are the most common and can be dissolved if needed.
+I, [Client Name], wish to participate in Barre classes at [Business Name].
 
-EXPECTED RESULTS:
-- Immediate volume improvement with continued improvement over 2-4 weeks
-- HA fillers last 6-18 months depending on product and area
-- Sculptra results develop over 2-3 months and last up to 2 years
-- Radiesse lasts 12-18 months
-- Swelling may exaggerate initial results; final results visible at 2-4 weeks
+NATURE OF ACTIVITY: Barre classes combine elements of ballet, Pilates, and yoga using a ballet barre, light weights, resistance bands, and bodyweight exercises. Classes involve high repetition, small-range movements targeting specific muscle groups.
 
-RISKS AND SIDE EFFECTS include but are not limited to:
-- Bruising, swelling, redness, tenderness at injection sites (common, resolves in 7-14 days)
-- Asymmetry or irregularities (may require touch-up)
-- Lumps or nodules (usually treatable)
-- Infection
-- Allergic or hypersensitivity reaction
-- Skin discoloration
-- Migration or displacement of filler material
-- Granuloma formation (rare)
-- Biofilm formation (rare)
+ACKNOWLEDGMENT OF PHYSICAL EXERTION: I understand that Barre classes require sustained physical effort and may result in:
+- Significant muscle fatigue and soreness, particularly in thighs, glutes, and core
+- Temporary muscle shaking ("the Barre shake") — this is normal and expected
+- Delayed onset muscle soreness (DOMS) 24-72 hours after class
+- Elevated heart rate and cardiovascular exertion
 
-SERIOUS RISKS (rare but important):
-- VASCULAR OCCLUSION: Barre inadvertently injected into or compressing a blood vessel can cause tissue death (necrosis) or VISION CHANGES/BLINDNESS. This is a medical emergency.
+INJURY ACKNOWLEDGMENT: I understand the following risks associated with Barre participation:
+- Muscle strains, particularly in the hip flexors, hamstrings, and calves
+- Knee discomfort from deep turnout or plié positions
+- Ankle and foot strain
+- Lower back discomfort if core engagement is insufficient
+- Wrist strain during floor work
 
-EMERGENCY PROTOCOL: If you experience any of the following after session, contact us IMMEDIATELY or go to the nearest emergency room:
-- Sudden vision changes or loss of vision
-- Severe pain that does not resolve
-- Skin blanching (turning white) or dusky discoloration
-- Unusual swelling or hardening
+PROPER FOOTWEAR AND ATTIRE:
+- I understand that grip socks are required for all Barre classes
+- Bare feet are not permitted on the studio floor for safety reasons
+- I agree to wear form-fitting clothing that allows the instructor to observe alignment
 
-CONTRAINDICATIONS:
-- Pregnancy or breastfeeding
-- Active skin infection, cold sore, or acne at session site
-- Known allergy to filler components (hyaluronic acid, lidocaine)
-- Autoimmune conditions (discuss with provider)
-- History of anaphylaxis
-- Recent dental procedures (within 2 weeks)
+MODIFICATIONS: I agree to accept and use modifications offered by the instructor. I will communicate any physical limitations, recent injuries, or pregnancy status before class begins.
 
-PRE-TREATMENT:
-- Avoid blood thinners for 7 days (aspirin, ibuprofen, fish oil, vitamin E)
-- Avoid alcohol for 24 hours
-- If prone to cold sores, take antiviral medication as prescribed
+I voluntarily assume all risks associated with participation and release [Business Name] and its instructors from liability for injury arising from my participation.
 
-POST-TREATMENT:
-- Apply ice to reduce swelling (10 min on, 10 min off)
-- Avoid strenuous exercise for 24-48 hours
-- Avoid extreme heat (sauna, hot yoga) for 48 hours
-- Do NOT massage unless instructed by your provider
-- Sleep elevated the first night to reduce swelling
-- Avoid dental procedures for 2 weeks
-
-I understand that hyaluronidase can be used to dissolve HA filler if needed.
-I confirm I am NOT pregnant or breastfeeding.
-I consent to dermal filler session.
-
-Patient Signature: _________________________
+Client Signature: _________________________
 Date: ____________
-Provider: _________________________` },
+Instructor/Witness: _________________________` },
 
-  { id: 'sculptra', name: 'Sculptra / Biostimulator Consent', category: 'Equipment', content: `INFORMED CONSENT FOR BIOSTIMULATOR INJECTION (SCULPTRA / RADIESSE)
+  { id: 'sculptra', name: 'Private Training Waiver', category: 'Equipment', content: `PRIVATE TRAINING SESSION — PARTICIPATION WAIVER AND RELEASE
 
-DESCRIPTION: Biostimulators work differently from traditional fillers. Rather than adding immediate volume, they stimulate your body's own collagen production over time. Sculptra (poly-L-lactic acid) and Radiesse (calcium hydroxylapatite) are the most common.
+I, [Client Name], wish to participate in private one-on-one training sessions at [Business Name].
 
-IMPORTANT DIFFERENCES FROM HA FILLER:
-- Results develop gradually over 2-3 months as collagen builds
-- Multiple sessions (typically 2-3) are usually required, spaced 4-6 weeks apart
-- Results last 2+ years
-- Sculptra CANNOT be dissolved with hyaluronidase
-- The product itself is eventually absorbed; the collagen it stimulated remains
+NATURE OF ACTIVITY: Private training sessions provide individualized instruction in Pilates and/or movement work. Sessions are customized to the client's specific goals, current fitness level, and any physical limitations or injury history.
 
-RISKS specific to biostimulators:
-- Nodule or granuloma formation (more common than with HA fillers)
-- Asymmetry during the collagen-building phase
-- All standard injection risks (bruising, swelling, infection)
-- Delayed nodule formation (can appear months after injection)
+ACKNOWLEDGMENT OF ONE-ON-ONE SESSION RISKS: I understand that private training involves:
+- Progressive physical challenge designed to build strength, flexibility, and body awareness
+- Hands-on instructor cueing and tactile corrections (with my consent)
+- Higher-intensity or more technically demanding work than group classes
+- The possibility of muscle fatigue, soreness, or exertion beyond what I am accustomed to
 
-POST-TREATMENT (SCULPTRA SPECIFIC):
-- Massage treated areas 5 times daily for 5 minutes for 5 days ("Rule of 5s")
-- This is critical to prevent nodule formation
+CUSTOM PROGRAM ACKNOWLEDGMENT:
+- I understand that my instructor will design a program based on information I provide about my health, injuries, and goals
+- I agree to provide complete and honest information about my physical history, including past injuries, surgeries, chronic pain, and medical conditions
+- I understand that withholding relevant health information may result in programming that is inappropriate for my condition
+- I agree to communicate openly during sessions if any exercise causes pain, discomfort, or concern
 
-I understand this is a multi-session session and results are not immediate.
+PROGRESSION AND MODIFICATIONS:
+- I understand that my program will be progressively adjusted as I develop strength and skill
+- I agree to respect my instructor's guidance regarding readiness to advance to more challenging exercises
+- I will not attempt exercises demonstrated or described outside of our sessions without prior instructor approval
 
-Patient Signature: _________________________
-Date: ____________` },
+CANCELLATION: I understand the studio's cancellation policy and agree that private sessions cancelled with less than 24 hours notice may be subject to a cancellation fee.
+
+I voluntarily assume all risks associated with participation and release [Business Name] and its instructors from liability for injury arising from my participation, provided that sessions are conducted in accordance with my disclosed health information.
+
+Client Signature: _________________________
+Date: ____________
+Instructor: _________________________` },
 
   // ═══ SKIN TREATMENT CONSENTS ═══
   { id: 'microneedling', name: 'Private Session / RF Consent', category: 'Skin', content: `INFORMED CONSENT FOR MICRONEEDLING / RF MICRONEEDLING
@@ -665,13 +625,13 @@ function initWaivers() {
   const now = new Date();
   const ago = (days) => new Date(now - days * 86400000).toISOString();
   saveWaivers([
-    { id: 'W-1', templateId: 'general', patientId: 'PAT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: 'Jessica Park, NP', status: 'signed', expiresAt: ago(-360) },
-    { id: 'W-2', templateId: 'botox', patientId: 'PAT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: 'Dr. Sarah Mitchell', status: 'signed', expiresAt: ago(-360) },
-    { id: 'W-3', templateId: 'photo', patientId: 'PAT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: '', status: 'signed', photoConsent: 'identifiable', expiresAt: ago(-360) },
-    { id: 'W-4', templateId: 'general', patientId: 'PAT-1003', patientName: 'Ava Jones', signedAt: ago(30), signatureData: 'Ava Jones', witnessName: 'Emily Chen, RN', status: 'signed', expiresAt: ago(-335) },
-    { id: 'W-5', templateId: 'laser', patientId: 'PAT-1003', patientName: 'Ava Jones', signedAt: ago(30), signatureData: 'Ava Jones', witnessName: 'Jessica Park, NP', status: 'signed', expiresAt: ago(-335) },
-    { id: 'W-6', templateId: 'general', patientId: 'PAT-1005', patientName: 'Mia Garcia', signedAt: null, signatureData: null, witnessName: '', status: 'pending', expiresAt: null },
-    { id: 'W-7', templateId: 'hipaa', patientId: 'PAT-1002', patientName: 'Sophia Brown', signedAt: ago(20), signatureData: 'Sophia Brown', witnessName: '', status: 'signed', expiresAt: ago(-345) },
+    { id: 'W-1', templateId: 'general', clientId: 'CLT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: 'Jessica Park, NP', status: 'signed', expiresAt: ago(-360) },
+    { id: 'W-2', templateId: 'botox', clientId: 'CLT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: 'Dr. Sarah Mitchell', status: 'signed', expiresAt: ago(-360) },
+    { id: 'W-3', templateId: 'photo', clientId: 'CLT-1000', patientName: 'Emma Johnson', signedAt: ago(5), signatureData: 'Emma Johnson', witnessName: '', status: 'signed', photoConsent: 'identifiable', expiresAt: ago(-360) },
+    { id: 'W-4', templateId: 'general', clientId: 'CLT-1003', patientName: 'Ava Jones', signedAt: ago(30), signatureData: 'Ava Jones', witnessName: 'Emily Chen, RN', status: 'signed', expiresAt: ago(-335) },
+    { id: 'W-5', templateId: 'laser', clientId: 'CLT-1003', patientName: 'Ava Jones', signedAt: ago(30), signatureData: 'Ava Jones', witnessName: 'Jessica Park, NP', status: 'signed', expiresAt: ago(-335) },
+    { id: 'W-6', templateId: 'general', clientId: 'CLT-1005', patientName: 'Mia Garcia', signedAt: null, signatureData: null, witnessName: '', status: 'pending', expiresAt: null },
+    { id: 'W-7', templateId: 'hipaa', clientId: 'CLT-1002', patientName: 'Sophia Brown', signedAt: ago(20), signatureData: 'Sophia Brown', witnessName: '', status: 'signed', expiresAt: ago(-345) },
   ]);
   localStorage.setItem('rp_waivers_init', 'true');
 }
@@ -687,7 +647,7 @@ export default function Waivers() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [showSend, setShowSend] = useState(false);
-  const [sendForm, setSendForm] = useState({ patientId: '', templateIds: [] });
+  const [sendForm, setSendForm] = useState({ clientId: '', templateIds: [] });
   const [showPreview, setShowPreview] = useState(null);
   const [showSign, setShowSign] = useState(null);
   const [signName, setSignName] = useState('');
@@ -708,14 +668,14 @@ export default function Waivers() {
   const pendingCount = waivers.filter(w => w.status === 'pending').length;
 
   const handleSendWaivers = () => {
-    if (!sendForm.patientId || sendForm.templateIds.length === 0) return;
-    const pat = clients.find(p => p.id === sendForm.patientId);
+    if (!sendForm.clientId || sendForm.templateIds.length === 0) return;
+    const pat = clients.find(p => p.id === sendForm.clientId);
     const all = getWaivers();
     sendForm.templateIds.forEach(tId => {
       all.push({
         id: `W-${Date.now()}-${tId}`,
         templateId: tId,
-        patientId: sendForm.patientId,
+        clientId: sendForm.clientId,
         patientName: pat ? `${pat.firstName} ${pat.lastName}` : 'Unknown',
         signedAt: null, signatureData: null, witnessName: '', status: 'pending', expiresAt: null,
       });
@@ -723,7 +683,7 @@ export default function Waivers() {
     saveWaivers(all);
     refresh();
     setShowSend(false);
-    setSendForm({ patientId: '', templateIds: [] });
+    setSendForm({ clientId: '', templateIds: [] });
   };
 
   const handleSign = (waiverId) => {
@@ -888,7 +848,7 @@ export default function Waivers() {
             <h2 style={{ font: `600 20px ${s.FONT}`, color: s.text, marginBottom: 20 }}>Send Consent Forms</h2>
             <div style={{ marginBottom: 16 }}>
               <label style={s.label}>Patient</label>
-              <select value={sendForm.patientId} onChange={e => setSendForm({ ...sendForm, patientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
+              <select value={sendForm.clientId} onChange={e => setSendForm({ ...sendForm, clientId: e.target.value })} style={{ ...s.input, cursor: 'pointer' }}>
                 <option value="">Select patient...</option>
                 {clients.map(p => <option key={p.id} value={p.id}>{p.firstName} {p.lastName}</option>)}
               </select>
@@ -909,7 +869,7 @@ export default function Waivers() {
             </div>
             <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>
               <button onClick={() => setShowSend(false)} style={s.pillGhost}>Cancel</button>
-              <button onClick={handleSendWaivers} style={{ ...s.pillAccent, opacity: sendForm.patientId && sendForm.templateIds.length > 0 ? 1 : 0.4 }}>Send {sendForm.templateIds.length} Form{sendForm.templateIds.length !== 1 ? 's' : ''}</button>
+              <button onClick={handleSendWaivers} style={{ ...s.pillAccent, opacity: sendForm.clientId && sendForm.templateIds.length > 0 ? 1 : 0.4 }}>Send {sendForm.templateIds.length} Form{sendForm.templateIds.length !== 1 ? 's' : ''}</button>
             </div>
           </div>
         </div>

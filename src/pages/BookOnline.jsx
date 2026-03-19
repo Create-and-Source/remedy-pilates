@@ -7,16 +7,16 @@ import {
 
 const fmt = (cents) => cents === 0 ? 'Complimentary' : `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0 })}`;
 
-const CATEGORIES = ['All', 'Equipment', 'Equipment', 'Skin', 'Laser', 'Body', 'Surgical', 'Wellness', 'Packages', 'Consultation', 'Lifting'];
+const CATEGORIES = ['All', 'Reformer', 'Mat', 'Barre', 'Stretch', 'Private', 'Wellness', 'Packages', 'Consultation'];
 
 // Merge similar categories for display
 const DISPLAY_CATEGORIES = [
   { label: 'All', match: () => true },
-  { label: 'Equipment', match: (c) => c === 'Equipment' || c === 'Equipment' },
-  { label: 'Skin', match: (c) => c === 'Skin' },
-  { label: 'Laser', match: (c) => c === 'Laser' },
-  { label: 'Body', match: (c) => c === 'Body' },
-  { label: 'Surgical', match: (c) => c === 'Surgical' || c === 'Lifting' },
+  { label: 'Reformer', match: (c) => c === 'Reformer' },
+  { label: 'Mat', match: (c) => c === 'Mat' },
+  { label: 'Barre', match: (c) => c === 'Barre' },
+  { label: 'Stretch', match: (c) => c === 'Stretch' },
+  { label: 'Private', match: (c) => c === 'Private' },
   { label: 'Wellness', match: (c) => c === 'Wellness' },
   { label: 'Packages', match: (c) => c === 'Packages' || c === 'Consultation' },
 ];

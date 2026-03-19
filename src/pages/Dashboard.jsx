@@ -40,7 +40,7 @@ if (!document.getElementById(DASH_ANIM_ID)) {
   document.head.appendChild(sheet);
 }
 
-/* Simple sparkline SVG — 7 data points, fake demo data */
+/* Simple sparkline SVG — 7 data points */
 function MiniSparkline({ accent, data }) {
   const points = data || [42, 58, 35, 72, 65, 88, 76];
   const max = Math.max(...points);
@@ -203,7 +203,7 @@ export default function Dashboard() {
             <h1 style={{
               font: `600 26px ${s.FONT}`, color: s.text, marginBottom: 4, letterSpacing: '-0.3px',
             }}>
-              {greeting}, team
+              {greeting}, {localStorage.getItem('rp_user_name') || 'team'}
             </h1>
             <p style={{ font: `400 13px ${s.FONT}`, color: s.text2, margin: 0 }}>{dateStr}</p>
           </div>

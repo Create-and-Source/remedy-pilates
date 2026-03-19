@@ -7,89 +7,105 @@ import HelpChat from './HelpChat';
 import CommandPalette from './CommandPalette';
 import NotificationBell from './NotificationBell';
 
+// roles: which roles can see this item. Omit to show for all roles.
+// owner always sees everything. client should not reach the admin sidebar.
 const NAV_ITEMS = [
   { section: 'Overview', items: [
     { path: '/admin', label: 'Dashboard', icon: 'grid' },
-    { path: '/admin/checkin', label: 'Check-In', icon: 'clipboard' },
+    { path: '/admin/checkin', label: 'Check-In', icon: 'clipboard', roles: ['owner', 'instructor', 'front_desk'] },
   ]},
   { section: 'Clients', items: [
-    { path: '/admin/clients', label: 'Clients', icon: 'users' },
-    { path: '/admin/schedule', label: 'Schedule', icon: 'calendar' },
-    { path: '/admin/sessions', label: 'Class Packages', icon: 'clipboard' },
-    { path: '/admin/charts', label: 'Progress Tracking', icon: 'clipboard' },
-    { path: '/admin/photos', label: 'Transformations', icon: 'heart' },
-    { path: '/admin/waivers', label: 'Waivers', icon: 'clipboard' },
-    { path: '/admin/recovery-tips', label: 'Recovery Tips', icon: 'heart' },
+    { path: '/admin/clients', label: 'Clients', icon: 'users', roles: ['owner', 'instructor', 'front_desk'] },
+    { path: '/admin/schedule', label: 'Schedule', icon: 'calendar', roles: ['owner', 'instructor', 'front_desk'] },
+    { path: '/admin/sessions', label: 'Class Packages', icon: 'clipboard', roles: ['owner'] },
+    { path: '/admin/charts', label: 'Progress Tracking', icon: 'clipboard', roles: ['owner', 'instructor'] },
+    { path: '/admin/photos', label: 'Transformations', icon: 'heart', roles: ['owner', 'instructor'] },
+    { path: '/admin/waivers', label: 'Waivers', icon: 'clipboard', roles: ['owner'] },
+    { path: '/admin/recovery-tips', label: 'Recovery Tips', icon: 'heart', roles: ['owner', 'instructor'] },
   ]},
   { section: 'Billing', items: [
-    { path: '/admin/memberships', label: 'Memberships', icon: 'users' },
-    { path: '/admin/membership-perks', label: 'Membership Perks', icon: 'heart' },
-    { path: '/admin/wallet', label: 'Client Wallet', icon: 'package' },
-    { path: '/admin/referrals', label: 'Referrals', icon: 'share' },
-    { path: '/admin/loyalty', label: 'Loyalty Program', icon: 'heart' },
+    { path: '/admin/memberships', label: 'Memberships', icon: 'users', roles: ['owner'] },
+    { path: '/admin/membership-perks', label: 'Membership Perks', icon: 'heart', roles: ['owner'] },
+    { path: '/admin/wallet', label: 'Client Wallet', icon: 'package', roles: ['owner'] },
+    { path: '/admin/referrals', label: 'Referrals', icon: 'share', roles: ['owner'] },
+    { path: '/admin/loyalty', label: 'Loyalty Program', icon: 'heart', roles: ['owner'] },
   ]},
   { section: 'Operations', items: [
-    { path: '/admin/inventory', label: 'Inventory', icon: 'package' },
-    { path: '/admin/retention', label: 'Retention', icon: 'heart' },
-    { path: '/admin/waitlist', label: 'Waitlist', icon: 'calendar' },
-    { path: '/admin/reviews', label: 'Reviews', icon: 'heart' },
+    { path: '/admin/inventory', label: 'Inventory', icon: 'package', roles: ['owner', 'front_desk'] },
+    { path: '/admin/retention', label: 'Retention', icon: 'heart', roles: ['owner'] },
+    { path: '/admin/waitlist', label: 'Waitlist', icon: 'calendar', roles: ['owner', 'front_desk'] },
+    { path: '/admin/reviews', label: 'Reviews', icon: 'heart', roles: ['owner'] },
   ]},
   { section: 'Marketing', items: [
-    { path: '/admin/inbox', label: 'DM Inbox', icon: 'message' },
-    { path: '/admin/email', label: 'Email', icon: 'mail' },
-    { path: '/admin/texts', label: 'Text Messages', icon: 'message' },
-    { path: '/admin/social', label: 'Social Media', icon: 'share' },
-    { path: '/admin/tiktok', label: 'TikTok Strategy', icon: 'share' },
-    { path: '/admin/group-bookings', label: 'Group Bookings', icon: 'calendar' },
+    { path: '/admin/inbox', label: 'DM Inbox', icon: 'message', roles: ['owner', 'instructor', 'front_desk'] },
+    { path: '/admin/email', label: 'Email', icon: 'mail', roles: ['owner'] },
+    { path: '/admin/texts', label: 'Text Messages', icon: 'message', roles: ['owner'] },
+    { path: '/admin/social', label: 'Social Media', icon: 'share', roles: ['owner'] },
+    { path: '/admin/tiktok', label: 'TikTok Strategy', icon: 'share', roles: ['owner'] },
+    { path: '/admin/group-bookings', label: 'Group Bookings', icon: 'calendar', roles: ['owner', 'front_desk'] },
   ]},
   { section: 'Content', items: [
-    { path: '/admin/on-demand', label: 'On-Demand Library', icon: 'share' },
-    { path: '/admin/brand-guide', label: 'Brand Guide', icon: 'clipboard' },
+    { path: '/admin/on-demand', label: 'On-Demand Library', icon: 'share', roles: ['owner', 'instructor'] },
+    { path: '/admin/brand-guide', label: 'Brand Guide', icon: 'clipboard', roles: ['owner'] },
   ]},
   { section: 'Body Intelligence', items: [
-    { path: '/admin/posture', label: 'Posture AI', icon: 'heart' },
-    { path: '/admin/posture-timelapse', label: 'Posture Time-lapse', icon: 'heart' },
-    { path: '/admin/movement-rx', label: 'Movement Rx', icon: 'clipboard' },
-    { path: '/admin/ai-intake', label: 'AI Intake → Rx', icon: 'clipboard' },
-    { path: '/admin/fatigue', label: 'Fatigue Tracker', icon: 'heart' },
-    { path: '/admin/spring-engine', label: 'Spring Engine', icon: 'settings' },
-    { path: '/admin/sequencer', label: 'Class Sequencer', icon: 'calendar' },
-    { path: '/admin/wearables', label: 'Wearables Hub', icon: 'heart' },
-    { path: '/admin/ar-simulator', label: 'AR Reformer', icon: 'grid' },
+    { path: '/admin/posture', label: 'Posture AI', icon: 'heart', roles: ['owner', 'instructor'] },
+    { path: '/admin/posture-timelapse', label: 'Posture Time-lapse', icon: 'heart', roles: ['owner', 'instructor'] },
+    { path: '/admin/movement-rx', label: 'Movement Rx', icon: 'clipboard', roles: ['owner', 'instructor'] },
+    { path: '/admin/ai-intake', label: 'AI Intake → Rx', icon: 'clipboard', roles: ['owner', 'instructor'] },
+    { path: '/admin/fatigue', label: 'Fatigue Tracker', icon: 'heart', roles: ['owner', 'instructor'] },
+    { path: '/admin/spring-engine', label: 'Spring Engine', icon: 'settings', roles: ['owner', 'instructor'] },
+    { path: '/admin/sequencer', label: 'Class Sequencer', icon: 'calendar', roles: ['owner', 'instructor'] },
+    { path: '/admin/wearables', label: 'Wearables Hub', icon: 'heart', roles: ['owner', 'instructor'] },
+    { path: '/admin/ar-simulator', label: 'AR Reformer', icon: 'grid', roles: ['owner', 'instructor'] },
   ]},
   { section: 'Retention & Growth', items: [
-    { path: '/admin/retention-brain', label: 'Retention Brain', icon: 'users' },
-    { path: '/admin/cohort-analysis', label: 'Cohort Analysis', icon: 'bar-chart' },
-    { path: '/admin/referral-engine', label: 'Referral Engine', icon: 'share' },
-    { path: '/admin/challenges', label: 'Challenges', icon: 'heart' },
-    { path: '/admin/recovery-text', label: 'Recovery Texts', icon: 'message' },
+    { path: '/admin/retention-brain', label: 'Retention Brain', icon: 'users', roles: ['owner'] },
+    { path: '/admin/cohort-analysis', label: 'Cohort Analysis', icon: 'bar-chart', roles: ['owner'] },
+    { path: '/admin/referral-engine', label: 'Referral Engine', icon: 'share', roles: ['owner'] },
+    { path: '/admin/challenges', label: 'Challenges', icon: 'heart', roles: ['owner'] },
+    { path: '/admin/recovery-text', label: 'Recovery Texts', icon: 'message', roles: ['owner'] },
   ]},
   { section: 'Studio Tech', items: [
-    { path: '/admin/instructors', label: 'Instructor Metrics', icon: 'bar-chart' },
-    { path: '/admin/voice-clone', label: 'Voice Clone', icon: 'message' },
-    { path: '/admin/virtual-studio', label: 'Virtual Studio', icon: 'share' },
-    { path: '/admin/ai-front-desk', label: 'AI Front Desk', icon: 'message' },
-    { path: '/admin/smart-inventory', label: 'Smart Inventory', icon: 'package' },
-    { path: '/admin/voice-ai', label: 'Voice AI Phone', icon: 'message' },
-    { path: '/admin/live-dashboard', label: 'Live Dashboard', icon: 'grid' },
+    { path: '/admin/instructors', label: 'Instructor Metrics', icon: 'bar-chart', roles: ['owner'] },
+    { path: '/admin/voice-clone', label: 'Voice Clone', icon: 'message', roles: ['owner'] },
+    { path: '/admin/virtual-studio', label: 'Virtual Studio', icon: 'share', roles: ['owner'] },
+    { path: '/admin/ai-front-desk', label: 'AI Front Desk', icon: 'message', roles: ['owner'] },
+    { path: '/admin/smart-inventory', label: 'Smart Inventory', icon: 'package', roles: ['owner'] },
+    { path: '/admin/voice-ai', label: 'Voice AI Phone', icon: 'message', roles: ['owner'] },
+    { path: '/admin/live-dashboard', label: 'Live Dashboard', icon: 'grid', roles: ['owner'] },
   ]},
   { section: 'Intelligence', items: [
-    { path: '/admin/natural-language-bi', label: 'Ask Studio AI', icon: 'message' },
-    { path: '/admin/class-recommender', label: 'Class Recommender', icon: 'heart' },
-    { path: '/admin/dynamic-pricing', label: 'Dynamic Pricing', icon: 'bar-chart' },
-    { path: '/admin/instructor-tipping', label: 'Instructor Tipping', icon: 'heart' },
+    { path: '/admin/natural-language-bi', label: 'Ask Studio AI', icon: 'message', roles: ['owner'] },
+    { path: '/admin/class-recommender', label: 'Class Recommender', icon: 'heart', roles: ['owner'] },
+    { path: '/admin/dynamic-pricing', label: 'Dynamic Pricing', icon: 'bar-chart', roles: ['owner'] },
+    { path: '/admin/instructor-tipping', label: 'Instructor Tipping', icon: 'heart', roles: ['owner'] },
   ]},
   { section: 'Staff', items: [
-    { path: '/admin/training', label: 'Teacher Training', icon: 'clipboard' },
-    { path: '/admin/trainee-portal', label: 'Trainee Portal', icon: 'users' },
+    { path: '/admin/training', label: 'Teacher Training', icon: 'clipboard', roles: ['owner', 'instructor'] },
+    { path: '/admin/trainee-portal', label: 'Trainee Portal', icon: 'users', roles: ['owner', 'instructor'] },
   ]},
   { section: 'Reporting', items: [
-    { path: '/admin/reports', label: 'Reports', icon: 'bar-chart' },
+    { path: '/admin/reports', label: 'Reports', icon: 'bar-chart', roles: ['owner'] },
   ]},
   { section: 'System', items: [
-    { path: '/admin/settings', label: 'Settings', icon: 'settings' },
+    { path: '/admin/settings', label: 'Settings', icon: 'settings', roles: ['owner'] },
   ]},
 ];
+
+function getFilteredNavItems(role) {
+  // owner sees everything; no role defaults to showing all items
+  if (!role || role === 'owner') return NAV_ITEMS;
+  return NAV_ITEMS.reduce((acc, section) => {
+    const visibleItems = section.items.filter(item =>
+      !item.roles || item.roles.includes(role)
+    );
+    if (visibleItems.length > 0) {
+      acc.push({ ...section, items: visibleItems });
+    }
+    return acc;
+  }, []);
+}
 
 const ICONS = {
   grid: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
@@ -158,6 +174,8 @@ export default function Layout({ children }) {
   const s = useStyles();
   const location = useLocation();
   const settings = getSettings();
+  const userRole = typeof window !== 'undefined' ? (localStorage.getItem('rp_user_role') || 'owner') : 'owner';
+  const filteredNavItems = getFilteredNavItems(userRole);
 
   // Global Cmd+K / Ctrl+K listener
   useEffect(() => {
@@ -208,6 +226,8 @@ export default function Layout({ children }) {
       display: 'flex', flexDirection: 'column',
       transition: 'all 0.3s ease',
       zIndex: mobile ? 200 : 100,
+      paddingLeft: 'env(safe-area-inset-left)',
+      paddingBottom: 'env(safe-area-inset-bottom)',
       ...(mobile ? { boxShadow: '4px 0 24px rgba(0,0,0,0.2)' } : {}),
     }}>
       {/* Logo */}
@@ -236,7 +256,7 @@ export default function Layout({ children }) {
 
       {/* Nav */}
       <nav style={{ flex: 1, overflowY: 'auto', padding: '12px 12px' }}>
-        {NAV_ITEMS.map(section => (
+        {filteredNavItems.map(section => (
           <div key={section.section} style={{ marginBottom: 16 }}>
             {!collapsed && (
               <div style={{
@@ -320,6 +340,7 @@ export default function Layout({ children }) {
           backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
           borderBottom: '1px solid rgba(0,0,0,0.04)',
           padding: '0 32px', height: 56,
+          paddingTop: 'env(safe-area-inset-top)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }} className="layout-topbar">
           <button className="mobile-menu-btn" onClick={() => setMobileOpen(true)} style={{

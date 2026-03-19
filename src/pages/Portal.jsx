@@ -92,7 +92,9 @@ export default function Portal() {
   useEffect(() => subscribe(() => setTick(t => t + 1)), []);
 
   const clients = getPatients();
-  const [selectedPatientId, setSelectedPatientId] = useState('PAT-1000');
+  const signedInName = localStorage.getItem('rp_user_name');
+  const matchedClient = signedInName ? clients.find(p => `${p.firstName} ${p.lastName}` === signedInName || p.firstName === signedInName) : null;
+  const [selectedClientId, setSelectedClientId] = useState(matchedClient?.id || 'CLT-1000');
   const [section, setSection] = useState('home');
   const [editInfo, setEditInfo] = useState(false);
   const [editForm, setEditForm] = useState({});
@@ -100,21 +102,21 @@ export default function Portal() {
   const [signingWaiver, setSigningWaiver] = useState(null);
   const [signName, setSignName] = useState('');
 
-  const patient = clients.find(p => p.id === selectedPatientId);
+  const patient = clients.find(p => p.id === selectedClientId);
   const patientName = patient ? patient.firstName : 'Guest';
   const today = new Date().toISOString().slice(0, 10);
 
-  // Data filtered by patient
-  const appointments = getAppointments().filter(a => a.patientId === selectedPatientId);
+  // Data filtered by client
+  const appointments = getAppointments().filter(a => a.clientId === selectedClientId);
   const services = getServices();
   const providers = getProviders();
-  const sessionPlans = getTreatmentPlans().filter(t => t.patientId === selectedPatientId);
-  const photos = getPhotos().filter(p => p.patientId === selectedPatientId);
-  const memberships = lsGet('rp_memberships', []).filter(m => m.patientId === selectedPatientId);
-  const packages = lsGet('rp_packages', []).filter(p => p.patientId === selectedPatientId);
-  const walletEntries = lsGet('rp_wallet', []).filter(w => w.patientId === selectedPatientId);
-  const waivers = lsGet('rp_waivers', []).filter(w => w.patientId === selectedPatientId);
-  const referrals = lsGet('rp_referrals', []).filter(r => r.referrerId === selectedPatientId);
+  const sessionPlans = getTreatmentPlans().filter(t => t.clientId === selectedClientId);
+  const photos = getPhotos().filter(p => p.clientId === selectedClientId);
+  const memberships = lsGet('rp_memberships', []).filter(m => m.clientId === selectedClientId);
+  const packages = lsGet('rp_packages', []).filter(p => p.clientId === selectedClientId);
+  const walletEntries = lsGet('rp_wallet', []).filter(w => w.clientId === selectedClientId);
+  const waivers = lsGet('rp_waivers', []).filter(w => w.clientId === selectedClientId);
+  const referrals = lsGet('rp_referrals', []).filter(r => r.referrerId === selectedClientId);
 
   const upcomingAppts = appointments.filter(a => a.date >= today && a.status !== 'completed')
     .sort((a, b) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`));
@@ -129,7 +131,7 @@ export default function Portal() {
   const credits = walletEntries.filter(w => w.type === 'credit' && w.balance > 0);
   const loyalty = walletEntries.find(w => w.type === 'loyalty');
 
-  const referralCode = referrals[0]?.code || `REF-${patientName.toUpperCase()}-${selectedPatientId.replace('PAT-', '')}`;
+  const referralCode = referrals[0]?.code || `REF-${patientName.toUpperCase()}-${selectedClientId.replace('CLT-', '')}`;
   const creditedReferrals = referrals.filter(r => r.status === 'credited');
   const totalReferralCredits = creditedReferrals.reduce((sum, r) => sum + (r.referrerCredit || 0), 0);
 
@@ -159,7 +161,7 @@ export default function Portal() {
   };
 
   const saveInfo = () => {
-    updatePatient(selectedPatientId, editForm);
+    updatePatient(selectedClientId, editForm);
     setEditInfo(false);
     setTick(t => t + 1);
   };
@@ -1179,7 +1181,7 @@ export default function Portal() {
         {sections[section]?.()}
       </div>
 
-      {/* Dev toolbar — floating pill bottom-right */}
+      {/* Nav pill bottom-right */}
       <div style={{
         position: 'fixed', bottom: 20, right: 20, zIndex: 200,
         background: 'rgba(17,17,17,0.92)', backdropFilter: 'blur(12px)',
@@ -1187,21 +1189,7 @@ export default function Portal() {
         display: 'flex', alignItems: 'center', gap: 10,
         boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
       }}>
-        <span style={{ font: `400 11px ${s.MONO}`, color: '#666' }}>as:</span>
-        <select
-          value={selectedPatientId}
-          onChange={e => { setSelectedPatientId(e.target.value); setSection('home'); setEditInfo(false); }}
-          style={{
-            background: 'transparent', color: '#ccc', border: 'none',
-            font: `400 11px ${s.MONO}`, outline: 'none', cursor: 'pointer',
-          }}
-        >
-          {clients.map(p => (
-            <option key={p.id} value={p.id} style={{ background: '#222' }}>
-              {p.firstName} {p.lastName}
-            </option>
-          ))}
-        </select>
+        <span style={{ font: `400 11px ${s.MONO}`, color: '#aaa' }}>{patientName}</span>
         <div style={{ width: 1, height: 16, background: '#444' }} />
         <button onClick={() => window.location.href = '/'} style={{
           background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 100,
