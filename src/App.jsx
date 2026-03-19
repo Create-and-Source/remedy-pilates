@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './theme';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -69,6 +69,7 @@ const FreeTrialFlow = lazy(() => import('./pages/FreeTrialFlow'));
 const GroupBookings = lazy(() => import('./pages/GroupBookings'));
 const TikTokDashboard = lazy(() => import('./pages/TikTokDashboard'));
 const BodyScans = lazy(() => import('./pages/BodyScans'));
+const Onboarding = lazy(() => import('./pages/Onboarding'));
 
 function Loader() {
   return (
@@ -111,8 +112,13 @@ export default function App() {
     <ThemeProvider>
       <Suspense fallback={<Loader />}>
         <Routes>
+          {/* Onboarding — shown once on first launch */}
+          <Route path="/onboarding" element={<Onboarding />} />
+
           {/* Public pages — no sidebar */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={
+            localStorage.getItem('rp_onboarded') ? <Home /> : <Navigate to="/onboarding" replace />
+          } />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/book" element={<BookOnline />} />
           <Route path="/pricing" element={<Pricing />} />

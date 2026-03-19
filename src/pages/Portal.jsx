@@ -66,6 +66,18 @@ if (!document.getElementById(ANIM_ID)) {
       from { opacity:0; transform: translateX(10px); }
       to   { opacity:1; transform: translateX(0); }
     }
+    @keyframes portalRingFill {
+      from { stroke-dashoffset: var(--ring-full); }
+      to   { stroke-dashoffset: var(--ring-offset); }
+    }
+    @keyframes portalBadgeGlow {
+      0%,100% { box-shadow: 0 0 0 0 var(--badge-glow, rgba(196,112,75,0.4)); }
+      50%     { box-shadow: 0 0 0 8px rgba(196,112,75,0); }
+    }
+    @keyframes portalScrollIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
     .portal-fadeInUp { animation: portalFadeInUp 0.5s cubic-bezier(0.16,1,0.3,1) both; }
     .portal-stagger-1 { animation-delay: 0.04s; }
     .portal-stagger-2 { animation-delay: 0.08s; }
@@ -76,6 +88,9 @@ if (!document.getElementById(ANIM_ID)) {
     .portal-stagger-7 { animation-delay: 0.28s; }
     .portal-stagger-8 { animation-delay: 0.32s; }
     .portal-tabs::-webkit-scrollbar { display:none; }
+    .portal-hscroll { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .portal-hscroll::-webkit-scrollbar { display: none; }
+    .portal-badge-glow { animation: portalBadgeGlow 2.2s ease-in-out infinite; }
     @media (max-width: 768px) {
       .portal-two-col { grid-template-columns: 1fr !important; }
       .portal-three-col { grid-template-columns: 1fr !important; }
@@ -137,6 +152,83 @@ export default function Portal() {
 
   const svcName = (id) => services.find(sv => sv.id === id)?.name || 'Service';
   const provName = (id) => providers.find(p => p.id === id)?.name || 'Provider';
+
+  // ---- Progress & streak computations ----
+  const completedAppts = appointments.filter(a => a.status === 'completed');
+  const totalClasses = completedAppts.length;
+  const totalMinutes = completedAppts.reduce((sum, a) => {
+    const svc = services.find(sv => sv.id === a.serviceId);
+    return sum + (svc?.duration || 55);
+  }, 0);
+
+  // Favorite instructor (most-booked among completed)
+  const providerCounts = {};
+  completedAppts.forEach(a => { providerCounts[a.providerId] = (providerCounts[a.providerId] || 0) + 1; });
+  const favProviderId = Object.entries(providerCounts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  const favProviderName = favProviderId ? provName(favProviderId) : null;
+
+  // Favorite class category (most-booked service category)
+  const categoryCounts = {};
+  completedAppts.forEach(a => {
+    const svc = services.find(sv => sv.id === a.serviceId);
+    if (svc?.category) categoryCounts[svc.category] = (categoryCounts[svc.category] || 0) + 1;
+  });
+  const favCategory = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+
+  // Weekly streak (Mon–Sun of current week)
+  const getNow = () => new Date();
+  const getWeekBounds = () => {
+    const now = getNow();
+    const day = now.getDay(); // 0=Sun
+    const diffToMon = day === 0 ? -6 : 1 - day;
+    const mon = new Date(now); mon.setHours(0,0,0,0); mon.setDate(now.getDate() + diffToMon);
+    const sun = new Date(mon); sun.setDate(mon.getDate() + 6); sun.setHours(23,59,59,999);
+    return { mon, sun };
+  };
+  const { mon: weekMon, sun: weekSun } = getWeekBounds();
+  const weekAppts = completedAppts.filter(a => {
+    const d = new Date(a.date + 'T12:00:00');
+    return d >= weekMon && d <= weekSun;
+  });
+  const weeklyStreak = weekAppts.length;
+  const WEEKLY_GOAL = 3;
+
+  // Week dots: Mon(0)=Mon…Sun(6)=Sun
+  const weekDots = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(weekMon); d.setDate(weekMon.getDate() + i);
+    const iso = d.toISOString().slice(0, 10);
+    return {
+      label: ['M', 'T', 'W', 'T', 'F', 'S', 'S'][i],
+      filled: completedAppts.some(a => a.date === iso),
+      isToday: iso === today,
+    };
+  });
+
+  // Milestone badges
+  const MILESTONES = [
+    { count: 5,   label: 'Getting Started', icon: '✦' },
+    { count: 10,  label: 'Finding My Flow',  icon: '◆' },
+    { count: 25,  label: 'Dedicated',         icon: '★' },
+    { count: 50,  label: 'Committed',          icon: '⬟' },
+    { count: 100, label: 'Century Club',        icon: '◉' },
+  ];
+  // Find index of most recently unlocked badge (highest unlocked threshold)
+  const unlockedMilestones = MILESTONES.filter(m => totalClasses >= m.count);
+  const latestUnlockedIdx = unlockedMilestones.length - 1; // index in MILESTONES array
+
+  // Recommended classes
+  const getRecommendations = () => {
+    if (services.length === 0) return [];
+    if (completedAppts.length === 0) return services.slice(0, 5);
+    // Heuristics: same category as favorite, or same provider's services
+    const favSvcIds = new Set(completedAppts.map(a => a.serviceId));
+    // Prefer services in fav category that user hasn't done yet, then fill with others
+    const inFavCat = services.filter(sv => sv.category === favCategory && !favSvcIds.has(sv.id));
+    const others = services.filter(sv => sv.category !== favCategory);
+    const merged = [...inFavCat, ...others].slice(0, 5);
+    return merged.length > 0 ? merged : services.slice(0, 5);
+  };
+  const recommendations = getRecommendations();
 
   // Photo pairs
   const photoPairs = {};
@@ -272,6 +364,260 @@ export default function Portal() {
     );
   };
 
+  // ------- NEW COMPONENT: Streak & Stats Card -------
+  const StreakStatsCard = () => {
+    const pct = WEEKLY_GOAL > 0 ? Math.min(1, weeklyStreak / WEEKLY_GOAL) : 0;
+    const SIZE = 88;
+    const STROKE = 7;
+    const r = (SIZE - STROKE) / 2;
+    const circ = 2 * Math.PI * r;
+    const offset = circ * (1 - pct);
+
+    return (
+      <div className="portal-fadeInUp portal-stagger-1" style={{
+        ...glass, borderRadius: 20, padding: '26px 26px 22px', marginBottom: 22,
+        background: 'rgba(255,255,255,0.6)',
+      }}>
+        <SectionLabel>This Week</SectionLabel>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20, flexWrap: 'wrap' }}>
+          {/* Progress ring */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+            <div style={{ position: 'relative', width: SIZE, height: SIZE }}>
+              <svg width={SIZE} height={SIZE} style={{ transform: 'rotate(-90deg)' }}>
+                <circle cx={SIZE/2} cy={SIZE/2} r={r} fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth={STROKE} />
+                <circle cx={SIZE/2} cy={SIZE/2} r={r} fill="none" stroke={s.accent} strokeWidth={STROKE}
+                  strokeDasharray={circ}
+                  strokeDashoffset={offset}
+                  strokeLinecap="round"
+                  style={{ transition: 'stroke-dashoffset 1s cubic-bezier(0.16,1,0.3,1)' }}
+                />
+              </svg>
+              <div style={{
+                position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+              }}>
+                <span style={{ font: `700 22px ${s.FONT}`, color: s.accent, lineHeight: 1 }}>{weeklyStreak}</span>
+                <span style={{ font: `400 9px ${s.MONO}`, color: s.text3, textTransform: 'uppercase', letterSpacing: 1 }}>of {WEEKLY_GOAL}</span>
+              </div>
+            </div>
+            <span style={{ font: `400 11px ${s.FONT}`, color: s.text3 }}>Weekly goal</span>
+          </div>
+
+          {/* Stats grid */}
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 20px', marginBottom: 16 }}>
+              {[
+                { label: 'Total Classes', value: totalClasses },
+                { label: 'Total Minutes', value: totalMinutes.toLocaleString() },
+                favProviderName ? { label: 'Fav Instructor', value: favProviderName.split(' ')[0] } : null,
+                favCategory ? { label: 'Fav Class Type', value: favCategory } : null,
+              ].filter(Boolean).map((stat, i) => (
+                <div key={i}>
+                  <div style={{ font: `400 10px ${s.MONO}`, color: s.text3, textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 2 }}>{stat.label}</div>
+                  <div style={{ font: `600 16px ${s.FONT}`, color: s.text, letterSpacing: -0.3 }}>{stat.value}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Week dots */}
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              {weekDots.map((dot, i) => (
+                <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                  <div style={{
+                    width: 28, height: 28, borderRadius: '50%',
+                    background: dot.filled ? s.accent : 'rgba(0,0,0,0.06)',
+                    border: dot.isToday ? `2px solid ${s.accent}` : '2px solid transparent',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    transition: 'background 0.3s ease',
+                  }}>
+                    {dot.filled && (
+                      <span style={{ color: s.accentText, fontSize: 11, fontWeight: 700, lineHeight: 1 }}>✓</span>
+                    )}
+                  </div>
+                  <span style={{ font: `500 9px ${s.MONO}`, color: dot.isToday ? s.accent : s.text3, letterSpacing: 0.5 }}>
+                    {dot.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ------- NEW COMPONENT: Milestone Badges -------
+  const MilestoneBadges = () => (
+    <div className="portal-fadeInUp portal-stagger-2" style={{ marginBottom: 24 }}>
+      <SectionLabel>Achievements</SectionLabel>
+      <div className="portal-hscroll" style={{ display: 'flex', gap: 14, paddingBottom: 4 }}>
+        {MILESTONES.map((m, i) => {
+          const unlocked = totalClasses >= m.count;
+          const isLatest = unlocked && i === latestUnlockedIdx;
+          return (
+            <div key={i} style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+              flexShrink: 0, width: 72,
+            }}>
+              <div
+                className={isLatest ? 'portal-badge-glow' : ''}
+                style={{
+                  width: 56, height: 56, borderRadius: '50%',
+                  background: unlocked
+                    ? `linear-gradient(135deg, ${s.accent}22, ${s.accent}10)`
+                    : 'rgba(0,0,0,0.04)',
+                  border: unlocked ? `2px solid ${s.accent}40` : '2px solid rgba(0,0,0,0.06)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'all 0.4s ease',
+                  '--badge-glow': `${s.accent}66`,
+                }}
+              >
+                <span style={{
+                  fontSize: 20,
+                  color: unlocked ? s.accent : 'rgba(0,0,0,0.18)',
+                  filter: unlocked ? 'none' : 'grayscale(1)',
+                  transition: 'all 0.4s ease',
+                }}>{m.icon}</span>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  font: `600 9px ${s.MONO}`, letterSpacing: 0.5, textTransform: 'uppercase',
+                  color: unlocked ? s.accent : s.text3, lineHeight: 1.3,
+                }}>{m.count}</div>
+                <div style={{
+                  font: `400 10px ${s.FONT}`, color: unlocked ? s.text2 : s.text3,
+                  lineHeight: 1.3, marginTop: 1,
+                }}>{m.label}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  // ------- NEW COMPONENT: Recommended For You -------
+  const RecommendedCarousel = () => (
+    <div className="portal-fadeInUp portal-stagger-3" style={{ marginBottom: 24 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
+        <SectionLabel>{completedAppts.length > 0 ? 'Recommended For You' : 'Popular This Week'}</SectionLabel>
+      </div>
+      <div className="portal-hscroll" style={{ display: 'flex', gap: 14, paddingBottom: 6 }}>
+        {recommendations.map((svc, i) => {
+          const DIFF_COLORS = {
+            Pilates: { color: '#6B8F71', bg: '#F0F5F1' },
+            Barre:   { color: '#C47B8E', bg: '#FDF2F5' },
+            TRX:     { color: '#5B7B8F', bg: '#F0F4F7' },
+            Wellness:{ color: '#A68B6B', bg: '#F9F5F0' },
+            Private: { color: '#8B6B94', bg: '#F5F0F7' },
+            Specialty:{ color: '#B85C38', bg: '#FDF0EA' },
+            default: { color: s.accent, bg: s.accentLight },
+          };
+          const dc = DIFF_COLORS[svc.category] || DIFF_COLORS.default;
+          return (
+            <div key={svc.id} style={{
+              ...glass, borderRadius: 16, padding: '18px 18px 16px',
+              width: 188, flexShrink: 0, cursor: 'pointer',
+              transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+            }}
+              onMouseEnter={glassHover}
+              onMouseLeave={glassUnhover}
+              onClick={() => window.location.href = '/book'}
+            >
+              <div style={{
+                display: 'inline-block', padding: '3px 10px', borderRadius: 100,
+                font: `600 9px ${s.MONO}`, textTransform: 'uppercase', letterSpacing: 0.8,
+                color: dc.color, background: dc.bg, marginBottom: 10,
+              }}>{svc.category}</div>
+              <div style={{ font: `500 14px ${s.FONT}`, color: s.text, lineHeight: 1.35, marginBottom: 6, letterSpacing: -0.2 }}>
+                {svc.name}
+              </div>
+              <div style={{ font: `400 12px ${s.FONT}`, color: s.text3, marginBottom: 14 }}>
+                {svc.duration} min
+              </div>
+              <button
+                onClick={e => { e.stopPropagation(); window.location.href = '/book'; }}
+                style={{
+                  ...s.pillAccent, padding: '8px 16px', fontSize: 12, width: '100%',
+                  borderRadius: 10, textAlign: 'center',
+                }}
+              >Book</button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  // ------- NEW COMPONENT: Quick Actions Grid -------
+  const QuickActionsGrid = () => {
+    const actions = [
+      {
+        label: 'Book a Class',
+        sub: 'Browse all classes',
+        icon: '📅',
+        color: s.accent,
+        bg: s.accentLight,
+        href: '/book',
+      },
+      {
+        label: 'My Schedule',
+        sub: `${upcomingAppts.length} upcoming`,
+        icon: '🗓',
+        color: '#6B8F71',
+        bg: '#F0F5F1',
+        action: () => setSection('appointments'),
+      },
+      {
+        label: 'Progress Photos',
+        sub: 'Before & after',
+        icon: '📷',
+        color: '#8B6B94',
+        bg: '#F5F0F7',
+        action: () => setSection('photos'),
+      },
+      {
+        label: 'Membership',
+        sub: membership ? `${membership.tier} tier` : 'Explore plans',
+        icon: '⭐',
+        color: '#D97706',
+        bg: '#FFFBEB',
+        action: () => setSection('membership'),
+      },
+    ];
+
+    return (
+      <div className="portal-fadeInUp portal-stagger-4" style={{ marginBottom: 28 }}>
+        <SectionLabel>Quick Actions</SectionLabel>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {actions.map((act, i) => (
+            <div key={i} style={{
+              ...glass, borderRadius: 16, padding: '18px 16px', cursor: 'pointer',
+              transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+              borderLeft: `3px solid ${act.color}30`,
+            }}
+              onMouseEnter={glassHover}
+              onMouseLeave={glassUnhover}
+              onClick={() => act.action ? act.action() : (window.location.href = act.href)}
+            >
+              <div style={{
+                width: 36, height: 36, borderRadius: 10, background: act.bg,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 18, marginBottom: 10,
+              }}>{act.icon}</div>
+              <div style={{ font: `600 14px ${s.FONT}`, color: s.text, letterSpacing: -0.2, marginBottom: 2 }}>
+                {act.label}
+              </div>
+              <div style={{ font: `400 12px ${s.FONT}`, color: s.text3 }}>
+                {act.sub}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // ------- SECTION RENDERERS -------
 
   const renderHome = () => {
@@ -351,6 +697,12 @@ export default function Portal() {
           )}
         </div>
 
+        {/* --- Streak & Stats --- */}
+        <StreakStatsCard />
+
+        {/* --- Milestone Badges --- */}
+        <MilestoneBadges />
+
         {/* --- Dashboard Cards Grid --- */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16, marginBottom: 28 }}>
           {/* Membership summary */}
@@ -413,14 +765,14 @@ export default function Portal() {
           </Card>
         </div>
 
-        {/* Quick action buttons */}
+        {/* --- Recommended For You --- */}
+        <RecommendedCarousel />
+
+        {/* --- Quick Actions Grid --- */}
+        <QuickActionsGrid />
+
+        {/* Refer a Friend pill */}
         <div className="portal-fadeInUp portal-stagger-5" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <button style={{
-            ...s.pillAccent, padding: '14px 32px', fontSize: 14, borderRadius: 100,
-            boxShadow: `0 4px 20px ${s.accent}30`,
-          }}>
-            Book Appointment
-          </button>
           <button onClick={() => setSection('referrals')} style={{
             ...s.pillOutline, padding: '14px 32px', fontSize: 14, borderRadius: 100,
           }}>

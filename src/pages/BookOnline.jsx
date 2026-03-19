@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { useStyles } from '../theme';
+import { useStyles, getAvatarGradient } from '../theme';
 import {
   getServices, getProviders, getLocations, getAppointments,
   addAppointment, getSettings, subscribe,
@@ -74,8 +74,32 @@ if (!document.getElementById(ANIM_ID)) {
     .book-stagger-6 { animation-delay: 0.18s; }
     .book-stagger-7 { animation-delay: 0.21s; }
     .book-stagger-8 { animation-delay: 0.24s; }
+    @keyframes bookCardHover {
+      from { transform: translateY(0) scale(1); }
+      to   { transform: translateY(-2px) scale(1.005); }
+    }
     .book-cats::-webkit-scrollbar { display:none; }
     .book-days::-webkit-scrollbar { display:none; }
+    .book-cal-strip::-webkit-scrollbar { display:none; }
+    .book-svc-card {
+      transition: transform 0.22s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.22s cubic-bezier(0.16,1,0.3,1);
+    }
+    .book-svc-card:hover {
+      transform: translateY(-2px) scale(1.005);
+      box-shadow: 0 14px 44px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.05) !important;
+    }
+    .book-svc-card:active {
+      transform: scale(0.99);
+    }
+    .book-cal-day {
+      transition: transform 0.2s cubic-bezier(0.16,1,0.3,1),
+                  background 0.2s ease,
+                  box-shadow 0.2s ease;
+    }
+    .book-cal-day:hover {
+      transform: translateY(-2px);
+    }
     @media (max-width: 768px) {
       .book-container { padding: 24px 14px 48px !important; }
       .book-step-card { padding: 20px 16px !important; }
@@ -100,6 +124,8 @@ export default function BookOnline() {
   const [selectedService, setSelectedService] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [calendarDay, setCalendarDay] = useState(null); // null = show all (no date filter on step 1)
+  const calendarRef = useRef(null);
 
   // Step 2
   const [selectedProvider, setSelectedProvider] = useState(null);
@@ -143,6 +169,64 @@ export default function BookOnline() {
     }
     return arr;
   }, []);
+
+  // Auto-select today and scroll calendar into view on mount
+  useEffect(() => {
+    if (days.length > 0 && calendarDay === null) {
+      setCalendarDay(days[0].date);
+    }
+  }, [days]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (calendarRef.current && calendarDay) {
+      const el = calendarRef.current.querySelector('[data-cal-active="true"]');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }, [calendarDay]);
+
+  // Derive difficulty from service name/category
+  function getDifficulty(svc) {
+    const name = (svc.name || '').toLowerCase();
+    const cat  = (svc.category || '').toLowerCase();
+    if (
+      name.includes('burn') || name.includes('cardio') || name.includes('fusion') ||
+      name.includes('advanced') || name.includes('trx') || cat.includes('trx')
+    ) return 'Advanced';
+    if (
+      name.includes('private') || name.includes('semi-private') ||
+      name.includes('apparatus') || name.includes('prenatal') ||
+      name.includes('youth') || cat.includes('specialty') || cat.includes('private')
+    ) return 'Intermediate';
+    if (
+      name.includes('intro') || name.includes('consultation') ||
+      name.includes('restore') || name.includes('stretch') ||
+      cat.includes('intro') || cat.includes('consultation') || cat.includes('wellness')
+    ) return 'Beginner';
+    return 'Intermediate';
+  }
+
+  const DIFFICULTY_STYLES = {
+    Beginner:     { bg: '#E8F2E9', color: '#3D6B42', label: 'Beginner' },
+    Intermediate: { bg: '#FDF0E8', color: '#8C4A25', label: 'Intermediate' },
+    Advanced:     { bg: '#FAE8ED', color: '#8B3555', label: 'Advanced' },
+  };
+
+  // Format calendar header date
+  function fmtCalHeader(dateStr) {
+    if (!dateStr) return '';
+    const today = days[0]?.date;
+    const tomorrow = days[1]?.date;
+    const dt = new Date(dateStr + 'T12:00:00');
+    const weekday = dt.toLocaleDateString('en-US', { weekday: 'long' });
+    const monthDay = dt.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+    if (dateStr === today) return `Today, ${monthDay}`;
+    if (dateStr === tomorrow) return `Tomorrow, ${monthDay}`;
+    return `${weekday}, ${monthDay}`;
+  }
+
+  // Which days have any service that could be scheduled
+  // (since services aren't date-specific, we just show all days as having classes)
+  const daysWithClasses = useMemo(() => new Set(days.map(d => d.date)), [days]);
 
   // Filter services
   const filteredServices = useMemo(() => {
@@ -512,6 +596,114 @@ export default function BookOnline() {
               ))}
             </div>
 
+            {/* ── Calendar Strip ── */}
+            <div style={{ marginBottom: 8 }}>
+              <div
+                ref={calendarRef}
+                className="book-cal-strip"
+                style={{
+                  display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 8,
+                  scrollbarWidth: 'none', scrollSnapType: 'x mandatory',
+                  WebkitOverflowScrolling: 'touch',
+                }}
+              >
+                {days.map((day, i) => {
+                  const active = calendarDay === day.date;
+                  const hasClasses = daysWithClasses.has(day.date);
+                  return (
+                    <div
+                      key={day.date}
+                      data-cal-active={active ? 'true' : 'false'}
+                      className="book-cal-day"
+                      onClick={() => setCalendarDay(day.date)}
+                      style={{
+                        flexShrink: 0, scrollSnapAlign: 'start',
+                        width: 54, padding: '10px 0 8px',
+                        borderRadius: 14, textAlign: 'center',
+                        cursor: 'pointer',
+                        background: active
+                          ? s.accent
+                          : day.isToday
+                            ? `${s.accent}14`
+                            : 'rgba(255,255,255,0.55)',
+                        border: active
+                          ? 'none'
+                          : day.isToday
+                            ? `1.5px solid ${s.accent}30`
+                            : '1px solid rgba(0,0,0,0.05)',
+                        boxShadow: active
+                          ? `0 4px 16px ${s.accent}30`
+                          : 'none',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                      }}
+                    >
+                      {/* Day name */}
+                      <div style={{
+                        fontSize: 9, fontFamily: s.MONO,
+                        textTransform: 'uppercase', letterSpacing: 0.8,
+                        color: active ? `${s.accentText}CC` : s.text3,
+                        fontWeight: 600, marginBottom: 4,
+                      }}>
+                        {day.dayName}
+                      </div>
+                      {/* Date number */}
+                      <div style={{
+                        fontSize: 18, fontWeight: 700,
+                        color: active ? s.accentText : day.isToday ? s.accent : s.text,
+                        lineHeight: 1,
+                      }}>
+                        {day.dayNum}
+                      </div>
+                      {/* Month */}
+                      <div style={{
+                        fontSize: 9, fontFamily: s.MONO,
+                        color: active ? `${s.accentText}AA` : s.text3,
+                        marginTop: 3, fontWeight: 500,
+                      }}>
+                        {day.monthName}
+                      </div>
+                      {/* Dot indicator */}
+                      <div style={{
+                        marginTop: 6, display: 'flex', justifyContent: 'center',
+                      }}>
+                        <div style={{
+                          width: 4, height: 4, borderRadius: '50%',
+                          background: active
+                            ? `${s.accentText}99`
+                            : hasClasses
+                              ? `${s.accent}60`
+                              : 'transparent',
+                          transition: 'background 0.2s',
+                        }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ── Date Section Header ── */}
+            {calendarDay && (
+              <div className="book-fadeInUp" style={{
+                display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
+                marginBottom: 16, marginTop: 4,
+              }}>
+                <div style={{
+                  fontSize: 17, fontWeight: 600, color: s.text,
+                  letterSpacing: -0.3,
+                }}>
+                  {fmtCalHeader(calendarDay)}
+                </div>
+                <div style={{
+                  fontSize: 11, fontFamily: s.MONO, fontWeight: 500,
+                  color: s.text3, textTransform: 'uppercase', letterSpacing: 1,
+                }}>
+                  {filteredServices.length} {filteredServices.length === 1 ? 'class' : 'classes'} available
+                </div>
+              </div>
+            )}
+
             {/* Service cards */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {filteredServices.length === 0 && (
@@ -524,20 +716,45 @@ export default function BookOnline() {
               )}
               {filteredServices.map((svc, i) => {
                 const selected = selectedService?.id === svc.id;
+                const difficulty = getDifficulty(svc);
+                const diffStyle = DIFFICULTY_STYLES[difficulty];
+                // Instructor avatar: pick a lead provider by category match or just the first one
+                const leadProvider = providers.find(p =>
+                  p.specialties?.some(sp =>
+                    sp.toLowerCase().includes((svc.category || '').toLowerCase()) ||
+                    (svc.category || '').toLowerCase().includes(sp.toLowerCase())
+                  )
+                ) || providers[i % (providers.length || 1)];
+                const avatarGrad = leadProvider ? getAvatarGradient(leadProvider.name) : getAvatarGradient(svc.name);
+                const avatarInitials = leadProvider
+                  ? leadProvider.name.split(' ').map(n => n[0]).slice(0, 2).join('')
+                  : svc.name.slice(0, 2).toUpperCase();
+                // Spots: use svc.capacity if defined, otherwise don't show
+                const totalSpots = svc.capacity || null;
+                const bookedSpots = totalSpots
+                  ? appointments.filter(a =>
+                      a.serviceId === svc.id &&
+                      a.date === calendarDay &&
+                      a.status !== 'cancelled'
+                    ).length
+                  : 0;
+                const spotsLeft = totalSpots ? totalSpots - bookedSpots : null;
+                const spotsLow = spotsLeft !== null && spotsLeft <= 4;
+
                 return (
                   <div
                     key={svc.id}
-                    className={`book-fadeInUp book-stagger-${Math.min(i + 1, 8)}`}
+                    className={`book-fadeInUp book-svc-card book-stagger-${Math.min(i + 1, 8)}`}
                     onClick={() => setSelectedService(selected ? null : svc)}
                     style={{
                       ...glass,
-                      padding: '20px 24px',
+                      padding: '18px 20px',
                       cursor: 'pointer',
                       border: selected
                         ? `2px solid ${s.accent}`
                         : '1px solid rgba(255,255,255,0.7)',
                       boxShadow: selected
-                        ? `0 8px 32px ${s.accent}18, 0 1.5px 4px rgba(0,0,0,0.03)`
+                        ? `0 8px 32px ${s.accent}20, 0 1.5px 4px rgba(0,0,0,0.03)`
                         : glass.boxShadow,
                       background: selected
                         ? `${s.accent}08`
@@ -545,71 +762,127 @@ export default function BookOnline() {
                       position: 'relative',
                       overflow: 'hidden',
                     }}
-                    onMouseEnter={e => {
-                      if (!selected) {
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                        e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.09), 0 2px 6px rgba(0,0,0,0.04)';
-                      }
-                    }}
-                    onMouseLeave={e => {
-                      if (!selected) {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = glass.boxShadow;
-                      }
-                    }}
                   >
-                    {/* Selected indicator */}
+                    {/* Selected check */}
                     {selected && (
                       <div style={{
-                        position: 'absolute', top: 16, right: 16,
-                        width: 24, height: 24, borderRadius: '50%',
+                        position: 'absolute', top: 14, right: 14,
+                        width: 22, height: 22, borderRadius: '50%',
                         background: s.accent, display: 'flex',
                         alignItems: 'center', justifyContent: 'center',
+                        boxShadow: `0 2px 8px ${s.accent}40`,
                       }}>
-                        <span style={{ color: s.accentText, fontSize: 13, fontWeight: 700 }}>{'\u2713'}</span>
+                        <span style={{ color: s.accentText, fontSize: 12, fontWeight: 700 }}>{'\u2713'}</span>
                       </div>
                     )}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <div style={{ flex: 1, paddingRight: 40 }}>
+
+                    {/* Card body */}
+                    <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+                      {/* Instructor avatar */}
+                      <div style={{
+                        width: 42, height: 42, borderRadius: '50%',
+                        background: avatarGrad,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        flexShrink: 0,
+                        fontSize: 14, fontWeight: 700, color: '#fff',
+                        boxShadow: '0 2px 10px rgba(0,0,0,0.12)',
+                        letterSpacing: 0.5,
+                      }}>
+                        {avatarInitials}
+                      </div>
+
+                      {/* Info */}
+                      <div style={{ flex: 1, minWidth: 0, paddingRight: selected ? 28 : 0 }}>
+                        {/* Name */}
                         <div style={{
-                          fontSize: 16, fontWeight: 600, color: s.text,
-                          marginBottom: 4,
+                          fontSize: 15, fontWeight: 600, color: s.text,
+                          marginBottom: 3, whiteSpace: 'nowrap', overflow: 'hidden',
+                          textOverflow: 'ellipsis',
                         }}>
                           {svc.name}
                         </div>
+
+                        {/* Pills row */}
                         <div style={{
-                          fontSize: 12, color: s.text3, marginBottom: 8,
-                          fontFamily: s.MONO, textTransform: 'uppercase',
-                          letterSpacing: 1,
+                          display: 'flex', gap: 6, flexWrap: 'wrap',
+                          alignItems: 'center', marginBottom: 6,
                         }}>
-                          {svc.category}
+                          {/* Category */}
+                          <span style={{
+                            font: `500 10px ${s.MONO}`,
+                            textTransform: 'uppercase', letterSpacing: 1,
+                            color: s.accent,
+                          }}>
+                            {svc.category}
+                          </span>
+                          <span style={{ color: s.text3, fontSize: 10 }}>·</span>
+                          {/* Duration pill */}
+                          <span style={{
+                            font: `500 10px ${s.MONO}`,
+                            textTransform: 'uppercase', letterSpacing: 1,
+                            background: 'rgba(0,0,0,0.04)',
+                            color: s.text2,
+                            padding: '2px 8px', borderRadius: 100,
+                          }}>
+                            {svc.duration} min
+                          </span>
+                          {/* Difficulty pill */}
+                          <span style={{
+                            font: `500 10px ${s.MONO}`,
+                            textTransform: 'uppercase', letterSpacing: 1,
+                            background: diffStyle.bg,
+                            color: diffStyle.color,
+                            padding: '2px 8px', borderRadius: 100,
+                          }}>
+                            {diffStyle.label}
+                          </span>
+                          {/* Spots left */}
+                          {spotsLeft !== null && (
+                            <span style={{
+                              font: `500 10px ${s.MONO}`,
+                              textTransform: 'uppercase', letterSpacing: 1,
+                              background: spotsLow ? '#FDF0E8' : 'rgba(0,0,0,0.03)',
+                              color: spotsLow ? '#8C4A25' : s.text3,
+                              padding: '2px 8px', borderRadius: 100,
+                            }}>
+                              {spotsLeft === 0 ? 'Full' : `${spotsLeft} spots left`}
+                            </span>
+                          )}
                         </div>
+
+                        {/* Description */}
                         {svc.description && (
-                          <div style={{ fontSize: 13, color: s.text2, lineHeight: 1.5 }}>
+                          <div style={{
+                            fontSize: 12.5, color: s.text3, lineHeight: 1.5,
+                          }}>
                             {svc.description}
                           </div>
                         )}
                       </div>
                     </div>
+
+                    {/* Price row */}
                     <div style={{
-                      display: 'flex', gap: 16, marginTop: 12,
-                      alignItems: 'center',
+                      display: 'flex', gap: 12, marginTop: 12,
+                      alignItems: 'center', paddingLeft: 56,
                     }}>
                       <span style={{
-                        fontSize: 15, fontWeight: 600, color: s.accent,
+                        fontSize: 15, fontWeight: 700, color: s.accent,
                       }}>
                         {fmt(svc.price)}
                       </span>
-                      <span style={{
-                        fontSize: 12, color: s.text3,
-                        background: 'rgba(0,0,0,0.03)',
-                        padding: '3px 10px', borderRadius: 100,
-                      }}>
-                        {svc.duration} min
-                      </span>
                       {svc.unit && (
-                        <span style={{ fontSize: 11, color: s.text3, fontStyle: 'italic' }}>
+                        <span style={{
+                          fontSize: 11, color: s.text3, fontStyle: 'italic',
+                        }}>
                           {svc.unit}
+                        </span>
+                      )}
+                      {leadProvider && (
+                        <span style={{
+                          marginLeft: 'auto', fontSize: 11, color: s.text3,
+                        }}>
+                          with {leadProvider.name.split(' ')[0]}
                         </span>
                       )}
                     </div>
