@@ -22,6 +22,7 @@ const NAV_ITEMS = [
     { path: '/admin/photos', label: 'Transformations', icon: 'heart', roles: ['owner', 'instructor'] },
     { path: '/admin/waivers', label: 'Waivers', icon: 'clipboard', roles: ['owner'] },
     { path: '/admin/recovery-tips', label: 'Recovery Tips', icon: 'heart', roles: ['owner', 'instructor'] },
+    { path: '/admin/transformation-plan', label: '30-Day Plan', icon: 'plan', roles: ['owner', 'instructor'] },
   ]},
   { section: 'Billing', items: [
     { path: '/admin/memberships', label: 'Memberships', icon: 'users', roles: ['owner'] },
@@ -43,6 +44,7 @@ const NAV_ITEMS = [
     { path: '/admin/social', label: 'Social Media', icon: 'share', roles: ['owner'] },
     { path: '/admin/tiktok', label: 'TikTok Strategy', icon: 'share', roles: ['owner'] },
     { path: '/admin/group-bookings', label: 'Group Bookings', icon: 'calendar', roles: ['owner', 'front_desk'] },
+    { path: '/admin/social-share', label: 'Share Journey', icon: 'upload', roles: ['owner'] },
   ]},
   { section: 'Content', items: [
     { path: '/admin/on-demand', label: 'On-Demand Library', icon: 'share', roles: ['owner', 'instructor'] },
@@ -59,6 +61,8 @@ const NAV_ITEMS = [
     { path: '/admin/wearables', label: 'Wearables Hub', icon: 'heart', roles: ['owner', 'instructor'] },
     { path: '/admin/body-scans', label: 'Body Composition Lab', icon: 'bar-chart', roles: ['owner', 'instructor'] },
     { path: '/admin/ar-simulator', label: 'AR Reformer', icon: 'grid', roles: ['owner', 'instructor'] },
+    { path: '/admin/breathwork', label: 'Breathwork', icon: 'wind', roles: ['owner', 'instructor'] },
+    { path: '/admin/nutrition', label: 'Nutrition', icon: 'leaf', roles: ['owner', 'instructor'] },
   ]},
   { section: 'Retention & Growth', items: [
     { path: '/admin/retention-brain', label: 'Retention Brain', icon: 'users', roles: ['owner'] },
@@ -120,9 +124,13 @@ const ICONS = {
   share: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>,
   'bar-chart': <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
   settings: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>,
+  plan: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="8" y1="18" x2="14" y2="18"/><circle cx="16" cy="16" r="3" fill="none"/><polyline points="14.8 16 15.8 17 17.5 15"/></svg>,
+  upload: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>,
   menu: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
   x: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
   palette: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="14" r="1.5" fill="currentColor"/><circle cx="16" cy="14" r="1.5" fill="currentColor"/></svg>,
+  wind: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/></svg>,
+  leaf: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M11 20A7 7 0 014 13c0-4.177 3-9 9-13 0 7-4.154 11.085-4.154 11.085C9 13 11 13 13 14c2.5 1.5 3 4 2 6-.5 1-2 1-4 0z"/><line x1="4.5" y1="13.5" x2="12" y2="21"/></svg>,
 };
 
 function ThemePicker({ show, onClose }) {

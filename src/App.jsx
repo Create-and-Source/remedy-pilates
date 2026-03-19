@@ -70,6 +70,10 @@ const GroupBookings = lazy(() => import('./pages/GroupBookings'));
 const TikTokDashboard = lazy(() => import('./pages/TikTokDashboard'));
 const BodyScans = lazy(() => import('./pages/BodyScans'));
 const Onboarding = lazy(() => import('./pages/Onboarding'));
+const TransformationPlan = lazy(() => import('./pages/TransformationPlan'));
+const Breathwork = lazy(() => import('./pages/Breathwork'));
+const SocialShare = lazy(() => import('./pages/SocialShare'));
+const Nutrition = lazy(() => import('./pages/Nutrition'));
 
 function Loader() {
   return (
@@ -192,6 +196,10 @@ export default function App() {
                 <Route path="/group-bookings" element={<GroupBookings />} />
                 <Route path="/tiktok" element={<TikTokDashboard />} />
                 <Route path="/body-scans" element={<BodyScans />} />
+                <Route path="/nutrition" element={<Nutrition />} />
+                <Route path="/transformation-plan" element={<TransformationPlan />} />
+                <Route path="/breathwork" element={<Breathwork />} />
+                <Route path="/social-share" element={<SocialShare />} />
                 <Route path="/settings" element={<Settings />} />
               </Routes>
             </Layout>
