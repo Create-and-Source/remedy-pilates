@@ -404,7 +404,7 @@ export default function Layout({ children }) {
 
       {!isEmbed && <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />}
       <ThemePicker show={showTheme} onClose={() => setShowTheme(false)} />
-      {!isEmbed && !mobileOpen && <HelpChat />}
+      {/* HelpChat removed — was breaking mobile layout */}
 
       <style>{`
         @media (max-width: 860px) {
