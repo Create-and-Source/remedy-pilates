@@ -68,6 +68,7 @@ const MembershipPerks = lazy(() => import('./pages/MembershipPerks'));
 const FreeTrialFlow = lazy(() => import('./pages/FreeTrialFlow'));
 const GroupBookings = lazy(() => import('./pages/GroupBookings'));
 const TikTokDashboard = lazy(() => import('./pages/TikTokDashboard'));
+const BodyScans = lazy(() => import('./pages/BodyScans'));
 
 function Loader() {
   return (
@@ -184,6 +185,7 @@ export default function App() {
                 <Route path="/membership-perks" element={<MembershipPerks />} />
                 <Route path="/group-bookings" element={<GroupBookings />} />
                 <Route path="/tiktok" element={<TikTokDashboard />} />
+                <Route path="/body-scans" element={<BodyScans />} />
                 <Route path="/settings" element={<Settings />} />
               </Routes>
             </Layout>

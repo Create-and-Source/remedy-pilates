@@ -2,7 +2,7 @@
 // Tracks which muscle groups each class targets, warns on overload, suggests recovery
 import { useState, useMemo } from 'react';
 import { useStyles, useTheme } from '../theme';
-import { getBookings, addBooking, deleteBooking } from '../data/store';
+import { getBookings, addBooking, deleteBooking, getPatients } from '../data/store';
 
 // ── Muscle groups ──
 const MUSCLE_GROUPS = [
@@ -39,17 +39,25 @@ function getDefaultBookings() {
     dt.setHours(hours, 0, 0, 0);
     return dt.toISOString();
   };
+  // Pull real client names from the central store (CLT-1000, CLT-1001, CLT-1002)
+  const allClients = getPatients();
+  const c0 = allClients.find(c => c.id === 'CLT-1000');
+  const c1 = allClients.find(c => c.id === 'CLT-1001');
+  const c2 = allClients.find(c => c.id === 'CLT-1002');
+  const name0 = c0 ? `${c0.firstName} ${c0.lastName}` : 'Emma Johnson';
+  const name1 = c1 ? `${c1.firstName} ${c1.lastName}` : 'Olivia Williams';
+  const name2 = c2 ? `${c2.firstName} ${c2.lastName}` : 'Sophia Brown';
   return [
-    { id: 'BK-demo-1', clientName: 'Sarah Martinez', classType: 'reformer-power', date: d(0, 9), instructor: 'Alex' },
-    { id: 'BK-demo-2', clientName: 'Sarah Martinez', classType: 'barre-sculpt', date: d(1, 10), instructor: 'Sam' },
-    { id: 'BK-demo-3', clientName: 'Sarah Martinez', classType: 'reformer-foundations', date: d(2, 9), instructor: 'Alex' },
-    { id: 'BK-demo-4', clientName: 'Sarah Martinez', classType: 'mat-pilates', date: d(4, 11), instructor: 'Emily' },
-    { id: 'BK-demo-5', clientName: 'Mike Chen', classType: 'reformer-power', date: d(0, 11), instructor: 'Alex' },
-    { id: 'BK-demo-6', clientName: 'Mike Chen', classType: 'reformer-power', date: d(2, 11), instructor: 'Tovah' },
-    { id: 'BK-demo-7', clientName: 'Mike Chen', classType: 'stretch-release', date: d(3, 10), instructor: 'Sam' },
-    { id: 'BK-demo-8', clientName: 'Jessica Lee', classType: 'barre-sculpt', date: d(0, 10), instructor: 'Emily' },
-    { id: 'BK-demo-9', clientName: 'Jessica Lee', classType: 'barre-sculpt', date: d(1, 10), instructor: 'Emily' },
-    { id: 'BK-demo-10', clientName: 'Jessica Lee', classType: 'barre-sculpt', date: d(2, 10), instructor: 'Emily' },
+    { id: 'BK-demo-1', clientId: 'CLT-1000', clientName: name0, classType: 'reformer-power', date: d(0, 9), instructor: 'Alex' },
+    { id: 'BK-demo-2', clientId: 'CLT-1000', clientName: name0, classType: 'barre-sculpt', date: d(1, 10), instructor: 'Sam' },
+    { id: 'BK-demo-3', clientId: 'CLT-1000', clientName: name0, classType: 'reformer-foundations', date: d(2, 9), instructor: 'Alex' },
+    { id: 'BK-demo-4', clientId: 'CLT-1000', clientName: name0, classType: 'mat-pilates', date: d(4, 11), instructor: 'Jordan' },
+    { id: 'BK-demo-5', clientId: 'CLT-1001', clientName: name1, classType: 'reformer-power', date: d(0, 11), instructor: 'Alex' },
+    { id: 'BK-demo-6', clientId: 'CLT-1001', clientName: name1, classType: 'reformer-power', date: d(2, 11), instructor: 'Casey' },
+    { id: 'BK-demo-7', clientId: 'CLT-1001', clientName: name1, classType: 'stretch-release', date: d(3, 10), instructor: 'Sam' },
+    { id: 'BK-demo-8', clientId: 'CLT-1002', clientName: name2, classType: 'barre-sculpt', date: d(0, 10), instructor: 'Taylor' },
+    { id: 'BK-demo-9', clientId: 'CLT-1002', clientName: name2, classType: 'barre-sculpt', date: d(1, 10), instructor: 'Taylor' },
+    { id: 'BK-demo-10', clientId: 'CLT-1002', clientName: name2, classType: 'barre-sculpt', date: d(2, 10), instructor: 'Taylor' },
   ];
 }
 
@@ -169,7 +177,11 @@ export default function FatigueTracker() {
     return stored;
   });
 
-  const [selectedClient, setSelectedClient] = useState('Sarah Martinez');
+  const initialClient = (() => {
+    const c = getPatients().find(p => p.id === 'CLT-1000');
+    return c ? `${c.firstName} ${c.lastName}` : 'Emma Johnson';
+  })();
+  const [selectedClient, setSelectedClient] = useState(initialClient);
   const [showAddBooking, setShowAddBooking] = useState(false);
   const [newBooking, setNewBooking] = useState({ clientName: '', classType: '', instructor: '', date: '' });
   const [windowHrs, setWindowHrs] = useState(72);

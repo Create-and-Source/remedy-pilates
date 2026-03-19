@@ -57,6 +57,7 @@ const NAV_ITEMS = [
     { path: '/admin/spring-engine', label: 'Spring Engine', icon: 'settings', roles: ['owner', 'instructor'] },
     { path: '/admin/sequencer', label: 'Class Sequencer', icon: 'calendar', roles: ['owner', 'instructor'] },
     { path: '/admin/wearables', label: 'Wearables Hub', icon: 'heart', roles: ['owner', 'instructor'] },
+    { path: '/admin/body-scans', label: 'Body Composition Lab', icon: 'bar-chart', roles: ['owner', 'instructor'] },
     { path: '/admin/ar-simulator', label: 'AR Reformer', icon: 'grid', roles: ['owner', 'instructor'] },
   ]},
   { section: 'Retention & Growth', items: [

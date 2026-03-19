@@ -186,11 +186,137 @@ function generatePrescription(intake) {
   return { clientName, intake, weeks, insights, topClasses: classScores.slice(0, 5), contraindicated: [...contraindicated] };
 }
 
+// ── Seed prescriptions if rp_prescriptions is empty ──
+function initPrescriptions() {
+  if (localStorage.getItem('rp_prescriptions_init')) return;
+  const existing = JSON.parse(localStorage.getItem('rp_prescriptions') || '[]');
+  if (existing.length > 0) { localStorage.setItem('rp_prescriptions_init', 'true'); return; }
+
+  const seeds = [
+    {
+      id: 'RX-seed-1',
+      clientId: 'CLT-1000',
+      clientName: 'Emma Johnson',
+      title: 'Core Stabilization Program',
+      weeks: 4,
+      status: 'active',
+      date: '2026-01-15T10:00:00Z',
+      intake: { experience: 'beginner', goals: ['core', 'rehab'], lifestyle: 'parent', injuries: [], frequency: '3', preferredDays: ['Monday', 'Wednesday', 'Friday'] },
+      insights: ['Post-partum diastasis recti recovery: pelvic stability before spinal flexion, avoid loaded flexion in weeks 1-2', 'Sedentary lifestyle weakens deep stabilizers — Mat Pilates builds foundational core engagement'],
+      topClasses: [
+        { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', score: 12, muscles: ['core', 'back', 'hip-flexors'] },
+        { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', score: 10, muscles: ['core', 'glutes', 'quads'] },
+        { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', score: 7, muscles: [] },
+      ],
+      weeks_plan: [
+        { week: 1, classes: [{ day: 'Monday', class: { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', duration: 55 }, note: 'Start here — focus on form and breathing' }, { day: 'Wednesday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Build consistency' }, { day: 'Friday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 2, classes: [{ day: 'Monday', class: { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', duration: 55 }, note: 'Building endurance' }, { day: 'Wednesday', class: { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', duration: 55 }, note: 'Building endurance' }, { day: 'Friday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 3, classes: [{ day: 'Monday', class: { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', duration: 55 }, note: 'Adding variety' }, { day: 'Wednesday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Adding variety' }, { day: 'Friday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 4, classes: [{ day: 'Monday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Progressive challenge' }, { day: 'Wednesday', class: { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', duration: 55 }, note: 'Progressive challenge' }, { day: 'Friday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+      ],
+      contraindicated: [],
+    },
+    {
+      id: 'RX-seed-2',
+      clientId: 'CLT-1003',
+      clientName: 'Ava Jones',
+      title: 'Shoulder Mobility Protocol',
+      weeks: 3,
+      status: 'active',
+      date: '2026-02-01T10:00:00Z',
+      intake: { experience: 'intermediate', goals: ['flexibility', 'posture'], lifestyle: 'desk', injuries: ['shoulder'], frequency: '2', preferredDays: ['Tuesday', 'Thursday'] },
+      insights: ['Shoulder protocol: avoid overhead work initially, focus on scapular stability before shoulder flexion', 'Desk work creates tight hip flexors — Reformer footwork and hip-opening sequences are prioritized'],
+      topClasses: [
+        { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', score: 14, muscles: ['core', 'back', 'shoulders', 'hamstrings'] },
+        { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', score: 10, muscles: ['core', 'back', 'hip-flexors'] },
+        { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', score: 8, muscles: [] },
+      ],
+      weeks_plan: [
+        { week: 1, classes: [{ day: 'Tuesday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Foundation building' }, { day: 'Thursday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 2, classes: [{ day: 'Tuesday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Building endurance' }, { day: 'Thursday', class: { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', duration: 55 }, note: 'Building endurance' }] },
+        { week: 3, classes: [{ day: 'Tuesday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Progressive challenge' }, { day: 'Thursday', class: { id: 'mat-pilates', name: 'Mat Pilates', intensity: 'medium', duration: 55 }, note: 'Progressive challenge' }] },
+      ],
+      contraindicated: ['reformer-power'],
+    },
+    {
+      id: 'RX-seed-3',
+      clientId: 'CLT-1005',
+      clientName: 'Mia Garcia',
+      title: 'Hip & Pelvis Alignment',
+      weeks: 4,
+      status: 'active',
+      date: '2026-01-20T10:00:00Z',
+      intake: { experience: 'intermediate', goals: ['posture', 'flexibility'], lifestyle: 'athlete', injuries: ['hip'], frequency: '3', preferredDays: ['Monday', 'Wednesday', 'Saturday'] },
+      insights: ['Athletic overuse patterns need balanced muscle work — Tower/Cadillac addresses imbalances', 'Anterior pelvic tilt — prioritize hip flexor lengthening and posterior chain activation'],
+      topClasses: [
+        { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', score: 11, muscles: ['core', 'glutes', 'quads'] },
+        { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', score: 9, muscles: [] },
+        { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', score: 8, muscles: ['core', 'back', 'shoulders', 'hamstrings'] },
+      ],
+      weeks_plan: [
+        { week: 1, classes: [{ day: 'Monday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Foundation building' }, { day: 'Wednesday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }, { day: 'Saturday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Foundation building' }] },
+        { week: 2, classes: [{ day: 'Monday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Building endurance' }, { day: 'Wednesday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Building endurance' }, { day: 'Saturday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 3, classes: [{ day: 'Monday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Adding variety' }, { day: 'Wednesday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Adding variety' }, { day: 'Saturday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 4, classes: [{ day: 'Monday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Progressive challenge' }, { day: 'Wednesday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Progressive challenge' }, { day: 'Saturday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+      ],
+      contraindicated: ['barre-sculpt', 'reformer-barre'],
+    },
+    {
+      id: 'RX-seed-4',
+      clientId: 'CLT-1007',
+      clientName: 'Amelia Thompson',
+      title: 'Spinal Mobility Series',
+      weeks: 3,
+      status: 'completed',
+      date: '2025-12-01T10:00:00Z',
+      intake: { experience: 'beginner', goals: ['flexibility', 'posture'], lifestyle: 'desk', injuries: ['lower-back'], frequency: '2', preferredDays: ['Wednesday', 'Saturday'] },
+      insights: ['Lower back pain protocol: pelvic stability before spinal flexion, avoid loaded flexion in weeks 1-2', 'Desk work creates tight hip flexors — Reformer footwork and hip-opening sequences are prioritized'],
+      topClasses: [
+        { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', score: 13, muscles: ['core', 'back', 'shoulders', 'hamstrings'] },
+        { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', score: 11, muscles: [] },
+        { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', score: 9, muscles: ['core', 'glutes', 'quads'] },
+      ],
+      weeks_plan: [
+        { week: 1, classes: [{ day: 'Wednesday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Foundation building' }, { day: 'Saturday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Foundation building' }] },
+        { week: 2, classes: [{ day: 'Wednesday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Building endurance' }, { day: 'Saturday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 3, classes: [{ day: 'Wednesday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Progressive challenge' }, { day: 'Saturday', class: { id: 'reformer-foundations', name: 'Reformer Foundations', intensity: 'low', duration: 50 }, note: 'Progressive challenge' }] },
+      ],
+      contraindicated: ['reformer-power'],
+    },
+    {
+      id: 'RX-seed-5',
+      clientId: 'CLT-1009',
+      clientName: 'Evelyn Lopez',
+      title: 'Athletic Performance',
+      weeks: 4,
+      status: 'active',
+      date: '2026-02-10T10:00:00Z',
+      intake: { experience: 'advanced', goals: ['athletic', 'core'], lifestyle: 'athlete', injuries: [], frequency: '4', preferredDays: ['Monday', 'Tuesday', 'Thursday', 'Saturday'] },
+      insights: ['Athletic overuse patterns need balanced muscle work — Tower/Cadillac addresses imbalances', 'Runner hip/knee balance: prioritize single-leg stability and posterior chain activation'],
+      topClasses: [
+        { id: 'reformer-power', name: 'Reformer Power', intensity: 'high', score: 16, muscles: ['core', 'glutes', 'quads', 'hamstrings', 'shoulders'] },
+        { id: 'reformer-barre', name: 'Reformer + Barre Fusion', intensity: 'high', score: 14, muscles: ['core', 'glutes', 'quads', 'calves', 'arms'] },
+        { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', score: 10, muscles: ['core', 'back', 'shoulders', 'hamstrings'] },
+      ],
+      weeks_plan: [
+        { week: 1, classes: [{ day: 'Monday', class: { id: 'reformer-power', name: 'Reformer Power', intensity: 'high', duration: 50 }, note: 'Foundation building' }, { day: 'Tuesday', class: { id: 'reformer-power', name: 'Reformer Power', intensity: 'high', duration: 50 }, note: 'Foundation building' }, { day: 'Thursday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Foundation building' }, { day: 'Saturday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 2, classes: [{ day: 'Monday', class: { id: 'reformer-power', name: 'Reformer Power', intensity: 'high', duration: 50 }, note: 'Building endurance' }, { day: 'Tuesday', class: { id: 'reformer-barre', name: 'Reformer + Barre Fusion', intensity: 'high', duration: 55 }, note: 'Building endurance' }, { day: 'Thursday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Building endurance' }, { day: 'Saturday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 3, classes: [{ day: 'Monday', class: { id: 'reformer-power', name: 'Reformer Power', intensity: 'high', duration: 50 }, note: 'Adding variety' }, { day: 'Tuesday', class: { id: 'reformer-barre', name: 'Reformer + Barre Fusion', intensity: 'high', duration: 55 }, note: 'Adding variety' }, { day: 'Thursday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Adding variety' }, { day: 'Saturday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+        { week: 4, classes: [{ day: 'Monday', class: { id: 'reformer-power', name: 'Reformer Power', intensity: 'high', duration: 50 }, note: 'Progressive challenge' }, { day: 'Tuesday', class: { id: 'reformer-barre', name: 'Reformer + Barre Fusion', intensity: 'high', duration: 55 }, note: 'Progressive challenge' }, { day: 'Thursday', class: { id: 'tower', name: 'Tower / Cadillac', intensity: 'medium', duration: 50 }, note: 'Progressive challenge' }, { day: 'Saturday', class: { id: 'stretch-release', name: 'Stretch & Release', intensity: 'low', duration: 45 }, note: 'Recovery day — active rest' }] },
+      ],
+      contraindicated: [],
+    },
+  ];
+
+  localStorage.setItem('rp_prescriptions', JSON.stringify(seeds));
+  localStorage.setItem('rp_prescriptions_init', 'true');
+}
+
 export default function MovementRx() {
   const s = useStyles();
   const { theme } = useTheme();
   const instructors = getProviders();
-  const [prescriptions, setPrescriptions] = useState(getPrescriptions());
+  const [prescriptions, setPrescriptions] = useState(() => { initPrescriptions(); return getPrescriptions(); });
   const [step, setStep] = useState('list'); // list | intake | plan
   const [plan, setPlan] = useState(null);
   const [selectedRx, setSelectedRx] = useState(null);

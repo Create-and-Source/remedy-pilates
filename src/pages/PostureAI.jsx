@@ -264,6 +264,71 @@ function drawLiveSkeleton(ctx, landmarks, w, h) {
   });
 }
 
+// ── Seed assessments if rp_posture_assessments is empty ──
+function initAssessments() {
+  if (localStorage.getItem('rp_posture_assessments_init')) return;
+  const existing = JSON.parse(localStorage.getItem('rp_posture_assessments') || '[]');
+  if (existing.length > 0) { localStorage.setItem('rp_posture_assessments_init', 'true'); return; }
+
+  const makeScores = (overall, head, shoulder, spinal, hip, pelvis, knee) => ({
+    overall,
+    headAlignment:   { score: head,     label: 'Head Alignment',   detail: head >= 85     ? 'Head well-centered over shoulders' : 'Slight forward head posture detected' },
+    shoulderBalance: { score: shoulder, label: 'Shoulder Balance',  detail: shoulder >= 85 ? 'Shoulders level within normal range' : 'Mild elevation on right shoulder' },
+    spinalCurve:     { score: spinal,   label: 'Spinal Alignment',  detail: spinal >= 85   ? 'Spine vertically aligned' : 'Slight lateral shift in thoracic region' },
+    hipLevel:        { score: hip,      label: 'Hip Level',         detail: hip >= 85      ? 'Hips level and balanced' : 'Minor hip asymmetry noted' },
+    pelvicTilt:      { score: pelvis,   label: 'Pelvic Position',   detail: pelvis >= 85   ? 'Pelvis in neutral position' : 'Anterior pelvic tilt present' },
+    kneeTracking:    { score: knee,     label: 'Knee Tracking',     detail: knee >= 85     ? 'Good knee alignment over toes' : 'Slight valgus tendency detected' },
+  });
+
+  const seeds = [
+    {
+      id: 'PA-seed-1', clientId: 'CLT-1000', clientName: 'Emma Johnson',
+      date: '2026-01-08T10:00:00Z',
+      scores: makeScores(72, 70, 74, 75, 78, 68, 73),
+      recommendations: ['Mat Pilates: Practice chin tucks and cervical alignment during hundred and roll-up', 'Reformer Foundations: Focus on pelvic stability exercises (bridging series, footwork in neutral)'],
+      frontPhoto: null, sidePhoto: null,
+    },
+    {
+      id: 'PA-seed-2', clientId: 'CLT-1001', clientName: 'Olivia Williams',
+      date: '2026-01-15T11:00:00Z',
+      scores: makeScores(68, 72, 62, 70, 65, 67, 73),
+      recommendations: ['Barre Upper Body: Scapular stabilization work to balance shoulder elevation', 'Reformer Foundations: Focus on pelvic stability exercises (bridging series, footwork in neutral)', 'Standing Barre: Single-leg balance work to address hip drop pattern'],
+      frontPhoto: null, sidePhoto: null,
+    },
+    {
+      id: 'PA-seed-3', clientId: 'CLT-1002', clientName: 'Sophia Brown',
+      date: '2026-01-22T09:30:00Z',
+      scores: makeScores(81, 83, 80, 82, 79, 81, 80),
+      recommendations: ['Excellent alignment! Continue your current practice and reassess in 8 weeks'],
+      frontPhoto: null, sidePhoto: null,
+    },
+    {
+      id: 'PA-seed-4', clientId: 'CLT-1003', clientName: 'Ava Jones',
+      date: '2026-01-10T14:00:00Z',
+      scores: makeScores(65, 62, 61, 66, 68, 67, 67),
+      recommendations: ['Mat Pilates: Practice chin tucks and cervical alignment during hundred and roll-up', 'Barre Upper Body: Scapular stabilization work to balance shoulder elevation', 'Stretch & Release: Lateral flexion series and rotational mobility on the Reformer'],
+      frontPhoto: null, sidePhoto: null,
+    },
+    {
+      id: 'PA-seed-5', clientId: 'CLT-1004', clientName: 'Isabella Martinez',
+      date: '2026-02-05T10:00:00Z',
+      scores: makeScores(78, 80, 76, 78, 77, 79, 78),
+      recommendations: ['Reformer Legs: Footwork with focus on knee tracking over 2nd-3rd toes', 'Continue Group Apparatus work for thoracic mobility'],
+      frontPhoto: null, sidePhoto: null,
+    },
+    {
+      id: 'PA-seed-6', clientId: 'CLT-1005', clientName: 'Mia Garcia',
+      date: '2026-01-20T13:00:00Z',
+      scores: makeScores(74, 76, 75, 73, 72, 71, 79),
+      recommendations: ['Reformer Foundations: Focus on pelvic stability exercises (bridging series, footwork in neutral)', 'Stretch & Release: Lateral flexion series and rotational mobility on the Reformer'],
+      frontPhoto: null, sidePhoto: null,
+    },
+  ];
+
+  localStorage.setItem('rp_posture_assessments', JSON.stringify(seeds));
+  localStorage.setItem('rp_posture_assessments_init', 'true');
+}
+
 export default function PostureAI() {
   const s = useStyles();
   const { theme } = useTheme();
@@ -285,7 +350,7 @@ export default function PostureAI() {
   const [frontLandmarks, setFrontLandmarks] = useState(null);
   const [sideLandmarks, setSideLandmarks] = useState(null);
   const [analysis, setAnalysis] = useState(null);
-  const [assessments, setAssessments] = useState(getAssessments());
+  const [assessments, setAssessments] = useState(() => { initAssessments(); return getAssessments(); });
   const [clientName, setClientName] = useState('');
   const [selectedAssessment, setSelectedAssessment] = useState(null);
   const [compareMode, setCompareMode] = useState(false);
