@@ -487,7 +487,7 @@ export default function FatigueTracker() {
           background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)',
         }} onClick={() => setShowAddBooking(false)}>
           <div onClick={e => e.stopPropagation()} style={{
-            background: '#fff', borderRadius: 20, padding: 32, width: 420,
+            background: '#fff', borderRadius: 20, padding: 24, maxWidth: 420, width: '92%',
             boxShadow: '0 24px 80px rgba(0,0,0,0.2)',
           }}>
             <div style={{ font: `400 20px ${s.DISPLAY}`, color: '#1a1a1a', marginBottom: 24 }}>Log a Class</div>

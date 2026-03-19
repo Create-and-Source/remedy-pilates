@@ -257,7 +257,7 @@ export default function Layout({ children }) {
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, overflowY: 'auto', padding: '12px 12px' }}>
+      <nav style={{ flex: 1, overflowY: 'auto', padding: '12px 12px', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', paddingBottom: 'calc(12px + env(safe-area-inset-bottom))' }}>
         {filteredNavItems.map(section => (
           <div key={section.section} style={{ marginBottom: 16 }}>
             {!collapsed && (
@@ -396,7 +396,7 @@ export default function Layout({ children }) {
 
       {!isEmbed && <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} />}
       <ThemePicker show={showTheme} onClose={() => setShowTheme(false)} />
-      {!isEmbed && <HelpChat />}
+      {!isEmbed && !mobileOpen && <HelpChat />}
 
       <style>{`
         @media (max-width: 860px) {
@@ -409,13 +409,18 @@ export default function Layout({ children }) {
             padding: 14px 12px !important;
           }
           .layout-topbar {
-            padding: 0 10px !important;
-            min-height: 46px !important;
+            padding: env(safe-area-inset-top) 10px 0 10px !important;
+            min-height: calc(46px + env(safe-area-inset-top)) !important;
             height: auto !important;
           }
           .mobile-menu-btn {
             flex-shrink: 0 !important;
             margin-right: 4px !important;
+            min-width: 44px !important;
+            min-height: 44px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
           }
           .cmd-k-label { display: none !important; }
           .topbar-date { display: none !important; }
