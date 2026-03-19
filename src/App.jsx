@@ -99,6 +99,14 @@ function Loader() {
   );
 }
 
+function HomeGate() {
+  // Check on every render — localStorage is not reactive so we read it fresh
+  if (!localStorage.getItem('rp_onboarded')) {
+    return <Navigate to="/onboarding" replace />;
+  }
+  return <Home />;
+}
+
 export default function App() {
   const [ready, setReady] = useState(false);
 
@@ -120,9 +128,7 @@ export default function App() {
           <Route path="/onboarding" element={<Onboarding />} />
 
           {/* Public pages — no sidebar */}
-          <Route path="/" element={
-            localStorage.getItem('rp_onboarded') ? <Home /> : <Navigate to="/onboarding" replace />
-          } />
+          <Route path="/" element={<HomeGate />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/book" element={<BookOnline />} />
           <Route path="/pricing" element={<Pricing />} />
